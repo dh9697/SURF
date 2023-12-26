@@ -2,6 +2,7 @@ package project.lms.model;
 
 import java.security.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,9 +32,18 @@ import project.lms.enumstatus.Nationality;
 			columnNames = {"phoneNum"})
 	})
 public class Member {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long memberId;
+	
+//	@ManyToMany
+//	@JoinTable(
+//		name = "course_history",
+//		joinColumns = @JoinColumn(name = "memberId"),
+//		inverseJoinColumns = @JoinColumn(name = "courseId")
+//	)
+//	private List<Course> courses;
 	
 	@Column(nullable = false, length = 50, updatable = false)
 	private String loginId;
@@ -73,7 +83,8 @@ public class Member {
 	private String photo;
 	
 	@Column
-	private Timestamp joinDate;
+	@Temporal(TemporalType.TIMESTAMP)
+	private LocalDateTime joinDate;
 	
 	@Column
 	private boolean isActive;
@@ -88,7 +99,7 @@ public class Member {
 
 	public Member(Long memberId, String loginId, Role role, String password, String name, LocalDate birthDate,
 			Gender gender, Nationality nationality, String email, String phoneNum, String emergencyNum, String photo,
-			Timestamp joinDate, boolean isActive, Membership membership) {
+			LocalDateTime joinDate, boolean isActive, Membership membership) {
 		super();
 		this.memberId = memberId;
 		this.loginId = loginId;
@@ -203,11 +214,11 @@ public class Member {
 		this.photo = photo;
 	}
 
-	public Timestamp getJoinDate() {
+	public LocalDateTime getJoinDate() {
 		return joinDate;
 	}
 
-	public void setJoinDate(Timestamp joinDate) {
+	public void setJoinDate(LocalDateTime joinDate) {
 		this.joinDate = joinDate;
 	}
 
@@ -226,6 +237,7 @@ public class Member {
 	public void setMembership(Membership membership) {
 		this.membership = membership;
 	}
+	
 	
 }
 

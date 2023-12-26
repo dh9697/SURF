@@ -1,5 +1,5 @@
 package project.lms.model;
 
-public class Attendance {
+public class ExamScore {
 
 }

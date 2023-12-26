@@ -22,17 +22,17 @@ public class MembersGroupMapping {
 	
 	@ManyToOne
 	@JoinColumn(name = "groupId", referencedColumnName = "groupId")
-	private MembersGroup group;
+	private MembersGroup membersGroup;
 
 	public MembersGroupMapping() {
 		super();
 	}
 
-	public MembersGroupMapping(Long groupMappingId, Member member, MembersGroup group) {
+	public MembersGroupMapping(Long groupMappingId, Member member, MembersGroup membersGroup) {
 		super();
 		this.groupMappingId = groupMappingId;
 		this.member = member;
-		this.group = group;
+		this.membersGroup = membersGroup;
 	}
 
 	public Long getGroupMappingId() {
@@ -51,12 +51,12 @@ public class MembersGroupMapping {
 		this.member = member;
 	}
 
-	public MembersGroup getGroup() {
-		return group;
+	public MembersGroup getMembersGroup() {
+		return membersGroup;
 	}
 
-	public void setGroup(MembersGroup group) {
-		this.group = group;
+	public void setMembersGroup(MembersGroup membersGroup) {
+		this.membersGroup = membersGroup;
 	}
 	
 }
