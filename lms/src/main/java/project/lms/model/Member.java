@@ -5,10 +5,17 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.persistence.UniqueConstraint;
 import project.lms.enumstatus.Gender;
 import project.lms.enumstatus.Nationality;
@@ -16,52 +23,76 @@ import project.lms.enumstatus.Nationality;
 @Entity
 @Table(name = "members", 
 	uniqueConstraints = { 
-		@UniqueConstraint(name = "uk_member_login_id", 
-			columnNames = {"loginId"})
+		@UniqueConstraint(name = "uk_member_loginId", 
+			columnNames = {"loginId"}),
+		@UniqueConstraint(name = "uk_member_email", 
+			columnNames = {"email"}),
+		@UniqueConstraint(name = "uk_member_phoneNum", 
+			columnNames = {"phoneNum"})
 	})
 public class Member {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long memberId;
 	
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false, length = 50, updatable = false)
 	private String loginId;
 	
-	private String roleId;
+	@ManyToOne
+	@JoinColumn(name = "roleId")
+	private Role role;
 	
+	@Column(nullable = false, length = 255)
 	private String password;
 	
+	@Column(nullable = false, length = 50)
 	private String name;
 	
+	@Column(nullable = false)
+	@Temporal(TemporalType.DATE)
 	private LocalDate birthDate;
 	
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Nationality nationality;
 	
+	@Column(nullable = false, length = 100)
 	private String email;
 	
+	@Column(nullable = false, length = 20)
 	private String phoneNum;
 	
+	@Column(nullable = false, length = 20)
 	private String emergencyNum;
 	
+	@Column(nullable = false, length = 255)
 	private String photo;
 	
+	@Column
 	private Timestamp joinDate;
 	
+	@Column
 	private boolean isActive;
+	
+	@OneToOne
+	@JoinColumn(name = "membershipId", referencedColumnName = "membershipId")
+	private Membership membership;
 
 	public Member() {
 		super();
 	}
 
-	public Member(Long memberId, String loginId, String roleId, String password, String name, LocalDate birthDate,
+	public Member(Long memberId, String loginId, Role role, String password, String name, LocalDate birthDate,
 			Gender gender, Nationality nationality, String email, String phoneNum, String emergencyNum, String photo,
-			Timestamp joinDate, boolean isActive) {
+			Timestamp joinDate, boolean isActive, Membership membership) {
 		super();
 		this.memberId = memberId;
 		this.loginId = loginId;
-		this.roleId = roleId;
+		this.role = role;
 		this.password = password;
 		this.name = name;
 		this.birthDate = birthDate;
@@ -73,6 +104,7 @@ public class Member {
 		this.photo = photo;
 		this.joinDate = joinDate;
 		this.isActive = isActive;
+		this.membership = membership;
 	}
 
 	public Long getMemberId() {
@@ -91,12 +123,12 @@ public class Member {
 		this.loginId = loginId;
 	}
 
-	public String getRoleId() {
-		return roleId;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setRoleId(String roleId) {
-		this.roleId = roleId;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	public String getPassword() {
@@ -186,5 +218,14 @@ public class Member {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+
+	public Membership getMembership() {
+		return membership;
+	}
+
+	public void setMembership(Membership membership) {
+		this.membership = membership;
+	}
+	
 }
 
