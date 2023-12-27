@@ -33,11 +33,11 @@ public class Assignment {
 	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime dueDate;
 	
-	@Column(length = 1000)
-	private String description;
+	@Column(columnDefinition = "TEXT")
+    private String description;
 	
-	@Column
-	private Integer passScore;
+	@Column(nullable = false)
+    private Integer passingScore;
 	
 	@Column
 	private boolean isActive;
@@ -47,14 +47,14 @@ public class Assignment {
 	}
 
 	public Assignment(Long assignmentId, Content content, String assignmentTitle, LocalDateTime dueDate,
-			String description, Integer passScore, boolean isActive) {
+			String description, Integer passingScore, boolean isActive) {
 		super();
 		this.assignmentId = assignmentId;
 		this.content = content;
 		this.assignmentTitle = assignmentTitle;
 		this.dueDate = dueDate;
 		this.description = description;
-		this.passScore = passScore;
+		this.passingScore = passingScore;
 		this.isActive = isActive;
 	}
 
@@ -98,12 +98,12 @@ public class Assignment {
 		this.description = description;
 	}
 
-	public Integer getPassScore() {
-		return passScore;
+	public Integer getPassingScore() {
+		return passingScore;
 	}
 
-	public void setPassScore(Integer passScore) {
-		this.passScore = passScore;
+	public void setPassingScore(Integer passingScore) {
+		this.passingScore = passingScore;
 	}
 
 	public boolean isActive() {
