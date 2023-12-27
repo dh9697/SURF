@@ -1,6 +1,5 @@
 package project.lms.model;
 
-import java.security.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -76,12 +75,6 @@ public class Member {
 	@Column(nullable = false, length = 20)
 	private String phoneNum;
 	
-	@Column(nullable = false, length = 20)
-	private String emergencyNum;
-	
-	@Column(nullable = false, length = 255)
-	private String photo;
-	
 	@Column
 	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime joinDate;
@@ -97,9 +90,10 @@ public class Member {
 		super();
 	}
 
-	public Member(Long memberId, String loginId, Role role, String password, String name, LocalDate birthDate,
-			Gender gender, Nationality nationality, String email, String phoneNum, String emergencyNum, String photo,
-			LocalDateTime joinDate, boolean isActive, Membership membership) {
+	public Member(Long memberId, String loginId, Role role, String password, String name, 
+			LocalDate birthDate, Gender gender, Nationality nationality, String email, 
+			String phoneNum, LocalDateTime joinDate, boolean isActive, Membership membership) 
+	{
 		super();
 		this.memberId = memberId;
 		this.loginId = loginId;
@@ -111,8 +105,6 @@ public class Member {
 		this.nationality = nationality;
 		this.email = email;
 		this.phoneNum = phoneNum;
-		this.emergencyNum = emergencyNum;
-		this.photo = photo;
 		this.joinDate = joinDate;
 		this.isActive = isActive;
 		this.membership = membership;
@@ -196,22 +188,6 @@ public class Member {
 
 	public void setPhoneNum(String phoneNum) {
 		this.phoneNum = phoneNum;
-	}
-
-	public String getEmergencyNum() {
-		return emergencyNum;
-	}
-
-	public void setEmergencyNum(String emergencyNum) {
-		this.emergencyNum = emergencyNum;
-	}
-
-	public String getPhoto() {
-		return photo;
-	}
-
-	public void setPhoto(String photo) {
-		this.photo = photo;
 	}
 
 	public LocalDateTime getJoinDate() {

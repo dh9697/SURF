@@ -1,5 +1,5 @@
 package project.lms.model;
 
-public class Assigment {
+public class Administrator {
 
 }
