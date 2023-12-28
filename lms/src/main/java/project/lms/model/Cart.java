@@ -35,4 +35,58 @@ public class Cart {
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime createDate;
+
+	public Cart() {
+		super();
+	}
+
+	public Cart(Long cartId, Member member, Course course, Integer quanity, LocalDateTime createDate) {
+		super();
+		this.cartId = cartId;
+		this.member = member;
+		this.course = course;
+		this.quanity = quanity;
+		this.createDate = createDate;
+	}
+
+	public Long getCartId() {
+		return cartId;
+	}
+
+	public void setCartId(Long cartId) {
+		this.cartId = cartId;
+	}
+
+	public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
+	public Integer getQuanity() {
+		return quanity;
+	}
+
+	public void setQuanity(Integer quanity) {
+		this.quanity = quanity;
+	}
+
+	public LocalDateTime getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(LocalDateTime createDate) {
+		this.createDate = createDate;
+	}
+	
 }

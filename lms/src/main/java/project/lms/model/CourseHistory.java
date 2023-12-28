@@ -21,7 +21,7 @@ public class CourseHistory {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long courseHistoryId;
 	
-	@ManyToOne // 하나의 CourseHistory는 하나의 Member와 연관
+	@ManyToOne
 	@JoinColumn(name = "memberId")
 	private Member member;
 	
@@ -29,25 +29,20 @@ public class CourseHistory {
 	@JoinColumn(name = "courseId")
 	private Course course;
 	
-	@Column
+	@Column(name = "startDate")
 	@Temporal(TemporalType.TIMESTAMP)
-	private LocalDateTime attendanceTime; // 수강한 시간
-	
-	@Column(nullable = false)
-	private boolean completionStatus; // 수료 여부
+	private LocalDateTime startDate;
 
 	public CourseHistory() {
 		super();
 	}
 
-	public CourseHistory(Long courseHistoryId, Member member, Course course, LocalDateTime attendanceTime,
-			boolean completionStatus) {
+	public CourseHistory(Long courseHistoryId, Member member, Course course, LocalDateTime startDate) {
 		super();
 		this.courseHistoryId = courseHistoryId;
 		this.member = member;
 		this.course = course;
-		this.attendanceTime = attendanceTime;
-		this.completionStatus = completionStatus;
+		this.startDate = startDate;
 	}
 
 	public Long getCourseHistoryId() {
@@ -74,21 +69,12 @@ public class CourseHistory {
 		this.course = course;
 	}
 
-	public LocalDateTime getAttendanceTime() {
-		return attendanceTime;
+	public LocalDateTime getStartDate() {
+		return startDate;
 	}
 
-	public void setAttendanceTime(LocalDateTime attendanceTime) {
-		this.attendanceTime = attendanceTime;
+	public void setStartDate(LocalDateTime startDate) {
+		this.startDate = startDate;
 	}
-
-	public boolean isCompletionStatus() {
-		return completionStatus;
-	}
-
-	public void setCompletionStatus(boolean completionStatus) {
-		this.completionStatus = completionStatus;
-	}
-	
 	
 }

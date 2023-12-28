@@ -1,6 +1,6 @@
 package project.lms.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,7 +27,7 @@ public class Exam {
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Timestamp examDate;
+    private LocalDateTime examDate;
 
     @Column(nullable = false)
     private Integer numQuestions;
@@ -41,23 +41,12 @@ public class Exam {
     @Column(name = "examIsActive")
     private Boolean examIsActive;
 
-    @Column(name = "examSubmissionTime")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Timestamp examSubmissionTime;
+	public Exam() {
+		super();
+	}
 
-    @Column(name = "examCompletionStatus")
-    private Boolean examCompletionStatus;
-
-    @Column(name = "examScore")
-    private Integer examScore;
-
-    // 기본 생성자
-    public Exam() {
-    }
-
-	public Exam(Long examId, Content content, Timestamp examDate, Integer numQuestions, Integer durationMins,
-			Integer passingScore, Boolean examIsActive, Timestamp examSubmissionTime, Boolean examCompletionStatus,
-			Integer examScore) {
+	public Exam(Long examId, Content content, LocalDateTime examDate, Integer numQuestions, Integer durationMins,
+			Integer passingScore, Boolean examIsActive) {
 		super();
 		this.examId = examId;
 		this.content = content;
@@ -66,9 +55,6 @@ public class Exam {
 		this.durationMins = durationMins;
 		this.passingScore = passingScore;
 		this.examIsActive = examIsActive;
-		this.examSubmissionTime = examSubmissionTime;
-		this.examCompletionStatus = examCompletionStatus;
-		this.examScore = examScore;
 	}
 
 	public Long getExamId() {
@@ -87,11 +73,11 @@ public class Exam {
 		this.content = content;
 	}
 
-	public Timestamp getExamDate() {
+	public LocalDateTime getExamDate() {
 		return examDate;
 	}
 
-	public void setExamDate(Timestamp examDate) {
+	public void setExamDate(LocalDateTime examDate) {
 		this.examDate = examDate;
 	}
 
@@ -125,30 +111,6 @@ public class Exam {
 
 	public void setExamIsActive(Boolean examIsActive) {
 		this.examIsActive = examIsActive;
-	}
-
-	public Timestamp getExamSubmissionTime() {
-		return examSubmissionTime;
-	}
-
-	public void setExamSubmissionTime(Timestamp examSubmissionTime) {
-		this.examSubmissionTime = examSubmissionTime;
-	}
-
-	public Boolean getExamCompletionStatus() {
-		return examCompletionStatus;
-	}
-
-	public void setExamCompletionStatus(Boolean examCompletionStatus) {
-		this.examCompletionStatus = examCompletionStatus;
-	}
-
-	public Integer getExamScore() {
-		return examScore;
-	}
-
-	public void setExamScore(Integer examScore) {
-		this.examScore = examScore;
 	}
     
 }

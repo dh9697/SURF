@@ -34,7 +34,6 @@ public class MemberController {
 	
 	@PostMapping("/member")
 	public Member createMember(@RequestBody Member member) {
-		System.out.println("포스트 되긴 함?");
 		return memberService.createMember(member);
 	}
 	

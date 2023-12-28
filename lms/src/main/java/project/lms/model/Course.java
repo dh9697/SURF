@@ -1,5 +1,6 @@
 package project.lms.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,19 +35,19 @@ public class Course {
 	private Integer durationMins;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime startDate;
+    @Temporal(TemporalType.DATE)
+    private LocalDate startDate;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime endDate;
+    @Temporal(TemporalType.DATE)
+    private LocalDate endDate;
 
 	public Course() {
 		super();
 	}
 
 	public Course(Long courseId, String courseName, String description, Instructor instructor,
-			Integer durationMins, LocalDateTime startDate, LocalDateTime endDate) {
+			Integer durationMins, LocalDate startDate, LocalDate endDate) {
 		super();
 		this.courseId = courseId;
 		this.courseName = courseName;
@@ -97,19 +98,19 @@ public class Course {
 		this.durationMins = durationMins;
 	}
 
-	public LocalDateTime getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(LocalDateTime startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public LocalDateTime getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(LocalDateTime endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 	 
