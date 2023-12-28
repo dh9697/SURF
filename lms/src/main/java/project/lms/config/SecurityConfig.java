@@ -41,6 +41,8 @@ public class SecurityConfig {
                 // RestAPI 보안 여부 설정
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers("/test/member").permitAll()
+                        .requestMatchers("/test/course").permitAll()
+                        .requestMatchers("/test/coursehistory").permitAll()
                         // Token이 없다면 401 Unauthorized Error
                         // Postman에서 Auth의 Type을 Bearer Token으로 바꾸고 Token값을 넣어주면 볼 수 있음
                         // .requestMatchers("/api/board").permitAll()

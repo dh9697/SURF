@@ -27,10 +27,6 @@ public class Course {
 	@Column(nullable = true, length = 500)
 	private String description;
 	
-	@ManyToOne
-	@JoinColumn(name = "instructorId", nullable = false)
-	private Instructor instructor;
-	
 	@Column(nullable = false)	    
 	private Integer durationMins;
 
@@ -46,13 +42,12 @@ public class Course {
 		super();
 	}
 
-	public Course(Long courseId, String courseName, String description, Instructor instructor,
+	public Course(Long courseId, String courseName, String description,
 			Integer durationMins, LocalDate startDate, LocalDate endDate) {
 		super();
 		this.courseId = courseId;
 		this.courseName = courseName;
 		this.description = description;
-		this.instructor = instructor;
 		this.durationMins = durationMins;
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -80,14 +75,6 @@ public class Course {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Instructor getInstructor() {
-		return instructor;
-	}
-
-	public void setInstructor(Instructor instructor) {
-		this.instructor = instructor;
 	}
 
 	public Integer getDurationMins() {

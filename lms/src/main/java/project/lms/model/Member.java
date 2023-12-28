@@ -81,10 +81,6 @@ public class Member {
 	
 	@Column
 	private boolean isActive;
-	
-	@OneToOne
-	@JoinColumn(name = "membershipId", referencedColumnName = "membershipId")
-	private Membership membership;
 
 	public Member() {
 		super();
@@ -92,7 +88,7 @@ public class Member {
 
 	public Member(Long memberId, String loginId, Role role, String password, String name, 
 			LocalDate birthDate, Gender gender, Nationality nationality, String email, 
-			String phoneNum, LocalDateTime joinDate, boolean isActive, Membership membership) 
+			String phoneNum, LocalDateTime joinDate, boolean isActive) 
 	{
 		super();
 		this.memberId = memberId;
@@ -107,7 +103,6 @@ public class Member {
 		this.phoneNum = phoneNum;
 		this.joinDate = joinDate;
 		this.isActive = isActive;
-		this.membership = membership;
 	}
 
 	public Long getMemberId() {
@@ -205,15 +200,6 @@ public class Member {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-
-	public Membership getMembership() {
-		return membership;
-	}
-
-	public void setMembership(Membership membership) {
-		this.membership = membership;
-	}
-	
 	
 }
 
