@@ -32,27 +32,19 @@ public class Content {
     @Column(name = "contentData", nullable = false)
     private byte[] contentData;
 
-    @ManyToOne
-    @JoinColumn(name = "contentCategoryID", nullable = false)
-    private ContentCategory contentCategory;
-
     // 기본 생성자
 	public Content() {
 		super();
 	}
 
-	// 전체 생성자
-	public Content(Long contentID, Course course, String contentType, byte[] contentData,
-			ContentCategory contentCategory) {
+	public Content(Long contentID, Course course, String contentType, byte[] contentData) {
 		super();
 		this.contentID = contentID;
 		this.course = course;
 		this.contentType = contentType;
 		this.contentData = contentData;
-		this.contentCategory = contentCategory;
 	}
 
-	// Getters and Setters
 	public Long getContentID() {
 		return contentID;
 	}
@@ -84,14 +76,5 @@ public class Content {
 	public void setContentData(byte[] contentData) {
 		this.contentData = contentData;
 	}
-
-	public ContentCategory getContentCategory() {
-		return contentCategory;
-	}
-
-	public void setContentCategory(ContentCategory contentCategory) {
-		this.contentCategory = contentCategory;
-	}
-
     
 }

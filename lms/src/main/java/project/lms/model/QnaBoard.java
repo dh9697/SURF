@@ -1,6 +1,6 @@
 package project.lms.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "qnaBoard")
@@ -37,14 +39,15 @@ public class QnaBoard {
     private String content;
     
     @Column(name = "createdAt", nullable = false)
-    private Timestamp createdAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime createdAt;
 
 	public QnaBoard() {
 		super();
 	}
 
 	public QnaBoard(Long qnaBoardId, Course course, Member member, String title, String description, String content,
-			Timestamp createdAt) {
+			LocalDateTime createdAt) {
 		super();
 		this.qnaBoardId = qnaBoardId;
 		this.course = course;
@@ -103,11 +106,11 @@ public class QnaBoard {
 		this.content = content;
 	}
 
-	public Timestamp getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
     
