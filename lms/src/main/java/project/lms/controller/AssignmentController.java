@@ -11,31 +11,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import project.lms.model.Course;
-import project.lms.service.CourseService;
+import project.lms.model.Assignment;
+import project.lms.service.AssignmentService;
 
 @RestController
 @RequestMapping("/test")
 @CrossOrigin(origins="http://localhost:3000",
 methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
-public class CourseController {
+public class AssignmentController {
 
-	private final CourseService courseService;
-	
+	private final AssignmentService assignmentService;
+
 	@Autowired
-	public CourseController(CourseService courseService) {
+	public AssignmentController(AssignmentService assignmentService) {
 		super();
-		this.courseService = courseService;
+		this.assignmentService = assignmentService;
 	}
 	
-	@GetMapping("/course")
-	public List<Course> getAllCourses(){
-		return courseService.getAllCourses();
+	@GetMapping("/assignment")
+	public List<Assignment> getAllAssignments(){
+		return assignmentService.getAllAssignments();
 	}
 	
-	@PostMapping("/course")
-	public Course createCourse(@RequestBody Course course) {
-		return courseService.createCourse(course);
+	@PostMapping("/assignment")
+	public Assignment createAssignment(@RequestBody Assignment assignment) {
+		return assignmentService.createAssignment(assignment);
 	}
-	
 }

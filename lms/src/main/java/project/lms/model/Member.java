@@ -35,14 +35,6 @@ public class Member {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long memberId;
 	
-//	@ManyToMany
-//	@JoinTable(
-//		name = "course_history",
-//		joinColumns = @JoinColumn(name = "memberId"),
-//		inverseJoinColumns = @JoinColumn(name = "courseId")
-//	)
-//	private List<Course> courses;
-	
 	@Column(nullable = false, length = 50, updatable = false)
 	private String loginId;
 	

@@ -2,7 +2,6 @@ package project.lms.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,31 +10,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import project.lms.model.Course;
-import project.lms.service.CourseService;
+import project.lms.model.Content;
+import project.lms.service.ContentService;
 
 @RestController
 @RequestMapping("/test")
 @CrossOrigin(origins="http://localhost:3000",
 methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
-public class CourseController {
+public class ContentController {
 
-	private final CourseService courseService;
-	
-	@Autowired
-	public CourseController(CourseService courseService) {
+	private final ContentService contentService;
+
+	public ContentController(ContentService contentService) {
 		super();
-		this.courseService = courseService;
+		this.contentService = contentService;
 	}
 	
-	@GetMapping("/course")
-	public List<Course> getAllCourses(){
-		return courseService.getAllCourses();
+	@GetMapping("/content")
+	public List<Content> getAllContents(){
+		return contentService.getAllContents();
 	}
 	
-	@PostMapping("/course")
-	public Course createCourse(@RequestBody Course course) {
-		return courseService.createCourse(course);
+	@PostMapping("/content")
+	public Content createContent(@RequestBody Content content) {
+		return contentService.createContent(content);
 	}
-	
 }

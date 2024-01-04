@@ -43,6 +43,10 @@ public class SecurityConfig {
                         .requestMatchers("/test/member").permitAll()
                         .requestMatchers("/test/course").permitAll()
                         .requestMatchers("/test/coursehistory").permitAll()
+                        .requestMatchers("/test/content").permitAll()
+                        .requestMatchers("/test/assignment").permitAll()
+                        .requestMatchers("/test/assignmenthistory").permitAll()
+                        .requestMatchers("/test/assignmentresult").permitAll()
                         // Token이 없다면 401 Unauthorized Error
                         // Postman에서 Auth의 Type을 Bearer Token으로 바꾸고 Token값을 넣어주면 볼 수 있음
                         // .requestMatchers("/api/board").permitAll()
