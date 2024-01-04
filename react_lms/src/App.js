@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import { Lms } from "./components/Lms";
+import { Surf } from "./components/Surf";
 
 const GlobalStyle = createGlobalStyle`
 *{
@@ -17,7 +17,7 @@ export default function App() {
   return (
     <>
       <GlobalStyle />
-      <Lms />
+      <Surf />
     </>
   );
 }
