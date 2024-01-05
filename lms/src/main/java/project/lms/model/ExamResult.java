@@ -36,30 +36,26 @@ public class ExamResult {
 	private String wrongAnsExpl;
 	
 	@Column
-	private String correctAnswer;
-	
-	@Column
 	private String submittedAnswer;
 	
 	@Column
 	@Temporal(TemporalType.TIMESTAMP)
-	private LocalDateTime subminssionTime;
+	private LocalDateTime submissionTime;
 
 	public ExamResult() {
 		super();
 	}
 
 	public ExamResult(Long examResultId, Member member, Exam exam, boolean isCorrect, String wrongAnsExpl,
-			String correctAnswer, String submittedAnswer, LocalDateTime subminssionTime) {
+			String submittedAnswer, LocalDateTime submissionTime) {
 		super();
 		this.examResultId = examResultId;
 		this.member = member;
 		this.exam = exam;
 		this.isCorrect = isCorrect;
 		this.wrongAnsExpl = wrongAnsExpl;
-		this.correctAnswer = correctAnswer;
 		this.submittedAnswer = submittedAnswer;
-		this.subminssionTime = subminssionTime;
+		this.submissionTime = submissionTime;
 	}
 
 	public Long getExamResultId() {
@@ -102,14 +98,6 @@ public class ExamResult {
 		this.wrongAnsExpl = wrongAnsExpl;
 	}
 
-	public String getCorrectAnswer() {
-		return correctAnswer;
-	}
-
-	public void setCorrectAnswer(String correctAnswer) {
-		this.correctAnswer = correctAnswer;
-	}
-
 	public String getSubmittedAnswer() {
 		return submittedAnswer;
 	}
@@ -118,12 +106,12 @@ public class ExamResult {
 		this.submittedAnswer = submittedAnswer;
 	}
 
-	public LocalDateTime getSubminssionTime() {
-		return subminssionTime;
+	public LocalDateTime getSubmissionTime() {
+		return submissionTime;
 	}
 
-	public void setSubminssionTime(LocalDateTime subminssionTime) {
-		this.subminssionTime = subminssionTime;
+	public void setSubmissionTime(LocalDateTime submissionTime) {
+		this.submissionTime = submissionTime;
 	}
 	
 }

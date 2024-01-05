@@ -39,9 +39,6 @@ public class Benefit {
 	private String couponCode;
 	
 	@Column
-	private int completionCount;
-	
-	@Column
 	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime expirationDate;
 	
@@ -53,14 +50,13 @@ public class Benefit {
 	}
 
 	public Benefit(Long benefitId, Course course, String description, Completion completion, String couponCode,
-			int completionCount, LocalDateTime expirationDate, boolean isActive) {
+		 LocalDateTime expirationDate, boolean isActive) {
 		super();
 		this.benefitId = benefitId;
 		this.course = course;
 		this.description = description;
 		this.completion = completion;
 		this.couponCode = couponCode;
-		this.completionCount = completionCount;
 		this.expirationDate = expirationDate;
 		this.isActive = isActive;
 	}
@@ -103,14 +99,6 @@ public class Benefit {
 
 	public void setCouponCode(String couponCode) {
 		this.couponCode = couponCode;
-	}
-
-	public int getCompletionCount() {
-		return completionCount;
-	}
-
-	public void setCompletionCount(int completionCount) {
-		this.completionCount = completionCount;
 	}
 
 	public LocalDateTime getExpirationDate() {

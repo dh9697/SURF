@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import github_png from "./image/github_png.png";
+import google from "./image/google.png";
+import naver from "./image/naver.png";
+import kakao from "./image/kakao.png";
 
 const Container = styled.div`
   width: 100vw;
@@ -63,11 +65,21 @@ const Input = styled.input`
 const LoginSolution = styled.p``;
 const LoginBtn = styled.button``;
 const JoinBtn = styled.button``;
-const BtnContainer = styled.div``;
+const BtnContainer = styled.div`
+  width: 300px;
+  height: 60px;
+`;
 const ImgBtn = styled.button`
-  background-image: src =("github_png");
-  width: 30px;
-  height: 30px;
+  background-image: url(${(props) => props.imgUrl});
+  background-size: cover; // 이미지 크기를 버튼 크기에 맞게 조절 (선택 사항)
+  width: 70px;
+  height: 70px;
+  background-color: transparent; //버튼 색상 변경
+  background-repeat: no-repeat; // 이미지 반복 방지
+  background-position: center; // 이미지 위치 중앙 정렬 (선택 사항)
+  border: none; // 기본 버튼 스타일링
+  cursor: pointer; // 마우스 오버 시 포인터 커서 스타일
+  border-radius: 100px;
 `;
 
 export function Login() {
@@ -95,7 +107,9 @@ export function Login() {
             <div className="divider-text">OR</div>
           </div>
           <BtnContainer>
-            <ImgBtn src={github_png} alt="githubLogin" />
+            <ImgBtn imgUrl={google} alt="gogleLogin" />
+            <ImgBtn imgUrl={naver} alt="naverLogin" />
+            <ImgBtn imgUrl={kakao} alt="kakaoLogin" />
           </BtnContainer>
         </LoginContainer>
       </Container>

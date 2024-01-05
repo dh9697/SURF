@@ -30,6 +30,9 @@ public class Exam {
     private LocalDateTime examDate;
 
     @Column(nullable = false)
+    private String CorrectAns;
+    
+    @Column(nullable = false)
     private Integer numQuestions;
 
     @Column(nullable = false)
@@ -45,12 +48,13 @@ public class Exam {
 		super();
 	}
 
-	public Exam(Long examId, Content content, LocalDateTime examDate, Integer numQuestions, Integer durationMins,
-			Integer passingScore, Boolean examIsActive) {
+	public Exam(Long examId, Content content, LocalDateTime examDate, String correctAns, Integer numQuestions,
+			Integer durationMins, Integer passingScore, Boolean examIsActive) {
 		super();
 		this.examId = examId;
 		this.content = content;
 		this.examDate = examDate;
+		CorrectAns = correctAns;
 		this.numQuestions = numQuestions;
 		this.durationMins = durationMins;
 		this.passingScore = passingScore;
@@ -79,6 +83,14 @@ public class Exam {
 
 	public void setExamDate(LocalDateTime examDate) {
 		this.examDate = examDate;
+	}
+
+	public String getCorrectAns() {
+		return CorrectAns;
+	}
+
+	public void setCorrectAns(String correctAns) {
+		CorrectAns = correctAns;
 	}
 
 	public Integer getNumQuestions() {
@@ -112,5 +124,5 @@ public class Exam {
 	public void setExamIsActive(Boolean examIsActive) {
 		this.examIsActive = examIsActive;
 	}
-    
+	
 }

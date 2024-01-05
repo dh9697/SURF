@@ -31,22 +31,23 @@ public class LoginHistory {
 
     @Column(nullable = false, length = 50)
     private String ipAddress;
+    
+    @Column(nullable = false)
+    private boolean status;
 
-    // 기본 생성자
-    public LoginHistory() {
-        super();
-    }
+	public LoginHistory() {
+		super();
+	}
 
-    // 전체 생성자
-	public LoginHistory(Long logId, Member member, LocalDateTime loginTime, String ipAddress) {
+	public LoginHistory(Long logId, Member member, LocalDateTime loginTime, String ipAddress, boolean status) {
 		super();
 		this.logId = logId;
 		this.member = member;
 		this.loginTime = loginTime;
 		this.ipAddress = ipAddress;
+		this.status = status;
 	}
 
-    // Getters and Setters
 	public Long getLogId() {
 		return logId;
 	}
@@ -77,6 +78,14 @@ public class LoginHistory {
 
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
-	}	
+	}
 
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+    
 }

@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -18,6 +20,10 @@ public class Course {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long courseId;
 	
+	@ManyToOne
+    @JoinColumn(name = "subjectId")
+    private Subject subject;
+	
 	@Column(nullable = false, length = 150)
 	private String courseName;
 	
@@ -26,6 +32,12 @@ public class Course {
 	
 	@Column(nullable = false)	    
 	private Integer durationMins;
+	
+	@Column(nullable = false)
+	private String courseThumbnail;
+	    
+	@Column(nullable = false)
+	private String contentLevel;
 
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
@@ -35,19 +47,26 @@ public class Course {
     @Temporal(TemporalType.DATE)
     private LocalDate endDate;
 
+    @Column(name = "price", nullable = false)
+    private Integer price;
+    
 	public Course() {
 		super();
 	}
 
-	public Course(Long courseId, String courseName, String description,
-			Integer durationMins, LocalDate startDate, LocalDate endDate) {
+	public Course(Long courseId, Subject subject, String courseName, String description, Integer durationMins,
+			String courseThumbnail, String contentLevel, LocalDate startDate, LocalDate endDate, Integer price) {
 		super();
 		this.courseId = courseId;
+		this.subject = subject;
 		this.courseName = courseName;
 		this.description = description;
 		this.durationMins = durationMins;
+		this.courseThumbnail = courseThumbnail;
+		this.contentLevel = contentLevel;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.price = price;
 	}
 
 	public Long getCourseId() {
@@ -56,6 +75,14 @@ public class Course {
 
 	public void setCourseId(Long courseId) {
 		this.courseId = courseId;
+	}
+
+	public Subject getSubject() {
+		return subject;
+	}
+
+	public void setSubject(Subject subject) {
+		this.subject = subject;
 	}
 
 	public String getCourseName() {
@@ -82,6 +109,22 @@ public class Course {
 		this.durationMins = durationMins;
 	}
 
+	public String getCourseThumbnail() {
+		return courseThumbnail;
+	}
+
+	public void setCourseThumbnail(String courseThumbnail) {
+		this.courseThumbnail = courseThumbnail;
+	}
+
+	public String getContentLevel() {
+		return contentLevel;
+	}
+
+	public void setContentLevel(String contentLevel) {
+		this.contentLevel = contentLevel;
+	}
+
 	public LocalDate getStartDate() {
 		return startDate;
 	}
@@ -97,5 +140,12 @@ public class Course {
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
-	 
+
+	public Integer getPrice() {
+		return price;
+	}
+
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
 }

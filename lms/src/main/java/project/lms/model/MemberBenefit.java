@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "memberBenefits")
@@ -27,10 +29,11 @@ public class MemberBenefit {
 	@JoinColumn(name = "benefitId")
 	private Benefit benefit;
 	
-	@Column
+	@Column(nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime dateReceived;
 	
-	@Column
+	@Column(nullable = false)
 	private boolean isUsed;
 
 	public MemberBenefit() {

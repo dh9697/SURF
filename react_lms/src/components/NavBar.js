@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { NavLink, Outlet } from "react-router-dom";
+import surfLogo from "./image/surf_logo.png";
+
 const Container = styled.div`
   width: 100vw;
   height: 70px;
@@ -17,13 +19,16 @@ const Section = styled.div`
   gap: 32px;
 `;
 const Logo = styled(NavLink)`
-  width: 132px;
+  width: 142px;
   height: 64px;
-  background-color: gold;
   margin-left: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 const LogoImg = styled.img`
   width: 100%;
+  object-fit: cover;
 `;
 const NavSection = styled.div`
   width: 100%;
@@ -39,6 +44,7 @@ const NavSectionItem = styled(NavLink)`
   color: #6b7280;
   font-size: 14px;
   font-weight: 900;
+  margin-top: 0.7%;
   &.join {
     background-color: #3182f6;
     border-radius: 5px;
@@ -51,7 +57,9 @@ export function NavBar() {
     <>
       <Container>
         <Section>
-          <Logo to={"/"}>{/* <LogoImg src={} alt="Logo Image" /> */}</Logo>
+          <Logo to={"/"}>
+            <LogoImg src={surfLogo} alt="Logo Image" />
+          </Logo>
           <NavSection>
             <NavSectionItem className="about" to={"/about"}>
               About

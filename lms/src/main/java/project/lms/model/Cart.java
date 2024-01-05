@@ -30,7 +30,10 @@ public class Cart {
 	private Course course;
 	
 	@Column(nullable = false)
-	private Integer quanity;
+	private Integer totalQuanity;
+	
+	@Column(nullable = false)
+	private Integer totalPrice;
 	
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
@@ -40,12 +43,14 @@ public class Cart {
 		super();
 	}
 
-	public Cart(Long cartId, Member member, Course course, Integer quanity, LocalDateTime createDate) {
+	public Cart(Long cartId, Member member, Course course, Integer totalQuanity, Integer totalPrice,
+			LocalDateTime createDate) {
 		super();
 		this.cartId = cartId;
 		this.member = member;
 		this.course = course;
-		this.quanity = quanity;
+		this.totalQuanity = totalQuanity;
+		this.totalPrice = totalPrice;
 		this.createDate = createDate;
 	}
 
@@ -73,12 +78,20 @@ public class Cart {
 		this.course = course;
 	}
 
-	public Integer getQuanity() {
-		return quanity;
+	public Integer getTotalQuanity() {
+		return totalQuanity;
 	}
 
-	public void setQuanity(Integer quanity) {
-		this.quanity = quanity;
+	public void setTotalQuanity(Integer totalQuanity) {
+		this.totalQuanity = totalQuanity;
+	}
+
+	public Integer getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(Integer totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 
 	public LocalDateTime getCreateDate() {

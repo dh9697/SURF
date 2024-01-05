@@ -22,28 +22,30 @@ public class Content {
     @JoinColumn(name = "courseId", nullable = false)
     private Course course;
 
+    @Column(name = "contentTitle", length = 30, nullable = false)
+    private String contentTitle;
+    
+    @Column(name = "description", length = 100, nullable = false)
+    private String description;
+    
     @Column(name = "contentType", length = 50, nullable = false)
     private String contentType;
 
-//    @Lob
-    // @Lob은 Java Persistence API (JPA)에서 Large Object를 나타내는 어노테이션.
-    // Large Object (LOB)는 데이터베이스에 대용량의 데이터를 저장할 때 사용.
-    // ex) 텍스트나 이미지, 오디오, 비디오 등의 큰 데이터를 저장할 때 @Lob 어노테이션을 사용할 수 있음.
-//    @Column(name = "contentData", nullable = false)
-//    private byte[] contentData;
-    
+    // @Lob 으로 저장할 건지
     @Column
     private String ContentData;
 
-    // 기본 생성자
 	public Content() {
 		super();
 	}
 
-	public Content(Long contentId, Course course, String contentType, String contentData) {
+	public Content(Long contentId, Course course, String contentTitle, String description, String contentType,
+			String contentData) {
 		super();
 		this.contentId = contentId;
 		this.course = course;
+		this.contentTitle = contentTitle;
+		this.description = description;
 		this.contentType = contentType;
 		ContentData = contentData;
 	}
@@ -64,6 +66,22 @@ public class Content {
 		this.course = course;
 	}
 
+	public String getContentTitle() {
+		return contentTitle;
+	}
+
+	public void setContentTitle(String contentTitle) {
+		this.contentTitle = contentTitle;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public String getContentType() {
 		return contentType;
 	}
@@ -79,5 +97,5 @@ public class Content {
 	public void setContentData(String contentData) {
 		ContentData = contentData;
 	}
-	
+    
 }

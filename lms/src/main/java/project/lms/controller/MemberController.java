@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import project.lms.model.Member;
 import project.lms.service.MemberService;
+import project.lms.service.impl.MemberServiceImpl;
 
 @RestController
 @RequestMapping("/test")
@@ -20,22 +21,7 @@ import project.lms.service.MemberService;
 methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
 public class MemberController {
 
-	private final MemberService memberService;
-	
-	@Autowired
-	public MemberController(MemberService memberService) {
-		this.memberService = memberService;
-	}
-	
-	@GetMapping("/member")
-	public List<Member> getAllMembers(){
-		return memberService.getAllMembers();
-	}
-	
-	@PostMapping("/member")
-	public Member createMember(@RequestBody Member member) {
-		return memberService.createMember(member);
-	}
+
 	
 	
 }

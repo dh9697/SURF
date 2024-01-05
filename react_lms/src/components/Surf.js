@@ -6,6 +6,8 @@ import { LevelTest } from "./LevelTest";
 import { Community } from "./Community";
 import { Event } from "./Event";
 import { Login } from "./Login";
+import { Register } from "./Register";
+import { Footer } from "./Footer";
 
 export function Surf() {
   return (
@@ -20,8 +22,11 @@ export function Surf() {
             <Route path="/community" element={<Community />} />
             <Route path="/event" element={<Event />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/footer" element={<Footer />} />
           </Route>
         </Routes>
+        {/* <Footer /> */}
       </BrowserRouter>
     </>
   );

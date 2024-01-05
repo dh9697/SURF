@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table (name = "books")
@@ -33,6 +35,7 @@ public class Book {
 	private String publisher;
 	
 	@Column
+	@Temporal(TemporalType.DATE)
 	private Date publicationDate;
 	
 	@Column
