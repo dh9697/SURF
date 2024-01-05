@@ -26,17 +26,17 @@ public class MemberDto {
 	@NotBlank
 	@Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$",
 		message = "날짜형식(YYYY-MM-DD)을 확인해주세요.")
-	private LocalDate birthDate;
+	private String birthDate;
 
 	@NotBlank
 	@Pattern(regexp = "^(MAN|WOMAN)$",
 		message = "MAN이나 WOMAN 중 하나를 입력해주세요.")
-	private Gender gender;
+	private String gender;
 
 	@NotBlank
 	@Pattern(regexp = "^(Domestic|Foreigner)$",
 		message = "Domestic이나 Foreigner 중 하나를 입력해주세요.")
-	private Nationality nationality;
+	private String nationality;
 
 	@NotBlank
 	@Email
@@ -53,9 +53,9 @@ public class MemberDto {
 	public MemberDto(@NotBlank String loginId,
 			@NotBlank @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&*!])[A-Za-z\\d@#$%^&*!]{8,20}$", message = "영문, 숫자, 특수문자를 포함하여 8~20자리로 입력해주세요.") String password,
 			@NotBlank String name,
-			@NotBlank @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$", message = "날짜형식(YYYY-MM-DD)을 확인해주세요.") LocalDate birthDate,
-			@NotBlank @Pattern(regexp = "^(MAN|WOMAN)$", message = "MAN이나 WOMAN 중 하나를 입력해주세요.") Gender gender,
-			@NotBlank @Pattern(regexp = "^(Domestic|Foreigner)$", message = "Domestic이나 Foreigner 중 하나를 입력해주세요.") Nationality nationality,
+			@NotBlank @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$", message = "날짜형식(YYYY-MM-DD)을 확인해주세요.") String birthDate,
+			@NotBlank @Pattern(regexp = "^(MAN|WOMAN)$", message = "MAN이나 WOMAN 중 하나를 입력해주세요.") String gender,
+			@NotBlank @Pattern(regexp = "^(Domestic|Foreigner)$", message = "Domestic이나 Foreigner 중 하나를 입력해주세요.") String nationality,
 			@NotBlank @Email String email,
 			@NotBlank @Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$", message = "올바른 전화번호 형식이 아닙니다.") String phoneNum) {
 		super();
@@ -93,27 +93,27 @@ public class MemberDto {
 		this.name = name;
 	}
 
-	public LocalDate getBirthDate() {
+	public String getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(LocalDate birthDate) {
+	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
 
-	public Gender getGender() {
+	public String getGender() {
 		return gender;
 	}
 
-	public void setGender(Gender gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 
-	public Nationality getNationality() {
+	public String getNationality() {
 		return nationality;
 	}
 
-	public void setNationality(Nationality nationality) {
+	public void setNationality(String nationality) {
 		this.nationality = nationality;
 	}
 

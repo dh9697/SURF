@@ -1,22 +1,22 @@
 package project.lms.exception;
 
-public class InvalidRequestException {
+public class InvalidRequestException extends RuntimeException {
 	
-	private String filedName;
+	private String fieldName;
 	private String message;
 	
-	public InvalidRequestException(String filedName, String message) {
+	public InvalidRequestException(String fieldName, String message) {
 		super();
-		this.filedName = filedName;
+		this.fieldName = fieldName;
 		this.message = message;
 	}
 
-	public String getFiledName() {
-		return filedName;
+	public String getFieldName() {
+		return fieldName;
 	}
 
-	public void setFiledName(String filedName) {
-		this.filedName = filedName;
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
 	}
 
 	public String getMessage() {
@@ -26,5 +26,6 @@ public class InvalidRequestException {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+	
 	
 }

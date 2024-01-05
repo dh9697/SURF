@@ -2,6 +2,8 @@ import styled from "styled-components";
 import google from "./image/google.png";
 import naver from "./image/naver.png";
 import kakao from "./image/kakao.png";
+import { useState } from "react";
+import { apiLoginByAxiosPost } from "./RestApi";
 
 const Container = styled.div`
   width: 100vw;
@@ -83,6 +85,20 @@ const ImgBtn = styled.button`
 `;
 
 export function Login() {
+  const [loginId, setLoginId] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function onLogin() {
+    try {
+      const response = await apiLoginByAxiosPost(loginId, password);
+      if (response.data.resultCode === "SUCCESS") {
+        console.log(response.data.data);
+      }
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  }
+
   // const [showPassword, setShowPassword] = useState(false);
   // const togglePasswordVisible = () => {
   //   setShowPassword(!showPassword);
@@ -93,14 +109,22 @@ export function Login() {
       <Container>
         <LoginContainer>
           <Title>Log in to Surf</Title>
-          <Input type="text" placeholder="아이디 입력" name="loginId"></Input>
+          <Input
+            type="text"
+            placeholder="아이디 입력"
+            name="loginId"
+            value={loginId}
+            onChange={(e) => setLoginId(e.target.value)}
+          ></Input>
           <Input
             type="text"
             placeholder="비밀번호 입력"
             name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           ></Input>
           <LoginSolution>로그인 문제 해결</LoginSolution>
-          <LoginBtn>로그인</LoginBtn>
+          <LoginBtn onClick={onLogin}>로그인</LoginBtn>
           <JoinBtn>회원가입</JoinBtn>
           <div className="divider-container">
             <div className="divider" />

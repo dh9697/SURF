@@ -1,12 +1,12 @@
 package project.lms.service;
 
-import project.lms.dto.BaseResponse;
+import project.lms.dto.ResponseDto;
 import project.lms.dto.MemberDto;
 import project.lms.dto.MemberLoginDto;
 
 public interface MemberService {
 	
-	public BaseResponse<Void> signUp(MemberDto memberDto);
-	public BaseResponse<Void> login(MemberLoginDto memberLoginDto);
+	public ResponseDto<Void> signUp(MemberDto memberDto);
+	public ResponseDto<Void> login(MemberLoginDto memberLoginDto);
 	
 }
