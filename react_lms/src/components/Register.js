@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { apiSignupByAxiosPost } from "./RestApi";
 
 const Container = styled.div`
   width: 100vw;
@@ -77,6 +78,37 @@ export function Register() {
     setIsChecked(!isChecked);
   };
 
+  const [loginId, setLoginId] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const [gender, setGender] = useState("");
+  const [nationality, setNationality] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNum, setPhoneNum] = useState("");
+
+  const handleRegister = async () => {
+    try {
+      const response = await apiSignupByAxiosPost(
+        loginId,
+        password,
+        name,
+        birthDate,
+        gender,
+        nationality,
+        email,
+        phoneNum
+      );
+      if (response.data.resultCode === "SUCCESS") {
+        window.alert("회원가입이 성공적으로 처리되었습니다.");
+      } else {
+        console.log(response.data.message);
+      }
+    } catch (err) {
+      console.log("회원가입 오류", err);
+    }
+  };
+
   return (
     <>
       <Container>
@@ -88,6 +120,8 @@ export function Register() {
               type="text"
               placeholder="하품 소리 개치고 싶다"
               name="loginId"
+              value={loginId}
+              onChange={(e) => setLoginId(e.target.value)}
             ></Input>
           </InputBox>
           <InputBox>
@@ -96,6 +130,8 @@ export function Register() {
               type="text"
               placeholder="영문, 숫자, 특수문자 모두 포함 8~20자"
               name="passwordId"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             ></Input>
           </InputBox>
           <InputBox>
@@ -104,6 +140,8 @@ export function Register() {
               type="text"
               placeholder="실명을 입력하세요"
               name="nameId"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             ></Input>
           </InputBox>
           <InputBox>
@@ -112,6 +150,8 @@ export function Register() {
               type="text"
               placeholder="ex) 19980105"
               name="birthId"
+              value={birthDate}
+              onChange={(e) => setBirthDate(e.target.value)}
             ></Input>
           </InputBox>
           <InputBox>
@@ -120,6 +160,15 @@ export function Register() {
               type="text"
               placeholder="설명을 뭐라고 적어야 할까요?"
               name="genderId"
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+            ></Input>
+            <Input
+              type="text"
+              placeholder="설명을 뭐라고 적어야 할까요?"
+              name="nationalityId"
+              value={nationality}
+              onChange={(e) => setNationality(e.target.value)}
             ></Input>
           </InputBox>
           <InputBox>
@@ -128,6 +177,8 @@ export function Register() {
               type="text"
               placeholder="(-) 제외한 번호를 입력해 주세요"
               name="phoneNumId"
+              value={phoneNum}
+              onChange={(e) => setPhoneNum(e.target.value)}
             ></Input>
           </InputBox>
           <InputBox>
@@ -136,6 +187,8 @@ export function Register() {
               type="text"
               placeholder="정확히 입력해 주세요"
               name="emailId"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             ></Input>
           </InputBox>
           <CheckBox>
@@ -155,7 +208,7 @@ export function Register() {
             <label>(선택) 이메일 마케팅 정책에 동의합니다.</label>
           </CheckBox>
 
-          <RegiserBtn>회원가입</RegiserBtn>
+          <RegiserBtn onClick={handleRegister}>회원가입</RegiserBtn>
         </RegisterContainer>
       </Container>
     </>

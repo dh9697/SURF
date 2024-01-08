@@ -2,6 +2,7 @@ package project.lms.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +12,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -35,12 +38,14 @@ public class Member {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long memberId;
 	
+	@ManyToMany
+	@JoinTable(name = "member_authority",
+	joinColumns = {@JoinColumn(name = "memberId", referencedColumnName = "memberId")},
+	inverseJoinColumns = {@JoinColumn(name = "authorityName", referencedColumnName = "authorityName")})
+	private Set<Authority> authorities;
+	
 	@Column(nullable = false, length = 50, updatable = false)
 	private String loginId;
-	
-	@ManyToOne
-	@JoinColumn(name = "roleId")
-	private Role role;
 	
 	@Column(nullable = false, length = 255)
 	private String password;
@@ -77,14 +82,13 @@ public class Member {
 		super();
 	}
 
-	public Member(Long memberId, String loginId, Role role, String password, String name, 
-			LocalDate birthDate, Gender gender, Nationality nationality, String email, 
-			String phoneNum, LocalDateTime joinDate, boolean isActive) 
-	{
+	public Member(Long memberId, Set<Authority> authorities, String loginId, String password, String name,
+			LocalDate birthDate, Gender gender, Nationality nationality, String email, String phoneNum,
+			LocalDateTime joinDate, boolean isActive) {
 		super();
 		this.memberId = memberId;
+		this.authorities = authorities;
 		this.loginId = loginId;
-		this.role = role;
 		this.password = password;
 		this.name = name;
 		this.birthDate = birthDate;
@@ -104,20 +108,20 @@ public class Member {
 		this.memberId = memberId;
 	}
 
+	public Set<Authority> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(Set<Authority> authorities) {
+		this.authorities = authorities;
+	}
+
 	public String getLoginId() {
 		return loginId;
 	}
 
 	public void setLoginId(String loginId) {
 		this.loginId = loginId;
-	}
-
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
 	}
 
 	public String getPassword() {

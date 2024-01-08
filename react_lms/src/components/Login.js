@@ -2,12 +2,13 @@ import styled from "styled-components";
 import google from "./image/google.png";
 import naver from "./image/naver.png";
 import kakao from "./image/kakao.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { apiLoginByAxiosPost } from "./RestApi";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 const Container = styled.div`
   width: 100vw;
-  height: 80vh;
   background-color: transparent;
   display: flex;
   align-items: center;
@@ -66,39 +67,38 @@ const Input = styled.input`
 
 const LoginSolution = styled.p``;
 const LoginBtn = styled.button``;
-const JoinBtn = styled.button``;
+const JoinBtn = styled(NavLink)`
+  text-decoration: none;
+`;
 const BtnContainer = styled.div`
   width: 300px;
   height: 60px;
 `;
-const ImgBtn = styled.button`
-  background-image: url(${(props) => props.imgUrl});
-  background-size: cover; // 이미지 크기를 버튼 크기에 맞게 조절 (선택 사항)
+const ImgBtn = styled.img`
   width: 70px;
   height: 70px;
-  background-color: transparent; //버튼 색상 변경
-  background-repeat: no-repeat; // 이미지 반복 방지
-  background-position: center; // 이미지 위치 중앙 정렬 (선택 사항)
-  border: none; // 기본 버튼 스타일링
-  cursor: pointer; // 마우스 오버 시 포인터 커서 스타일
-  border-radius: 100px;
+  cursor: pointer;
 `;
 
 export function Login() {
+  // 로그인 성공 시 이전 페이지나 "/"로 기능 추가 하기
+
+  const { login, isloggedIn } = useAuth();
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
 
-  async function onLogin() {
-    try {
-      const response = await apiLoginByAxiosPost(loginId, password);
-      if (response.data.resultCode === "SUCCESS") {
-        console.log(response.data.data);
-      }
-    } catch (err) {
-      console.log(err.response.data);
-    }
-  }
+  // loginId,password가 바뀔 때 호출 하는 방식이면 useEffect 고려
+  const handleLogin = (e) => {
+    e.preventDefault();
+    login(loginId, password);
+  };
 
+  // enter 로그인
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleLogin(e);
+    }
+  };
   // const [showPassword, setShowPassword] = useState(false);
   // const togglePasswordVisible = () => {
   //   setShowPassword(!showPassword);
@@ -112,28 +112,29 @@ export function Login() {
           <Input
             type="text"
             placeholder="아이디 입력"
-            name="loginId"
             value={loginId}
             onChange={(e) => setLoginId(e.target.value)}
-          ></Input>
+          />
           <Input
-            type="text"
+            type="password"
             placeholder="비밀번호 입력"
-            name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></Input>
+            onKeyPress={handleKeyPress}
+          />
           <LoginSolution>로그인 문제 해결</LoginSolution>
-          <LoginBtn onClick={onLogin}>로그인</LoginBtn>
-          <JoinBtn>회원가입</JoinBtn>
+          <LoginBtn type="submit" onClick={handleLogin}>
+            로그인
+          </LoginBtn>
+          <JoinBtn to={"/register"}>회원가입</JoinBtn>
           <div className="divider-container">
             <div className="divider" />
             <div className="divider-text">OR</div>
           </div>
           <BtnContainer>
-            <ImgBtn imgUrl={google} alt="gogleLogin" />
-            <ImgBtn imgUrl={naver} alt="naverLogin" />
-            <ImgBtn imgUrl={kakao} alt="kakaoLogin" />
+            <ImgBtn src={google} alt="gogleLogin" />
+            <ImgBtn src={naver} alt="naverLogin" />
+            <ImgBtn src={kakao} alt="kakaoLogin" />
           </BtnContainer>
         </LoginContainer>
       </Container>

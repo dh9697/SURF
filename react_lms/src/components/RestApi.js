@@ -1,31 +1,42 @@
 import axios from "axios";
-import { useState } from "react";
 
 export function RestApi() {
-  const [loginId, setLoginId] = useState("");
-  const [password, setPassword] = useState("");
-
-  async function onLogin() {
-    try {
-      const response = await apiLoginByAxiosPost(loginId, password);
-      if (response.data.resultCode === "SUCCESS") {
-        console.log(response.data.data);
-      }
-    } catch (err) {
-      console.log(err.response.data);
-    }
-  }
-
-  function onLogout() {
-    setLoginId("");
-    setPassword("");
-  }
   return <></>;
+}
+
+export function apiSignupByAxiosPost(
+  loginId,
+  password,
+  name,
+  birthDate,
+  gender,
+  nationality,
+  email,
+  phoneNum
+) {
+  return axios.post(
+    "http://localhost:8080/api/signup",
+    {
+      loginId: loginId,
+      password: password,
+      name: name,
+      birthDate: birthDate,
+      gender: gender,
+      nationality: nationality,
+      email: email,
+      phoneNum: phoneNum,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 }
 
 export function apiLoginByAxiosPost(loginId, password) {
   return axios.post(
-    "http://localhost:8080/test/login",
+    "http://localhost:8080/api/login",
     {
       loginId: loginId,
       password: password,

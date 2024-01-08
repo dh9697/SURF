@@ -17,7 +17,7 @@ import project.lms.dto.MemberLoginDto;
 import project.lms.service.impl.MemberServiceImpl;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/api")
 @CrossOrigin(origins="http://localhost:3000",
 methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
 public class MemberController {

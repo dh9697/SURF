@@ -1,6 +1,8 @@
 import styled from "styled-components";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import surfLogo from "./image/surf_logo.png";
+import { useState } from "react";
+import { useAuth } from "./AuthContext";
 
 const Container = styled.div`
   width: 100vw;
@@ -53,6 +55,9 @@ const NavSectionItem = styled(NavLink)`
   }
 `;
 export function NavBar() {
+  const { isLoggedIn, logout, loginId } = useAuth();
+  const navigate = useNavigate();
+
   return (
     <>
       <Container>
@@ -81,14 +86,25 @@ export function NavBar() {
             </NavSectionItem>
           </NavSection>
         </Section>
-        <Section>
-          <NavSectionItem className="login" to={"/login"}>
-            Login
-          </NavSectionItem>
-          <NavSectionItem className="join" to={"/register"}>
-            Join
-          </NavSectionItem>
-        </Section>
+        {isLoggedIn ? (
+          <Section>
+            <NavSectionItem className="logout" to={"/"} onClick={logout}>
+              {loginId}님 로그아웃
+            </NavSectionItem>
+            <NavSectionItem className="join" to={"/"}>
+              dashboard
+            </NavSectionItem>
+          </Section>
+        ) : (
+          <Section>
+            <NavSectionItem className="login" to={"/login"}>
+              Login
+            </NavSectionItem>
+            <NavSectionItem className="join" to={"/register"}>
+              Join
+            </NavSectionItem>
+          </Section>
+        )}
       </Container>
       <Outlet />
     </>

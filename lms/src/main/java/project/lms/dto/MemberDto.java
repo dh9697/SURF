@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import project.lms.enumstatus.Gender;
 import project.lms.enumstatus.Nationality;
-import project.lms.model.Role;
+import project.lms.model.Authority;
 
 public class MemberDto {
 

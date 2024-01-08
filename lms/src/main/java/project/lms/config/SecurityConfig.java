@@ -40,7 +40,8 @@ public class SecurityConfig {
                 
                 // RestAPI 보안 여부 설정
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers("/test/login").permitAll()
+                		.requestMatchers("/api/signup").permitAll()
+                		.requestMatchers("/api/login").permitAll()                  
                         .requestMatchers("/test/course").permitAll()
                         .requestMatchers("/test/coursehistory").permitAll()
                         .requestMatchers("/test/content").permitAll()
