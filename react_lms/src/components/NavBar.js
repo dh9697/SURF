@@ -5,10 +5,8 @@ import { useState } from "react";
 import { useAuth } from "./AuthContext";
 
 const Container = styled.div`
-  width: 100vw;
-  height: 70px;
-  /* background-color: #3182f6; */
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  width: 100%;
+  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1);
   display: grid;
   grid-template-columns: 8fr 2fr;
 `;
@@ -44,10 +42,9 @@ const NavSection = styled.div`
 const NavSectionItem = styled(NavLink)`
   text-decoration: none;
   color: #6b7280;
-  font-size: 14px;
-  font-weight: 900;
   margin-top: 0.7%;
-  &.join {
+  &.join,
+  &.dashboard {
     background-color: #3182f6;
     border-radius: 5px;
     color: white;
@@ -91,7 +88,7 @@ export function NavBar() {
             <NavSectionItem className="logout" to={"/"} onClick={logout}>
               {loginId}님 로그아웃
             </NavSectionItem>
-            <NavSectionItem className="join" to={"/"}>
+            <NavSectionItem className="dashboard" to={"/dashboard"}>
               dashboard
             </NavSectionItem>
           </Section>

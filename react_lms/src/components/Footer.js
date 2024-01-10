@@ -1,17 +1,14 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
 import surfLogo from "./image/surf_logo.png";
 
 const Container = styled.div`
-  width: 100vw;
+  width: 100%;
   background-color: rgb(59 130 246/0.3);
   text-shadow: #0000;
 `;
 
 const FooterBox = styled.div`
-  width: 100vw;
-  height: 35vh;
+  width: 100%;
   display: grid;
   grid-template-columns: 2fr 1fr; /* 왼쪽 칸은 오른쪽 칸보다 2배 크게 설정 */
 `;

@@ -8,7 +8,7 @@ body {
 }
 
 body {
-  background: #eee;
+  background: transparent;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-size: 14px;
   color: #000;
@@ -17,17 +17,24 @@ body {
 }
 
 .swiper {
-  width: 100%;
-  height: 100%;
+  /* margin-top: 2rem; 나중에 없애도 됨 높이 주는 설정 */
+  width: 60%;
+  height: 75%;
+  border: 3px solid #8bbafc; /* border shorthand를 사용하여 테두리 스타일링 */
+  border-radius: 10px;
+  margin-bottom: 3rem;
+  color: white;
 }
 
 .swiper-slide {
   text-align: center;
   font-size: 18px;
-  background: #fff;
+  /* background: #fff; */
+  /* background: #a6c8ff; */
 
   /* Center slide text vertically */
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -37,4 +44,21 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  display: none;
+  /* background-color: #fff;
+  opacity: 0.5;
+  padding: 15px 5px;
+  border-radius: 20px;
+  color: black !important; */
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  /* font-size: 1.1rem !important;
+  font-weight: 600 !important; */
+  display: none;
 }

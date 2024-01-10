@@ -41,7 +41,7 @@ public class MemberServiceImpl implements MemberService {
 		member.setPassword(memberDto.getPassword());
 		member.setName(memberDto.getName());
 		member.setBirthDate(LocalDate.parse(memberDto.getBirthDate(),
-				DateTimeFormatter.ofPattern("yyyy-MMMM-dd")));
+				DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		member.setGender(Gender.valueOf(memberDto.getGender()));
 		member.setNationality(Nationality.valueOf(memberDto.getNationality()));
 		member.setEmail(memberDto.getEmail());

@@ -10,11 +10,11 @@ import { Register } from "./Register";
 import { Footer } from "./Footer";
 import styled from "styled-components";
 import { AuthProvider } from "./AuthContext";
+import { Dashboard } from "../Dashboard";
 
 const Wrapper = styled.div`
-  /* height: 520vh; */
-  height: 100vh;
   width: 100%;
+  height: 100vh;
 `;
 
 const ContentWrapper = styled.div`
@@ -26,13 +26,8 @@ const ContentWrapper = styled.div`
 const MainContent = styled.div`
   flex: 1;
 `;
-const NoFooterRoutes = ["/login", "/register"];
 
 export function Surf() {
-  // 로그인 회원가입 창에서는 footer 안 보이게
-  const RenderFooter = () => {
-    return !NoFooterRoutes.includes(window.location.pathname);
-  };
   return (
     <>
       <AuthProvider>
@@ -50,10 +45,11 @@ export function Surf() {
                     <Route path="/event" element={<Event />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
                   </Route>
                 </Routes>
               </MainContent>
-              {RenderFooter() && <Footer />}
+              <Footer />
             </ContentWrapper>
           </BrowserRouter>
         </Wrapper>

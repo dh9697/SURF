@@ -1,0 +1,46 @@
+body {
+  /* display: flex; */
+  /* justify-content: center;
+  align-items: center; */
+  overflow-x: hidden;
+  width: 100%;
+  height: 280px;
+}
+
+.wave {
+  position: absolute;
+  /* top: 20%;
+  left: 50%; */
+  width: 100%;
+  height: 70%;
+  /* margin-left: -100vw; */
+  /* margin-top: -196vw; */
+  border-radius: 40%;
+}
+
+@keyframes waveAnimation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.wave.-one {
+  animation: waveAnimation 10000ms infinite linear;
+  opacity: 0.5;
+  background: #0af;
+}
+
+.wave.-two {
+  animation: waveAnimation 13500ms infinite linear;
+  opacity: 0.1;
+  background: yellow;
+}
+
+.wave.-three {
+  animation: waveAnimation 11000ms infinite linear;
+  opacity: 0.1;
+  background: #e8a;
+}
