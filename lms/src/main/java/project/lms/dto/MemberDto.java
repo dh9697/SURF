@@ -2,6 +2,8 @@ package project.lms.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -9,12 +11,15 @@ import jakarta.validation.constraints.Pattern;
 import project.lms.enumstatus.Gender;
 import project.lms.enumstatus.Nationality;
 import project.lms.model.Authority;
+import project.lms.model.Member;
 
 public class MemberDto {
 
 	@NotBlank
 	private String loginId;
 
+	private Set<AuthorityDto> authorityDtoSet;
+	
 	@NotBlank
 	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&*!])[A-Za-z\\d@#$%^&*!]{8,20}$",
 		message = "영문, 숫자, 특수문자를 포함하여 8~20자리로 입력해주세요.")
@@ -50,7 +55,7 @@ public class MemberDto {
 		super();
 	}
 
-	public MemberDto(@NotBlank String loginId,
+	public MemberDto(@NotBlank String loginId, Set<AuthorityDto> authorityDtoSet,
 			@NotBlank @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&*!])[A-Za-z\\d@#$%^&*!]{8,20}$", message = "영문, 숫자, 특수문자를 포함하여 8~20자리로 입력해주세요.") String password,
 			@NotBlank String name,
 			@NotBlank @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$", message = "날짜형식(YYYY-MM-DD)을 확인해주세요.") String birthDate,
@@ -60,6 +65,7 @@ public class MemberDto {
 			@NotBlank @Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$", message = "올바른 전화번호 형식이 아닙니다.") String phoneNum) {
 		super();
 		this.loginId = loginId;
+		this.authorityDtoSet = authorityDtoSet;
 		this.password = password;
 		this.name = name;
 		this.birthDate = birthDate;
@@ -75,6 +81,14 @@ public class MemberDto {
 
 	public void setLoginId(String loginId) {
 		this.loginId = loginId;
+	}
+
+	public Set<AuthorityDto> getAuthorityDtoSet() {
+		return authorityDtoSet;
+	}
+
+	public void setAuthorityDtoSet(Set<AuthorityDto> authorityDtoSet) {
+		this.authorityDtoSet = authorityDtoSet;
 	}
 
 	public String getPassword() {
@@ -133,4 +147,14 @@ public class MemberDto {
 		this.phoneNum = phoneNum;
 	}
 	
+	// from member 를 memberDto로 변환해주는 메소드
+	public static MemberDto from(Member member) {
+		if(member == null) return null;
+		
+		Set<AuthorityDto> authorityDtoSet = member.getAuthorities().stream().map(authority -> new AuthorityDto(authority.getAuthorityName()))
+				.collect(Collectors.toSet());
+	
+		return new MemberDto(member.getLoginId(),  authorityDtoSet, null, member.getName(), member.getBirthDate().toString(), 
+				member.getGender().name(), member.getNationality().name(), member.getEmail(), member.getPhoneNum());
+	}
 }
