@@ -42,15 +42,9 @@ public class MemberController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
 	}    
 	
-//	@PostMapping("/login")
-//	public ResponseEntity<ResponseDto<MemberLoginDto>> login(@RequestBody @Valid MemberLoginDto memberLoginDto){
-//		ResponseDto<MemberLoginDto> responseDto = memberService.login(memberLoginDto);
-//		return ResponseEntity.ok(responseDto);
-//	}
-	
 	// 현재 로그인한 토큰 주인의 정보
-	@GetMapping("/member")
-	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+	@GetMapping("/dashboard/{loginId}")
+	@PreAuthorize("hasAnyRole('USER','MEMBER','INSTRUCTOR','ADMIN')")
 	public ResponseEntity<ResponseDto<MemberDto>> getCurrentMemberInfo(HttpServletRequest request){
 		return ResponseEntity.ok(new ResponseDto<>(
 				ResultCode.SUCCESS.name(),

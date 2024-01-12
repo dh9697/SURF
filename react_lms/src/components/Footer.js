@@ -10,7 +10,7 @@ const Container = styled.div`
 const FooterBox = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 1fr; /* 왼쪽 칸은 오른쪽 칸보다 2배 크게 설정 */
+  grid-template-columns: 2fr 1fr;
 `;
 
 const Left = styled.div`
@@ -18,10 +18,11 @@ const Left = styled.div`
   grid-template-rows: 1fr 0.7fr;
 `;
 
+const LogoImgBox = styled.div`
+  width: 100px;
+`;
 const LogoImg = styled.img`
-  width: 10%;
-  padding-top: 4rem;
-  padding-bottom: 1rem;
+  width: 100%;
 `;
 
 const LeftTop = styled.div`
@@ -57,7 +58,9 @@ export function Footer() {
         <FooterBox>
           <Left>
             <LeftTop>
-              <LogoImg src={surfLogo} alt="Logo Image" />
+              <LogoImgBox>
+                <LogoImg src={surfLogo} alt="Logo Image" />
+              </LogoImgBox>
               <br />
               ㈜ 서프에듀케이션&nbsp;&nbsp;대표이사 윤지희 김다혜 고채영
               <br />

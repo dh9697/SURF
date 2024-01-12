@@ -39,7 +39,7 @@ public class AuthController {
 		this.authenticationManagerBuilder = authenticationManagerBuilder;
 	}
 	
-	@PostMapping("/authenticate")
+	@PostMapping("/login")
 	public ResponseEntity<ResponseDto<TokenDto>> authorize(@RequestBody @Valid MemberLoginDto memberLoginDto) {
 		
 		// 사용자 인증을 위한 토큰 생성

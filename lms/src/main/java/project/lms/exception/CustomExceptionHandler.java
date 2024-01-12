@@ -27,6 +27,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @ControllerAdvice
 public class CustomExceptionHandler {
 
+	// 클라이언트가 전송한 요청이 서버에서 기대하는 형식에 맞지 않거나 필드 값이 올바르지 않을 때 발생 주로 validation.
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	protected ResponseEntity<ResponseDto<Map<String, String>>> handleValidationExceptions
 		(MethodArgumentNotValidException ex){
@@ -44,6 +45,7 @@ public class CustomExceptionHandler {
 		), HttpStatus.BAD_REQUEST);
 	}
 	
+	// 사용자의 요청이 서버에서 기대하는 형식에 맞지 않을 때 발생
 	@ExceptionHandler(InvalidRequestException.class)
     protected ResponseEntity<ResponseDto<Map<String, String>>> handleInvalidIdException
     	(InvalidRequestException ex) {
@@ -63,7 +65,7 @@ public class CustomExceptionHandler {
 		(HttpServletRequest request, HttpServletResponse response, AuthenticationException authenticationException)
 		throws IOException {
 		return new ResponseEntity<>(new ResponseDto<>(
-				ResultCode.ERROR.name(),
+				ResultCode.UNAUTHORIZED.name(),
 				null,
 				ResultCode.ERROR.getMsg()
 		),HttpStatus.UNAUTHORIZED);
@@ -75,7 +77,7 @@ public class CustomExceptionHandler {
 		(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException)
 		throws IOException {
 		return new ResponseEntity<>(new ResponseDto<>(
-				ResultCode.ERROR.name(),
+				ResultCode.FORBIDDEN.name(),
 				null,
 				ResultCode.ERROR.getMsg()
 		), HttpStatus.FORBIDDEN);

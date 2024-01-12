@@ -11,6 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import project.lms.exception.CustomExceptionHandler;
+import project.lms.jwt.JwtAccessDeniedHandler;
+import project.lms.jwt.JwtAuthenticationEntryPoint;
 import project.lms.jwt.JwtFilter;
 import project.lms.jwt.TokenProvider;
 
@@ -25,10 +28,15 @@ import project.lms.jwt.TokenProvider;
 public class SecurityConfig {
     
 	private final TokenProvider tokenProvider;
-	
-    public SecurityConfig(TokenProvider tokenProvider) {
+	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+	public SecurityConfig(TokenProvider tokenProvider, JwtAccessDeniedHandler jwtAccessDeniedHandler,
+			JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
 		super();
 		this.tokenProvider = tokenProvider;
+		this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+		this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
 	}
 
 	@Bean
@@ -45,15 +53,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 
                 // 예외 처리
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                		.accessDeniedHandler(jwtAccessDeniedHandler)
+                		.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 
                 // RestAPI 보안 여부 설정
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                 		.requestMatchers("/api/signup").permitAll()
                 		.requestMatchers("/api/login").permitAll()
-                		.requestMatchers("/api/authenticate").permitAll()
-                		.requestMatchers("/api/member").permitAll()   
-                        // Token이 없다면 401 Unauthorized Error
-                        // Postman에서 Auth의 Type을 Bearer Token으로 바꾸고 Token값을 넣어주면 볼 수 있음
+                        // Token이 없다면 401 Unauthorized Error                  
                         .anyRequest().authenticated()
                 )
 

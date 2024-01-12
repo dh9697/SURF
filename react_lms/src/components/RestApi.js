@@ -4,6 +4,7 @@ export function RestApi() {
   return <></>;
 }
 
+// signup
 export function apiSignupByAxiosPost(
   loginId,
   password,
@@ -34,6 +35,7 @@ export function apiSignupByAxiosPost(
   );
 }
 
+// login
 export function apiLoginByAxiosPost(loginId, password) {
   return axios.post(
     "http://localhost:8080/api/login",
@@ -47,4 +49,16 @@ export function apiLoginByAxiosPost(loginId, password) {
       },
     }
   );
+}
+
+export function apiGetCurrentUserInfo() {
+  const token = localStorage.getItem("Token");
+  if (!token) {
+    return Promise.reject("No Token available");
+  }
+  return axios.get("http://localhost:8080/api/dashboard/{loginId}", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }

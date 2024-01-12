@@ -4,8 +4,8 @@ import naver from "./image/naver.png";
 import kakao from "./image/kakao.png";
 import { useState } from "react";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
-import { useAuth } from "./AuthContext";
 import { TestWave } from "./TestWave";
+import { apiLoginByAxiosPost } from "./RestApi";
 
 const Container = styled.div`
   width: 100%;
@@ -112,26 +112,37 @@ const Img = styled.img`
 `;
 
 export function Login() {
-  // 로그인 성공 시 이전 페이지나 "/"로 기능 추가 하기
+  // 로그인 성공 시 이전 페이지나 "/"로 기능 추가
 
-  const { login, isloggedIn } = useAuth();
+  // restApi 호출
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  // loginId,password가 바뀔 때 호출 하는 방식이면 useEffect 고려
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    login(loginId, password);
-    navigate("/");
+    try {
+      const response = await apiLoginByAxiosPost(loginId, password);
+      if (response.data.resultCode === "SUCCESS") {
+        localStorage.setItem("Token", response.data.data.token);
+        window.alert("로그인이 성공적으로 이루어졌습니다.");
+        navigate("/");
+      } else {
+        console.log(response.data.message);
+      }
+    } catch (err) {
+      console.log("로그인 오류", err);
+    }
   };
 
   // enter 로그인
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
+      e.preventDefault();
       handleLogin(e);
     }
   };
+
   // const [showPassword, setShowPassword] = useState(false);
   // const togglePasswordVisible = () => {
   //   setShowPassword(!showPassword);
@@ -154,6 +165,7 @@ export function Login() {
               placeholder="비밀번호 입력"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="off"
               onKeyPress={handleKeyPress}
             />
             <LoginSolution>로그인 문제 해결</LoginSolution>

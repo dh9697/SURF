@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import surfLogo from "./image/surf_logo.png";
-import { useState } from "react";
-import { useAuth } from "./AuthContext";
+import { useEffect, useState } from "react";
+import { apiGetCurrentUserInfo } from "./RestApi";
 
 const Container = styled.div`
   width: 100%;
@@ -52,8 +52,29 @@ const NavSectionItem = styled(NavLink)`
   }
 `;
 export function NavBar() {
-  const { isLoggedIn, logout, loginId } = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("Token");
+    setIsLoggedIn(token);
+    if (token) {
+      apiGetCurrentUserInfo()
+        .then((response) => {
+          const user = response.data.data;
+          setUser(user);
+        })
+        .catch((err) => {
+          console.error("사용자 정보를 가져오는 중 오류 발생: ", err);
+        });
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("Token");
+    setIsLoggedIn(false);
+  };
 
   return (
     <>
@@ -85,10 +106,10 @@ export function NavBar() {
         </Section>
         {isLoggedIn ? (
           <Section>
-            <NavSectionItem className="logout" to={"/"} onClick={logout}>
-              {loginId}님 로그아웃
+            <NavSectionItem className="logout" to={"/"} onClick={handleLogout}>
+              {user.loginId}님 로그아웃
             </NavSectionItem>
-            <NavSectionItem className="dashboard" to={"/dashboard"}>
+            <NavSectionItem className="dashboard" to={"/dashboard{loginId}"}>
               dashboard
             </NavSectionItem>
           </Section>

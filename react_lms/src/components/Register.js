@@ -107,19 +107,6 @@ const RegiserBtn = styled.button`
   cursor: pointer;
 `;
 
-// const Type = styled.p`
-//   display: flex; // flex로 설정하여 내부 요소를 가로로 정렬
-//   writing-mode: horizontal-tb; // 텍스트의 쓰기 방향을 가로로 설정
-//   white-space: nowrap; //글씨 간격
-
-//   /* flex-direction: row; */
-//   font-family: Inter;
-//   font-size: 10px;
-//   font-style: normal;
-//   font-weight: 500;
-//   margin-bottom: 0px;
-// `;
-
 export function Register() {
   const [isChecked, setIsChecked] = useState(false);
   const handleCheckboxChange = () => {

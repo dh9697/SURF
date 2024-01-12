@@ -10,7 +10,7 @@ import { Register } from "./Register";
 import { Footer } from "./Footer";
 import styled from "styled-components";
 import { AuthProvider } from "./AuthContext";
-import { Dashboard } from "../Dashboard";
+import { Dashboard } from "./Dashboard";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -30,30 +30,30 @@ const MainContent = styled.div`
 export function Surf() {
   return (
     <>
-      <AuthProvider>
-        <Wrapper>
-          <BrowserRouter>
-            <ContentWrapper>
-              <MainContent>
-                <Routes>
-                  <Route path="/" element={<NavBar />}>
-                    <Route index element={<Main />} />
-                    <Route path="/about" element={<About />} />
-                    {/* <Route path="/course" element={<Course />} /> */}
-                    <Route path="/level_test" element={<LevelTest />} />
-                    <Route path="/community" element={<Community />} />
-                    <Route path="/event" element={<Event />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                  </Route>
-                </Routes>
-              </MainContent>
-              <Footer />
-            </ContentWrapper>
-          </BrowserRouter>
-        </Wrapper>
-      </AuthProvider>
+      {/* <AuthProvider> */}
+      <Wrapper>
+        <BrowserRouter>
+          <ContentWrapper>
+            <MainContent>
+              <Routes>
+                <Route path="/" element={<NavBar />}>
+                  <Route index element={<Main />} />
+                  <Route path="/about" element={<About />} />
+                  {/* <Route path="/course" element={<Course />} /> */}
+                  <Route path="/level_test" element={<LevelTest />} />
+                  <Route path="/community" element={<Community />} />
+                  <Route path="/event" element={<Event />} />
+                  <Route path="/dashboard/{loginId}" element={<Dashboard />} />
+                </Route>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+              </Routes>
+            </MainContent>
+            <Footer />
+          </ContentWrapper>
+        </BrowserRouter>
+      </Wrapper>
+      {/* </AuthProvider> */}
     </>
   );
 }
