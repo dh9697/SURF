@@ -19,18 +19,18 @@ public class Withdrawal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long withdrawalId; // 탈퇴 ID는 int 형태로 사용
+    private Long withdrawalId; 
 
     @ManyToOne
     @JoinColumn(name = "memberId", nullable = false)
-    private Member member; // 고유한 회원 ID
+    private Member member; 
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime withdrawalTime; // 탈퇴 날짜와 시간
+    private LocalDateTime withdrawalTime; 
 
-    @Column(length = 255) // varchar의 기본 길이는 255 자. 그리고 특별한 길이 제한이 없는 경우에는 생략 가능.
-    private String reason; // 탈퇴 사유
+    @Column(length = 255)
+    private String reason; 
 
     // 기본 생성자
     public Withdrawal() {

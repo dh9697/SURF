@@ -1,9 +1,11 @@
 package project.lms.service.impl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,22 +19,31 @@ import project.lms.enumstatus.ResultCode;
 import project.lms.exception.InvalidRequestException;
 import project.lms.model.Authority;
 import project.lms.model.Member;
+import project.lms.model.Withdrawal;
 import project.lms.repository.MemberRepository;
+import project.lms.repository.WithdrawalRepository;
 import project.lms.service.MemberService;
 import project.lms.util.SecurityUtil;
 
 @Service
 public class MemberServiceImpl implements MemberService {
 
+	@Autowired
 	private final MemberRepository memberRepository;
+	
+	@Autowired
+	private final WithdrawalRepository withdrawalRepository;
+	
 	private final PasswordEncoder passwordEncoder;
-
-	public MemberServiceImpl(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
+	
+	public MemberServiceImpl(MemberRepository memberRepository, WithdrawalRepository withdrawalRepository,
+			PasswordEncoder passwordEncoder) {
 		super();
 		this.memberRepository = memberRepository;
+		this.withdrawalRepository = withdrawalRepository;
 		this.passwordEncoder = passwordEncoder;
 	}
-	
+
 	@Transactional
 	public ResponseDto<MemberDto> signUp(MemberDto memberDto){
 		if(memberRepository.findOneWithAuthoritiesByLoginId(memberDto.getLoginId()).orElse(null) != null) {
@@ -55,6 +66,7 @@ public class MemberServiceImpl implements MemberService {
 		member.setEmail(memberDto.getEmail());
 		member.setPhoneNum(memberDto.getPhoneNum());
 		member.setActive(true);
+		member.setJoinDate(LocalDateTime.now());
 		
 		memberRepository.save(member);
 		
@@ -90,6 +102,23 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional(readOnly = true)
 	public MemberDto getCurrentMemberWithAuthorities() {
 		return MemberDto.from(SecurityUtil.getCurrentloginId().flatMap(memberRepository::findOneWithAuthoritiesByLoginId).orElseThrow(() -> new InvalidRequestException("No current member", "member not found")));
+	}
+	
+	// 회원 탈퇴
+	@Transactional
+	public void withdrawalMember(Long memberId, String withdrawReason) {
+		Member member = memberRepository.findById(memberId).orElse(null);
+		
+		if(member != null) {
+			member.setActive(false);
+			memberRepository.save(member);
+		}
+		
+		Withdrawal withdrawal = new Withdrawal();
+		withdrawal.setMember(member);
+		withdrawal.setWithdrawalTime(LocalDateTime.now());
+		withdrawal.setReason(withdrawReason);
+		withdrawalRepository.save(withdrawal);
 	}
 		
 }

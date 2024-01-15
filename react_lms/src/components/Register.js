@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { apiSignupByAxiosPost } from "./RestApi";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -108,6 +109,8 @@ const RegiserBtn = styled.button`
 `;
 
 export function Register() {
+  const navigate = useNavigate();
+
   const [isChecked, setIsChecked] = useState(false);
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -144,6 +147,7 @@ export function Register() {
       );
       if (response.data.resultCode === "SUCCESS") {
         window.alert("회원가입이 성공적으로 처리되었습니다.");
+        navigate("/login");
       } else {
         console.log(response.data.message);
       }

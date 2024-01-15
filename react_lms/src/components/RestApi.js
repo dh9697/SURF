@@ -51,12 +51,28 @@ export function apiLoginByAxiosPost(loginId, password) {
   );
 }
 
+// withdrawal
+
+export function loginUser(loginId, password) {
+  return apiLoginByAxiosPost(loginId, password).then((response) => {
+    const token = response.data.token;
+    const loginId = response.data.loginId;
+
+    localStorage.setItem("Token", token);
+    localStorage.setItem("LoginId", loginId);
+
+    return response;
+  });
+}
+
 export function apiGetCurrentUserInfo() {
   const token = localStorage.getItem("Token");
+  const loginId = localStorage.getItem("LoginId");
+
   if (!token) {
-    return Promise.reject("No Token available");
+    return Promise.reject("No Token or LoginId available.");
   }
-  return axios.get("http://localhost:8080/api/dashboard/{loginId}", {
+  return axios.get(`http://localhost:8080/api/dashboard/${loginId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

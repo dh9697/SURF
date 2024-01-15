@@ -1,5 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import { Surf } from "./components/Surf";
+import { AuthProvider } from "./AuthContext";
 
 const GlobalStyle = createGlobalStyle`
 *{
@@ -18,7 +19,9 @@ export default function App() {
   return (
     <>
       <GlobalStyle />
-      <Surf />
+      <AuthProvider>
+        <Surf />
+      </AuthProvider>
     </>
   );
 }

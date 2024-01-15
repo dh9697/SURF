@@ -1,6 +1,20 @@
+import styled from "styled-components";
+import { TestWave } from "./TestWave";
+
+const Container = styled.div`
+  width: 100%;
+`;
+const Content = styled.div`
+  width: 100%;
+  height: 1500px;
+`;
 export function About() {
   return (
     <>
+      <Container>
+        <TestWave />
+        <Content></Content>
+      </Container>
       {/* What is SURF?
 SURF는 사용자 맞춤형 영어 학습 경험을 제공하는 혁신적인 온라인 플랫폼입니다. 우리의 플랫폼은 다양한 학습 리소스, 인터랙티브한 콘텐츠, 그리고 실시간 피드백 시스템을 통해 학습자들이 자신만의 학습 경로를 만들 수 있게 지원합니다.
 

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
 import { NavBar } from "./NavBar";
 import { Main } from "./Main";
 import { About } from "./About";
@@ -9,8 +9,9 @@ import { Login } from "./Login";
 import { Register } from "./Register";
 import { Footer } from "./Footer";
 import styled from "styled-components";
-import { AuthProvider } from "./AuthContext";
 import { Dashboard } from "./Dashboard";
+import { useContext } from "react";
+import { AuthContext } from "../AuthContext";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -28,9 +29,10 @@ const MainContent = styled.div`
 `;
 
 export function Surf() {
+  const { isLoggedIn, user, handleLogout } = useContext(AuthContext);
+
   return (
     <>
-      {/* <AuthProvider> */}
       <Wrapper>
         <BrowserRouter>
           <ContentWrapper>
@@ -43,7 +45,12 @@ export function Surf() {
                   <Route path="/level_test" element={<LevelTest />} />
                   <Route path="/community" element={<Community />} />
                   <Route path="/event" element={<Event />} />
-                  <Route path="/dashboard/{loginId}" element={<Dashboard />} />
+                  {isLoggedIn && (
+                    <Route
+                      path={`/dashboard/${user.loginId}`}
+                      element={<Dashboard />}
+                    />
+                  )}
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
@@ -53,7 +60,6 @@ export function Surf() {
           </ContentWrapper>
         </BrowserRouter>
       </Wrapper>
-      {/* </AuthProvider> */}
     </>
   );
 }

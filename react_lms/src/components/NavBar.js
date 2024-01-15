@@ -7,8 +7,10 @@ import { apiGetCurrentUserInfo } from "./RestApi";
 const Container = styled.div`
   width: 100%;
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1);
-  display: grid;
-  grid-template-columns: 8fr 2fr;
+  & .innerWrapper {
+    display: grid;
+    grid-template-columns: 8fr 2fr;
+  }
 `;
 const Section = styled.div`
   width: 100%;
@@ -43,6 +45,7 @@ const NavSectionItem = styled(NavLink)`
   text-decoration: none;
   color: #6b7280;
   margin-top: 0.7%;
+  white-space: nowrap;
   &.join,
   &.dashboard {
     background-color: #3182f6;
@@ -79,50 +82,59 @@ export function NavBar() {
   return (
     <>
       <Container>
-        <Section>
-          <Logo to={"/"}>
-            <LogoImg src={surfLogo} alt="Logo Image" />
-          </Logo>
-          <NavSection>
-            <NavSectionItem className="about" to={"/about"}>
-              About
-            </NavSectionItem>
-            <NavSectionItem className="course" to={"/"}>
-              Courses
-            </NavSectionItem>
-            <NavSectionItem className="levelTest" to={"/level_test"}>
-              Level Test
-            </NavSectionItem>
-            <NavSectionItem className="community" to={"/community"}>
-              Community
-            </NavSectionItem>
-            <NavSectionItem className="event" to={"/event"}>
-              Event
-            </NavSectionItem>
-            <NavSectionItem className="contact" to={"/contact"}>
-              Contact
-            </NavSectionItem>
-          </NavSection>
-        </Section>
-        {isLoggedIn ? (
+        <div className="innerWrapper">
           <Section>
-            <NavSectionItem className="logout" to={"/"} onClick={handleLogout}>
-              {user.loginId}님 로그아웃
-            </NavSectionItem>
-            <NavSectionItem className="dashboard" to={"/dashboard{loginId}"}>
-              dashboard
-            </NavSectionItem>
+            <Logo to={"/"}>
+              <LogoImg src={surfLogo} alt="Logo Image" />
+            </Logo>
+            <NavSection>
+              <NavSectionItem className="about" to={"/about"}>
+                About
+              </NavSectionItem>
+              <NavSectionItem className="course" to={"/"}>
+                Courses
+              </NavSectionItem>
+              <NavSectionItem className="levelTest" to={"/level_test"}>
+                Level Test
+              </NavSectionItem>
+              <NavSectionItem className="community" to={"/community"}>
+                Community
+              </NavSectionItem>
+              <NavSectionItem className="event" to={"/event"}>
+                Event
+              </NavSectionItem>
+              <NavSectionItem className="contact" to={"/contact"}>
+                Contact
+              </NavSectionItem>
+            </NavSection>
           </Section>
-        ) : (
-          <Section>
-            <NavSectionItem className="login" to={"/login"}>
-              Login
-            </NavSectionItem>
-            <NavSectionItem className="join" to={"/register"}>
-              Join
-            </NavSectionItem>
-          </Section>
-        )}
+          {isLoggedIn ? (
+            <Section>
+              <NavSectionItem
+                className="logout"
+                to={"/"}
+                onClick={handleLogout}
+              >
+                {user.name}님 로그아웃
+              </NavSectionItem>
+              <NavSectionItem
+                className="dashboard"
+                to={`/dashboard/${user.loginId}`}
+              >
+                dashboard
+              </NavSectionItem>
+            </Section>
+          ) : (
+            <Section>
+              <NavSectionItem className="login" to={"/login"}>
+                Login
+              </NavSectionItem>
+              <NavSectionItem className="join" to={"/register"}>
+                Join
+              </NavSectionItem>
+            </Section>
+          )}
+        </div>
       </Container>
       <Outlet />
     </>

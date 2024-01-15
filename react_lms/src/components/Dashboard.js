@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -8,7 +9,9 @@ const Container = styled.div`
 export function Dashboard() {
   return (
     <>
-      <Container></Container>
+      <Container>
+        <DashboardNavbar></DashboardNavbar>
+      </Container>
     </>
   );
 }

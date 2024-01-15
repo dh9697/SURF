@@ -1,5 +1,7 @@
 package project.lms.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import project.lms.dto.ResponseDto;
+import project.lms.dto.WithdrawalDto;
 import project.lms.enumstatus.ResultCode;
 import project.lms.dto.MemberDto;
 import project.lms.dto.MemberLoginDto;
 import project.lms.service.MemberService;
+import project.lms.util.SecurityUtil;
 
 @RestController
 @RequestMapping("/api")
@@ -41,6 +45,26 @@ public class MemberController {
 		ResponseDto<MemberDto> responseDto = memberService.signUp(memberDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
 	}    
+	
+	@PostMapping("/withdrawal")
+	public ResponseEntity<ResponseDto<WithdrawalDto>> withdrawal(@RequestBody @Valid WithdrawalDto withdrawalDto) {
+		Optional<String> currentMemberIdOptional = SecurityUtil.getCurrentloginId();
+		
+		if(currentMemberIdOptional.isPresent()) {
+			String currentMemberId = currentMemberIdOptional.get();
+			memberService.withdrawalMember(Long.parseLong(currentMemberId), withdrawalDto.getWithdrawalReason());
+			
+			return ResponseEntity.ok(new ResponseDto<>(
+				ResultCode.SUCCESS.name(),
+				null,
+				"회원 탈퇴가 성공적으로 이루어졌습니다."));
+			} else {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseDto<>(
+						ResultCode.UNAUTHORIZED.name(),
+						null,
+						"로그인이 필요합니다."));
+		}
+	}
 	
 	// 현재 로그인한 토큰 주인의 정보
 	@GetMapping("/dashboard/{loginId}")

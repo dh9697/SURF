@@ -16,6 +16,11 @@ body {
   padding: 0;
 }
 
+.innerWrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .swiper {
   /* margin-top: 2rem; 나중에 없애도 됨 높이 주는 설정 */
   width: 60%;
