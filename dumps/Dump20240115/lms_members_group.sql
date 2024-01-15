@@ -16,33 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `contents`
+-- Table structure for table `members_group`
 --
 
-DROP TABLE IF EXISTS `contents`;
+DROP TABLE IF EXISTS `members_group`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `contents` (
-  `content_id` bigint NOT NULL AUTO_INCREMENT,
-  `content_data` varchar(255) DEFAULT NULL,
-  `content_type` varchar(50) NOT NULL,
-  `course_id` bigint NOT NULL,
-  `content_title` varchar(30) NOT NULL,
-  `description` varchar(100) NOT NULL,
-  PRIMARY KEY (`content_id`),
-  KEY `FK26ra050idh8wetyhulbictirv` (`course_id`),
-  CONSTRAINT `FK26ra050idh8wetyhulbictirv` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `members_group` (
+  `group_id` bigint NOT NULL AUTO_INCREMENT,
+  `description` text,
+  `group_name` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`group_id`),
+  UNIQUE KEY `UK_gid8hsmgfxjb32ns6hsqybo27` (`group_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `contents`
+-- Dumping data for table `members_group`
 --
 
-LOCK TABLES `contents` WRITE;
-/*!40000 ALTER TABLE `contents` DISABLE KEYS */;
-INSERT INTO `contents` VALUES (1,'testString','video',2,'','');
-/*!40000 ALTER TABLE `contents` ENABLE KEYS */;
+LOCK TABLES `members_group` WRITE;
+/*!40000 ALTER TABLE `members_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `members_group` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-05 15:58:30
+-- Dump completed on 2024-01-15 16:51:05

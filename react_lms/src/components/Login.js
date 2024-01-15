@@ -127,6 +127,7 @@ export function Login() {
         localStorage.setItem("Token", response.data.data.token);
         window.alert("로그인이 성공적으로 이루어졌습니다.");
         navigate("/");
+        console.log("로그인 성공");
       } else {
         console.log(response.data.message);
       }

@@ -16,34 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `assignments`
+-- Table structure for table `order_details`
 --
 
-DROP TABLE IF EXISTS `assignments`;
+DROP TABLE IF EXISTS `order_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `assignments` (
-  `assignment_id` bigint NOT NULL AUTO_INCREMENT,
-  `assignment_title` varchar(200) NOT NULL,
-  `description` varchar(1000) DEFAULT NULL,
-  `due_date` datetime(6) NOT NULL,
-  `is_active` bit(1) DEFAULT NULL,
-  `content_id` bigint DEFAULT NULL,
-  `passing_score` int NOT NULL,
-  PRIMARY KEY (`assignment_id`),
-  KEY `FK6gmtw9veb1p14acuq9esy50k8` (`content_id`),
-  CONSTRAINT `FK6gmtw9veb1p14acuq9esy50k8` FOREIGN KEY (`content_id`) REFERENCES `contents` (`content_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `order_details` (
+  `order_detail_id` bigint NOT NULL AUTO_INCREMENT,
+  `price` decimal(38,2) NOT NULL,
+  `quantity` int NOT NULL,
+  `course_id` bigint DEFAULT NULL,
+  `order_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`order_detail_id`),
+  KEY `FKtc2uxybe6r9ak6sd66whjd27` (`course_id`),
+  KEY `FKjyu2qbqt8gnvno9oe9j2s2ldk` (`order_id`),
+  CONSTRAINT `FKjyu2qbqt8gnvno9oe9j2s2ldk` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`),
+  CONSTRAINT `FKtc2uxybe6r9ak6sd66whjd27` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `assignments`
+-- Dumping data for table `order_details`
 --
 
-LOCK TABLES `assignments` WRITE;
-/*!40000 ALTER TABLE `assignments` DISABLE KEYS */;
-INSERT INTO `assignments` VALUES (1,'240104TOEIC','helloworld','2024-01-04 08:00:00.000000',_binary '\0',1,60);
-/*!40000 ALTER TABLE `assignments` ENABLE KEYS */;
+LOCK TABLES `order_details` WRITE;
+/*!40000 ALTER TABLE `order_details` DISABLE KEYS */;
+/*!40000 ALTER TABLE `order_details` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-05 15:58:34
+-- Dump completed on 2024-01-15 16:51:07

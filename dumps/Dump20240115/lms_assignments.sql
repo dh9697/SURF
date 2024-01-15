@@ -16,35 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `carts`
+-- Table structure for table `assignments`
 --
 
-DROP TABLE IF EXISTS `carts`;
+DROP TABLE IF EXISTS `assignments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `carts` (
-  `cart_id` bigint NOT NULL AUTO_INCREMENT,
-  `create_date` datetime(6) DEFAULT NULL,
-  `member_id` bigint DEFAULT NULL,
-  `quanity` int NOT NULL,
-  `course_id` bigint DEFAULT NULL,
-  `total_price` int NOT NULL,
-  `total_quanity` int NOT NULL,
-  PRIMARY KEY (`cart_id`),
-  KEY `FKr82uc2e12g45wtitmrq51wsmy` (`member_id`),
-  KEY `FKm17vvrdg59e9or41oe43p0ph7` (`course_id`),
-  CONSTRAINT `FKm17vvrdg59e9or41oe43p0ph7` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`),
-  CONSTRAINT `FKr82uc2e12g45wtitmrq51wsmy` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `assignments` (
+  `assignment_id` bigint NOT NULL AUTO_INCREMENT,
+  `assignment_title` varchar(200) NOT NULL,
+  `description` varchar(1000) DEFAULT NULL,
+  `due_date` datetime(6) NOT NULL,
+  `is_active` bit(1) DEFAULT NULL,
+  `content_id` bigint DEFAULT NULL,
+  `passing_score` int NOT NULL,
+  PRIMARY KEY (`assignment_id`),
+  KEY `FK6gmtw9veb1p14acuq9esy50k8` (`content_id`),
+  CONSTRAINT `FK6gmtw9veb1p14acuq9esy50k8` FOREIGN KEY (`content_id`) REFERENCES `contents` (`content_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `carts`
+-- Dumping data for table `assignments`
 --
 
-LOCK TABLES `carts` WRITE;
-/*!40000 ALTER TABLE `carts` DISABLE KEYS */;
-/*!40000 ALTER TABLE `carts` ENABLE KEYS */;
+LOCK TABLES `assignments` WRITE;
+/*!40000 ALTER TABLE `assignments` DISABLE KEYS */;
+INSERT INTO `assignments` VALUES (1,'240104TOEIC','helloworld','2024-01-04 08:00:00.000000',_binary '\0',1,60);
+/*!40000 ALTER TABLE `assignments` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-05 15:58:33
+-- Dump completed on 2024-01-15 16:51:07

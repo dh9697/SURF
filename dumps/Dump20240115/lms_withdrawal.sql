@@ -16,27 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `roles`
+-- Table structure for table `withdrawal`
 --
 
-DROP TABLE IF EXISTS `roles`;
+DROP TABLE IF EXISTS `withdrawal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `roles` (
-  `role_id` bigint NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`role_id`),
-  UNIQUE KEY `uk_role_role_name` (`role_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `withdrawal` (
+  `withdrawal_id` bigint NOT NULL AUTO_INCREMENT,
+  `reason` varchar(255) DEFAULT NULL,
+  `withdrawal_time` datetime(6) NOT NULL,
+  `member_id` bigint NOT NULL,
+  PRIMARY KEY (`withdrawal_id`),
+  KEY `FKjy0789uood48lwb0ocetjcvha` (`member_id`),
+  CONSTRAINT `FKjy0789uood48lwb0ocetjcvha` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `roles`
+-- Dumping data for table `withdrawal`
 --
 
-LOCK TABLES `roles` WRITE;
-/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+LOCK TABLES `withdrawal` WRITE;
+/*!40000 ALTER TABLE `withdrawal` DISABLE KEYS */;
+INSERT INTO `withdrawal` VALUES (1,'reason','2024-01-05 08:00:00.000000',1);
+/*!40000 ALTER TABLE `withdrawal` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -48,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-05 15:58:32
+-- Dump completed on 2024-01-15 16:51:05

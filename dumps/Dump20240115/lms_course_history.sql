@@ -16,33 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `order_details`
+-- Table structure for table `course_history`
 --
 
-DROP TABLE IF EXISTS `order_details`;
+DROP TABLE IF EXISTS `course_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `order_details` (
-  `order_detail_id` bigint NOT NULL AUTO_INCREMENT,
-  `price` decimal(38,2) NOT NULL,
-  `quantity` int NOT NULL,
+CREATE TABLE `course_history` (
+  `course_history_id` bigint NOT NULL AUTO_INCREMENT,
+  `start_date` datetime(6) DEFAULT NULL,
   `course_id` bigint DEFAULT NULL,
-  `order_id` bigint DEFAULT NULL,
-  PRIMARY KEY (`order_detail_id`),
-  KEY `FKtc2uxybe6r9ak6sd66whjd27` (`course_id`),
-  KEY `FKjyu2qbqt8gnvno9oe9j2s2ldk` (`order_id`),
-  CONSTRAINT `FKjyu2qbqt8gnvno9oe9j2s2ldk` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`),
-  CONSTRAINT `FKtc2uxybe6r9ak6sd66whjd27` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `member_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`course_history_id`),
+  KEY `FKxce0gxyb0ouqgs5ydokexl7w` (`course_id`),
+  KEY `FKfmrhqu7xt09nelubfh62m97j0` (`member_id`),
+  CONSTRAINT `FKfmrhqu7xt09nelubfh62m97j0` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`),
+  CONSTRAINT `FKxce0gxyb0ouqgs5ydokexl7w` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `order_details`
+-- Dumping data for table `course_history`
 --
 
-LOCK TABLES `order_details` WRITE;
-/*!40000 ALTER TABLE `order_details` DISABLE KEYS */;
-/*!40000 ALTER TABLE `order_details` ENABLE KEYS */;
+LOCK TABLES `course_history` WRITE;
+/*!40000 ALTER TABLE `course_history` DISABLE KEYS */;
+INSERT INTO `course_history` VALUES (1,'2023-12-28 15:30:00.000000',NULL,NULL),(2,'2023-12-28 15:30:00.000000',NULL,NULL),(3,'2023-12-28 15:30:00.000000',2,1),(4,'2023-12-29 15:30:00.000000',2,1),(5,'2023-12-25 15:30:00.000000',NULL,NULL),(6,'2023-12-25 15:30:00.000000',NULL,NULL),(7,'2023-12-25 15:30:00.000000',NULL,NULL),(8,'2023-12-25 15:30:00.000000',NULL,NULL),(9,'2023-12-25 15:30:00.000000',NULL,NULL),(10,'2023-12-25 15:30:00.000000',2,1);
+/*!40000 ALTER TABLE `course_history` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-05 15:58:32
+-- Dump completed on 2024-01-15 16:51:08

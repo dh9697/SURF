@@ -29,7 +29,7 @@ const MainContent = styled.div`
 `;
 
 export function Surf() {
-  const { isLoggedIn, user, handleLogout } = useContext(AuthContext);
+  const { isLoggedIn, user } = useContext(AuthContext);
 
   return (
     <>

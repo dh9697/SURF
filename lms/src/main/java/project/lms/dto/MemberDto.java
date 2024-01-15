@@ -50,11 +50,13 @@ public class MemberDto {
 	@NotBlank
 	@Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$", message = "올바른 전화번호 형식이 아닙니다.")
 	private String phoneNum;
+	
+	private LocalDateTime joinDate;
 
 	public MemberDto() {
 		super();
 	}
-
+		
 	public MemberDto(@NotBlank String loginId, Set<AuthorityDto> authorityDtoSet,
 			@NotBlank @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&*!])[A-Za-z\\d@#$%^&*!]{8,20}$", message = "영문, 숫자, 특수문자를 포함하여 8~20자리로 입력해주세요.") String password,
 			@NotBlank String name,
@@ -62,7 +64,8 @@ public class MemberDto {
 			@NotBlank @Pattern(regexp = "^(MAN|WOMAN)$", message = "MAN이나 WOMAN 중 하나를 입력해주세요.") String gender,
 			@NotBlank @Pattern(regexp = "^(Domestic|Foreigner)$", message = "Domestic이나 Foreigner 중 하나를 입력해주세요.") String nationality,
 			@NotBlank @Email String email,
-			@NotBlank @Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$", message = "올바른 전화번호 형식이 아닙니다.") String phoneNum) {
+			@NotBlank @Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$", message = "올바른 전화번호 형식이 아닙니다.") String phoneNum,
+			LocalDateTime joinDate) {
 		super();
 		this.loginId = loginId;
 		this.authorityDtoSet = authorityDtoSet;
@@ -73,8 +76,9 @@ public class MemberDto {
 		this.nationality = nationality;
 		this.email = email;
 		this.phoneNum = phoneNum;
+		this.joinDate = joinDate;
 	}
-
+	
 	public String getLoginId() {
 		return loginId;
 	}
@@ -146,7 +150,15 @@ public class MemberDto {
 	public void setPhoneNum(String phoneNum) {
 		this.phoneNum = phoneNum;
 	}
-	
+
+	public LocalDateTime getJoinDate() {
+		return joinDate;
+	}
+
+	public void setJoinDate(LocalDateTime joinDate) {
+		this.joinDate = joinDate;
+	}
+
 	// from member 를 memberDto로 변환해주는 메소드
 	public static MemberDto from(Member member) {
 		if(member == null) return null;
@@ -155,6 +167,6 @@ public class MemberDto {
 				.collect(Collectors.toSet());
 	
 		return new MemberDto(member.getLoginId(),  authorityDtoSet, null, member.getName(), member.getBirthDate().toString(), 
-				member.getGender().name(), member.getNationality().name(), member.getEmail(), member.getPhoneNum());
+				member.getGender().name(), member.getNationality().name(), member.getEmail(), member.getPhoneNum(), member.getJoinDate());
 	}
 }

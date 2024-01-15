@@ -16,34 +16,37 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `benefits`
+-- Table structure for table `assignment_results`
 --
 
-DROP TABLE IF EXISTS `benefits`;
+DROP TABLE IF EXISTS `assignment_results`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `benefits` (
-  `benefit_id` bigint NOT NULL AUTO_INCREMENT,
-  `completion` enum('COURSE_COMPLETION','EXAM_COMPLETION') DEFAULT NULL,
-  `coupon_code` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `expiration_date` datetime(6) DEFAULT NULL,
-  `is_active` bit(1) DEFAULT NULL,
-  `course_id` bigint DEFAULT NULL,
-  PRIMARY KEY (`benefit_id`),
-  KEY `FK79a07hf7qj2yxvichy8bnxcaq` (`course_id`),
-  CONSTRAINT `FK79a07hf7qj2yxvichy8bnxcaq` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
+CREATE TABLE `assignment_results` (
+  `assignment_result_id` bigint NOT NULL AUTO_INCREMENT,
+  `correct_answer` varchar(255) DEFAULT NULL,
+  `is_correct` bit(1) DEFAULT NULL,
+  `submission_time` datetime(6) DEFAULT NULL,
+  `submitted_answer` varchar(255) DEFAULT NULL,
+  `wrong_ans_expl` varchar(255) DEFAULT NULL,
+  `assignment_id` bigint DEFAULT NULL,
+  `member_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`assignment_result_id`),
+  KEY `FKq94b2bpplwj24ft0l1wmh1hyl` (`assignment_id`),
+  KEY `FKpqmg3xhno75gmxtet42ku61f2` (`member_id`),
+  CONSTRAINT `FKpqmg3xhno75gmxtet42ku61f2` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`),
+  CONSTRAINT `FKq94b2bpplwj24ft0l1wmh1hyl` FOREIGN KEY (`assignment_id`) REFERENCES `assignments` (`assignment_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `benefits`
+-- Dumping data for table `assignment_results`
 --
 
-LOCK TABLES `benefits` WRITE;
-/*!40000 ALTER TABLE `benefits` DISABLE KEYS */;
-INSERT INTO `benefits` VALUES (1,'COURSE_COMPLETION','d234s5k3f','description','2023-12-28 08:00:00.000000',_binary '\0',6);
-/*!40000 ALTER TABLE `benefits` ENABLE KEYS */;
+LOCK TABLES `assignment_results` WRITE;
+/*!40000 ALTER TABLE `assignment_results` DISABLE KEYS */;
+INSERT INTO `assignment_results` VALUES (1,'test',_binary '\0','2024-01-04 08:00:00.000000','test','test',1,1);
+/*!40000 ALTER TABLE `assignment_results` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-05 15:58:32
+-- Dump completed on 2024-01-15 16:51:05

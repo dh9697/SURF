@@ -16,36 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `books`
+-- Table structure for table `member_benefits`
 --
 
-DROP TABLE IF EXISTS `books`;
+DROP TABLE IF EXISTS `member_benefits`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `books` (
-  `book_id` bigint NOT NULL AUTO_INCREMENT,
-  `author_name` varchar(255) DEFAULT NULL,
-  `book_thumnail` varchar(255) DEFAULT NULL,
-  `book_title` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `isbn` varchar(255) DEFAULT NULL,
-  `publication_date` date DEFAULT NULL,
-  `publisher` varchar(255) DEFAULT NULL,
-  `course_id` bigint DEFAULT NULL,
-  PRIMARY KEY (`book_id`),
-  KEY `FKqt8ahb820calhgdenuh25ajm2` (`course_id`),
-  CONSTRAINT `FKqt8ahb820calhgdenuh25ajm2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
+CREATE TABLE `member_benefits` (
+  `member_benefit_id` bigint NOT NULL AUTO_INCREMENT,
+  `date_received` datetime(6) DEFAULT NULL,
+  `is_used` bit(1) DEFAULT NULL,
+  `benefit_id` bigint DEFAULT NULL,
+  `member_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`member_benefit_id`),
+  KEY `FK9lk5tlv91vqb2r5ytsujhniku` (`benefit_id`),
+  KEY `FKrs2k3s7djqqdkwv3dv42am6hb` (`member_id`),
+  CONSTRAINT `FK9lk5tlv91vqb2r5ytsujhniku` FOREIGN KEY (`benefit_id`) REFERENCES `benefits` (`benefit_id`),
+  CONSTRAINT `FKrs2k3s7djqqdkwv3dv42am6hb` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `books`
+-- Dumping data for table `member_benefits`
 --
 
-LOCK TABLES `books` WRITE;
-/*!40000 ALTER TABLE `books` DISABLE KEYS */;
-INSERT INTO `books` VALUES (1,'author','url','Toeic800','description','isbn','2024-01-05','publisher',6);
-/*!40000 ALTER TABLE `books` ENABLE KEYS */;
+LOCK TABLES `member_benefits` WRITE;
+/*!40000 ALTER TABLE `member_benefits` DISABLE KEYS */;
+INSERT INTO `member_benefits` VALUES (1,'2024-01-05 08:00:00.000000',_binary '\0',1,1);
+/*!40000 ALTER TABLE `member_benefits` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -57,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-05 15:58:33
+-- Dump completed on 2024-01-15 16:51:08

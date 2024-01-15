@@ -16,34 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `course_reviews`
+-- Table structure for table `exam_history`
 --
 
-DROP TABLE IF EXISTS `course_reviews`;
+DROP TABLE IF EXISTS `exam_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `course_reviews` (
-  `review_id` bigint NOT NULL AUTO_INCREMENT,
-  `comment` varchar(2000) DEFAULT NULL,
-  `rating` int NOT NULL,
-  `review_date` datetime(6) NOT NULL,
-  `course_id` bigint NOT NULL,
+CREATE TABLE `exam_history` (
+  `exam_history_id` bigint NOT NULL AUTO_INCREMENT,
+  `exam_completion_status` bit(1) DEFAULT NULL,
+  `exam_submission_time` datetime(6) DEFAULT NULL,
+  `score` int DEFAULT NULL,
+  `exam_id` bigint NOT NULL,
   `member_id` bigint NOT NULL,
-  PRIMARY KEY (`review_id`),
-  KEY `FKlrpaadw9mi16mpm88uum9bdhm` (`member_id`),
-  KEY `FK799g8dfcye3g51ru63bfdhyb1` (`course_id`),
-  CONSTRAINT `FK799g8dfcye3g51ru63bfdhyb1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`),
-  CONSTRAINT `FKlrpaadw9mi16mpm88uum9bdhm` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`exam_history_id`),
+  KEY `FK1uur8qwrxn80nhe5v63phkwf6` (`exam_id`),
+  KEY `FKp7pbhtcgx7ejm733vydwilsrs` (`member_id`),
+  CONSTRAINT `FK1uur8qwrxn80nhe5v63phkwf6` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`exam_id`),
+  CONSTRAINT `FKp7pbhtcgx7ejm733vydwilsrs` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `course_reviews`
+-- Dumping data for table `exam_history`
 --
 
-LOCK TABLES `course_reviews` WRITE;
-/*!40000 ALTER TABLE `course_reviews` DISABLE KEYS */;
-/*!40000 ALTER TABLE `course_reviews` ENABLE KEYS */;
+LOCK TABLES `exam_history` WRITE;
+/*!40000 ALTER TABLE `exam_history` DISABLE KEYS */;
+INSERT INTO `exam_history` VALUES (1,_binary '','2024-01-05 08:00:00.000000',80,1,1);
+/*!40000 ALTER TABLE `exam_history` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-05 15:58:33
+-- Dump completed on 2024-01-15 16:51:06

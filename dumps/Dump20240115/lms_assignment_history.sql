@@ -16,35 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `qna_board`
+-- Table structure for table `assignment_history`
 --
 
-DROP TABLE IF EXISTS `qna_board`;
+DROP TABLE IF EXISTS `assignment_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `qna_board` (
-  `qna_board_id` bigint NOT NULL AUTO_INCREMENT,
-  `content` text,
-  `created_at` datetime(6) NOT NULL,
-  `description` text,
-  `title` varchar(200) NOT NULL,
-  `course_id` bigint NOT NULL,
+CREATE TABLE `assignment_history` (
+  `assignment_history_id` bigint NOT NULL AUTO_INCREMENT,
+  `exam_completion_status` bit(1) DEFAULT NULL,
+  `score` int DEFAULT NULL,
+  `submission_time` datetime(6) DEFAULT NULL,
+  `assignment_id` bigint NOT NULL,
   `member_id` bigint NOT NULL,
-  PRIMARY KEY (`qna_board_id`),
-  KEY `FKlwkn03noudiqds4i8v8ohmoqr` (`course_id`),
-  KEY `FK55pw91v2ctmq6ecm2o7d4iopa` (`member_id`),
-  CONSTRAINT `FK55pw91v2ctmq6ecm2o7d4iopa` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`),
-  CONSTRAINT `FKlwkn03noudiqds4i8v8ohmoqr` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`assignment_history_id`),
+  KEY `FKdw9lk13y01y5x4uxnx8tpff0d` (`assignment_id`),
+  KEY `FK9ja035yxv95nnw5t65rhelskx` (`member_id`),
+  CONSTRAINT `FK9ja035yxv95nnw5t65rhelskx` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`),
+  CONSTRAINT `FKdw9lk13y01y5x4uxnx8tpff0d` FOREIGN KEY (`assignment_id`) REFERENCES `assignments` (`assignment_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `qna_board`
+-- Dumping data for table `assignment_history`
 --
 
-LOCK TABLES `qna_board` WRITE;
-/*!40000 ALTER TABLE `qna_board` DISABLE KEYS */;
-/*!40000 ALTER TABLE `qna_board` ENABLE KEYS */;
+LOCK TABLES `assignment_history` WRITE;
+/*!40000 ALTER TABLE `assignment_history` DISABLE KEYS */;
+INSERT INTO `assignment_history` VALUES (1,_binary '\0',55,'2024-01-04 08:00:00.000000',1,1);
+/*!40000 ALTER TABLE `assignment_history` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-05 15:58:33
+-- Dump completed on 2024-01-15 16:51:08

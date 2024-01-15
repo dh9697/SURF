@@ -16,39 +16,37 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `orders`
+-- Table structure for table `courses`
 --
 
-DROP TABLE IF EXISTS `orders`;
+DROP TABLE IF EXISTS `courses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `orders` (
-  `order_id` bigint NOT NULL AUTO_INCREMENT,
-  `order_date` datetime(6) NOT NULL,
-  `status` varchar(255) NOT NULL,
-  `total_amount` decimal(38,2) NOT NULL,
-  `member_id` bigint DEFAULT NULL,
-  `address` varchar(255) NOT NULL,
-  `delivery_message` varchar(255) DEFAULT NULL,
-  `email` varchar(255) NOT NULL,
-  `payment_method` varchar(255) NOT NULL,
-  `phone_num` varchar(255) NOT NULL,
-  `recipient` varchar(255) NOT NULL,
-  `payment_date` datetime(6) NOT NULL,
-  `payment_status` bit(1) NOT NULL,
-  PRIMARY KEY (`order_id`),
-  KEY `FK2vq7lo4gkknrmghj3rqpqqg6s` (`member_id`),
-  CONSTRAINT `FK2vq7lo4gkknrmghj3rqpqqg6s` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `courses` (
+  `course_id` bigint NOT NULL AUTO_INCREMENT,
+  `course_name` varchar(500) DEFAULT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `duration_mins` int NOT NULL,
+  `end_date` date NOT NULL,
+  `start_date` date NOT NULL,
+  `content_level` varchar(255) NOT NULL,
+  `course_thumbnail` varchar(255) NOT NULL,
+  `price` int NOT NULL,
+  `subject_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`course_id`),
+  KEY `FK5tckdihu5akp5nkxiacx1gfhi` (`subject_id`),
+  CONSTRAINT `FK5tckdihu5akp5nkxiacx1gfhi` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`subject_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `orders`
+-- Dumping data for table `courses`
 --
 
-LOCK TABLES `orders` WRITE;
-/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
+LOCK TABLES `courses` WRITE;
+/*!40000 ALTER TABLE `courses` DISABLE KEYS */;
+INSERT INTO `courses` VALUES (2,'english','helloworld',60,'2023-12-28','2023-12-28','','',0,NULL),(3,'english','helloworld',60,'2023-12-28','2023-12-28','','',0,NULL),(4,'english','helloworld',60,'2023-12-28','2023-12-28','','',0,NULL),(5,'english','helloworld',60,'2023-12-28','2023-12-28','','',0,NULL),(6,'english','helloworld',60,'2023-12-28','2023-12-28','600','url',10000,1);
+/*!40000 ALTER TABLE `courses` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -60,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-05 15:58:31
+-- Dump completed on 2024-01-15 16:51:09

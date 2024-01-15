@@ -16,28 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `members_group`
+-- Table structure for table `member_authority`
 --
 
-DROP TABLE IF EXISTS `members_group`;
+DROP TABLE IF EXISTS `member_authority`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `members_group` (
-  `group_id` bigint NOT NULL AUTO_INCREMENT,
-  `description` text,
-  `group_name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`group_id`),
-  UNIQUE KEY `UK_gid8hsmgfxjb32ns6hsqybo27` (`group_name`)
+CREATE TABLE `member_authority` (
+  `member_id` bigint NOT NULL,
+  `authority_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`member_id`,`authority_name`),
+  KEY `FKasnmjar8jr5gaxvd7966p19ir` (`authority_name`),
+  CONSTRAINT `FKasnmjar8jr5gaxvd7966p19ir` FOREIGN KEY (`authority_name`) REFERENCES `authority` (`authority_name`),
+  CONSTRAINT `FKnsanhmk19ecj6ls17yoim8ghr` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `members_group`
+-- Dumping data for table `member_authority`
 --
 
-LOCK TABLES `members_group` WRITE;
-/*!40000 ALTER TABLE `members_group` DISABLE KEYS */;
-/*!40000 ALTER TABLE `members_group` ENABLE KEYS */;
+LOCK TABLES `member_authority` WRITE;
+/*!40000 ALTER TABLE `member_authority` DISABLE KEYS */;
+INSERT INTO `member_authority` VALUES (13,'ROLE_ADMIN'),(17,'ROLE_ADMIN'),(16,'ROLE_INSTRUCTOR'),(14,'ROLE_MEMBER'),(15,'ROLE_USER'),(17,'ROLE_USER'),(18,'ROLE_USER');
+/*!40000 ALTER TABLE `member_authority` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-05 15:58:31
+-- Dump completed on 2024-01-15 16:51:06

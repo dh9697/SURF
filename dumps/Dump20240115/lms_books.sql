@@ -16,32 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `login_history`
+-- Table structure for table `books`
 --
 
-DROP TABLE IF EXISTS `login_history`;
+DROP TABLE IF EXISTS `books`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `login_history` (
-  `log_id` bigint NOT NULL AUTO_INCREMENT,
-  `ip_address` varchar(50) NOT NULL,
-  `login_time` datetime(6) NOT NULL,
-  `member_id` bigint NOT NULL,
-  `status` bit(1) NOT NULL,
-  PRIMARY KEY (`log_id`),
-  KEY `FKq2swtm0wd8kuwki103rgvmh6t` (`member_id`),
-  CONSTRAINT `FKq2swtm0wd8kuwki103rgvmh6t` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
+CREATE TABLE `books` (
+  `book_id` bigint NOT NULL AUTO_INCREMENT,
+  `author_name` varchar(255) DEFAULT NULL,
+  `book_thumnail` varchar(255) DEFAULT NULL,
+  `book_title` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `isbn` varchar(255) DEFAULT NULL,
+  `publication_date` date DEFAULT NULL,
+  `publisher` varchar(255) DEFAULT NULL,
+  `course_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`book_id`),
+  KEY `FKqt8ahb820calhgdenuh25ajm2` (`course_id`),
+  CONSTRAINT `FKqt8ahb820calhgdenuh25ajm2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `login_history`
+-- Dumping data for table `books`
 --
 
-LOCK TABLES `login_history` WRITE;
-/*!40000 ALTER TABLE `login_history` DISABLE KEYS */;
-INSERT INTO `login_history` VALUES (1,'ipAddress','2024-01-05 08:00:00.000000',1,_binary '');
-/*!40000 ALTER TABLE `login_history` ENABLE KEYS */;
+LOCK TABLES `books` WRITE;
+/*!40000 ALTER TABLE `books` DISABLE KEYS */;
+INSERT INTO `books` VALUES (1,'author','url','Toeic800','description','isbn','2024-01-05','publisher',6);
+/*!40000 ALTER TABLE `books` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-05 15:58:31
+-- Dump completed on 2024-01-15 16:51:08
