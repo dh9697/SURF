@@ -103,22 +103,5 @@ public class MemberServiceImpl implements MemberService {
 	public MemberDto getCurrentMemberWithAuthorities() {
 		return MemberDto.from(SecurityUtil.getCurrentloginId().flatMap(memberRepository::findOneWithAuthoritiesByLoginId).orElseThrow(() -> new InvalidRequestException("No current member", "member not found")));
 	}
-	
-	// 회원 탈퇴
-	@Transactional
-	public void withdrawalMember(Long memberId, String withdrawReason) {
-		Member member = memberRepository.findById(memberId).orElse(null);
-		
-		if(member != null) {
-			member.setActive(false);
-			memberRepository.save(member);
-		}
-		
-		Withdrawal withdrawal = new Withdrawal();
-		withdrawal.setMember(member);
-		withdrawal.setWithdrawalTime(LocalDateTime.now());
-		withdrawal.setReason(withdrawReason);
-		withdrawalRepository.save(withdrawal);
-	}
 		
 }

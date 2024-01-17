@@ -9,9 +9,11 @@ import { Login } from "./Login";
 import { Register } from "./Register";
 import { Footer } from "./Footer";
 import styled from "styled-components";
-import { Dashboard } from "./Dashboard";
+import { DashboardNavBar } from "./DashboardNavBar";
 import { useContext } from "react";
 import { AuthContext } from "../AuthContext";
+import { AccountInfo } from "./AccountInfo";
+import { Dashboard } from "./Dashboard";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -48,8 +50,14 @@ export function Surf() {
                   {isLoggedIn && (
                     <Route
                       path={`/dashboard/${user.loginId}`}
-                      element={<Dashboard />}
-                    />
+                      element={<DashboardNavBar />}
+                    >
+                      <Route index element={<Dashboard />} />
+                      <Route
+                        path={`/dashboard/${user.loginId}/account_info`}
+                        element={<AccountInfo />}
+                      />
+                    </Route>
                   )}
                 </Route>
                 <Route path="/login" element={<Login />} />

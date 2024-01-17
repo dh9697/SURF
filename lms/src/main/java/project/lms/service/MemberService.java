@@ -10,5 +10,4 @@ public interface MemberService {
 	public ResponseDto<MemberLoginDto> login(MemberLoginDto memberLoginDto);
 	public MemberDto getMemberWithAuthorities(String loginId);
 	public MemberDto getCurrentMemberWithAuthorities();
-	public void withdrawalMember(Long memberId, String withdrawReason);
 }

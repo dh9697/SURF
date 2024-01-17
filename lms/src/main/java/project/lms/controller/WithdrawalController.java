@@ -1,26 +1,26 @@
 package project.lms.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import project.lms.model.Withdrawal;
+import jakarta.validation.Valid;
+import project.lms.dto.ResponseDto;
+import project.lms.dto.WithdrawalDto;
 import project.lms.service.WithdrawalService;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/api")
 @CrossOrigin(origins="http://localhost:3000",
 	methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
 public class WithdrawalController {
 
-	private WithdrawalService withdrawalService;
+	private final WithdrawalService withdrawalService;
 
 	@Autowired
 	public WithdrawalController(WithdrawalService withdrawalService) {
@@ -28,14 +28,9 @@ public class WithdrawalController {
 		this.withdrawalService = withdrawalService;
 	}
 	
-	@GetMapping("/withdrawal")
-	public List<Withdrawal> getAllWithdrawals(){
-		return withdrawalService.getAllWithdrawals();
-	}
-	
 	@PostMapping("/withdrawal")
-	public Withdrawal createWithdrawal(@RequestBody Withdrawal withdrawal) {
-		return withdrawalService.createWithdrawal(withdrawal);
+	public ResponseEntity<ResponseDto<WithdrawalDto>> withdrawal(@RequestBody @Valid WithdrawalDto withdrawalDto) {
+		ResponseDto<WithdrawalDto> responseDto = withdrawalService.withdrawal(withdrawalDto);
+		return ResponseEntity.ok(responseDto);
 	}
-	
 }

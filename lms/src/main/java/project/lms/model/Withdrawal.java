@@ -29,15 +29,13 @@ public class Withdrawal {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime withdrawalTime; 
 
-    @Column(length = 255)
-    private String reason; 
+    @Column(nullable = false)
+    private String reason;
 
-    // 기본 생성자
-    public Withdrawal() {
-        super();
-    }
-
-    // 전체 생성자
+	public Withdrawal() {
+		super();
+	}
+	
 	public Withdrawal(Long withdrawalId, Member member, LocalDateTime withdrawalTime, String reason) {
 		super();
 		this.withdrawalId = withdrawalId;
@@ -46,7 +44,6 @@ public class Withdrawal {
 		this.reason = reason;
 	}
 
-    // Getters and Setters
 	public Long getWithdrawalId() {
 		return withdrawalId;
 	}
@@ -77,5 +74,6 @@ public class Withdrawal {
 
 	public void setReason(String reason) {
 		this.reason = reason;
-	}    
+	}
+    
 }
