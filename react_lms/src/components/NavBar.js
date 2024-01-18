@@ -1,16 +1,15 @@
 import styled from "styled-components";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import surfLogo from "./image/surf_logo.png";
-import { useContext, useEffect, useState } from "react";
+import { seEffect, useEffect, useState } from "react";
 import { apiGetCurrentUserInfo } from "./RestApi";
-import { AuthContext } from "../AuthContext";
 
 const Container = styled.div`
   width: 100%;
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1);
   & .innerWrapper {
     display: grid;
-    grid-template-columns: 8fr 2fr;
+    grid-template-columns: 6fr 4fr;
   }
 `;
 const Section = styled.div`
@@ -55,6 +54,7 @@ const NavSectionItem = styled(NavLink)`
     padding: 8px 32px;
   }
 `;
+
 export function NavBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({});
@@ -95,7 +95,7 @@ export function NavBar() {
               <NavSectionItem className="about" to={"/about"}>
                 About
               </NavSectionItem>
-              <NavSectionItem className="course" to={"/"}>
+              <NavSectionItem className="course" to={"/course"}>
                 Courses
               </NavSectionItem>
               <NavSectionItem className="levelTest" to={"/level_test"}>

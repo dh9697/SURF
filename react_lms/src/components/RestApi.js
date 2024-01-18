@@ -51,6 +51,14 @@ export function apiLoginByAxiosPost(loginId, password) {
   );
 }
 
+export function apiWithdrawalByAxiosPost(withdrawalReason) {
+  const token = localStorage.getItem("Token");
+  return axios.post(
+    "http://localhost:8080/api/withdrawal",
+    { withdrawalReason: withdrawalReason },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+}
 // withdrawal
 
 export function loginUser(loginId, password) {

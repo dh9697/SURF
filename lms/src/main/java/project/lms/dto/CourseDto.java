@@ -1,58 +1,35 @@
-package project.lms.model;
+package project.lms.dto;
 
-import java.time.LocalDate;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import org.springframework.web.multipart.MultipartFile;
 
-@Entity
-@Table(name = "courses")
-public class Course {
+import project.lms.model.Subject;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CourseDto {
+
 	private Long courseId;
 	
-	@ManyToOne
-    @JoinColumn(name = "subjectId")
     private Subject subject;
-	
-	@Column(nullable = false, length = 150)
+
 	private String courseName;
-	
-	@Column(nullable = true, length = 500)
+
 	private String description;
-	
-	@Column(nullable = false)	    
+    
 	private Integer durationMins;
-	
-	@Lob
-	@Column(nullable = false, length = 500)
-	private byte[] courseThumbnail;
-	    
-	@Column(nullable = false)
+
+	private MultipartFile courseThumbnail;
+
 	private String contentLevel;
 
-    @Column(nullable = false)
     private Integer price;
-    
-    @Column
+
     private String announcement;
-    
-	public Course() {
+
+	public CourseDto() {
 		super();
 	}
 
-	public Course(Long courseId, Subject subject, String courseName, String description, Integer durationMins,
-			byte[] courseThumbnail, String contentLevel, Integer price, String announcement) {
+	public CourseDto(Long courseId, Subject subject, String courseName, String description, Integer durationMins,
+			MultipartFile courseThumbnail, String contentLevel, Integer price, String announcement) {
 		super();
 		this.courseId = courseId;
 		this.subject = subject;
@@ -105,11 +82,11 @@ public class Course {
 		this.durationMins = durationMins;
 	}
 
-	public byte[] getCourseThumbnail() {
+	public MultipartFile getCourseThumbnail() {
 		return courseThumbnail;
 	}
 
-	public void setCourseThumbnail(byte[] courseThumbnail) {
+	public void setCourseThumbnail(MultipartFile courseThumbnail) {
 		this.courseThumbnail = courseThumbnail;
 	}
 
@@ -136,5 +113,5 @@ public class Course {
 	public void setAnnouncement(String announcement) {
 		this.announcement = announcement;
 	}
-	
+    
 }

@@ -31,17 +31,22 @@ public class Withdrawal {
 
     @Column(nullable = false)
     private String reason;
+    
+    @Column
+    private boolean isDeleted;
 
 	public Withdrawal() {
 		super();
 	}
-	
-	public Withdrawal(Long withdrawalId, Member member, LocalDateTime withdrawalTime, String reason) {
+
+	public Withdrawal(Long withdrawalId, Member member, LocalDateTime withdrawalTime, String reason,
+			boolean isDeleted) {
 		super();
 		this.withdrawalId = withdrawalId;
 		this.member = member;
 		this.withdrawalTime = withdrawalTime;
 		this.reason = reason;
+		this.isDeleted = isDeleted;
 	}
 
 	public Long getWithdrawalId() {
@@ -75,5 +80,13 @@ public class Withdrawal {
 	public void setReason(String reason) {
 		this.reason = reason;
 	}
-    
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
 }

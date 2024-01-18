@@ -70,7 +70,6 @@ public class MemberServiceImpl implements MemberService {
 		
 		memberRepository.save(member);
 		
-		// 회원가입 성공 후 해당 회원 정보 뜨게
 		MemberDto createdMemberDto = MemberDto.from(member);
 		return new ResponseDto<>(
 				ResultCode.SUCCESS.name(),

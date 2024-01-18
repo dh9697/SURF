@@ -1,9 +1,12 @@
 package project.lms.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +14,7 @@ import project.lms.dto.ResponseDto;
 import project.lms.dto.WithdrawalDto;
 import project.lms.enumstatus.ResultCode;
 import project.lms.exception.InvalidRequestException;
+import project.lms.model.Member;
 import project.lms.model.Withdrawal;
 import project.lms.repository.MemberRepository;
 import project.lms.repository.WithdrawalRepository;
@@ -62,5 +66,29 @@ public class WithdrawalServiceImpl implements WithdrawalService{
 			throw new InvalidRequestException("No current login", "현재 로그인 정보를 찾을 수 없습니다.");
 		}
 	}
+	
+	// 자정 기준
+		@Scheduled(cron = "0 0 0 * * *")
+		public void scheduleDeleteInactiveMembers() {
+			
+			LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(1);
+			
+			List<Withdrawal> inactiveMembers = 
+					withdrawalRepository.findByIsDeletedFalseAndWithdrawalTimeBefore(sevenDaysAgo);
+			
+			for (Withdrawal withdrawal : inactiveMembers) {
+				project.lms.model.Member member = withdrawal.getMember();
+				
+				if(withdrawal.getWithdrawalTime().isAfter(LocalDateTime.now().minusDays(1))) {
+					withdrawal.setDeleted(true);
+					withdrawalRepository.save(withdrawal);
+					member.setActive(true);
+					memberRepository.save(member);
+				} else {
+				memberRepository.delete(member);
+				withdrawalRepository.delete(withdrawal);
+				}
+			}
+		}
 
 }

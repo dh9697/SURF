@@ -19,23 +19,5 @@ import project.lms.service.CourseService;
 @CrossOrigin(origins="http://localhost:3000",
 methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
 public class CourseController {
-
-	private final CourseService courseService;
-	
-	@Autowired
-	public CourseController(CourseService courseService) {
-		super();
-		this.courseService = courseService;
-	}
-	
-	@GetMapping("/course")
-	public List<Course> getAllCourses(){
-		return courseService.getAllCourses();
-	}
-	
-	@PostMapping("/course")
-	public Course createCourse(@RequestBody Course course) {
-		return courseService.createCourse(course);
-	}
 	
 }

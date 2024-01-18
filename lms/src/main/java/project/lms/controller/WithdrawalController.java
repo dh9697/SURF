@@ -33,4 +33,5 @@ public class WithdrawalController {
 		ResponseDto<WithdrawalDto> responseDto = withdrawalService.withdrawal(withdrawalDto);
 		return ResponseEntity.ok(responseDto);
 	}
+
 }

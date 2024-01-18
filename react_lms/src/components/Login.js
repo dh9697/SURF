@@ -122,8 +122,11 @@ export function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      console.log("로그인 시도");
       const response = await apiLoginByAxiosPost(loginId, password);
+      console.log("서버 응답: ", response);
       if (response.data.resultCode === "SUCCESS") {
+        console.log("토큰:", response.data.data.token);
         localStorage.setItem("Token", response.data.data.token);
         window.alert("로그인이 성공적으로 이루어졌습니다.");
         navigate("/");

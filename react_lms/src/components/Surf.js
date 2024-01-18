@@ -14,6 +14,9 @@ import { useContext } from "react";
 import { AuthContext } from "../AuthContext";
 import { AccountInfo } from "./AccountInfo";
 import { Dashboard } from "./Dashboard";
+import { MyCourse } from "./MyCourse";
+import { Course } from "./Course";
+import { Contact } from "./Contact";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -43,16 +46,21 @@ export function Surf() {
                 <Route path="/" element={<NavBar />}>
                   <Route index element={<Main />} />
                   <Route path="/about" element={<About />} />
-                  {/* <Route path="/course" element={<Course />} /> */}
+                  <Route path="/course" element={<Course />} />
                   <Route path="/level_test" element={<LevelTest />} />
                   <Route path="/community" element={<Community />} />
                   <Route path="/event" element={<Event />} />
+                  <Route path="/contact" element={<Contact />} />
                   {isLoggedIn && (
                     <Route
                       path={`/dashboard/${user.loginId}`}
                       element={<DashboardNavBar />}
                     >
                       <Route index element={<Dashboard />} />
+                      <Route
+                        path={`/dashboard/${user.loginId}/courses`}
+                        element={<MyCourse />}
+                      />
                       <Route
                         path={`/dashboard/${user.loginId}/account_info`}
                         element={<AccountInfo />}
