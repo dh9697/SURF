@@ -1,5 +1,8 @@
 import { createContext, useEffect, useState } from "react";
-import { apiGetCurrentUserInfo } from "./components/RestApi";
+import {
+  apiGetCurrentUserInfo,
+  apiLoginByAxiosPost,
+} from "./components/RestApi";
 
 const AuthContext = createContext();
 
@@ -25,6 +28,20 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
+  // const handleLogin = async (loginId, password) => {
+  //   try {
+  //     const response = await apiLoginByAxiosPost(loginId, password);
+  //     if (response.data.resultCode === "SUCCESS") {
+  //       localStorage.setItem("Token", response.data.data.token);
+  //       window.alert("로그인이 성공적으로 이루어졌습니다.");
+  //     } else {
+  //       console.log(response.data.message);
+  //     }
+  //   } catch (err) {
+  //     console.log("로그인 오류", err);
+  //   }
+  // };
+
   const handleLogout = () => {
     localStorage.removeItem("Token");
     setIsLoggedIn(false);
@@ -32,7 +49,9 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, user, handleLogout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, setIsLoggedIn, user, handleLogout }}
+    >
       {children}
     </AuthContext.Provider>
   );

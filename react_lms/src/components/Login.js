@@ -112,9 +112,6 @@ const Img = styled.img`
 `;
 
 export function Login() {
-  // 로그인 성공 시 이전 페이지나 "/"로 기능 추가
-
-  // restApi 호출
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();

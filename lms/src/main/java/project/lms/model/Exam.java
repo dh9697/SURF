@@ -22,8 +22,8 @@ public class Exam {
     private Long examId;
 
     @ManyToOne
-    @JoinColumn(name = "contentId", nullable = false)
-    private Content content;
+    @JoinColumn(name = "courseId", nullable = false)
+    private Course course;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -48,11 +48,11 @@ public class Exam {
 		super();
 	}
 
-	public Exam(Long examId, Content content, LocalDateTime examDate, String correctAns, Integer numQuestions,
+	public Exam(Long examId, Course course, LocalDateTime examDate, String correctAns, Integer numQuestions,
 			Integer durationMins, Integer passingScore, Boolean examIsActive) {
 		super();
 		this.examId = examId;
-		this.content = content;
+		this.course = course;
 		this.examDate = examDate;
 		CorrectAns = correctAns;
 		this.numQuestions = numQuestions;
@@ -69,12 +69,12 @@ public class Exam {
 		this.examId = examId;
 	}
 
-	public Content getContent() {
-		return content;
+	public Course getCourse() {
+		return course;
 	}
 
-	public void setContent(Content content) {
-		this.content = content;
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 
 	public LocalDateTime getExamDate() {
@@ -124,5 +124,5 @@ public class Exam {
 	public void setExamIsActive(Boolean examIsActive) {
 		this.examIsActive = examIsActive;
 	}
-	
+
 }

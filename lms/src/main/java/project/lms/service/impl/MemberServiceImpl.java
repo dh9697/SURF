@@ -94,13 +94,16 @@ public class MemberServiceImpl implements MemberService {
 	// admin 권한이 DB에서 member 정보를 찾아 옴
 	@Transactional(readOnly = true)
 	public MemberDto getMemberWithAuthorities(String loginId) {
-		return MemberDto.from(memberRepository.findOneWithAuthoritiesByLoginId(loginId).orElseThrow(() -> new InvalidRequestException(loginId, "member not found")));
+		return MemberDto.from(memberRepository.findOneWithAuthoritiesByLoginId(loginId)
+				.orElseThrow(() -> new InvalidRequestException(loginId, "member not found")));
 	}
 	
 	// member, admin 상관없이 사용, SecurityContextHolder 안의 정보를 찾아옴
 	@Transactional(readOnly = true)
 	public MemberDto getCurrentMemberWithAuthorities() {
-		return MemberDto.from(SecurityUtil.getCurrentloginId().flatMap(memberRepository::findOneWithAuthoritiesByLoginId).orElseThrow(() -> new InvalidRequestException("No current member", "member not found")));
+		return MemberDto.from(SecurityUtil.getCurrentloginId()
+				.flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
+				.orElseThrow(() -> new InvalidRequestException("No current member", "member not found")));
 	}
 		
 }

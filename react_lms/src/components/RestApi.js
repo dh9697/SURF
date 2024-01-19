@@ -59,8 +59,8 @@ export function apiWithdrawalByAxiosPost(withdrawalReason) {
     { headers: { Authorization: `Bearer ${token}` } }
   );
 }
-// withdrawal
 
+// withdrawal
 export function loginUser(loginId, password) {
   return apiLoginByAxiosPost(loginId, password).then((response) => {
     const token = response.data.token;
@@ -73,6 +73,7 @@ export function loginUser(loginId, password) {
   });
 }
 
+// user 정보
 export function apiGetCurrentUserInfo() {
   const token = localStorage.getItem("Token");
   const loginId = localStorage.getItem("LoginId");
@@ -85,4 +86,24 @@ export function apiGetCurrentUserInfo() {
       Authorization: `Bearer ${token}`,
     },
   });
+}
+
+// exam question 입력
+export function apiPostQuestionForExam(
+  examId,
+  questionText,
+  options,
+  correctOptionIndex
+) {
+  const token = localStorage.getItem("Token");
+  return axios.post(
+    "http://localhost:8080/api/exam-questions/save",
+    {
+      examId: examId,
+      questionText: questionText,
+      options: options,
+      correctOptionIndex: correctOptionIndex,
+    },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
 }

@@ -17,6 +17,7 @@ import { Dashboard } from "./Dashboard";
 import { MyCourse } from "./MyCourse";
 import { Course } from "./Course";
 import { Contact } from "./Contact";
+import { TestQuestion } from "./TestQuestion";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -38,8 +39,8 @@ export function Surf() {
 
   return (
     <>
-      <Wrapper>
-        <BrowserRouter>
+      <BrowserRouter>
+        <Wrapper>
           <ContentWrapper>
             <MainContent>
               <Routes>
@@ -70,12 +71,13 @@ export function Surf() {
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/test" element={<TestQuestion />} />
               </Routes>
             </MainContent>
             <Footer />
           </ContentWrapper>
-        </BrowserRouter>
-      </Wrapper>
+        </Wrapper>
+      </BrowserRouter>
     </>
   );
 }
