@@ -15,7 +15,7 @@ public class ExamQuestion {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long ExamQuestionId;
+	private Long examQuestionId;
 	
 	@ManyToOne
 	@JoinColumn(name = "examId", nullable = false)
@@ -37,7 +37,7 @@ public class ExamQuestion {
 	public ExamQuestion(Long examQuestionId, Exam exam, String questionText, String options,
 			Integer correctOptionIndex) {
 		super();
-		ExamQuestionId = examQuestionId;
+		this.examQuestionId = examQuestionId;
 		this.exam = exam;
 		this.questionText = questionText;
 		this.options = options;
@@ -45,11 +45,11 @@ public class ExamQuestion {
 	}
 
 	public Long getExamQuestionId() {
-		return ExamQuestionId;
+		return examQuestionId;
 	}
 
 	public void setExamQuestionId(Long examQuestionId) {
-		ExamQuestionId = examQuestionId;
+		this.examQuestionId = examQuestionId;
 	}
 
 	public Exam getExam() {

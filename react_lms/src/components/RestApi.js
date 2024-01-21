@@ -4,6 +4,8 @@ export function RestApi() {
   return <></>;
 }
 
+const token = localStorage.getItem("Token");
+
 // signup
 export function apiSignupByAxiosPost(
   loginId,
@@ -50,9 +52,8 @@ export function apiLoginByAxiosPost(loginId, password) {
     }
   );
 }
-
+// withdrawal
 export function apiWithdrawalByAxiosPost(withdrawalReason) {
-  const token = localStorage.getItem("Token");
   return axios.post(
     "http://localhost:8080/api/withdrawal",
     { withdrawalReason: withdrawalReason },
@@ -60,7 +61,6 @@ export function apiWithdrawalByAxiosPost(withdrawalReason) {
   );
 }
 
-// withdrawal
 export function loginUser(loginId, password) {
   return apiLoginByAxiosPost(loginId, password).then((response) => {
     const token = response.data.token;
@@ -75,7 +75,6 @@ export function loginUser(loginId, password) {
 
 // user 정보
 export function apiGetCurrentUserInfo() {
-  const token = localStorage.getItem("Token");
   const loginId = localStorage.getItem("LoginId");
 
   if (!token) {
@@ -88,14 +87,28 @@ export function apiGetCurrentUserInfo() {
   });
 }
 
-// exam question 입력
-export function apiPostQuestionForExam(
+// --- exam question ---
+// 모든 시험 문제 조회
+export function apiGetAllExamQuestions() {
+  return axios.get("http://localhost:8080/api/exam-questions/list", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+// 특정 시험 문제 조회
+export function apiGetQuestionsForExam(examId) {
+  return axios.get(`http://localhost:8080/api/exam-questions/list/${examId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+// 시험 문제 저장
+export function apiPostQuestionsForExam(
   examId,
   questionText,
   options,
   correctOptionIndex
 ) {
-  const token = localStorage.getItem("Token");
   return axios.post(
     "http://localhost:8080/api/exam-questions/save",
     {
@@ -104,6 +117,34 @@ export function apiPostQuestionForExam(
       options: options,
       correctOptionIndex: correctOptionIndex,
     },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+}
+
+// 시험 문제 수정
+export function apiPutQuestionsForExam(
+  examQuestionId,
+  examId,
+  questionText,
+  options,
+  correctOptionIndex
+) {
+  return axios.put(
+    `http://localhost:8080/api/exam-questions/update/${examQuestionId}`,
+    {
+      examId: examId,
+      questionText: questionText,
+      options: options,
+      correctOptionIndex: correctOptionIndex,
+    },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+}
+
+// 시험 문제 삭제
+export function apiDeleteQuestionsForExam(examQuestionId) {
+  return axios.delete(
+    `http://localhost:8080/api/exam-questions/delete/${examQuestionId}`,
     { headers: { Authorization: `Bearer ${token}` } }
   );
 }

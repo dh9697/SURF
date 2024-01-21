@@ -1,6 +1,7 @@
 package project.lms.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -24,16 +26,13 @@ public class Exam {
     @ManyToOne
     @JoinColumn(name = "courseId", nullable = false)
     private Course course;
-
-    @Column(nullable = false)
+    
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime examDate;
 
-    @Column(nullable = false)
-    private String CorrectAns;
-    
-    @Column(nullable = false)
-    private Integer numQuestions;
+    // 답안 수정
+    @OneToMany(mappedBy = "exam")
+    private List<ExamQuestion> examQuestions;
 
     @Column(nullable = false)
     private Integer durationMins;
@@ -47,20 +46,19 @@ public class Exam {
 	public Exam() {
 		super();
 	}
-
-	public Exam(Long examId, Course course, LocalDateTime examDate, String correctAns, Integer numQuestions,
+	
+	public Exam(Long examId, Course course, LocalDateTime examDate, List<ExamQuestion> examQuestions,
 			Integer durationMins, Integer passingScore, Boolean examIsActive) {
 		super();
 		this.examId = examId;
 		this.course = course;
 		this.examDate = examDate;
-		CorrectAns = correctAns;
-		this.numQuestions = numQuestions;
+		this.examQuestions = examQuestions;
 		this.durationMins = durationMins;
 		this.passingScore = passingScore;
 		this.examIsActive = examIsActive;
 	}
-
+	
 	public Long getExamId() {
 		return examId;
 	}
@@ -85,20 +83,12 @@ public class Exam {
 		this.examDate = examDate;
 	}
 
-	public String getCorrectAns() {
-		return CorrectAns;
+	public List<ExamQuestion> getExamQuestions() {
+		return examQuestions;
 	}
 
-	public void setCorrectAns(String correctAns) {
-		CorrectAns = correctAns;
-	}
-
-	public Integer getNumQuestions() {
-		return numQuestions;
-	}
-
-	public void setNumQuestions(Integer numQuestions) {
-		this.numQuestions = numQuestions;
+	public void setExamQuestions(List<ExamQuestion> examQuestions) {
+		this.examQuestions = examQuestions;
 	}
 
 	public Integer getDurationMins() {
@@ -125,4 +115,7 @@ public class Exam {
 		this.examIsActive = examIsActive;
 	}
 
+	public Integer getNumQuestions() {
+		return examQuestions != null ? examQuestions.size() : 0;
+	}
 }

@@ -12,7 +12,7 @@ public class ExamQuestionDto {
 	public ExamQuestionDto() {
 		super();
 	}
-
+	
 	public ExamQuestionDto(Long examId, String questionText, List<String> options, int correctOptionIndex) {
 		super();
 		this.examId = examId;
@@ -20,7 +20,7 @@ public class ExamQuestionDto {
 		this.options = options;
 		this.correctOptionIndex = correctOptionIndex;
 	}
-
+	
 	public Long getExamId() {
 		return examId;
 	}
@@ -52,9 +52,10 @@ public class ExamQuestionDto {
 	public void setCorrectOptionIndex(int correctOptionIndex) {
 		this.correctOptionIndex = correctOptionIndex;
 	}
-	
+
 	public String getOptionAsString() {
 		return String.join(",", this.options);
 	}
+	
 	
 }

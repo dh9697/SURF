@@ -71,7 +71,7 @@ export function Surf() {
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/test" element={<TestQuestion />} />
+                <Route path="/test" element={<TestQuestion />}></Route>
               </Routes>
             </MainContent>
             <Footer />

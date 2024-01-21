@@ -2,26 +2,14 @@ package project.lms.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
+import project.lms.dto.ExamDto;
+import project.lms.dto.ResponseDto;
 import project.lms.model.Exam;
-import project.lms.repository.ExamRepository;
 
-@Service
-public class ExamService {
-
-	private final ExamRepository examRepository;
-
-	public ExamService(ExamRepository examRepository) {
-		super();
-		this.examRepository = examRepository;
-	}
+public interface ExamService {
 	
-	public List<Exam> getAllExams(){
-		return examRepository.findAll();
-	}
+	public ResponseDto<List<Exam>> getAllExams();
+	public ResponseDto<List<Exam>> getExamByCourse(Long courseId);
+	public ResponseDto<ExamDto> createOrUpdateExam(ExamDto examDto);
 	
-	public Exam createExam(Exam exam) {
-		return examRepository.save(exam);
-	}
 }
