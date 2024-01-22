@@ -3,8 +3,12 @@ package project.lms.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,14 +30,18 @@ public class Exam {
     @ManyToOne
     @JoinColumn(name = "courseId", nullable = false)
     private Course course;
+
+    // 답안이 보이게는 어떻게?
+    @JsonIgnore
+    // @JsonIgnore를 사용하여 examQuestions 필드를 제외시킴으로써
+    // Jackson은 examQuestions를 무시하고 Exam 객체를 JSON으로 변환
+    // get할 때 무한루프에 빠지는 거 같은데 쌤께 물어보기!!
+    @OneToMany(mappedBy = "exam")
+    private List<ExamQuestion> examQuestions;
     
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime examDate;
-
-    // 답안 수정
-    @OneToMany(mappedBy = "exam")
-    private List<ExamQuestion> examQuestions;
-
+    
     @Column(nullable = false)
     private Integer durationMins;
 

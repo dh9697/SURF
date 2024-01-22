@@ -148,3 +148,43 @@ export function apiDeleteQuestionsForExam(examQuestionId) {
     { headers: { Authorization: `Bearer ${token}` } }
   );
 }
+
+// --------------- Course Rest API ---------------
+// 모든 코스 조회
+export function apiGetAllCourses() {
+  return axios.get("http://localhost:8080/api/course", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+// 특정 코스 조회
+export function apiGetCourse(courseId) {
+  return axios.get(`http://localhost:8080/api/course/${courseId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+// 코스 저장
+export function apiPostCourse(courseData) {
+  return axios.post("http://localhost:8080/api/course/save", courseData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+// 코스 수정
+export function apiPutCourse(courseId, courseData) {
+  return axios.put(
+    `http://localhost:8080/api/course/update/${courseId}`,
+    courseData,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+}
+
+// 코스 삭제
+export function apiDeleteCourse(courseId) {
+  return axios.delete(`http://localhost:8080/api/course/delete/${courseId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}

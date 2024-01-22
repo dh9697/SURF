@@ -14,11 +14,13 @@ export function TestQuestion() {
   const [examId, setExamId] = useState("1");
   const [questionText, setQuestionText] = useState("");
   const [options, setOptions] = useState(["", "", "", ""]);
+  const [editOptions, setEditOptions] = useState(["", "", "", ""]);
   const [correctOptionIndex, setCorrectOptionIndex] = useState(1);
   const [examQuestionId, setExamQuestionId] = useState(null);
   const [isFormSubmitted, setFormSubmitted] = useState(false);
   const [examQuestions, setExamQuestions] = useState([]);
   const [editMode, setEditMode] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(null);
 
   // examId로 문제 불러오기
   useEffect(() => {
@@ -33,6 +35,10 @@ export function TestQuestion() {
       })
       .catch((error) => {
         console.error("시험 문제 불러오기 오류: ", error);
+        console.error(
+          "에러 상세 정보: ",
+          error.response || error.message || error
+        );
       });
   };
 
@@ -75,13 +81,15 @@ export function TestQuestion() {
     examQuestionId,
     questionText,
     options,
-    correctOptionIndex
+    correctOptionIndex,
+    index
   ) => {
     setEditMode(true);
     setExamQuestionId(examQuestionId);
     setQuestionText(questionText);
-    setOptions(options.split(","));
+    setEditOptions(options.split(","));
     setCorrectOptionIndex(correctOptionIndex);
+    setEditingIndex(index);
   };
 
   // 문제 수정 취소
@@ -192,7 +200,8 @@ export function TestQuestion() {
                     examQuestion.examQuestionId,
                     examQuestion.questionText,
                     examQuestion.options,
-                    examQuestion.correctOptionIndex
+                    examQuestion.correctOptionIndex,
+                    index
                   )
                 }
               >
@@ -201,55 +210,57 @@ export function TestQuestion() {
               <button onClick={() => handleDelete(examQuestion.examQuestionId)}>
                 삭제
               </button>
+              {editMode && editingIndex === index && (
+                <div>
+                  <h2>문제 수정</h2>
+                  <label>
+                    문제:
+                    <input
+                      type="text"
+                      value={questionText}
+                      onChange={(e) => setQuestionText(e.target.value)}
+                    />
+                  </label>
+                  <br />
+                  {options.map((option, index) => (
+                    <div key={index}>
+                      <label>
+                        선택지 {index + 1}:
+                        <input
+                          value={option}
+                          onChange={(e) => {
+                            const newOptions = [...options];
+                            newOptions[index] = e.target.value;
+                            setOptions(newOptions);
+                          }}
+                        />
+                      </label>
+                    </div>
+                  ))}
+
+                  <br />
+                  <label>
+                    정답 선택:
+                    <select
+                      value={correctOptionIndex}
+                      onChange={(e) =>
+                        setCorrectOptionIndex(Number(e.target.value))
+                      }
+                    >
+                      {options.map((_, index) => (
+                        <option key={index + 1} value={index + 1}>
+                          {index + 1}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <br />
+                  <button onClick={handleEdit}>수정 완료</button>
+                  <button onClick={cancelEditMode}>취소</button>
+                </div>
+              )}
             </li>
           ))}
-        {editMode && (
-          <div>
-            <h2>문제 수정</h2>
-            <label>
-              문제:
-              <input
-                type="text"
-                value={questionText}
-                onChange={(e) => setQuestionText(e.target.value)}
-              />
-            </label>
-            <br />
-            {options.map((option, index) => (
-              <div key={index}>
-                <label>
-                  선택지 {index + 1}:
-                  <input
-                    value={option}
-                    onChange={(e) => {
-                      const newOptions = [...options];
-                      newOptions[index] = e.target.value;
-                      setOptions(newOptions);
-                    }}
-                  />
-                </label>
-              </div>
-            ))}
-
-            <br />
-            <label>
-              정답 선택:
-              <select
-                value={correctOptionIndex}
-                onChange={(e) => setCorrectOptionIndex(Number(e.target.value))}
-              >
-                {options.map((_, index) => (
-                  <option key={index + 1} value={index + 1}>
-                    {index + 1}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <br />
-            <button onClick={handleEdit}>수정 완료</button>
-            <button onClick={cancelEditMode}>취소</button>
-          </div>
-        )}
       </Container>
     </>
   );

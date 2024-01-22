@@ -12,5 +12,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 	@EntityGraph(attributePaths = "authorities")
 	Optional<Member> findOneWithAuthoritiesByLoginId(String LoginId);
 	
+	@EntityGraph(attributePaths = "courses")
+	Optional<Member> findOneWithLecturesByLoginId(String loginId);
+	
 	Member findByLoginId(String loginId);
 }

@@ -1,6 +1,9 @@
 package project.lms.dto;
 
+import java.util.Arrays;
 import java.util.List;
+
+import project.lms.model.ExamQuestion;
 
 public class ExamQuestionDto {
 
@@ -57,5 +60,17 @@ public class ExamQuestionDto {
 		return String.join(",", this.options);
 	}
 	
+	public static ExamQuestionDto from(ExamQuestion examQuestion) {
+		if(examQuestion == null) return null;
+		
+		return new ExamQuestionDto(
+				examQuestion.getExam().getExamId(),
+				examQuestion.getQuestionText(),
+				parseOptions(examQuestion.getOptions()),
+				examQuestion.getCorrectOptionIndex());
+	}
 	
+	private static List<String> parseOptions(String options){
+		return Arrays.asList(options.split(","));
+	}
 }

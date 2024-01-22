@@ -44,6 +44,12 @@ public class Member {
 	inverseJoinColumns = {@JoinColumn(name = "authorityName", referencedColumnName = "authorityName")})
 	private Set<Authority> authorities;
 	
+	@ManyToMany
+	@JoinTable(name = "teaching_courses",
+	joinColumns = {@JoinColumn(name= "memberId", referencedColumnName = "memberId")},
+	inverseJoinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")})
+	private Set<Course> courses;
+	
 	@Column(nullable = false, length = 50, updatable = false)
 	private String loginId;
 	
@@ -76,18 +82,25 @@ public class Member {
 	private LocalDateTime joinDate;
 	
 	@Column
+	private String photo;
+	
+	@Column
+	private String resume;
+	
+	@Column
 	private boolean isActive;
 
 	public Member() {
 		super();
 	}
 
-	public Member(Long memberId, Set<Authority> authorities, String loginId, String password, String name,
-			LocalDate birthDate, Gender gender, Nationality nationality, String email, String phoneNum,
-			LocalDateTime joinDate, boolean isActive) {
+	public Member(Long memberId, Set<Authority> authorities, Set<Course> courses, String loginId, String password,
+			String name, LocalDate birthDate, Gender gender, Nationality nationality, String email, String phoneNum,
+			LocalDateTime joinDate, String photo, String resume, boolean isActive) {
 		super();
 		this.memberId = memberId;
 		this.authorities = authorities;
+		this.courses = courses;
 		this.loginId = loginId;
 		this.password = password;
 		this.name = name;
@@ -97,6 +110,8 @@ public class Member {
 		this.email = email;
 		this.phoneNum = phoneNum;
 		this.joinDate = joinDate;
+		this.photo = photo;
+		this.resume = resume;
 		this.isActive = isActive;
 	}
 
@@ -114,6 +129,14 @@ public class Member {
 
 	public void setAuthorities(Set<Authority> authorities) {
 		this.authorities = authorities;
+	}
+
+	public Set<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Set<Course> courses) {
+		this.courses = courses;
 	}
 
 	public String getLoginId() {
@@ -186,6 +209,22 @@ public class Member {
 
 	public void setJoinDate(LocalDateTime joinDate) {
 		this.joinDate = joinDate;
+	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+
+	public String getResume() {
+		return resume;
+	}
+
+	public void setResume(String resume) {
+		this.resume = resume;
 	}
 
 	public boolean isActive() {

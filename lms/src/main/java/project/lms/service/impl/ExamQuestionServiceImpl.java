@@ -65,23 +65,7 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 	                "해당 시험 문제 목록을 조회하였습니다.");
 	    }
 	}
-	
-	// ExamQuestion -> ExamQuestionDto 변환 메소드
-		private ExamQuestionDto convertToDto(ExamQuestion examQuestion) {
-		    return new ExamQuestionDto(
-		            examQuestion.getExam().getExamId(),
-		            examQuestion.getQuestionText(),
-		            parseOptions(examQuestion.getOptions()),
-		            examQuestion.getCorrectOptionIndex());
-		}
-
-		
-	// JSON -> List<String> 파싱 메소드
-	private List<String> parseOptions(String options){
-		return Arrays.asList(options.split(","));
-	}
-		
-	
+			
 	// 시험 문제 저장
 	@Transactional
 	@Override
@@ -104,7 +88,7 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 			
 			return new ResponseDto<>(
 					ResultCode.SUCCESS.name(),
-					convertToDto(savedExamQuestion),
+					ExamQuestionDto.from(savedExamQuestion),
 					"시험 문제를 저장하였습니다.");
 			
 		} catch (Exception e){
@@ -131,7 +115,7 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 
 	        return new ResponseDto<>(
 	                ResultCode.SUCCESS.name(),
-	                convertToDto(updatedQuestion),
+	                ExamQuestionDto.from(updatedQuestion),
 	                "시험 문제를 업데이트하였습니다.");
 	    } catch (Exception e) {
 	        e.printStackTrace();
