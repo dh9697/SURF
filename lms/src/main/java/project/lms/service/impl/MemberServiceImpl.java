@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -89,6 +90,12 @@ public class MemberServiceImpl implements MemberService {
 		}else {
 			throw new InvalidRequestException("Invalid Id / Password", "ID 또는 Password가 올바르지 않습니다.");
 		}
+	}
+	
+	// admin 모든 강사 조회
+	@Override
+    public List<Member> getAllInstructors(){
+		return memberRepository.findAllByAuthorities_AuthorityName("ROLE_INSTRUCTOR");
 	}
 	
 	// admin 권한이 DB에서 member 정보를 찾아 옴

@@ -18,6 +18,9 @@ import { MyCourse } from "./MyCourse";
 import { Course } from "./Course";
 import { Contact } from "./Contact";
 import { TestQuestion } from "./TestQuestion";
+import { DashboardAdmin } from "./DashboardAdmin";
+import { DashboardSideBar } from "./DashboardSideBar";
+import { ManageBoardAdmin } from "./ManageBoardAdmin";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -65,6 +68,18 @@ export function Surf() {
                       <Route
                         path={`/dashboard/${user.loginId}/account_info`}
                         element={<AccountInfo />}
+                      />
+                    </Route>
+                  )}
+                  {isLoggedIn && (
+                    <Route
+                      path={`/dashboard/admin/${user.loginId}`}
+                      element={<DashboardSideBar />}
+                    >
+                      <Route index element={<DashboardAdmin />} />
+                      <Route
+                        path={`/dashboard/admin/${user.loginId}/manageboard`}
+                        element={<ManageBoardAdmin />}
                       />
                     </Route>
                   )}

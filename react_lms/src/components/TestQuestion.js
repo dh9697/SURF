@@ -13,6 +13,7 @@ const Container = styled.div`
 export function TestQuestion() {
   const [examId, setExamId] = useState("1");
   const [questionText, setQuestionText] = useState("");
+  const [editQuestionText, setEditQuestionText] = useState("");
   const [options, setOptions] = useState(["", "", "", ""]);
   const [editOptions, setEditOptions] = useState(["", "", "", ""]);
   const [correctOptionIndex, setCorrectOptionIndex] = useState(1);
@@ -86,8 +87,12 @@ export function TestQuestion() {
   ) => {
     setEditMode(true);
     setExamQuestionId(examQuestionId);
-    setQuestionText(questionText);
-    setEditOptions(options.split(","));
+    setEditQuestionText(questionText);
+    //setQuestionText(questionText);
+    const splittedOptions = options.split(",").map((option) => option.trim());
+    // 배열을 editOptions에 설정
+    setEditOptions(splittedOptions);
+    console.log(editOptions);
     setCorrectOptionIndex(correctOptionIndex);
     setEditingIndex(index);
   };
@@ -96,8 +101,8 @@ export function TestQuestion() {
   const cancelEditMode = () => {
     setEditMode(false);
     setExamQuestionId(null);
-    setQuestionText("");
-    setOptions(["", "", "", ""]);
+    setEditQuestionText("");
+    setEditOptions(editOptions);
     setCorrectOptionIndex(1);
   };
 
@@ -106,8 +111,8 @@ export function TestQuestion() {
     apiPutQuestionsForExam(
       examQuestionId,
       examId,
-      questionText,
-      options,
+      editQuestionText,
+      editOptions,
       correctOptionIndex
     )
       .then((response) => {
@@ -217,21 +222,21 @@ export function TestQuestion() {
                     문제:
                     <input
                       type="text"
-                      value={questionText}
-                      onChange={(e) => setQuestionText(e.target.value)}
+                      value={editQuestionText}
+                      onChange={(e) => setEditQuestionText(e.target.value)}
                     />
                   </label>
                   <br />
-                  {options.map((option, index) => (
+                  {editOptions.map((editOption, index) => (
                     <div key={index}>
                       <label>
                         선택지 {index + 1}:
                         <input
-                          value={option}
+                          value={editOption}
                           onChange={(e) => {
-                            const newOptions = [...options];
-                            newOptions[index] = e.target.value;
-                            setOptions(newOptions);
+                            const newEditOptions = [...editOptions];
+                            newEditOptions[index] = e.target.value;
+                            setEditOptions(newEditOptions);
                           }}
                         />
                       </label>

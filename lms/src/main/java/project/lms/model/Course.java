@@ -1,8 +1,5 @@
 package project.lms.model;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,8 +9,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "courses")
@@ -22,10 +17,14 @@ public class Course {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long courseId;
-	
+
 	@ManyToOne
     @JoinColumn(name = "subjectId")
     private Subject subject;
+	
+	@ManyToOne
+	@JoinColumn(name = "memberId")
+	private Member instructor;
 	
 	@Column(nullable = false, length = 150)
 	private String courseName;
@@ -36,8 +35,9 @@ public class Course {
 	@Column(nullable = false)	    
 	private Integer durationMins;
 	
+	// 일단 비워도 되게 테스트 해보려고
 	@Lob
-	@Column(nullable = false, length = 500)
+	@Column(nullable = true, length = 500)
 	private byte[] courseThumbnail;
 	    
 	@Column(nullable = false)
@@ -49,24 +49,16 @@ public class Course {
     @Column
     private String announcement;
     
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime startDate;
-    
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime endDate;
-    
 	public Course() {
 		super();
 	}
 
-	public Course(Long courseId, Subject subject, String courseName, String description, Integer durationMins,
-			byte[] courseThumbnail, String contentLevel, Integer price, String announcement, LocalDateTime startDate,
-			LocalDateTime endDate) {
+	public Course(Long courseId, Subject subject, Member instructor, String courseName, String description,
+			Integer durationMins, byte[] courseThumbnail, String contentLevel, Integer price, String announcement) {
 		super();
 		this.courseId = courseId;
 		this.subject = subject;
+		this.instructor = instructor;
 		this.courseName = courseName;
 		this.description = description;
 		this.durationMins = durationMins;
@@ -74,8 +66,6 @@ public class Course {
 		this.contentLevel = contentLevel;
 		this.price = price;
 		this.announcement = announcement;
-		this.startDate = startDate;
-		this.endDate = endDate;
 	}
 
 	public Long getCourseId() {
@@ -92,6 +82,14 @@ public class Course {
 
 	public void setSubject(Subject subject) {
 		this.subject = subject;
+	}
+
+	public Member getInstructor() {
+		return instructor;
+	}
+
+	public void setInstructor(Member instructor) {
+		this.instructor = instructor;
 	}
 
 	public String getCourseName() {
@@ -148,22 +146,6 @@ public class Course {
 
 	public void setAnnouncement(String announcement) {
 		this.announcement = announcement;
-	}
-
-	public LocalDateTime getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(LocalDateTime startDate) {
-		this.startDate = startDate;
-	}
-
-	public LocalDateTime getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(LocalDateTime endDate) {
-		this.endDate = endDate;
 	}
 	
 }

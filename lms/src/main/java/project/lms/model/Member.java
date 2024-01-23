@@ -14,7 +14,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -48,7 +47,7 @@ public class Member {
 	@JoinTable(name = "teaching_courses",
 	joinColumns = {@JoinColumn(name= "memberId", referencedColumnName = "memberId")},
 	inverseJoinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")})
-	private Set<Course> courses;
+	private Set<Course> teachingCourses;
 	
 	@Column(nullable = false, length = 50, updatable = false)
 	private String loginId;
@@ -94,13 +93,13 @@ public class Member {
 		super();
 	}
 
-	public Member(Long memberId, Set<Authority> authorities, Set<Course> courses, String loginId, String password,
-			String name, LocalDate birthDate, Gender gender, Nationality nationality, String email, String phoneNum,
-			LocalDateTime joinDate, String photo, String resume, boolean isActive) {
+	public Member(Long memberId, Set<Authority> authorities, Set<Course> teachingCourses, String loginId,
+			String password, String name, LocalDate birthDate, Gender gender, Nationality nationality, String email,
+			String phoneNum, LocalDateTime joinDate, String photo, String resume, boolean isActive) {
 		super();
 		this.memberId = memberId;
 		this.authorities = authorities;
-		this.courses = courses;
+		this.teachingCourses = teachingCourses;
 		this.loginId = loginId;
 		this.password = password;
 		this.name = name;
@@ -131,12 +130,12 @@ public class Member {
 		this.authorities = authorities;
 	}
 
-	public Set<Course> getCourses() {
-		return courses;
+	public Set<Course> getTeachingCourses() {
+		return teachingCourses;
 	}
 
-	public void setCourses(Set<Course> courses) {
-		this.courses = courses;
+	public void setTeachingCourses(Set<Course> teachingCourses) {
+		this.teachingCourses = teachingCourses;
 	}
 
 	public String getLoginId() {

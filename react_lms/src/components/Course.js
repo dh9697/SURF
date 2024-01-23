@@ -21,6 +21,7 @@ export function Course() {
   const [announcement, setAnnouncement] = useState("");
   const [coursethumbnail, setCourseThumbnail] = useState(null);
   const [subjectId, setSubjectId] = useState(""); // 추가된 부분
+  const [instructorId, setInstructorId] = useState("");
   const [courseIdToUpdate, setCourseIdToUpdate] = useState(null);
   const [isFormSubmitted, setFormSubmitted] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -56,6 +57,7 @@ export function Course() {
       announcement,
       coursethumbnail,
       subject: { subjectId }, // 추가된 부분
+      instructor: { instructorId },
     };
 
     if (editMode) {
@@ -138,6 +140,15 @@ export function Course() {
             type="text"
             value={subjectId}
             onChange={(e) => setSubjectId(e.target.value)}
+          />
+        </label>
+        <br />
+        <label>
+          선생님 ID:
+          <input
+            type="text"
+            value={instructorId}
+            onChange={(e) => setInstructorId(e.target.value)}
           />
         </label>
         <br />
@@ -224,6 +235,9 @@ export function Course() {
             <p>콘텐츠 레벨: {course.contentLevel}</p>
             <p>가격: {course.price} 원</p>
             <p>공지사항: {course.announcement}</p>
+            <p>
+              선생님: {course.instructor ? course.instructor.name : "미지정"}
+            </p>
             <button
               onClick={() =>
                 enterEditMode(

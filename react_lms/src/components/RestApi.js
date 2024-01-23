@@ -149,10 +149,53 @@ export function apiDeleteQuestionsForExam(examQuestionId) {
   );
 }
 
+// --- subject ---
+// 모든 subject 조회
+export function apiGetAllSubject() {
+  return axios.get("http://localhost:8080/api/subject/list", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+// subjectId 당 조회
+export function apiGetSubject(subjectId) {
+  return axios.get(`http://localhost:8080/api/subject/list/${subjectId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+// subject 저장
+export function apiPostSubject(subjectData) {
+  return axios.post("http://localhost:8080/api/subject/save", subjectData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+// subject 수정
+export function apiPutSubject(subjectId, subjectData) {
+  return axios.put(
+    `http://localhost:8080/api/subject/update/${subjectId}`,
+    subjectData,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+}
+// subject 삭제
+export function apiDeleteSubject(subjectId, subjectData) {
+  return axios.delete(
+    `http://localhost:8080/api/subject/delete/${subjectId}`,
+    subjectData,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+}
+
 // --------------- Course Rest API ---------------
 // 모든 코스 조회
 export function apiGetAllCourses() {
-  return axios.get("http://localhost:8080/api/course", {
+  return axios.get("http://localhost:8080/api/course/list", {
     headers: { Authorization: `Bearer ${token}` },
   });
 }

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import surfLogo from "./image/surf_logo.png";
 import { seEffect, useContext, useEffect, useState } from "react";
-import { apiGetCurrentUserInfo } from "./RestApi";
+import { apiGetAllSubject, apiGetCurrentUserInfo } from "./RestApi";
 import { AuthContext } from "../AuthContext";
 
 const Container = styled.div`
@@ -56,8 +56,52 @@ const NavSectionItem = styled(NavLink)`
   }
 `;
 
+// hover했을 때 메뉴바 수정 필요
+const SubMenu = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding: 8px 0;
+  display: none;
+  gap: 8px;
+  /* border: 1px solid black; */
+  background-color: white;
+  z-index: 10;
+`;
+
+const SubMenuItem = styled(NavLink)`
+  text-decoration: none;
+  color: #6b7280;
+  white-space: nowrap;
+  padding: 8px;
+  &:hover {
+    color: #3182f6;
+  }
+`;
+
+const HoverableNavItem = styled.div`
+  position: relative;
+  &:hover ${SubMenu} {
+    display: flex;
+    position: absolute;
+  }
+`;
+
 export function NavBar() {
   const { isLoggedIn, user, handleLogout } = useContext(AuthContext);
+  const [subjects, setSubjects] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await apiGetAllSubject();
+        setSubjects(response.data);
+      } catch (error) {
+        console.error("Error fetching subjects:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -71,9 +115,21 @@ export function NavBar() {
               <NavSectionItem className="about" to={"/about"}>
                 About
               </NavSectionItem>
-              <NavSectionItem className="course" to={"/course"}>
-                Courses
-              </NavSectionItem>
+              <HoverableNavItem>
+                <NavSectionItem className="course" to={"/course"}>
+                  Courses
+                </NavSectionItem>
+                <SubMenu>
+                  {subjects.map((subject) => (
+                    <SubMenuItem
+                      key={subject.subjectId}
+                      to={`/subject/${subject.subjectId}`}
+                    >
+                      {subject.subjectName}
+                    </SubMenuItem>
+                  ))}
+                </SubMenu>
+              </HoverableNavItem>
               <NavSectionItem className="levelTest" to={"/level_test"}>
                 Level Test
               </NavSectionItem>

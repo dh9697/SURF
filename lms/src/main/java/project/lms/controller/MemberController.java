@@ -2,6 +2,8 @@ package project.lms.controller;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import project.lms.dto.ResponseDto;
 import project.lms.enumstatus.ResultCode;
+import project.lms.model.Member;
+import project.lms.repository.MemberRepository;
 import project.lms.dto.MemberDto;
 import project.lms.service.MemberService;
 
@@ -42,6 +46,15 @@ public class MemberController {
 		ResponseDto<MemberDto> responseDto = memberService.signUp(memberDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
 	}    
+	
+	// 강사의 정보
+	@GetMapping("/instructor/list")
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<List<Member>> getAllInstructors() {
+		List<Member> instructors = memberService.getAllInstructors();
+		return ResponseEntity.ok(instructors);
+	}
+	
 	
 	// 현재 로그인한 토큰 주인의 정보
 	@GetMapping("/dashboard/{loginId}")

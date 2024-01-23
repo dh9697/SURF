@@ -1,5 +1,6 @@
 package project.lms.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -12,8 +13,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 	@EntityGraph(attributePaths = "authorities")
 	Optional<Member> findOneWithAuthoritiesByLoginId(String LoginId);
 	
-	@EntityGraph(attributePaths = "courses")
-	Optional<Member> findOneWithLecturesByLoginId(String loginId);
+	List<Member> findAllByAuthorities_AuthorityName(String AuthorityName);
 	
 	Member findByLoginId(String loginId);
 }
