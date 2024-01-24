@@ -9,17 +9,15 @@ import project.lms.model.Course;
 
 public interface CourseService {
 
-	public ResponseDto<CourseDto> saveCourseWithThumbnail(CourseDto courseDto);
+	public ResponseDto<CourseDto> saveCourse(CourseDto courseDto);
 	
-	public Optional<Course> getCourseWithThumbnail(Long courseId);
-
-	public List<Course> getAllCourses();
-
-	public ResponseDto<List<Course>> getAllCourseWithThumbnail();
+	public List<CourseDto> getAllCourses();
 	
-	public ResponseDto<List<Course>> getCoursesForSubject(Long subjectId);
+	public ResponseDto<CourseDto> getCourse(Long courseId);
+	
+	public ResponseDto<List<CourseDto>> getCoursesForSubject(Long subjectId);
 	
 	public ResponseDto<CourseDto> updateCourse(Long courseId, CourseDto courseDto);
-	
+
 	public ResponseDto<String> deleteCourse(Long courseId);
 }

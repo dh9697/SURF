@@ -2,6 +2,8 @@ package project.lms.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,7 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 
 	// 모든 시험 문제 조회
 	@Override
-	public ResponseDto<List<ExamQuestion>> getAllExamQuestions(){
+	public ResponseDto<List<ExamQuestionDto>> getAllExamQuestions(){
 		List<ExamQuestion> examQuestions = examQuestionRepository.findAll();
 		
 		if(examQuestions == null || examQuestions.isEmpty()) {
@@ -41,16 +43,19 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 					null,
 					"시험 문제가 존재하지 않습니다.");
 		} else {
+			List<ExamQuestionDto> examQuestionDtos = examQuestions.stream()
+					.map(ExamQuestionDto::from)
+					.collect(Collectors.toList());
 		return new ResponseDto<>(
                 ResultCode.SUCCESS.name(),
-                examQuestions,
+                examQuestionDtos,
                 "시험 문제 목록을 조회하였습니다.");
 		}
 	}
 	
 	// 해당 시험 문제 조회
 	@Override
-	public ResponseDto<List<ExamQuestion>> getExamQuestionsForExam(Long examId) {
+	public ResponseDto<List<ExamQuestionDto>> getExamQuestionsForExam(Long examId) {
 		List<ExamQuestion> examQuestions = examQuestionRepository.findByExam_ExamId(examId);
 		
 		if (examQuestions == null || examQuestions.isEmpty()) {
@@ -59,9 +64,12 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 	                null,
 	                "해당 시험에 대한 문제가 없습니다.");
 	    } else {
+	    	List<ExamQuestionDto> examQuestionDtos = examQuestions.stream()
+	    			.map(ExamQuestionDto::from)
+	    			.collect(Collectors.toList());
 	        return new ResponseDto<>(
 	                ResultCode.SUCCESS.name(),
-	                examQuestions,
+	                examQuestionDtos,
 	                "해당 시험 문제 목록을 조회하였습니다.");
 	    }
 	}
@@ -106,7 +114,7 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 	                .orElseThrow(() -> new InvalidRequestException("Exam question not found", "해당 시험 문제를 찾을 수 없습니다."));
 	        
 	        examQuestion.setExam(examRepository.findById(examQuestionDto.getExamId())
-	        		.orElse(null));
+	        		.orElseThrow(() -> new InvalidRequestException("Exam not found", "시험을 찾을 수 없습니다.")));
 	        examQuestion.setQuestionText(examQuestionDto.getQuestionText());
 	        examQuestion.setOptions(examQuestionDto.getOptionAsString());
 	        examQuestion.setCorrectOptionIndex(examQuestionDto.getCorrectOptionIndex());

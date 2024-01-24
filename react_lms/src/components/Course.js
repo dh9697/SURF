@@ -56,8 +56,8 @@ export function Course() {
       price,
       announcement,
       coursethumbnail,
-      subject: { subjectId }, // 추가된 부분
-      instructor: { instructorId },
+      subjectId,
+      instructorId,
     };
 
     if (editMode) {
@@ -235,9 +235,7 @@ export function Course() {
             <p>콘텐츠 레벨: {course.contentLevel}</p>
             <p>가격: {course.price} 원</p>
             <p>공지사항: {course.announcement}</p>
-            <p>
-              선생님: {course.instructor ? course.instructor.name : "미지정"}
-            </p>
+            <p>선생님: {course.instructorName}</p>
             <button
               onClick={() =>
                 enterEditMode(

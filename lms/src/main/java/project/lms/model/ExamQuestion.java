@@ -16,7 +16,7 @@ public class ExamQuestion {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long examQuestionId;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "examId", nullable = false)
 	private Exam exam;

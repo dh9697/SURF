@@ -39,16 +39,16 @@ public class ExamQuestionController {
 	// 모든 시험 문제 조회
 	@GetMapping("/list")
 	@PreAuthorize("hasAnyRole('INSTRUCTOR')")
-	public ResponseEntity<ResponseDto<List<ExamQuestion>>> getExamQuestionsList(){
-		ResponseDto<List<ExamQuestion>> responseDto = examQuestionService.getAllExamQuestions();
+	public ResponseEntity<ResponseDto<List<ExamQuestionDto>>> getExamQuestionsList(){
+		ResponseDto<List<ExamQuestionDto>> responseDto = examQuestionService.getAllExamQuestions();
 		return ResponseEntity.ok(responseDto);
 	}
 	
 	// 특정 시험 문제 조회
 	@GetMapping("/list/{examId}")
 	@PreAuthorize("hasAnyRole('INSTRUCTOR')")
-	public ResponseEntity<ResponseDto<List<ExamQuestion>>> getExamQuestionsForExam(@PathVariable Long examId){
-		ResponseDto<List<ExamQuestion>> responseDto = examQuestionService.getExamQuestionsForExam(examId);
+	public ResponseEntity<ResponseDto<List<ExamQuestionDto>>> getExamQuestionsForExam(@PathVariable Long examId){
+		ResponseDto<List<ExamQuestionDto>> responseDto = examQuestionService.getExamQuestionsForExam(examId);
 		return ResponseEntity.ok(responseDto);
 	}
 

@@ -21,6 +21,7 @@ import { TestQuestion } from "./TestQuestion";
 import { DashboardAdmin } from "./DashboardAdmin";
 import { DashboardSideBar } from "./DashboardSideBar";
 import { ManageBoardAdmin } from "./ManageBoardAdmin";
+import { SubjectAdmin } from "./SubjectAdmin";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -79,7 +80,7 @@ export function Surf() {
                       <Route index element={<DashboardAdmin />} />
                       <Route
                         path={`/dashboard/admin/${user.loginId}/manageboard`}
-                        element={<ManageBoardAdmin />}
+                        element={<SubjectAdmin />}
                       />
                     </Route>
                   )}

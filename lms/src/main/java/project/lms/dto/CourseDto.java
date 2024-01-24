@@ -1,15 +1,16 @@
 package project.lms.dto;
 
-import project.lms.model.Member;
-import project.lms.model.Subject;
+import project.lms.model.Course;
 
 public class CourseDto {
 
 	private Long courseId;
 	
-    private Subject subject;
+    private Long subjectId;
     
-    private Member instructor;
+    private Long instructorId;
+    
+    private String instructorName;
 
 	private String courseName;
 
@@ -28,13 +29,15 @@ public class CourseDto {
 	public CourseDto() {
 		super();
 	}
-
-	public CourseDto(Long courseId, Subject subject, Member instructor, String courseName, String description,
-			Integer durationMins, byte[] courseThumbnail, String contentLevel, Integer price, String announcement) {
+	
+	public CourseDto(Long courseId, Long subjectId, Long instructorId, String instructorName, String courseName,
+			String description, Integer durationMins, byte[] courseThumbnail, String contentLevel, Integer price,
+			String announcement) {
 		super();
 		this.courseId = courseId;
-		this.subject = subject;
-		this.instructor = instructor;
+		this.subjectId = subjectId;
+		this.instructorId = instructorId;
+		this.instructorName = instructorName;
 		this.courseName = courseName;
 		this.description = description;
 		this.durationMins = durationMins;
@@ -43,7 +46,7 @@ public class CourseDto {
 		this.price = price;
 		this.announcement = announcement;
 	}
-
+	
 	public Long getCourseId() {
 		return courseId;
 	}
@@ -52,20 +55,28 @@ public class CourseDto {
 		this.courseId = courseId;
 	}
 
-	public Subject getSubject() {
-		return subject;
+	public Long getSubjectId() {
+		return subjectId;
 	}
 
-	public void setSubject(Subject subject) {
-		this.subject = subject;
+	public void setSubjectId(Long subjectId) {
+		this.subjectId = subjectId;
 	}
 
-	public Member getInstructor() {
-		return instructor;
+	public Long getInstructorId() {
+		return instructorId;
 	}
 
-	public void setInstructor(Member instructor) {
-		this.instructor = instructor;
+	public void setInstructorId(Long instructorId) {
+		this.instructorId = instructorId;
+	}
+
+	public String getInstructorName() {
+		return instructorName;
+	}
+
+	public void setInstructorName(String instructorName) {
+		this.instructorName = instructorName;
 	}
 
 	public String getCourseName() {
@@ -122,6 +133,24 @@ public class CourseDto {
 
 	public void setAnnouncement(String announcement) {
 		this.announcement = announcement;
+	}
+
+	public static CourseDto from(Course course) {
+		CourseDto courseDto = new CourseDto();
+		
+		courseDto.setCourseId(course.getCourseId());
+        courseDto.setAnnouncement(course.getAnnouncement());
+        courseDto.setContentLevel(course.getContentLevel());
+        courseDto.setCourseName(course.getCourseName());
+        courseDto.setCourseThumbnail(course.getCourseThumbnail());
+        courseDto.setDescription(course.getDescription());
+        courseDto.setDurationMins(course.getDurationMins());
+        courseDto.setPrice(course.getPrice());
+        courseDto.setInstructorId(course.getInstructor().getMemberId());
+        courseDto.setInstructorName(course.getInstructor().getName());
+        courseDto.setSubjectId(course.getSubject().getSubjectId());
+        
+        return courseDto;
 	}
 	
 }

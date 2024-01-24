@@ -5,7 +5,6 @@ import { AuthContext } from "../AuthContext";
 
 const Container = styled.div`
   width: 100%;
-  background-color: blanchedalmond;
   padding: 32px;
   & .innerWrapper {
     display: flex;

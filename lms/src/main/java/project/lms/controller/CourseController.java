@@ -36,26 +36,31 @@ public class CourseController {
     }
 	
 	@PostMapping("/save")
-    public ResponseEntity<ResponseDto<CourseDto>> saveCourseWithThumbnail(@RequestBody CourseDto courseDto) {
-        ResponseDto<CourseDto> response = courseService.saveCourseWithThumbnail(courseDto);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @GetMapping("/list/{courseId}")
-    public ResponseEntity<Course> getCourseWithThumbnail(@PathVariable Long courseId) {
-        return courseService.getCourseWithThumbnail(courseId)
-                .map(course -> new ResponseEntity<>(course, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<ResponseDto<CourseDto>> saveCourse(@RequestBody CourseDto courseDto) {
+        ResponseDto<CourseDto> response = courseService.saveCourse(courseDto);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Course>> getAllCourses() {
-        List<Course> courses = courseService.getAllCourses();
-        return new ResponseEntity<>(courses, HttpStatus.OK);
+    public ResponseEntity<List<CourseDto>> getAllCourses() {
+        List<CourseDto> courseDtos = courseService.getAllCourses();
+        return new ResponseEntity<>(courseDtos, HttpStatus.OK);
+    }
+    
+    @GetMapping("/list/{courseId}")
+    public ResponseEntity<ResponseDto<CourseDto>> getCourse(@PathVariable Long courseId) {
+        ResponseDto<CourseDto> response = courseService.getCourse(courseId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
+    @GetMapping("/subject/{subjectId}")
+    public ResponseEntity<ResponseDto<List<CourseDto>>> getCoursesForSubject(@PathVariable Long subjectId) {
+        ResponseDto<List<CourseDto>> response = courseService.getCoursesForSubject(subjectId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/update/{courseId}")
-	@PreAuthorize("hasAnyRole('INSTRUCTOR')")
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<ResponseDto<CourseDto>> updateCourse(
 			@PathVariable Long courseId,
 			@RequestBody CourseDto courseDto) {
@@ -64,7 +69,7 @@ public class CourseController {
 	}
     
     @DeleteMapping("/delete/{courseId}")
-	@PreAuthorize("hasAnyRole('INSTRUCTOR')")
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<ResponseDto<String>> deleteCourse(@PathVariable Long courseId) {
 		ResponseDto<String> reponseDto = courseService.deleteCourse(courseId);
 		return ResponseEntity.status(HttpStatus.OK).body(reponseDto);

@@ -2,11 +2,15 @@ package project.lms.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import project.lms.model.Course;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
+	
+	@EntityGraph(attributePaths = {"instructor", "subject"})
+    List<Course> findAll();
 	
 		// 코스 이름으로 찾기
 		List<Course> findByCourseName(String courseName);
