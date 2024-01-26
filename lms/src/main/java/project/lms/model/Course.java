@@ -22,10 +22,6 @@ public class Course {
     @JoinColumn(name = "subjectId")
     private Subject subject;
 	
-	@ManyToOne
-	@JoinColumn(name = "memberId")
-	private Member instructor;
-	
 	@Column(nullable = false, length = 150)
 	private String courseName;
 	
@@ -53,12 +49,11 @@ public class Course {
 		super();
 	}
 
-	public Course(Long courseId, Subject subject, Member instructor, String courseName, String description,
+	public Course(Long courseId, Subject subject, String courseName, String description,
 			Integer durationMins, byte[] courseThumbnail, String contentLevel, Integer price, String announcement) {
 		super();
 		this.courseId = courseId;
 		this.subject = subject;
-		this.instructor = instructor;
 		this.courseName = courseName;
 		this.description = description;
 		this.durationMins = durationMins;
@@ -82,14 +77,6 @@ public class Course {
 
 	public void setSubject(Subject subject) {
 		this.subject = subject;
-	}
-
-	public Member getInstructor() {
-		return instructor;
-	}
-
-	public void setInstructor(Member instructor) {
-		this.instructor = instructor;
 	}
 
 	public String getCourseName() {

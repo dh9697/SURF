@@ -10,7 +10,7 @@ import {
 const Container = styled.div`
   width: 100%;
 `;
-export function TestQuestion() {
+export function InstructorExamManage() {
   const [examId, setExamId] = useState("1");
   const [questionText, setQuestionText] = useState("");
   const [editQuestionText, setEditQuestionText] = useState("");
@@ -88,10 +88,10 @@ export function TestQuestion() {
     setEditMode(true);
     setExamQuestionId(examQuestionId);
     setEditQuestionText(questionText);
-    //setQuestionText(questionText);
-    const splittedOptions = options.split(",").map((option) => option.trim());
-    // 배열을 editOptions에 설정
-    setEditOptions(splittedOptions);
+    if (typeof options === "string") {
+      const splittedOptions = options.split(",").map((option) => option.trim());
+      setEditOptions(splittedOptions);
+    }
     console.log(editOptions);
     setCorrectOptionIndex(correctOptionIndex);
     setEditingIndex(index);

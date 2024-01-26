@@ -36,26 +36,27 @@ public class CourseController {
     }
 	
 	@PostMapping("/save")
+	@PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<ResponseDto<CourseDto>> saveCourse(@RequestBody CourseDto courseDto) {
         ResponseDto<CourseDto> response = courseService.saveCourse(courseDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<CourseDto>> getAllCourses() {
-        List<CourseDto> courseDtos = courseService.getAllCourses();
+    public ResponseEntity<ResponseDto<List<CourseDto>>> getAllCourses() {
+        ResponseDto<List<CourseDto>> courseDtos = courseService.getAllCourses();
         return new ResponseEntity<>(courseDtos, HttpStatus.OK);
     }
     
     @GetMapping("/list/{courseId}")
     public ResponseEntity<ResponseDto<CourseDto>> getCourse(@PathVariable Long courseId) {
-        ResponseDto<CourseDto> response = courseService.getCourse(courseId);
+        ResponseDto<CourseDto> response = courseService.getCourseByCourseId(courseId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
     @GetMapping("/subject/{subjectId}")
     public ResponseEntity<ResponseDto<List<CourseDto>>> getCoursesForSubject(@PathVariable Long subjectId) {
-        ResponseDto<List<CourseDto>> response = courseService.getCoursesForSubject(subjectId);
+        ResponseDto<List<CourseDto>> response = courseService.getCoursesBySubjectId(subjectId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

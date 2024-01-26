@@ -2,7 +2,7 @@ package project.lms.dto;
 
 public class ExamDto {
 
-	private Long courseId;
+	private Long contentId;
 	private Integer durationMins;
 	private Integer passingScore;
 	private Boolean examIsActive;
@@ -11,20 +11,20 @@ public class ExamDto {
 		super();
 	}
 
-	public ExamDto(Long courseId, Integer durationMins, Integer passingScore, Boolean examIsActive) {
+	public ExamDto(Long contentId, Integer durationMins, Integer passingScore, Boolean examIsActive) {
 		super();
-		this.courseId = courseId;
+		this.contentId = contentId;
 		this.durationMins = durationMins;
 		this.passingScore = passingScore;
 		this.examIsActive = examIsActive;
 	}
 
-	public Long getCourseId() {
-		return courseId;
+	public Long getContentId() {
+		return contentId;
 	}
 
-	public void setCourseId(Long courseId) {
-		this.courseId = courseId;
+	public void setContentId(Long contentId) {
+		this.contentId = contentId;
 	}
 
 	public Integer getDurationMins() {

@@ -11,8 +11,10 @@ import project.lms.dto.ExamDto;
 import project.lms.dto.ResponseDto;
 import project.lms.enumstatus.ResultCode;
 import project.lms.exception.InvalidRequestException;
+import project.lms.model.Content;
 import project.lms.model.Course;
 import project.lms.model.Exam;
+import project.lms.repository.ContentRepository;
 import project.lms.repository.CourseRepository;
 import project.lms.repository.ExamRepository;
 import project.lms.service.ExamService;
@@ -21,16 +23,16 @@ import project.lms.service.ExamService;
 public class ExamServiceImpl implements ExamService {
 
 	private ExamRepository examRepository;
-	private CourseRepository courseRepository;
+	private ContentRepository contentRepository;
 
 	@Autowired
-	public ExamServiceImpl(ExamRepository examRepository, CourseRepository courseRepository) {
+	public ExamServiceImpl(ExamRepository examRepository, ContentRepository contentRepository) {
 		super();
 		this.examRepository = examRepository;
-		this.courseRepository = courseRepository;
+		this.contentRepository = contentRepository;
 	}
 	
-	// 시험 전체 조회 - 관리자
+	// 시험 전체 조회 - 각 course의 선생님 권한
 	@Override
 	public ResponseDto<List<Exam>> getAllExams() {
 		List<Exam> exams = examRepository.findAll();
@@ -47,33 +49,33 @@ public class ExamServiceImpl implements ExamService {
 					"시험 목록을 조회하였습니다.");
 		}
 	}
-	
-	// 코스에 따른 시험 목록 - 선생님 자기 코스만 볼 수 있게 수정 필요
+
+	// 컨텐츠에 따라 시험 목록 
 	@Override
-	public ResponseDto<List<Exam>> getExamByCourse(Long courseId) {
-		List<Exam> exams = examRepository.findByCourseCourseId(courseId);
+	public ResponseDto<List<Exam>> getExamByContent(Long contentId) {
+		List<Exam> exams = examRepository.findByContentContentId(contentId);
 			if (exams == null || exams.isEmpty()) {
 				return new ResponseDto<>(
 					ResultCode.SUCCESS.name(),
 					null,
-					"해당 과목에 대한 시험이 없습니다.");
+					"해당 컨텐츠에 대한 시험이 없습니다.");
 			} else {
 				return new ResponseDto<>(
 					ResultCode.SUCCESS.name(),
 					exams,
-					"과목별 시험 목록을 조회하였습니다.");
+					"컨텐츠별 시험 목록을 조회하였습니다.");
 			}
 	}
 	
-	// 코스에 따라 시험 생성 - 선생님만
+	// 컨텐츠에 따라 시험 생성 
 	@Transactional
 	@Override
 	public ResponseDto<Exam> createExam(ExamDto examDto) {
 		try {
-			Course course = courseRepository.findById(examDto.getCourseId())
-		            .orElseThrow(() -> new InvalidRequestException("Invalid Request", "과목이나 존재하지 않거나 찾을 수 없습니다."));
+			Content content = contentRepository.findById(examDto.getContentId())
+		            .orElseThrow(() -> new InvalidRequestException("Invalid Request", "컨텐츠가 존재하지 않거나 찾을 수 없습니다."));
 			Exam exam = new Exam();
-			exam.setCourse(course);
+			exam.setContent(content);
 			exam.setExamDate(LocalDateTime.now());
 			exam.setDurationMins(examDto.getDurationMins());
 			exam.setPassingScore(examDto.getPassingScore());

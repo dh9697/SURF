@@ -68,7 +68,7 @@ const Columncontent = styled.div`
   font-weight: 900;
 `;
 
-export function DashboardAdmin() {
+export function AdminDashboard() {
   return (
     <>
       <Container>

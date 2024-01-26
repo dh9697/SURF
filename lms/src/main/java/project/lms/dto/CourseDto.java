@@ -1,16 +1,17 @@
 package project.lms.dto;
 
+import java.util.List;
+
 import project.lms.model.Course;
 
 public class CourseDto {
-
 	private Long courseId;
 	
     private Long subjectId;
     
-    private Long instructorId;
+    private List<String> instructorLoginIds;
     
-    private String instructorName;
+    private List<String> instructorNames;
 
 	private String courseName;
 
@@ -30,14 +31,14 @@ public class CourseDto {
 		super();
 	}
 	
-	public CourseDto(Long courseId, Long subjectId, Long instructorId, String instructorName, String courseName,
-			String description, Integer durationMins, byte[] courseThumbnail, String contentLevel, Integer price,
-			String announcement) {
+	public CourseDto(Long courseId, Long subjectId, List<String> instructorLoginIds, List<String> instructorNames,
+			String courseName, String description, Integer durationMins, byte[] courseThumbnail, String contentLevel,
+			Integer price, String announcement) {
 		super();
 		this.courseId = courseId;
 		this.subjectId = subjectId;
-		this.instructorId = instructorId;
-		this.instructorName = instructorName;
+		this.instructorLoginIds = instructorLoginIds;
+		this.instructorNames = instructorNames;
 		this.courseName = courseName;
 		this.description = description;
 		this.durationMins = durationMins;
@@ -63,20 +64,20 @@ public class CourseDto {
 		this.subjectId = subjectId;
 	}
 
-	public Long getInstructorId() {
-		return instructorId;
+	public List<String> getInstructorLoginIds() {
+		return instructorLoginIds;
 	}
 
-	public void setInstructorId(Long instructorId) {
-		this.instructorId = instructorId;
+	public void setInstructorLoginIds(List<String> instructorLoginIds) {
+		this.instructorLoginIds = instructorLoginIds;
 	}
 
-	public String getInstructorName() {
-		return instructorName;
+	public List<String> getInstructorNames() {
+		return instructorNames;
 	}
 
-	public void setInstructorName(String instructorName) {
-		this.instructorName = instructorName;
+	public void setInstructorNames(List<String> instructorNames) {
+		this.instructorNames = instructorNames;
 	}
 
 	public String getCourseName() {
@@ -146,9 +147,9 @@ public class CourseDto {
         courseDto.setDescription(course.getDescription());
         courseDto.setDurationMins(course.getDurationMins());
         courseDto.setPrice(course.getPrice());
-        courseDto.setInstructorId(course.getInstructor().getMemberId());
-        courseDto.setInstructorName(course.getInstructor().getName());
-        courseDto.setSubjectId(course.getSubject().getSubjectId());
+        if(course.getSubject() != null) {
+            courseDto.setSubjectId(course.getSubject().getSubjectId());
+        }
         
         return courseDto;
 	}

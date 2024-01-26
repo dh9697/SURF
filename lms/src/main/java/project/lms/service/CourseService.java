@@ -11,12 +11,12 @@ public interface CourseService {
 
 	public ResponseDto<CourseDto> saveCourse(CourseDto courseDto);
 	
-	public List<CourseDto> getAllCourses();
+	public ResponseDto<List<CourseDto>> getAllCourses();
+
+	public ResponseDto<CourseDto> getCourseByCourseId(Long courseId);
 	
-	public ResponseDto<CourseDto> getCourse(Long courseId);
-	
-	public ResponseDto<List<CourseDto>> getCoursesForSubject(Long subjectId);
-	
+	public ResponseDto<List<CourseDto>> getCoursesBySubjectId(Long subjectId);
+
 	public ResponseDto<CourseDto> updateCourse(Long courseId, CourseDto courseDto);
 
 	public ResponseDto<String> deleteCourse(Long courseId);

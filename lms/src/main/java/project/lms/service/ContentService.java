@@ -2,26 +2,13 @@ package project.lms.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
+import project.lms.dto.ResponseDto;
 import project.lms.model.Content;
-import project.lms.repository.ContentRepository;
 
-@Service
-public class ContentService {
+public interface ContentService {
 
-	private final ContentRepository contentRepository;
-
-	public ContentService(ContentRepository contentRepository) {
-		super();
-		this.contentRepository = contentRepository;
-	}
-	
-	public List<Content> getAllContents(){
-		return contentRepository.findAll();
-	}
-	
-	public Content createContent(Content content) {
-		return contentRepository.save(content);
-	}
+	public ResponseDto<List<Content>> getContentByCourse(Long courseId);
+	public ResponseDto<Content> createContent(project.lms.dto.ContentDto contentDto);
+	public ResponseDto<Content> updateContent(Long contentId, project.lms.dto.ContentDto contentDto);
+	public ResponseDto<String> deleteContent(Long contentId);
 }

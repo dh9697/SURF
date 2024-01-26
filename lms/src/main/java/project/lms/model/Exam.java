@@ -31,11 +31,8 @@ public class Exam {
     private Long examId;
 
     @ManyToOne
-    @JoinColumn(name = "courseId", nullable = false)
-    private Course course;
-
-    @OneToMany(mappedBy = "exam")
-    private List<ExamQuestion> examQuestions;
+    @JoinColumn(name = "contentId", nullable = false)
+    private Content content;
     
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime examDate;
@@ -52,19 +49,18 @@ public class Exam {
 	public Exam() {
 		super();
 	}
-	
-	public Exam(Long examId, Course course, LocalDateTime examDate, List<ExamQuestion> examQuestions,
-			Integer durationMins, Integer passingScore, Boolean examIsActive) {
+
+	public Exam(Long examId, Content content, LocalDateTime examDate, Integer durationMins, Integer passingScore,
+			Boolean examIsActive) {
 		super();
 		this.examId = examId;
-		this.course = course;
+		this.content = content;
 		this.examDate = examDate;
-		this.examQuestions = examQuestions;
 		this.durationMins = durationMins;
 		this.passingScore = passingScore;
 		this.examIsActive = examIsActive;
 	}
-	
+
 	public Long getExamId() {
 		return examId;
 	}
@@ -73,12 +69,12 @@ public class Exam {
 		this.examId = examId;
 	}
 
-	public Course getCourse() {
-		return course;
+	public Content getContent() {
+		return content;
 	}
 
-	public void setCourse(Course course) {
-		this.course = course;
+	public void setContent(Content content) {
+		this.content = content;
 	}
 
 	public LocalDateTime getExamDate() {
@@ -87,14 +83,6 @@ public class Exam {
 
 	public void setExamDate(LocalDateTime examDate) {
 		this.examDate = examDate;
-	}
-
-	public List<ExamQuestion> getExamQuestions() {
-		return examQuestions;
-	}
-
-	public void setExamQuestions(List<ExamQuestion> examQuestions) {
-		this.examQuestions = examQuestions;
 	}
 
 	public Integer getDurationMins() {
@@ -120,8 +108,5 @@ public class Exam {
 	public void setExamIsActive(Boolean examIsActive) {
 		this.examIsActive = examIsActive;
 	}
-
-	public Integer getNumQuestions() {
-		return examQuestions != null ? examQuestions.size() : 0;
-	}
+	
 }

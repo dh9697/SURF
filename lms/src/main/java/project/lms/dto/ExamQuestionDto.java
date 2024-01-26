@@ -6,7 +6,8 @@ import java.util.List;
 import project.lms.model.ExamQuestion;
 
 public class ExamQuestionDto {
-
+	
+	private Long examQuestionId;
 	private Long examId;
 	private String questionText;
 	private List<String> options;
@@ -15,15 +16,25 @@ public class ExamQuestionDto {
 	public ExamQuestionDto() {
 		super();
 	}
-	
-	public ExamQuestionDto(Long examId, String questionText, List<String> options, int correctOptionIndex) {
+
+	public ExamQuestionDto(Long examQuestionId, Long examId, String questionText, List<String> options,
+			int correctOptionIndex) {
 		super();
+		this.examQuestionId = examQuestionId;
 		this.examId = examId;
 		this.questionText = questionText;
 		this.options = options;
 		this.correctOptionIndex = correctOptionIndex;
 	}
-	
+
+	public Long getExamQuestionId() {
+		return examQuestionId;
+	}
+
+	public void setExamQuestionId(Long examQuestionId) {
+		this.examQuestionId = examQuestionId;
+	}
+
 	public Long getExamId() {
 		return examId;
 	}
@@ -64,6 +75,7 @@ public class ExamQuestionDto {
 		if(examQuestion == null) return null;
 		
 		return new ExamQuestionDto(
+				examQuestion.getExamQuestionId(),
 				examQuestion.getExam().getExamId(),
 				examQuestion.getQuestionText(),
 				parseOptions(examQuestion.getOptions()),

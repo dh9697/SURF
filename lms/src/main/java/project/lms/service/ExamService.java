@@ -9,7 +9,7 @@ import project.lms.model.Exam;
 public interface ExamService {
 	
 	public ResponseDto<List<Exam>> getAllExams();
-	public ResponseDto<List<Exam>> getExamByCourse(Long courseId);
+	public ResponseDto<List<Exam>> getExamByContent(Long contentId);
 	public ResponseDto<Exam> createExam(ExamDto examDto);
 	public ResponseDto<Exam> updateExam(Long examId, ExamDto examDto);
 	public ResponseDto<String> deleteExam(Long examId);

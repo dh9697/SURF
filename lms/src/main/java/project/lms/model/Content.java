@@ -27,26 +27,29 @@ public class Content {
     @Column(name = "description", length = 100, nullable = false)
     private String description;
     
-    @Column(name = "contentType", length = 50, nullable = false)
-    private String contentType;
-
-    // @Lob 으로 저장할 건지
-    @Column
-    private String ContentData;
+    @Column(name = "contentDuration", length = 50, nullable = false)
+    private String contentDuration;
+    
+    @Column(name = "contentImg")
+    private String contentImg;
+    
+    @Column(name = "contentStatus")
+    private boolean contentStatus;
 
 	public Content() {
 		super();
 	}
 
-	public Content(Long contentId, Course course, String contentTitle, String description, String contentType,
-			String contentData) {
+	public Content(Long contentId, Course course, String contentTitle, String description, String contentDuration,
+			String contentImg, boolean contentStatus) {
 		super();
 		this.contentId = contentId;
 		this.course = course;
 		this.contentTitle = contentTitle;
 		this.description = description;
-		this.contentType = contentType;
-		ContentData = contentData;
+		this.contentDuration = contentDuration;
+		this.contentImg = contentImg;
+		this.contentStatus = contentStatus;
 	}
 
 	public Long getContentId() {
@@ -81,20 +84,28 @@ public class Content {
 		this.description = description;
 	}
 
-	public String getContentType() {
-		return contentType;
+	public String getContentDuration() {
+		return contentDuration;
 	}
 
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
+	public void setContentDuration(String contentDuration) {
+		this.contentDuration = contentDuration;
 	}
 
-	public String getContentData() {
-		return ContentData;
+	public String getContentImg() {
+		return contentImg;
 	}
 
-	public void setContentData(String contentData) {
-		ContentData = contentData;
+	public void setContentImg(String contentImg) {
+		this.contentImg = contentImg;
 	}
-    
+
+	public boolean isContentStatus() {
+		return contentStatus;
+	}
+
+	public void setContentStatus(boolean contentStatus) {
+		this.contentStatus = contentStatus;
+	}
+	
 }

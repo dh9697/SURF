@@ -53,6 +53,7 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 		}
 	}
 	
+	// 해당 강사만 할 수 있게 수정 필요
 	// 해당 시험 문제 조회
 	@Override
 	public ResponseDto<List<ExamQuestionDto>> getExamQuestionsForExam(Long examId) {
@@ -112,7 +113,7 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 	    try {
 	        ExamQuestion examQuestion = examQuestionRepository.findById(examQuestionId)
 	                .orElseThrow(() -> new InvalidRequestException("Exam question not found", "해당 시험 문제를 찾을 수 없습니다."));
-	        
+
 	        examQuestion.setExam(examRepository.findById(examQuestionDto.getExamId())
 	        		.orElseThrow(() -> new InvalidRequestException("Exam not found", "시험을 찾을 수 없습니다.")));
 	        examQuestion.setQuestionText(examQuestionDto.getQuestionText());

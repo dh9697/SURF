@@ -1,5 +1,6 @@
 package project.lms.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,158 +47,171 @@ public class CourseServiceImpl implements CourseService {
 	 @Override
 	 public ResponseDto<CourseDto> saveCourse(CourseDto courseDto) {
 		try {
-	        Member instructor = memberRepository.findByMemberIdAndAuthorities_AuthorityName(
-	        		courseDto.getInstructorId(), "ROLE_INSTRUCTOR")
-	                .orElseThrow(() -> new InvalidRequestException
-	                		("Instructor not found or not an instructor.", "강사를 찾을 수 없거나 강사가 아닙니다."));
-	    	 
-	         byte[] thumbnailData = courseDto.getCourseThumbnail();
-	         String courseName = courseDto.getCourseName();
-	         String description = courseDto.getDescription();
-	         Long subjectId = courseDto.getSubjectId();
-	         Integer durationMins = courseDto.getDurationMins();
-	         String contentLevel = courseDto.getContentLevel();
-	         Integer price = courseDto.getPrice();
-	         String announcement = courseDto.getAnnouncement();
-
-	         Course course = new Course();
-	            
-	         if (subjectId != null) {
-	             Subject existingSubject = subjectRepository.findById(subjectId)
+	        Course course = new Course();
+	        course.setCourseName(courseDto.getCourseName());
+	        course.setDescription(courseDto.getDescription());
+	        course.setDurationMins(courseDto.getDurationMins());
+	        course.setContentLevel(courseDto.getContentLevel());
+	        course.setPrice(courseDto.getPrice());
+	        course.setAnnouncement(courseDto.getAnnouncement());
+	        course.setCourseThumbnail(courseDto.getCourseThumbnail());
+	        
+	        if (courseDto.getSubjectId() != null) {
+	             Subject subject = subjectRepository.findById(courseDto.getSubjectId())
 	                 .orElseThrow(() -> new InvalidRequestException("Subject not found.", "과목을 찾을 수 없습니다."));
-	             course.setSubject(existingSubject);
-	         }
-	            
-	            course.setInstructor(instructor);
-	            course.setCourseName(courseName);
-	            course.setDescription(description);
-	            course.setDurationMins(durationMins);
-	            course.setContentLevel(contentLevel);
-	            course.setPrice(price);
-	            course.setAnnouncement(announcement);
-	            course.setCourseThumbnail(thumbnailData);
-	       
-	            courseRepository.save(course);
+	             course.setSubject(subject);
+	        }
 
-	            // 양방항 객체 참조로 다시 dto로 변환 이게 맞을까..
-	            courseDto.setCourseId(course.getCourseId());
-	            courseDto.setInstructorId(course.getInstructor().getMemberId());
-	            courseDto.setSubjectId(course.getSubject().getSubjectId());
-	            // member의 teachingCourses 업데이트
-	            instructor.getTeachingCourses().add(course);
-	            memberRepository.save(instructor);
+	        courseRepository.save(course);
+
+	        List<String> instructorNames = new ArrayList<>();
+	        for (String loginId : courseDto.getInstructorLoginIds()) {
+	            Member instructor = memberRepository.findByLoginIdAndAuthorities_AuthorityName(
+	                loginId, "ROLE_INSTRUCTOR")
+	                .orElseThrow(() -> new InvalidRequestException
+	                        ("Instructor not found or not an instructor.", "강사를 찾을 수 없거나 강사가 아닙니다."));
 	            
-	            return new ResponseDto<>(
-	                    ResultCode.SUCCESS.name(),
-	                    courseDto,
-	                    "Success saving course with thumbnail");
+	            instructorNames.add(instructor.getName());
+	            
+	            // teachingCourses 업데이트
+	            instructor.getTeachingCourses().add(course);
+	            memberRepository.save(instructor);   
+	        }
+	        
+	        courseDto.setCourseId(course.getCourseId()); 
+	        courseDto.setInstructorNames(instructorNames); 
+	        
+	        return new ResponseDto<>(
+	        		ResultCode.SUCCESS.name(),
+	                courseDto,
+	                "Success saving course with thumbnail");
 	        } catch (Exception e) {
 	            e.printStackTrace();
-	            throw new InvalidRequestException("Error saving course with thumbnail.", e.getMessage());
+	            throw new InvalidRequestException("Error saving course.", e.getMessage());
 	        }
 	    }
 	 
 	 // 모든 코스 조회
 	 @Override
-	 public List<CourseDto> getAllCourses() {
+	 public ResponseDto<List<CourseDto>> getAllCourses() {
 	     List<Course> courses = courseRepository.findAll();
-	     List<CourseDto> courseDtos = courses.stream()
-	    		 .map(CourseDto::from)
-	    		 .collect(Collectors.toList());
-	     return courseDtos;
+	     
+	     List<CourseDto> courseDtos = courses.stream().map(course -> {  	 
+	    	 List <String> instructorNames = memberRepository.findByTeachingCourses_CourseId(course.getCourseId())
+	    			 .stream().map(Member::getName).collect(Collectors.toList());
+	    	 
+	    	 CourseDto courseDto = CourseDto.from(course);
+	    	 courseDto.setInstructorNames(instructorNames);
+	    	 
+	    	 return courseDto;
+	     }).collect(Collectors.toList());
+	    		        
+	     return new ResponseDto<>(
+	    		 ResultCode.SUCCESS.name(),
+	    		 courseDtos,
+	    		 "Success getting all courses");
 	 }
 	  
-	 	// courseId로 코스 조회
-	    @Override
-	    public ResponseDto<CourseDto> getCourse(Long courseId) {
-	        Course course = courseRepository.findById(courseId)
-	        	.orElseThrow(() -> new InvalidRequestException("Course not found", "코스를 찾을 수 없습니다."));
-	        
-	        CourseDto courseDto = CourseDto.from(course);
-	        
-	        return new ResponseDto<>(
-	                ResultCode.SUCCESS.name(),
-	                courseDto,
-	                "Course retrieved successfully.");
+	 // courseId로 코스 조회
+	 @Override
+	 public ResponseDto<CourseDto> getCourseByCourseId(Long courseId) {
+		 Course course = courseRepository.findById(courseId)
+				 .orElseThrow(() -> new InvalidRequestException("Course not found", "코스를 찾을 수 없습니다."));
+	     
+		 List<String> instructorNames = memberRepository.findByTeachingCourses_CourseId(courseId)
+				 .stream().map(Member::getName)
+				 .collect(Collectors.toList());
+		 
+	     CourseDto courseDto = CourseDto.from(course);
+	     courseDto.setInstructorNames(instructorNames);
+		 
+	     return new ResponseDto<>(
+	             ResultCode.SUCCESS.name(),
+	             courseDto,
+	             "Course retrieved successfully.");
 	    }
 	    
-	    // subjectId로 코스 조회
-	    @Override
-	    public ResponseDto<List<CourseDto>> getCoursesForSubject(Long subjectId) {
-	        List<Course> courses = courseRepository.findBySubject_SubjectId(subjectId);
+	 // subjectId로 코스 조회
+	 @Override
+	 public ResponseDto<List<CourseDto>> getCoursesBySubjectId(Long subjectId) {
+	     List<Course> courses = courseRepository.findBySubject_SubjectId(subjectId);
 	        
-	        List<CourseDto> courseDtos = courses.stream()
-	        		.map(CourseDto::from)
-	        		.collect(Collectors.toList());
+	     List<CourseDto> courseDtos = courses.stream().map(course -> {
+	    	 List<String> instructorNames = memberRepository.findByTeachingCourses_CourseId(course.getCourseId())
+	    			 .stream().map(Member::getName)
+	    			 .collect(Collectors.toList());
+	    	 
+	    	 CourseDto courseDto = CourseDto.from(course);
+	    	 courseDto.setInstructorNames(instructorNames);
+	    	 
+	    	 return courseDto;
+	     }).collect(Collectors.toList());
 	        
-	        return new ResponseDto<>(
-	                ResultCode.SUCCESS.name(),
-	                courseDtos,
-	                "Courses for subject retrieved successfully.");
+	     return new ResponseDto<>(
+	    		 ResultCode.SUCCESS.name(),
+	             courseDtos,
+	             "Courses for subject retrieved successfully.");
 	    }
 
-	    // courseId로 코스 수정
-	    @Transactional
-	    @Override
-	    public ResponseDto<CourseDto> updateCourse(Long courseId, CourseDto courseDto) {
-	        try {
-	            Course course = courseRepository.findById(courseId)
-	            	.orElseThrow(() -> new InvalidRequestException("Course not found", "해당 강의를 찾을 수 없습니다."));
+	 // courseId로 코스 수정
+	 @Transactional
+	 @Override
+	 public ResponseDto<CourseDto> updateCourse(Long courseId, CourseDto courseDto) {
+		 Course course = courseRepository.findById(courseId)
+				 .orElseThrow(() -> new InvalidRequestException("Coures not found.", "코스를 찾을 수 없습니다."));
+		 
+		 course.setCourseName(courseDto.getCourseName());
+		 course.setDescription(courseDto.getDescription());
+		 course.setDurationMins(courseDto.getDurationMins());
+		 course.setContentLevel(courseDto.getContentLevel());
+		 course.setPrice(courseDto.getPrice());
+		 course.setAnnouncement(courseDto.getAnnouncement());
+		 course.setCourseThumbnail(courseDto.getCourseThumbnail());
+		 
+		 if (courseDto.getSubjectId() != null) {
+		        Subject subject = subjectRepository.findById(courseDto.getSubjectId())
+		            .orElseThrow(() -> new InvalidRequestException("Subject not found.", "과목을 찾을 수 없습니다."));
+		        course.setSubject(subject);
+		    }
+		 
+		 courseRepository.save(course);
 
-	                // 코스 업데이트 로직
-	            	// 서브젝트와 강사를 바꿀 수 있게 해놓는게 맞을지?
-	                Long subjectId = courseDto.getSubjectId();
-	                if (subjectId != null) {
-	                    Subject subject = subjectRepository.findById(subjectId)
-	                        .orElseThrow(() -> new InvalidRequestException("Subject not found.", "해당 과목을 찾을 수 없습니다."));
-	                    course.setSubject(subject);
-	                }
-	                Long instructorId = courseDto.getInstructorId();
-	                if (instructorId != null) {
-	                    Member instructor = memberRepository.findById(instructorId)
-	                        .orElseThrow(() -> new InvalidRequestException("Instructor not found.", "해당 선생님을 찾을 수 없습니다."));
-	                    course.setInstructor(instructor);
-	                }
-	                course.setCourseName(courseDto.getCourseName());
-	                course.setDescription(courseDto.getDescription());
-	                course.setDurationMins(courseDto.getDurationMins());
-	                course.setContentLevel(courseDto.getContentLevel());
-	                course.setPrice(courseDto.getPrice());
-	                course.setAnnouncement(courseDto.getAnnouncement());
+		 List<String> instructorNames = new ArrayList<>();
+		 for (String loginId : courseDto.getInstructorLoginIds()) {
+		        Member instructor = memberRepository.findByLoginIdAndAuthorities_AuthorityName(
+		            loginId, "ROLE_INSTRUCTOR")
+		            .orElseThrow(() -> new InvalidRequestException
+		                    ("Instructor not found or not an instructor.", "강사를 찾을 수 없거나 강사가 아닙니다."));
 
-	                byte[] updatedThumbnail = courseDto.getCourseThumbnail(); // 변경된 부분
-	                if (updatedThumbnail != null && updatedThumbnail.length > 0) {
-	                    course.setCourseThumbnail(updatedThumbnail);
-	                }
+		        // teachingCourses 업데이트
+		        instructor.getTeachingCourses().add(course);
+		        memberRepository.save(instructor);
+		    }
+		 	courseDto.setInstructorNames(instructorNames);
+		 	courseDto.setCourseId(course.getCourseId());
 
-	                courseRepository.save(course);
-	                CourseDto updatedCourseDto = CourseDto.from(course);
-
-	                return new ResponseDto<>(ResultCode.SUCCESS.name(), updatedCourseDto, "코스가 성공적으로 업데이트되었습니다.");
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            throw new InvalidRequestException("코스 업데이트 중 오류 발생.", "코스 업데이트에 실패했습니다.");
-	        }
-	    }
+		    return new ResponseDto<>(
+		        ResultCode.SUCCESS.name(),
+		        courseDto,
+		        "Course updated successfully.");
+	 }
 	    
-	    // 코스 삭제
-	    @Transactional
-	    @Override
-	    public ResponseDto<String> deleteCourse(Long courseId) {
-	        try {
-	            Course course = courseRepository.findById(courseId)
-	                .orElseThrow(() -> new InvalidRequestException("Course not found.", "코스를 찾을 수 없습니다."));
+	 // 코스 삭제
+	 @Transactional
+	 @Override
+	 public ResponseDto<String> deleteCourse(Long courseId) {
+		 Course course = courseRepository.findById(courseId)
+				 .orElseThrow(() -> new InvalidRequestException("Course not found.", "코스를 찾을 수 없습니다."));
 	            
-	            List<Member> instructors = memberRepository.findByTeachingCoursesContains(course);
-	            for(Member instructor : instructors) {
-	            	instructor.getTeachingCourses().remove(course);
-	            	memberRepository.save(instructor);
-	            }
-	            courseRepository.delete(course);
+	     List<Member> instructors = memberRepository.findByTeachingCourses_CourseId(courseId);
+	     for(Member instructor : instructors) {
+	    	 instructor.getTeachingCourses().remove(course);
+	         memberRepository.save(instructor);
+	     }
+	     
+	     courseRepository.delete(course);
 
-	            return new ResponseDto<>(ResultCode.SUCCESS.name(), null, "Course deleted successfully.");
-	        } catch (Exception e) {
-	            throw new InvalidRequestException("Error deleting course.", "코스 삭제에 실패했습니다.");
-	        }
+	     return new ResponseDto<>(ResultCode.SUCCESS.name(), null, "Course deleted successfully.");
+
 	    }
 }
