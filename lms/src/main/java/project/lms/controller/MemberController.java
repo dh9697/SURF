@@ -1,7 +1,5 @@
 package project.lms.controller;
 
-
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,6 @@ import jakarta.validation.Valid;
 import project.lms.dto.ResponseDto;
 import project.lms.enumstatus.ResultCode;
 import project.lms.model.Member;
-import project.lms.repository.MemberRepository;
 import project.lms.dto.MemberDto;
 import project.lms.service.MemberService;
 

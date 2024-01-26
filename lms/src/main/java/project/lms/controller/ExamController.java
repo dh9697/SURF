@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.service.annotation.DeleteExchange;
 
 import project.lms.dto.ExamDto;
 import project.lms.dto.ResponseDto;
@@ -46,10 +45,10 @@ public class ExamController {
 	}
 	
 	// 과목 별 시험 문제 조회
-	@GetMapping("list/{courseId}")
+	@GetMapping("list/{contentId}")
 	@PreAuthorize("hasAnyRole('INSTRUCTOR')")
-	public ResponseEntity<ResponseDto<List<Exam>>> getExamByCourse(@PathVariable Long courseId) {
-		ResponseDto<List<Exam>> responseDto = examService.getExamByCourse(courseId);
+	public ResponseEntity<ResponseDto<List<Exam>>> getExamByCourse(@PathVariable Long contentId) {
+		ResponseDto<List<Exam>> responseDto = examService.getExamByContent(contentId);
 		return ResponseEntity.ok(responseDto);
 	}
 	

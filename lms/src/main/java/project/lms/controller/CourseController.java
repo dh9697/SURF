@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import project.lms.dto.CourseDto;
 import project.lms.dto.ResponseDto;
-import project.lms.model.Course;
 import project.lms.service.CourseService;
 
 @RestController

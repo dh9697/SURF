@@ -28,7 +28,7 @@ public class Content {
     private String description;
     
     @Column(name = "contentDuration", length = 50, nullable = false)
-    private String contentDuration;
+    private Integer contentDuration;
     
     @Column(name = "contentImg")
     private String contentImg;
@@ -40,7 +40,7 @@ public class Content {
 		super();
 	}
 
-	public Content(Long contentId, Course course, String contentTitle, String description, String contentDuration,
+	public Content(Long contentId, Course course, String contentTitle, String description, Integer contentDuration,
 			String contentImg, boolean contentStatus) {
 		super();
 		this.contentId = contentId;
@@ -84,11 +84,11 @@ public class Content {
 		this.description = description;
 	}
 
-	public String getContentDuration() {
+	public Integer getContentDuration() {
 		return contentDuration;
 	}
 
-	public void setContentDuration(String contentDuration) {
+	public void setContentDuration(Integer contentDuration) {
 		this.contentDuration = contentDuration;
 	}
 
