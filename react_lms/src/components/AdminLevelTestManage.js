@@ -1,9 +1,11 @@
 import styled from "styled-components";
 
+const Container = styled.div``;
+
 export function AdminLevelTestManage() {
   return (
     <>
-      <p>레벨테스트 관리</p>
+      <Container></Container>
     </>
   );
 }

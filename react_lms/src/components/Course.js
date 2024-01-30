@@ -35,7 +35,11 @@ export function Course() {
         <CoursesGrid>
           {courses.map((course) => (
             <div key={course.courseId}>
-              <strong>{course.courseName}</strong>
+              <strong>
+                <NavLink to={`/course/${course.courseId}`}>
+                  {course.courseName}
+                </NavLink>
+              </strong>
               <p>코스 썸네일 올려야함</p>
               <p>설명: {course.description}</p>
               <p>수업 시간: {course.durationMins} 분</p>

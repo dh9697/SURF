@@ -4,7 +4,6 @@ import { Main } from "./Main";
 import { About } from "./About";
 import { LevelTestMain } from "./LevelTestMain";
 import { LevelTestStart } from "./LevelTestStart";
-import { Community } from "./Community";
 import { Event } from "./Event";
 import { Login } from "./Login";
 import { Register } from "./Register";
@@ -14,9 +13,10 @@ import { DashboardNavBar } from "./DashboardNavBar";
 import { useContext } from "react";
 import { AuthContext } from "../AuthContext";
 import { AccountInfo } from "./AccountInfo";
-import { Dashboard } from "./Dashboard";
+import { UserDashboard } from "./UserDashboard";
 import { MyCourse } from "./MyCourse";
 import { Course } from "./Course";
+import { CourseUser } from "./CourseUser";
 import { Contact } from "./Contact";
 import { AdminDashboard } from "./AdminDashboard";
 import { AdminDashboardSideBar } from "./AdminDashboardSideBar";
@@ -66,8 +66,8 @@ export function Surf() {
                   <Route index element={<Main />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/course" element={<Course />} />
+                  <Route path="/course/:courseId" element={<CourseUser />} />
                   <Route path="/level_test" element={<LevelTestMain />} />
-                  <Route path="/community" element={<Community />} />
                   <Route path="/event" element={<Event />} />
                   <Route path="/contact" element={<Contact />} />
                   {/* 학생 Dashboard */}
@@ -76,7 +76,7 @@ export function Surf() {
                       path={`/dashboard/${user.loginId}`}
                       element={<DashboardNavBar />}
                     >
-                      <Route index element={<Dashboard />} />
+                      <Route index element={<UserDashboard />} />
                       <Route
                         path={`/dashboard/${user.loginId}/courses`}
                         element={<MyCourse />}

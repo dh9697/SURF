@@ -202,7 +202,7 @@ export function apiGetAllCourses() {
 
 // 특정 코스 조회
 export function apiGetCourse(courseId) {
-  return axios.get(`http://localhost:8080/api/course/${courseId}`, {
+  return axios.get(`http://localhost:8080/api/course/list/${courseId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
@@ -228,6 +228,14 @@ export function apiPutCourse(courseId, courseData) {
 // 코스 삭제
 export function apiDeleteCourse(courseId) {
   return axios.delete(`http://localhost:8080/api/course/delete/${courseId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+// --------------- Content Rest API ---------------
+// courseId로 content 조회
+export function apiGetContentByCourse(courseId) {
+  return axios.get(`http://localhost:8080/api/content/course/${courseId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
