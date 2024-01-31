@@ -2,7 +2,13 @@ import styled from "styled-components";
 import { CourseTitle } from "./CourseTitle";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { apiGetCourse, apiGetContentByCourse } from "./RestApi";
+import {
+  apiGetCourse,
+  apiGetContentByCourse,
+  apiCreateCart,
+  apiAddCourseToCart,
+} from "./RestApi";
+import { NavLink } from "react-router-dom";
 
 const ContentWrap = styled.div`
   width: 100%;
@@ -37,7 +43,7 @@ const Section = styled.div`
   background-color: #fff;
 `;
 
-const Button = styled.div`
+const Button = styled(NavLink)`
   text-decoration: none;
   text-align: center;
   color: #3182f6;
@@ -46,6 +52,12 @@ const Button = styled.div`
   padding: 15px 0;
   border-radius: 5px;
   font-weight: 900;
+
+  &:hover {
+    color: #00abff;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+  }
 `;
 
 export function CourseUser() {
@@ -81,6 +93,15 @@ export function CourseUser() {
 
   console.log(content.map((item) => item.contentTitle));
 
+  const handleCart = async () => {
+    try {
+      await apiCreateCart(courseId);
+      alert("장바구니에 강좌가 추가되었습니다.");
+    } catch (err) {
+      alert("장바구니에 강좌를 추가하는데 실패하였습니다.");
+    }
+  };
+
   if (!course) {
     return <div>Loading...</div>;
   }
@@ -115,8 +136,8 @@ export function CourseUser() {
                   <p>수료증: </p>
                   <p>가격: {course.price}</p>
                 </div>
-                <Button>수강 신청하러 가기</Button>
-                <Button>카트에 담기</Button>
+                <Button to="/cart">수강 신청하러 가기</Button>
+                <Button onClick={handleCart}>카트에 담기</Button>
               </ContentLeft>
             </ContentBox>
           </ContentWrap>

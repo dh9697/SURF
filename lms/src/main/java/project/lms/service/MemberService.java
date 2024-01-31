@@ -15,4 +15,6 @@ public interface MemberService {
 	public MemberDto getMemberWithAuthorities(String loginId);
 	public MemberDto getCurrentMemberWithAuthorities();
 	public List<Member> getAllInstructors();
+	
+	Member findById(Long memberId);
 }

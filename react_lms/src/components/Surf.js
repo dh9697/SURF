@@ -36,6 +36,8 @@ import { InstructorAssignmentManage } from "./InstructorAssignmentManage";
 import { InstructorExamManage } from "./InstructorExamManage";
 import { InstructorQnAManage } from "./InstructorQnAManage";
 import { InstructorCourseNoticeManage } from "./InstructorCourseNoticeManage";
+import { Dashboard } from "./Dashboard";
+import { Cart } from "./Cart";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -70,6 +72,7 @@ export function Surf() {
                   <Route path="/level_test" element={<LevelTestMain />} />
                   <Route path="/event" element={<Event />} />
                   <Route path="/contact" element={<Contact />} />
+                  <Route path="/cart" element={<Cart />} />
                   {/* 학생 Dashboard */}
                   {isLoggedIn && (
                     <Route

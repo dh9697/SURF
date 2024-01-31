@@ -2,7 +2,6 @@ package project.lms.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -234,6 +233,6 @@ public class Member {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-	
+
 }
 

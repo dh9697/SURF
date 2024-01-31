@@ -239,3 +239,11 @@ export function apiGetContentByCourse(courseId) {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+
+// Cart
+// cart 생성
+export function apiCreateCart(courseId) {
+  return axios.post(`http://localhost:8080/api/cart?courseId=${courseId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}

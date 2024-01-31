@@ -30,7 +30,7 @@ public class Cart {
 	private Course course;
 	
 	@Column(nullable = false)
-	private Integer totalQuanity;
+	private Integer totalQuantity;
 	
 	@Column(nullable = false)
 	private Integer totalPrice;
@@ -43,13 +43,13 @@ public class Cart {
 		super();
 	}
 
-	public Cart(Long cartId, Member member, Course course, Integer totalQuanity, Integer totalPrice,
+	public Cart(Long cartId, Member member, Course course, Integer totalQuantity, Integer totalPrice,
 			LocalDateTime createDate) {
 		super();
 		this.cartId = cartId;
 		this.member = member;
 		this.course = course;
-		this.totalQuanity = totalQuanity;
+		this.totalQuantity = totalQuantity;
 		this.totalPrice = totalPrice;
 		this.createDate = createDate;
 	}
@@ -78,12 +78,12 @@ public class Cart {
 		this.course = course;
 	}
 
-	public Integer getTotalQuanity() {
-		return totalQuanity;
+	public Integer getTotalQuantity() {
+		return totalQuantity;
 	}
 
-	public void setTotalQuanity(Integer totalQuanity) {
-		this.totalQuanity = totalQuanity;
+	public void setTotalQuantity(Integer totalQuantity) {
+		this.totalQuantity = totalQuantity;
 	}
 
 	public Integer getTotalPrice() {

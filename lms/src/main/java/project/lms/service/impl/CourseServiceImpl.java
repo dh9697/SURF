@@ -214,4 +214,10 @@ public class CourseServiceImpl implements CourseService {
 	     return new ResponseDto<>(ResultCode.SUCCESS.name(), null, "Course deleted successfully.");
 
 	    }
+	 
+	 @Override
+	 public Course findById(Long courseId) {
+		 return courseRepository.findById(courseId)
+				 .orElseThrow(() -> new InvalidRequestException("courseId not found", "해당 아이디의 강좌를 찾을 수 없습니다."));
+	 }
 }

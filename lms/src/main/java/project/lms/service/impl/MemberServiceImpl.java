@@ -92,6 +92,12 @@ public class MemberServiceImpl implements MemberService {
 		}
 	}
 	
+	@Override
+    public Member findById(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new InvalidRequestException("memberId nof found", "해당 아이디의 회원을 찾을 수 없습니다."));
+    }
+	
 	// admin 모든 강사 조회
 	@Override
     public List<Member> getAllInstructors(){

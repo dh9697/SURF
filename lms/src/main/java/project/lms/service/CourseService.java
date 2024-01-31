@@ -20,4 +20,6 @@ public interface CourseService {
 	public ResponseDto<CourseDto> updateCourse(Long courseId, CourseDto courseDto);
 
 	public ResponseDto<String> deleteCourse(Long courseId);
+	
+	Course findById(Long courseId);
 }
