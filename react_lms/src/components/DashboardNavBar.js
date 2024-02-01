@@ -73,7 +73,9 @@ export function DashboardNavBar() {
             <StyledNavLink to={"/"}>작성한 게시글</StyledNavLink>
             <StyledNavLink to={"/"}>수강 바구니</StyledNavLink>
             <StyledNavLink to={"/"}>수료증</StyledNavLink>
-            <StyledNavLink to={"/"}>구매내역</StyledNavLink>
+            <StyledNavLink to={`/dashboard/${user.loginId}/purchaselist`}>
+              구매내역
+            </StyledNavLink>
             <StyledNavLink to={`/dashboard/${user.loginId}/account_info`}>
               계정 정보
             </StyledNavLink>

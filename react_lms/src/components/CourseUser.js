@@ -18,12 +18,12 @@ const ContentBox = styled.div`
   display: flex;
   padding-top: 30px;
 `;
-const ContentRight = styled.div`
+const ContentLeft = styled.div`
   display: block;
   max-width: 800px;
   padding: 0 20px;
 `;
-const ContentLeft = styled.div`
+const ContentRight = styled.div`
   position: sticky;
   top: 75px;
   margin: 0 34px 20px auto;
@@ -113,7 +113,7 @@ export function CourseUser() {
           <CourseTitle />
           <ContentWrap>
             <ContentBox>
-              <ContentRight>
+              <ContentLeft>
                 <Section>
                   <h1>강의 소개</h1>
                   <p>{course.description}</p>
@@ -128,8 +128,8 @@ export function CourseUser() {
                   <h1>수강평</h1>
                   <p>{course.description}</p>
                 </Section>
-              </ContentRight>
-              <ContentLeft>
+              </ContentLeft>
+              <ContentRight>
                 <div>
                   <p>선생님: {course.instructorNames}</p>
                   <p>총 강의 개수: {content.length}</p>
@@ -138,7 +138,7 @@ export function CourseUser() {
                 </div>
                 <Button to="/cart">수강 신청하러 가기</Button>
                 <Button onClick={handleCart}>카트에 담기</Button>
-              </ContentLeft>
+              </ContentRight>
             </ContentBox>
           </ContentWrap>
         </>

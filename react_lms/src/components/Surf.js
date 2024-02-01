@@ -38,6 +38,8 @@ import { InstructorQnAManage } from "./InstructorQnAManage";
 import { InstructorCourseNoticeManage } from "./InstructorCourseNoticeManage";
 import { Dashboard } from "./Dashboard";
 import { Cart } from "./Cart";
+import { AccountForm } from "./AccountForm";
+import { PurchaseList } from "./PurchaseList";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -73,6 +75,7 @@ export function Surf() {
                   <Route path="/event" element={<Event />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/cart" element={<Cart />} />
+                  <Route path="/accountform" element={<AccountForm />} />
                   {/* 학생 Dashboard */}
                   {isLoggedIn && (
                     <Route
@@ -87,6 +90,10 @@ export function Surf() {
                       <Route
                         path={`/dashboard/${user.loginId}/account_info`}
                         element={<AccountInfo />}
+                      />
+                      <Route
+                        path={`/dashboard/${user.loginId}/purchaselist`}
+                        element={<PurchaseList />}
                       />
                     </Route>
                   )}

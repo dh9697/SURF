@@ -1,12 +1,9 @@
 package project.lms.service.impl;
 
 import java.time.LocalDateTime;
-
-import javax.management.relation.InvalidRelationIdException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +17,7 @@ import project.lms.repository.CartRepository;
 import project.lms.repository.CourseRepository;
 import project.lms.repository.MemberRepository;
 import project.lms.service.CartService;
+import project.lms.util.SecurityUtil;
 
 @Service
 public class CartServiceImpl implements CartService{
@@ -36,10 +34,28 @@ public class CartServiceImpl implements CartService{
 		this.courseRepository = courseRepository;
 	}
 
+	@Transactional(readOnly = true)
+	public ResponseDto<List<Cart>> getCurrentUserCart() {
+		String username = SecurityUtil.getCurrentloginId()
+				.orElseThrow(() -> new InvalidRequestException("not found username", "현재 해당 사용자를 찾을 수 없습니다."));
+		
+		Member member = memberRepository.findByLoginId(username);
+		if(member == null) {
+			throw new InvalidRequestException("not found username", "해당 사용자를 찾을 수 없습니다.");
+		}
+		
+		List<Cart> carts = cartRepository.findAllByMember(member);
+		
+		return new ResponseDto<>(
+				ResultCode.SUCCESS.name(),
+				carts,
+				"현재 사용자의 장바구니를 조회했습니다.");
+	}
+	
 	@Transactional
 	public ResponseDto<Cart> createCart(Long courseId) {
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = user.getUsername();
+		String username = SecurityUtil.getCurrentloginId()
+				.orElseThrow(() -> new InvalidRequestException("not found username", "현재 해당 사용자를 찾을 수 없습니다."));
 		
 		Member member = memberRepository.findByLoginId(username);
 		if(member == null) {
@@ -49,7 +65,7 @@ public class CartServiceImpl implements CartService{
 		Course course = courseRepository.findById(courseId)
 			    .orElseThrow(() -> new InvalidRequestException("not found courseId", "해당 강좌를 찾을 수 없습니다."));
 		
-		Cart cart = cartRepository.findByMember(member);
+		Cart cart = cartRepository.findByMemberAndCourse(member, course);
 	    if (cart == null) {
 	        cart = new Cart();
 	        cart.setMember(member);
@@ -57,9 +73,7 @@ public class CartServiceImpl implements CartService{
 	        cart.setTotalQuantity(1);
 	        cart.setTotalPrice(course.getPrice());
 	        cart.setCreateDate(LocalDateTime.now());
-	        cartRepository.save(cart);
 	    } else {
-	    	cart.setCourse(course);
 	    	cart.setTotalQuantity(cart.getTotalQuantity() +1);
 	    	cart.setTotalPrice(cart.getTotalPrice() + course.getPrice());
 	    }

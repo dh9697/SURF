@@ -243,7 +243,19 @@ export function apiGetContentByCourse(courseId) {
 // Cart
 // cart 생성
 export function apiCreateCart(courseId) {
-  return axios.post(`http://localhost:8080/api/cart?courseId=${courseId}`, {
+  return axios.post(
+    `http://localhost:8080/api/cart?courseId=${courseId}`,
+    {
+      courseId: courseId,
+    },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+}
+// cart 조회
+export function apiGetCurrentUserCart() {
+  return axios.get("http://localhost:8080/api/cart", {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
