@@ -289,3 +289,9 @@ export function apiGetOrderDetail() {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+// 관리자 orderDetail 조회
+export function apiGetAllOrderDetails() {
+  return axios.get("http://localhost:8080/api/order-details/admin", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}

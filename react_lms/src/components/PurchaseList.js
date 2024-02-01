@@ -56,12 +56,8 @@ export function PurchaseList() {
                 <Td>{orderDetail.order.orderDate}</Td>
                 <Td>{orderDetail.order.paymentMethod}</Td>
                 <Td>{orderDetail.price}</Td>
-                <Td>이건 수량인디: {orderDetail.quantity}</Td>
-                <Td>
-                  {new Date(orderDetail.order.orderDate).setFullYear(
-                    new Date(orderDetail.order.orderDate).getFullYear() + 1
-                  )}
-                </Td>
+                <Td>{orderDetail.expirationDate}</Td>
+                <Td>저는 궁금해요 만료시간이 있어야 하는지 선생님께 여쭙기</Td>
               </tr>
             ))
           ) : (

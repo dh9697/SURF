@@ -36,6 +36,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         return memberRepository.findByLoginId(username);
     }
     
+    // 로그인 사용자의 주문 상세 정보 조회
 	@Override
 	public ResponseDto<List<OrderDetail>> getOrderDetail() {
 		Member member = getCurrentUser();
@@ -46,4 +47,15 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 				orderDetails,
 				"주문 상세 정보 조회가 성공적으로 완료되었습니다.");
 	}
+	
+	// 전체 사용자의 주문 상세 정보 조회
+	@Override
+    public ResponseDto<List<OrderDetail>> getAllOrderDetails() {
+        List<OrderDetail> orderDetails = orderDetailRepository.findAll();
+
+        return new ResponseDto<>(
+                ResultCode.SUCCESS.name(),
+                orderDetails,
+                "모든 주문 상세 정보 조회가 성공적으로 완료되었습니다.");
+    }
 }

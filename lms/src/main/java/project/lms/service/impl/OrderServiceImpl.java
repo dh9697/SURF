@@ -86,6 +86,7 @@ public class OrderServiceImpl implements OrderService{
 	        detail.setCourse(cart.getCourse());
 	        detail.setQuantity(cart.getTotalQuantity());
 	        detail.setPrice(BigDecimal.valueOf(cart.getTotalPrice()));
+	        detail.setExpirationDateFromNow();
 	        orderDetailRepository.save(detail);
 	        totalAmount = totalAmount.add(BigDecimal.valueOf(cart.getTotalPrice()));
 	    }

@@ -1,6 +1,8 @@
 package project.lms.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,18 +33,25 @@ public class OrderDetail {
 	
 	@Column(nullable = false)
 	private BigDecimal price;
+	
+	// 만료일자를 넣을거면 content 보여질 때, qna질의응답 권한에 사용하기
+	// ROLE_MEMBER의 의미? 필요없지 않나
+	@Column
+    private LocalDateTime expirationDate;
 
 	public OrderDetail() {
 		super();
 	}
 
-	public OrderDetail(Long orderDetailId, Order order, Course course, Integer quantity, BigDecimal price) {
+	public OrderDetail(Long orderDetailId, Order order, Course course, Integer quantity, BigDecimal price,
+			LocalDateTime expirationDate) {
 		super();
 		this.orderDetailId = orderDetailId;
 		this.order = order;
 		this.course = course;
 		this.quantity = quantity;
 		this.price = price;
+		this.expirationDate = expirationDate;
 	}
 
 	public Long getOrderDetailId() {
@@ -83,5 +92,18 @@ public class OrderDetail {
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+
+	public LocalDateTime getExpirationDate() {
+		return expirationDate;
+	}
+
+	public void setExpirationDate(LocalDateTime expirationDate) {
+		this.expirationDate = expirationDate;
+	}
+	
+	// 주문 생성 시 호출하여 만료일 설정
+	public void setExpirationDateFromNow() {
+		this.expirationDate = LocalDateTime.now().plusYears(1);
 	}
 }
