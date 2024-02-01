@@ -10,7 +10,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import project.lms.enumstatus.Gender;
 import project.lms.enumstatus.Nationality;
-import project.lms.model.Authority;
 import project.lms.model.Member;
 
 public class MemberDto {
@@ -168,5 +167,22 @@ public class MemberDto {
 	
 		return new MemberDto(member.getLoginId(),  authorityDtoSet, null, member.getName(), member.getBirthDate().toString(), 
 				member.getGender().name(), member.getNationality().name(), member.getEmail(), member.getPhoneNum(), member.getJoinDate());
+	}
+	
+	public Member toMember() {
+	    Member member = new Member();
+	    member.setLoginId(this.loginId);
+	    // AuthorityDto 집합을 Authority 객체의 집합으로 변환
+	    member.setAuthorities(this.authorityDtoSet.stream().map(AuthorityDto::toAuthority).collect(Collectors.toSet()));
+	    member.setPassword(this.password);
+	    member.setName(this.name);
+	    member.setBirthDate(LocalDate.parse(this.birthDate));
+	    member.setGender(Gender.valueOf(this.gender));
+	    member.setNationality(Nationality.valueOf(this.nationality));
+	    member.setEmail(this.email);
+	    member.setPhoneNum(this.phoneNum);
+	    member.setJoinDate(this.joinDate);
+	    
+	    return member;
 	}
 }

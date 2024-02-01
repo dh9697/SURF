@@ -1,8 +1,6 @@
 package project.lms.service.impl;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +88,7 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 	
 			examQuestion.setExam(exam);
 			examQuestion.setQuestionText(examQuestionDto.getQuestionText());
-			examQuestion.setOptions(examQuestionDto.getOptionAsString());
+			examQuestion.setOptions(examQuestionDto.getOptions());
 			examQuestion.setCorrectOptionIndex(examQuestionDto.getCorrectOptionIndex());
 			
 			ExamQuestion savedExamQuestion = examQuestionRepository.save(examQuestion);
@@ -117,7 +115,7 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 	        examQuestion.setExam(examRepository.findById(examQuestionDto.getExamId())
 	        		.orElseThrow(() -> new InvalidRequestException("Exam not found", "시험을 찾을 수 없습니다.")));
 	        examQuestion.setQuestionText(examQuestionDto.getQuestionText());
-	        examQuestion.setOptions(examQuestionDto.getOptionAsString());
+	        examQuestion.setOptions(examQuestionDto.getOptions());
 	        examQuestion.setCorrectOptionIndex(examQuestionDto.getCorrectOptionIndex());
 	        
 	        ExamQuestion updatedQuestion = examQuestionRepository.save(examQuestion);

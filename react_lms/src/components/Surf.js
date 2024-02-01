@@ -40,6 +40,8 @@ import { Dashboard } from "./Dashboard";
 import { Cart } from "./Cart";
 import { AccountForm } from "./AccountForm";
 import { PurchaseList } from "./PurchaseList";
+import { MyComment } from "./MyComment";
+import { MyCertificate } from "./MyCertificate";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -94,6 +96,14 @@ export function Surf() {
                       <Route
                         path={`/dashboard/${user.loginId}/purchaselist`}
                         element={<PurchaseList />}
+                      />
+                      <Route
+                        path={`/dashboard/${user.loginId}/mycomment`}
+                        element={<MyComment />}
+                      />
+                      <Route
+                        path={`/dashboard/${user.loginId}/mycertificate`}
+                        element={<MyCertificate />}
                       />
                     </Route>
                   )}

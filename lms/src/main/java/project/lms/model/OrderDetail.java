@@ -31,4 +31,57 @@ public class OrderDetail {
 	
 	@Column(nullable = false)
 	private BigDecimal price;
+
+	public OrderDetail() {
+		super();
+	}
+
+	public OrderDetail(Long orderDetailId, Order order, Course course, Integer quantity, BigDecimal price) {
+		super();
+		this.orderDetailId = orderDetailId;
+		this.order = order;
+		this.course = course;
+		this.quantity = quantity;
+		this.price = price;
+	}
+
+	public Long getOrderDetailId() {
+		return orderDetailId;
+	}
+
+	public void setOrderDetailId(Long orderDetailId) {
+		this.orderDetailId = orderDetailId;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
 }

@@ -78,11 +78,8 @@ public class ExamQuestionDto {
 				examQuestion.getExamQuestionId(),
 				examQuestion.getExam().getExamId(),
 				examQuestion.getQuestionText(),
-				parseOptions(examQuestion.getOptions()),
+				examQuestion.getOptions(),
 				examQuestion.getCorrectOptionIndex());
 	}
 	
-	private static List<String> parseOptions(String options){
-		return Arrays.asList(options.split(","));
-	}
 }

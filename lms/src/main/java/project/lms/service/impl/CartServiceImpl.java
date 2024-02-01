@@ -34,12 +34,18 @@ public class CartServiceImpl implements CartService{
 		this.courseRepository = courseRepository;
 	}
 
+	// 로그인한 사용자 정보 가져오기
+    private Member getCurrentUser() {
+        String username = SecurityUtil.getCurrentloginId()
+                .orElseThrow(() -> new InvalidRequestException("not found username", "현재 해당 사용자를 찾을 수 없습니다."));
+        
+        return memberRepository.findByLoginId(username);
+    }
+    
+	// 로그인 유저의 장바구니 조회
 	@Transactional(readOnly = true)
 	public ResponseDto<List<Cart>> getCurrentUserCart() {
-		String username = SecurityUtil.getCurrentloginId()
-				.orElseThrow(() -> new InvalidRequestException("not found username", "현재 해당 사용자를 찾을 수 없습니다."));
-		
-		Member member = memberRepository.findByLoginId(username);
+		Member member = getCurrentUser();
 		if(member == null) {
 			throw new InvalidRequestException("not found username", "해당 사용자를 찾을 수 없습니다.");
 		}
@@ -52,12 +58,10 @@ public class CartServiceImpl implements CartService{
 				"현재 사용자의 장바구니를 조회했습니다.");
 	}
 	
+	// 로그인 유저의 장바구니 생성
 	@Transactional
 	public ResponseDto<Cart> createCart(Long courseId) {
-		String username = SecurityUtil.getCurrentloginId()
-				.orElseThrow(() -> new InvalidRequestException("not found username", "현재 해당 사용자를 찾을 수 없습니다."));
-		
-		Member member = memberRepository.findByLoginId(username);
+		Member member = getCurrentUser();
 		if(member == null) {
 			throw new InvalidRequestException("not found username", "해당 사용자를 찾을 수 없습니다.");
 		}
@@ -84,6 +88,68 @@ public class CartServiceImpl implements CartService{
 				ResultCode.SUCCESS.name(),
 				cart,
 				"장바구니가 추가되었습니다.");
+	}
+	
+	// 장바구니 수량 업데이트
+	@Transactional
+	public ResponseDto<Cart> updateCart(Long courseId, int quantityChange) {
+		Member member = getCurrentUser();
+		if(member == null) {
+			throw new InvalidRequestException("not found username", "해당 사용자를 찾을 수 없습니다.");
+		}
+		
+		Course course = courseRepository.findById(courseId)
+			    .orElseThrow(() -> new InvalidRequestException("not found courseId", "해당 강좌를 찾을 수 없습니다."));
+		
+		Cart cart = cartRepository.findByMemberAndCourse(member, course);
+	    if (cart == null) {
+	    	throw new InvalidRequestException("not found course in cart", "장바구니에 해당 강좌가 없습니다.");
+	    }
+	    
+	    int newQuantity = cart.getTotalQuantity() + quantityChange;
+	    if (newQuantity < 0) {
+	        throw new InvalidRequestException("quantity less than zero", "수량은 0 미만이 될 수 없습니다.");
+	    }
+
+	    if (newQuantity == 0) {
+	        cartRepository.delete(cart);
+	        return new ResponseDto<>(
+	                ResultCode.SUCCESS.name(),
+	                null,
+	                "장바구니에서 해당 강좌가 제거되었습니다.");
+	    } else {
+	        cart.setTotalQuantity(newQuantity);
+	        cart.setTotalPrice(newQuantity * course.getPrice());
+	        cartRepository.save(cart);
+	        return new ResponseDto<>(
+	                ResultCode.SUCCESS.name(),
+	                cart,
+	                "수량이 " + (quantityChange >= 0 ? "증가" : "감소") + "되었습니다.");
+	    }
+	}
+	
+	// 장바구니 코스 삭제
+	@Transactional
+	public ResponseDto<String> deleteCart(Long courseId) {
+		Member member = getCurrentUser();
+		if(member == null) {
+			throw new InvalidRequestException("not found username", "해당 사용자를 찾을 수 없습니다.");
+		}
+		
+	    Course course = courseRepository.findById(courseId)
+	            .orElseThrow(() -> new InvalidRequestException("not found courseId", "해당 강좌를 찾을 수 없습니다."));
+
+	    Cart cart = cartRepository.findByMemberAndCourse(member, course);
+	    if (cart == null) {
+	        throw new InvalidRequestException("not found course in cart", "장바구니에 해당 강좌가 없습니다.");
+	    }
+	    
+	    cartRepository.delete(cart);
+
+	    return new ResponseDto<>(
+	            ResultCode.SUCCESS.name(),
+	            null,
+	            "장바구니에서 강좌가 삭제되었습니다.");
 	}
 	
 }

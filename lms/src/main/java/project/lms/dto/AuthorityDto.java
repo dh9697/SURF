@@ -1,5 +1,7 @@
 package project.lms.dto;
 
+import project.lms.model.Authority;
+
 public class AuthorityDto {
 
 	private String authorityName;
@@ -21,4 +23,9 @@ public class AuthorityDto {
 		this.authorityName = authorityName;
 	}
 	
+	public Authority toAuthority() {
+	    Authority authority = new Authority();
+	    authority.setAuthorityName(this.authorityName);
+	    return authority;
+	}
 }

@@ -48,18 +48,18 @@ public class Order {
 	@Column(nullable = false)
 	private String paymentMethod;
 	
-	@Column(nullable = false)
+	@Column
 	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime paymentDate;
 	
 	@Column(nullable = false)
 	private boolean paymentStatus;
 	
-	@Column(nullable = false)
+	@Column
 	private BigDecimal totalAmount;
 	
 	// 주문 처리중, 완료, 취소
-	@Column(nullable = false)
+	@Column
 	private String status;
 
 	public Order() {

@@ -70,9 +70,13 @@ export function DashboardNavBar() {
             <StyledNavLink to={`/dashboard/${user.loginId}/courses`}>
               내 학습
             </StyledNavLink>
-            <StyledNavLink to={"/"}>작성한 게시글</StyledNavLink>
-            <StyledNavLink to={"/"}>수강 바구니</StyledNavLink>
-            <StyledNavLink to={"/"}>수료증</StyledNavLink>
+            <StyledNavLink to={`/dashboard/${user.loginId}/mycomment`}>
+              작성한 게시글
+            </StyledNavLink>
+            <StyledNavLink to={"/cart"}>수강 바구니</StyledNavLink>
+            <StyledNavLink to={`/dashboard/${user.loginId}/mycertificate`}>
+              수료증
+            </StyledNavLink>
             <StyledNavLink to={`/dashboard/${user.loginId}/purchaselist`}>
               구매내역
             </StyledNavLink>

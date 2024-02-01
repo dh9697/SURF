@@ -1,5 +1,7 @@
 package project.lms.model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +27,7 @@ public class ExamQuestion {
 	private String questionText;
 	
 	@Column(nullable = false)
-	private String options;
+	private List<String> options;
 	
 	@Column(nullable = false)
 	private Integer correctOptionIndex;
@@ -33,8 +35,8 @@ public class ExamQuestion {
 	public ExamQuestion() {
 		super();
 	}
-
-	public ExamQuestion(Long examQuestionId, Exam exam, String questionText, String options,
+	
+	public ExamQuestion(Long examQuestionId, Exam exam, String questionText, List<String> options,
 			Integer correctOptionIndex) {
 		super();
 		this.examQuestionId = examQuestionId;
@@ -43,7 +45,7 @@ public class ExamQuestion {
 		this.options = options;
 		this.correctOptionIndex = correctOptionIndex;
 	}
-
+	
 	public Long getExamQuestionId() {
 		return examQuestionId;
 	}
@@ -68,11 +70,11 @@ public class ExamQuestion {
 		this.questionText = questionText;
 	}
 
-	public String getOptions() {
+	public List<String> getOptions() {
 		return options;
 	}
 
-	public void setOptions(String options) {
+	public void setOptions(List<String> options) {
 		this.options = options;
 	}
 
@@ -82,6 +84,5 @@ public class ExamQuestion {
 
 	public void setCorrectOptionIndex(Integer correctOptionIndex) {
 		this.correctOptionIndex = correctOptionIndex;
-	}
-	
+	}	
 }

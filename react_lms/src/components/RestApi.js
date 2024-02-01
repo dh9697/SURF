@@ -259,3 +259,33 @@ export function apiGetCurrentUserCart() {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+// cart 수량 업데이트
+export function apiUpdateQuantityCart(courseId, quantityChange) {
+  return axios.put(
+    `http://localhost:8080/api/cart/${courseId}/${quantityChange}`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+}
+// cart 아이템 삭제
+export function apiDeleteCourseFromCart(courseId) {
+  return axios.delete(`http://localhost:8080/api/cart/${courseId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+// Order
+// order 생성
+export function apiCreateOrder(orderDto) {
+  return axios.post("http://localhost:8080/api/order", orderDto, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+// Order Detail
+// orderDetail 조회
+export function apiGetOrderDetail() {
+  return axios.get(`http://localhost:8080/api/order-details`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
