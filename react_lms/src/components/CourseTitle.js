@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import surf_logo from "./image/surf_logo.png";
+import { Outlet, useParams, NavLink } from "react-router-dom";
+import { CourseSidebar } from "./CourseSidebar";
+import { CourseMenu } from "./CourseMenu";
 
 const Container = styled.div`
   width: 100%;
@@ -16,8 +19,13 @@ const Wrapper = styled.div`
 `;
 
 const Thumbnail = styled.div`
-  padding: 8px 0;
+  padding: 30px;
 `;
+
+const ImgBox = styled.img`
+  width: 50%;
+`;
+
 const InfoRight = styled.div`
   display: flex;
   flex-direction: column;
@@ -25,21 +33,24 @@ const InfoRight = styled.div`
 `;
 
 const Breadcrumb = styled.div``;
-const Menu = styled.div`
-  background-color: darkgray;
-  display: flex;
-  align-items: flex-end;
-  height: 45px;
-  overflow: auto;
+
+const ContentMain = styled.div`
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 20px;
 `;
 
 export function CourseTitle() {
+  const { courseId } = useParams();
+
   return (
     <>
       <Container>
         <Wrapper>
           <Thumbnail>
-            <img src={surf_logo} alt="Sample" />
+            <ImgBox src={surf_logo} alt="Sample"></ImgBox>
           </Thumbnail>
           <InfoRight>
             <Breadcrumb>
@@ -52,12 +63,11 @@ export function CourseTitle() {
           </InfoRight>
         </Wrapper>
       </Container>
-      <Menu>
-        <div>강의 소개</div>
-        <div>커리큘럼</div>
-        <div>수강평</div>
-        <div>수강 전 문의</div>
-      </Menu>
+      <CourseMenu />
+      <ContentMain>
+        <Outlet />
+        <CourseSidebar />
+      </ContentMain>
     </>
   );
 }

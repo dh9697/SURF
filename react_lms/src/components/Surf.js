@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
 import { NavBar } from "./NavBar";
 import { Main } from "./Main";
-import { About } from "./About";
+import { AboutMain } from "./Homepage/About/AboutMain";
 import { LevelTestMain } from "./LevelTestMain";
 import { LevelTestStart } from "./LevelTestStart";
 import { Event } from "./Event";
@@ -13,35 +13,40 @@ import { DashboardNavBar } from "./DashboardNavBar";
 import { useContext } from "react";
 import { AuthContext } from "../AuthContext";
 import { AccountInfo } from "./AccountInfo";
-import { UserDashboard } from "./UserDashboard";
-import { MyCourse } from "./MyCourse";
+import { UserDashboard } from "./User/Dashboard/UserDashboard";
+import { MyCourse } from "./User/Dashboard/MyCourse";
 import { Course } from "./Course";
-import { CourseUser } from "./CourseUser";
-import { Contact } from "./Contact";
-import { AdminDashboard } from "./AdminDashboard";
-import { AdminDashboardSideBar } from "./AdminDashboardSideBar";
-import { AdminCourseManage } from "./AdminCourseManage";
-import { AdminLevelTestManage } from "./AdminLevelTestManage";
-import { AdminNoticeManage } from "./AdminNoticeManage";
-import { AdminPaymentManage } from "./AdminPaymentManage";
-import { AdminPostManage } from "./AdminPostManage";
-import { AdminPromotionManage } from "./AdminPromotionManage";
-import { AdminStatsManage } from "./AdminStatsManage";
+import { UserCourse } from "./UserCourse.js";
+import { AdminDashboard } from "./Admin/AdminDashboard";
+import { AdminDashboardSideBar } from "./Admin/AdminDashboardSideBar";
+import { AdminCourseManage } from "./Admin/AdminCourseManage";
+import { AdminLevelTestManage } from "./Admin/AdminLevelTestManage";
+import { AdminNoticeManage } from "./Admin/AdminNoticeManage";
+import { AdminPaymentManage } from "./Admin/AdminPaymentManage";
+import { AdminPostManage } from "./Admin/AdminPostManage";
+import { AdminPromotionManage } from "./Admin/AdminPromotionManage";
+import { AdminStatsManage } from "./Admin/AdminStatsManage";
 import { TestSubject } from "./TestSubject";
-import { InstructorDashboardSideBar } from "./InstructorDashboardSideBar";
-import { InstructorDashboard } from "./InstructorDashboard";
-import { InstructorScheduleManage } from "./InstructorScheduleManage";
-import { InstructorStudentsManage } from "./InstructorStudentsManage";
-import { InstructorAssignmentManage } from "./InstructorAssignmentManage";
-import { InstructorExamManage } from "./InstructorExamManage";
-import { InstructorQnAManage } from "./InstructorQnAManage";
-import { InstructorCourseNoticeManage } from "./InstructorCourseNoticeManage";
+import { InstructorDashboardSideBar } from "./Instructor/InstructorDashboardSideBar";
+import { InstructorDashboard } from "./Instructor/InstructorDashboard";
+import { InstructorScheduleManage } from "./Instructor/InstructorScheduleManage";
+import { InstructorStudentsManage } from "./Instructor/InstructorStudentsManage";
+import { InstructorAssignmentManage } from "./Instructor/InstructorAssignmentManage";
+import { InstructorExamManage } from "./Instructor/InstructorExamManage";
+import { InstructorQnAManage } from "./Instructor/InstructorQnAManage";
+import { InstructorCourseNoticeManage } from "./Instructor/InstructorCourseNoticeManage";
 import { Dashboard } from "./Dashboard";
 import { Cart } from "./Cart";
 import { AccountForm } from "./AccountForm";
-import { PurchaseList } from "./PurchaseList";
-import { MyComment } from "./MyComment";
-import { MyCertificate } from "./MyCertificate";
+import { PurchaseList } from "./User/Dashboard/PurchaseList";
+import { MyComment } from "./User/Dashboard/MyComment";
+import { MyCertificate } from "./User/Dashboard/MyCertificate";
+import { CourseSidebar } from "./CourseSidebar";
+import { CourseTitle } from "./CourseTitle";
+import { BeforeInquiries } from "./BeforeInquiries";
+import { MemberCourse } from "./MemberCourse";
+import { AfterInquiries } from "./AfterInquiries.js";
+import { MemberCourseDescription } from "./MemberCourseDescription.js";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -70,12 +75,24 @@ export function Surf() {
               <Routes>
                 <Route path="/" element={<NavBar />}>
                   <Route index element={<Main />} />
-                  <Route path="/about" element={<About />} />
+                  <Route path="/about" element={<AboutMain />} />
                   <Route path="/course" element={<Course />} />
-                  <Route path="/course/:courseId" element={<CourseUser />} />
+                  <Route path="/course/:courseId" element={<CourseTitle />}>
+                    <Route index element={<MemberCourse />} />
+                    <Route path="afterinquiries" element={<AfterInquiries />} />
+                    <Route
+                      path="coursedescription"
+                      element={<MemberCourseDescription />}
+                    />
+                    {/* User 권한 course 상세 보기 > 권한 나눠야 함
+                    <Route index element={<UserCourse />} />
+                    <Route
+                      path="beforeinquiries"
+                      element={<BeforeInquiries />}
+                    /> */}
+                  </Route>
                   <Route path="/level_test" element={<LevelTestMain />} />
                   <Route path="/event" element={<Event />} />
-                  <Route path="/contact" element={<Contact />} />
                   <Route path="/cart" element={<Cart />} />
                   <Route path="/accountform" element={<AccountForm />} />
                   {/* 학생 Dashboard */}

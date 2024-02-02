@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import project.lms.model.CourseHistory;
 import project.lms.model.Member;
 import project.lms.model.OrderDetail;
 

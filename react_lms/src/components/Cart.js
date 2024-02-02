@@ -41,6 +41,7 @@ export function Cart() {
 
       await apiUpdateQuantityCart(courseId, quantityChange);
       const response = await apiGetCurrentUserCart();
+      console.log(response.data.data);
       setCartItems(response.data.data);
 
       if (newQuantity === 0) {

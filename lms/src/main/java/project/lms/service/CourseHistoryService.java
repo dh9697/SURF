@@ -2,27 +2,12 @@ package project.lms.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
+import project.lms.dto.ResponseDto;
 import project.lms.model.CourseHistory;
-import project.lms.repository.CourseHistoryRepository;
 
-@Service
-public class CourseHistoryService {
-
-	private final CourseHistoryRepository courseHistoryRepository;
-
-	public CourseHistoryService(CourseHistoryRepository courseHistoryRepository) {
-		super();
-		this.courseHistoryRepository = courseHistoryRepository;
-	}
+public interface CourseHistoryService {
 	
-	public List<CourseHistory> getAllCourseHistories(){
-		return courseHistoryRepository.findAll();
-	}
-	
-	public CourseHistory createCourseHistory(CourseHistory courseHistory) {
-		return courseHistoryRepository.save(courseHistory);
-	}
-	
+	public ResponseDto<List<CourseHistory>> getAllCourseHistories();
+	public ResponseDto<List<CourseHistory>> getCourseHistoriesByCourse(Long courseId);
+	public ResponseDto<List<CourseHistory>> getMyCourseHistories();
 }

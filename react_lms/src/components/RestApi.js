@@ -239,6 +239,7 @@ export function apiGetContentByCourse(courseId) {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+// content생성, 수정, 삭제 관리자페이지
 
 // Cart
 // cart 생성
