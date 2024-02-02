@@ -2,26 +2,27 @@ package project.lms.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
+import project.lms.dto.ExamHistoryDto;
+import project.lms.dto.ResponseDto;
 
-import project.lms.model.ExamHistory;
-import project.lms.repository.ExamHistoryRepository;
-
-@Service
-public class ExamHistoryService {
-
-	private final ExamHistoryRepository examHistoryRepository;
-
-	public ExamHistoryService(ExamHistoryRepository examHistoryRepository) {
-		super();
-		this.examHistoryRepository = examHistoryRepository;
-	}
+public interface ExamHistoryService {
 	
-	public List<ExamHistory> getAllExamHistories(){
-		return examHistoryRepository.findAll();
-	}
+	// 시험 이력 생성 메서드
+    ResponseDto<ExamHistoryDto> createExamHistory(ExamHistoryDto examHistoryDto);
+    
+    // 특정 시험 이력 조회 메서드
+    ResponseDto<ExamHistoryDto> getExamHistory(Long id);
+    
+    // 모든 시험 이력 조회 메서드
+    ResponseDto<List<ExamHistoryDto>> getAllExamHistories();
+    
+    // 특정 회원의 시험 이력 조회 메서드
+    ResponseDto<List<ExamHistoryDto>> getExamHistoriesByMemberId(Long memberId);
+    
+    // 특정 시험 이력 수정 메서드
+    ResponseDto<ExamHistoryDto> updateExamHistory(Long examHistoryId, ExamHistoryDto examHistoryDto);
+    
+    // 특정 시험 이력 삭제 메서드
+    ResponseDto<String> deleteExamHistory(Long examHistoryId);
 	
-	public ExamHistory createExamHistory(ExamHistory examHistory) {
-		return examHistoryRepository.save(examHistory);
-	}
 }

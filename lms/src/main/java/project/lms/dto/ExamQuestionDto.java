@@ -9,22 +9,26 @@ public class ExamQuestionDto {
 	
 	private Long examQuestionId;
 	private Long examId;
+	private String questParagraph;
 	private String questionText;
 	private List<String> options;
 	private int correctOptionIndex;
+	private String wrongAnsExpl;
 	
 	public ExamQuestionDto() {
 		super();
 	}
-
-	public ExamQuestionDto(Long examQuestionId, Long examId, String questionText, List<String> options,
-			int correctOptionIndex) {
+	
+	public ExamQuestionDto(Long examQuestionId, Long examId, String questParagraph, String questionText,
+			List<String> options, int correctOptionIndex, String wrongAnsExpl) {
 		super();
 		this.examQuestionId = examQuestionId;
 		this.examId = examId;
+		this.questParagraph = questParagraph;
 		this.questionText = questionText;
 		this.options = options;
 		this.correctOptionIndex = correctOptionIndex;
+		this.wrongAnsExpl = wrongAnsExpl;
 	}
 
 	public Long getExamQuestionId() {
@@ -41,6 +45,14 @@ public class ExamQuestionDto {
 
 	public void setExamId(Long examId) {
 		this.examId = examId;
+	}
+
+	public String getQuestParagraph() {
+		return questParagraph;
+	}
+
+	public void setQuestParagraph(String questParagraph) {
+		this.questParagraph = questParagraph;
 	}
 
 	public String getQuestionText() {
@@ -67,19 +79,25 @@ public class ExamQuestionDto {
 		this.correctOptionIndex = correctOptionIndex;
 	}
 
-	public String getOptionAsString() {
-		return String.join(",", this.options);
+	public String getWrongAnsExpl() {
+		return wrongAnsExpl;
 	}
-	
+
+	public void setWrongAnsExpl(String wrongAnsExpl) {
+		this.wrongAnsExpl = wrongAnsExpl;
+	}
+
 	public static ExamQuestionDto from(ExamQuestion examQuestion) {
 		if(examQuestion == null) return null;
 		
 		return new ExamQuestionDto(
 				examQuestion.getExamQuestionId(),
 				examQuestion.getExam().getExamId(),
+				examQuestion.getQuestParagraph(),
 				examQuestion.getQuestionText(),
 				examQuestion.getOptions(),
-				examQuestion.getCorrectOptionIndex());
+				examQuestion.getCorrectOptionIndex(),
+				examQuestion.getWrongAnsExpl());
 	}
 	
 }

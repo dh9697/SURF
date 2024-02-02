@@ -1,6 +1,5 @@
 package project.lms.service.impl;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +11,8 @@ import project.lms.dto.ResponseDto;
 import project.lms.enumstatus.ResultCode;
 import project.lms.exception.InvalidRequestException;
 import project.lms.model.Content;
-import project.lms.model.Course;
 import project.lms.model.Exam;
 import project.lms.repository.ContentRepository;
-import project.lms.repository.CourseRepository;
 import project.lms.repository.ExamRepository;
 import project.lms.service.ExamService;
 
@@ -76,9 +73,6 @@ public class ExamServiceImpl implements ExamService {
 		            .orElseThrow(() -> new InvalidRequestException("Invalid Request", "컨텐츠가 존재하지 않거나 찾을 수 없습니다."));
 			Exam exam = new Exam();
 			exam.setContent(content);
-			exam.setExamDate(LocalDateTime.now());
-			exam.setDurationMins(examDto.getDurationMins());
-			exam.setPassingScore(examDto.getPassingScore());
 			exam.setExamIsActive(examDto.getExamIsActive());
 			
 			examRepository.save(exam);
@@ -104,9 +98,6 @@ public class ExamServiceImpl implements ExamService {
 			Exam exam = examRepository.findById(examId)
 					.orElseThrow(() -> new InvalidRequestException("Invalid Request", "해당 시험이 존재하지 않거나 찾을 수 없습니다."));
 		
-			exam.setExamDate(LocalDateTime.now());
-			exam.setDurationMins(examDto.getDurationMins());
-			exam.setPassingScore(examDto.getPassingScore());
 			exam.setExamIsActive(examDto.getExamIsActive());
 			
 			examRepository.save(exam);

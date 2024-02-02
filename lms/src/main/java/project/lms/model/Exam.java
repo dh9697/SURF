@@ -1,7 +1,5 @@
 package project.lms.model;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,8 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "exams")
@@ -24,15 +20,6 @@ public class Exam {
     @ManyToOne
     @JoinColumn(name = "contentId", nullable = false)
     private Content content;
-    
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime examDate;
-    
-    @Column(nullable = false)
-    private Integer durationMins;
-
-    @Column(nullable = false)
-    private Integer passingScore;
 
     @Column(name = "examIsActive")
     private Boolean examIsActive;
@@ -41,14 +28,10 @@ public class Exam {
 		super();
 	}
 
-	public Exam(Long examId, Content content, LocalDateTime examDate, Integer durationMins, Integer passingScore,
-			Boolean examIsActive) {
+	public Exam(Long examId, Content content, Boolean examIsActive) {
 		super();
 		this.examId = examId;
 		this.content = content;
-		this.examDate = examDate;
-		this.durationMins = durationMins;
-		this.passingScore = passingScore;
 		this.examIsActive = examIsActive;
 	}
 
@@ -66,30 +49,6 @@ public class Exam {
 
 	public void setContent(Content content) {
 		this.content = content;
-	}
-
-	public LocalDateTime getExamDate() {
-		return examDate;
-	}
-
-	public void setExamDate(LocalDateTime examDate) {
-		this.examDate = examDate;
-	}
-
-	public Integer getDurationMins() {
-		return durationMins;
-	}
-
-	public void setDurationMins(Integer durationMins) {
-		this.durationMins = durationMins;
-	}
-
-	public Integer getPassingScore() {
-		return passingScore;
-	}
-
-	public void setPassingScore(Integer passingScore) {
-		this.passingScore = passingScore;
 	}
 
 	public Boolean getExamIsActive() {

@@ -4,24 +4,15 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import project.lms.dto.ExamResultDto;
+import project.lms.dto.ResponseDto;
 import project.lms.model.ExamResult;
 import project.lms.repository.ExamResultRepository;
 
-@Service
-public class ExamResultService {
+public interface ExamResultService {
 
-	private final ExamResultRepository examResultRepository;
-
-	public ExamResultService(ExamResultRepository examResultRepository) {
-		super();
-		this.examResultRepository = examResultRepository;
-	}
-	
-	public List<ExamResult> getAllExamResults(){
-		return examResultRepository.findAll();
-	}
-	
-	public ExamResult createExamResult(ExamResult examResult) {
-		return examResultRepository.save(examResult);
-	}
+	ResponseDto<List<ExamResult>> getAllExamResults();
+    ResponseDto<ExamResult> getExamResult(Long examResultId);
+    ResponseDto<ExamResult> createExamResult(ExamResultDto examResultDto, Long examId, Long memberId, Long questionId);
+    void checkAnswer(ExamResult examResult, Long questionId);
 }

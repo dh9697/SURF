@@ -3,6 +3,7 @@ package project.lms.model;
 import java.util.List;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,29 +24,38 @@ public class ExamQuestion {
 	@JoinColumn(name = "examId", nullable = false)
 	private Exam exam;
 	
+	@Column
+	private String questParagraph;
+	
 	@Column(nullable = false)
 	private String questionText;
 	
+	@ElementCollection
 	@Column(nullable = false)
 	private List<String> options;
 	
 	@Column(nullable = false)
 	private Integer correctOptionIndex;
 
+	@Column
+	private String wrongAnsExpl;
+	
 	public ExamQuestion() {
 		super();
 	}
-	
-	public ExamQuestion(Long examQuestionId, Exam exam, String questionText, List<String> options,
-			Integer correctOptionIndex) {
+
+	public ExamQuestion(Long examQuestionId, Exam exam, String questParagraph, String questionText,
+			List<String> options, Integer correctOptionIndex, String wrongAnsExpl) {
 		super();
 		this.examQuestionId = examQuestionId;
 		this.exam = exam;
+		this.questParagraph = questParagraph;
 		this.questionText = questionText;
 		this.options = options;
 		this.correctOptionIndex = correctOptionIndex;
+		this.wrongAnsExpl = wrongAnsExpl;
 	}
-	
+
 	public Long getExamQuestionId() {
 		return examQuestionId;
 	}
@@ -60,6 +70,14 @@ public class ExamQuestion {
 
 	public void setExam(Exam exam) {
 		this.exam = exam;
+	}
+
+	public String getQuestParagraph() {
+		return questParagraph;
+	}
+
+	public void setQuestParagraph(String questParagraph) {
+		this.questParagraph = questParagraph;
 	}
 
 	public String getQuestionText() {
@@ -84,5 +102,13 @@ public class ExamQuestion {
 
 	public void setCorrectOptionIndex(Integer correctOptionIndex) {
 		this.correctOptionIndex = correctOptionIndex;
-	}	
+	}
+
+	public String getWrongAnsExpl() {
+		return wrongAnsExpl;
+	}
+
+	public void setWrongAnsExpl(String wrongAnsExpl) {
+		this.wrongAnsExpl = wrongAnsExpl;
+	}
 }

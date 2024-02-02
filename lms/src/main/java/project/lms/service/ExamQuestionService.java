@@ -4,7 +4,6 @@ import java.util.List;
 
 import project.lms.dto.ExamQuestionDto;
 import project.lms.dto.ResponseDto;
-import project.lms.model.ExamQuestion;
 
 public interface ExamQuestionService {
 

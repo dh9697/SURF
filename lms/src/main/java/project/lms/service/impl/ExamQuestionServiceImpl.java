@@ -87,9 +87,12 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 		            .orElseThrow(() -> new InvalidRequestException("Invalid Request", "시험을 찾을 수 없습니다."));
 	
 			examQuestion.setExam(exam);
+			
+			examQuestion.setQuestParagraph(examQuestionDto.getQuestParagraph());
 			examQuestion.setQuestionText(examQuestionDto.getQuestionText());
 			examQuestion.setOptions(examQuestionDto.getOptions());
 			examQuestion.setCorrectOptionIndex(examQuestionDto.getCorrectOptionIndex());
+			examQuestion.setWrongAnsExpl(examQuestionDto.getWrongAnsExpl());
 			
 			ExamQuestion savedExamQuestion = examQuestionRepository.save(examQuestion);
 			
@@ -114,9 +117,11 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 
 	        examQuestion.setExam(examRepository.findById(examQuestionDto.getExamId())
 	        		.orElseThrow(() -> new InvalidRequestException("Exam not found", "시험을 찾을 수 없습니다.")));
+	        examQuestion.setQuestParagraph(examQuestionDto.getQuestParagraph());
 	        examQuestion.setQuestionText(examQuestionDto.getQuestionText());
 	        examQuestion.setOptions(examQuestionDto.getOptions());
 	        examQuestion.setCorrectOptionIndex(examQuestionDto.getCorrectOptionIndex());
+	        examQuestion.setWrongAnsExpl(examQuestionDto.getWrongAnsExpl());
 	        
 	        ExamQuestion updatedQuestion = examQuestionRepository.save(examQuestion);
 
