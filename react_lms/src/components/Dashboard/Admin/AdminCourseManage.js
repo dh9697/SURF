@@ -4,7 +4,7 @@ import {
   apiPutCourse,
   apiPostCourse,
   apiDeleteCourse,
-} from "../RestApi";
+} from "../../RestApi";
 import styled from "styled-components";
 
 const Container = styled.div`

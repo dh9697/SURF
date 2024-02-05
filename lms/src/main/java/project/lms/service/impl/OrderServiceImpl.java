@@ -14,14 +14,17 @@ import project.lms.enumstatus.ResultCode;
 import project.lms.exception.InvalidRequestException;
 import project.lms.model.Authority;
 import project.lms.model.Cart;
+import project.lms.model.CourseHistory;
 import project.lms.model.Member;
 import project.lms.model.Order;
 import project.lms.model.OrderDetail;
 import project.lms.repository.AuthorityRepository;
 import project.lms.repository.CartRepository;
+import project.lms.repository.CourseHistoryRepository;
 import project.lms.repository.MemberRepository;
 import project.lms.repository.OrderDetailRepository;
 import project.lms.repository.OrderRepository;
+import project.lms.service.CourseHistoryService;
 import project.lms.service.OrderService;
 import project.lms.util.SecurityUtil;
 
@@ -33,17 +36,19 @@ public class OrderServiceImpl implements OrderService{
 	private CartRepository cartRepository;
 	private OrderDetailRepository orderDetailRepository;
 	private AuthorityRepository authorityRepository;
+	private final CourseHistoryRepository courseHistoryRepository; 
 
 	@Autowired
 	public OrderServiceImpl(OrderRepository orderRepository, MemberRepository memberRepository
 			, CartRepository cartRepository, OrderDetailRepository orderDetailRepository,
-			AuthorityRepository authorityRepository) {
+			AuthorityRepository authorityRepository, CourseHistoryRepository courseHistoryRepository) {
 		super();
 		this.orderRepository = orderRepository;
 		this.memberRepository = memberRepository;
 		this.cartRepository = cartRepository;
 		this.orderDetailRepository = orderDetailRepository;
 		this.authorityRepository = authorityRepository;
+		this.courseHistoryRepository = courseHistoryRepository;
 	}
 	
 	// 로그인한 사용자 정보 가져오기
@@ -89,6 +94,13 @@ public class OrderServiceImpl implements OrderService{
 	        detail.setExpirationDateFromNow();
 	        orderDetailRepository.save(detail);
 	        totalAmount = totalAmount.add(BigDecimal.valueOf(cart.getTotalPrice()));
+	        
+	        CourseHistory courseHistory = new CourseHistory();
+            courseHistory.setMember(member);
+            courseHistory.setCourse(cart.getCourse());
+            courseHistory.setStartDate(LocalDateTime.now());
+            courseHistory.setEndDate(detail.getExpirationDate());
+            courseHistoryRepository.save(courseHistory);
 	    }
 	    order.setTotalAmount(totalAmount);
 	    

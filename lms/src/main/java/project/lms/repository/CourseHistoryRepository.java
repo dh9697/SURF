@@ -10,4 +10,5 @@ import project.lms.model.Member;
 public interface CourseHistoryRepository extends JpaRepository<CourseHistory, Long> {
 
 	List<CourseHistory> findByCourseCourseId(Long courseId);
+	List<CourseHistory> findByMember(Member member);
 }

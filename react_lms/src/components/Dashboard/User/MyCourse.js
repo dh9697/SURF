@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import surf_logo from "../../image/surf_logo.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MyAnswerNote } from "./MyAnswerNote";
+import { apiGetMyCourseHistroies } from "../../RestApi";
 
 const Container = styled.div`
   width: 100%;
@@ -21,7 +22,15 @@ const ContentBox = styled.div`
 `;
 
 export function MyCourse() {
+  const [courseHistories, setCourseHistories] = useState([]);
   const [isAnswerNote, setAnswerNote] = useState(false); // 배열 비구조화 할당 사용
+
+  useEffect(() => {
+    apiGetMyCourseHistroies().then((response) => {
+      console.log(response.data.data);
+      setCourseHistories(response.data.data);
+    });
+  }, []);
 
   const toggleAnswerNote = () => {
     setAnswerNote(!isAnswerNote);
@@ -31,7 +40,13 @@ export function MyCourse() {
     <>
       <Container>
         <h1>내 학습</h1>
-        <p>강의명: </p>
+        {courseHistories.map((courseHistory) => (
+          <div key={courseHistory.courseHistoryId}>
+            <h2>강의명: {courseHistory.course.courseName}</h2>
+            <p>Start Date: {courseHistory.startDate}</p>
+            <p>End Date: {courseHistory.endDate}</p>
+          </div>
+        ))}
         <ContentBox>
           <Imgbox src={surf_logo} alt="Sample"></Imgbox>
           <div>

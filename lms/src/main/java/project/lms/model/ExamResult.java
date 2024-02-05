@@ -25,28 +25,29 @@ public class ExamResult {
 	@JoinColumn(name = "examId")
 	private Exam exam;
 	
+	@ManyToOne
+	@JoinColumn(name = "examQuestionId")
+	private ExamQuestion examQuestion;
+	
 	@Column
 	private Integer submittedAnswer;
 	
 	@Column
 	private boolean isCorrect;
-	
-	@Column
-	private String wrongAnsExpl;
 
 	public ExamResult() {
 		super();
 	}
 
-	public ExamResult(Long examResultId, Member member, Exam exam, Integer submittedAnswer, boolean isCorrect,
-			String wrongAnsExpl) {
+	public ExamResult(Long examResultId, Member member, Exam exam, ExamQuestion examQuestion, Integer submittedAnswer,
+			boolean isCorrect) {
 		super();
 		this.examResultId = examResultId;
 		this.member = member;
 		this.exam = exam;
+		this.examQuestion = examQuestion;
 		this.submittedAnswer = submittedAnswer;
 		this.isCorrect = isCorrect;
-		this.wrongAnsExpl = wrongAnsExpl;
 	}
 
 	public Long getExamResultId() {
@@ -64,13 +65,21 @@ public class ExamResult {
 	public void setMember(Member member) {
 		this.member = member;
 	}
-
+	
 	public Exam getExam() {
 		return exam;
 	}
 
 	public void setExam(Exam exam) {
 		this.exam = exam;
+	}
+
+	public ExamQuestion getExamQuestion() {
+		return examQuestion;
+	}
+
+	public void setExamQuestion(ExamQuestion examQuestion) {
+		this.examQuestion = examQuestion;
 	}
 
 	public Integer getSubmittedAnswer() {
@@ -88,12 +97,5 @@ public class ExamResult {
 	public void setCorrect(boolean isCorrect) {
 		this.isCorrect = isCorrect;
 	}
-
-	public String getWrongAnsExpl() {
-		return wrongAnsExpl;
-	}
-
-	public void setWrongAnsExpl(String wrongAnsExpl) {
-		this.wrongAnsExpl = wrongAnsExpl;
-	}
+	
 }

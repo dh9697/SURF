@@ -1,4 +1,4 @@
-export function MemberCourseDescription() {
+export function CourseDescription() {
   return (
     <>
       <p>강의 소개.</p>

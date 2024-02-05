@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "../../AuthContext";
 import { Icon } from "@iconify/react";
 
 const Container = styled.div`

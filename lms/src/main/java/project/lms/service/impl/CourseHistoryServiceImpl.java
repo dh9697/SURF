@@ -24,16 +24,12 @@ public class CourseHistoryServiceImpl implements CourseHistoryService{
 	private final CourseHistoryRepository courseHistoryRepository;
 
 	private final MemberRepository memberRepository;
-
-	private final OrderDetailRepository orderDetailRepository;
 	
 	@Autowired
-	public CourseHistoryServiceImpl(CourseHistoryRepository courseHistoryRepository, MemberRepository memberRepository,
-			OrderDetailRepository orderDetailRepository) {
+	public CourseHistoryServiceImpl(CourseHistoryRepository courseHistoryRepository, MemberRepository memberRepository) {
 		super();
 		this.courseHistoryRepository = courseHistoryRepository;
 		this.memberRepository = memberRepository;
-		this.orderDetailRepository = orderDetailRepository;
 	}
 
 	// 전체 조회
@@ -66,21 +62,7 @@ public class CourseHistoryServiceImpl implements CourseHistoryService{
 	
 	public ResponseDto<List<CourseHistory>> getMyCourseHistories() {
 		Member member = getCurrentUser();
-		List<OrderDetail> orderDetails = orderDetailRepository.findAllByOrderMember(member);
-		
-		List<CourseHistory> courseHistories = new ArrayList<>();
-		if (orderDetails.isEmpty()) {
-			for (OrderDetail orderDetail : orderDetails) {
-				CourseHistory courseHistory = new CourseHistory();
-				courseHistory.setMember(member);
-				courseHistory.setCourse(orderDetail.getCourse());
-				courseHistory.setStartDate(orderDetail.getOrder().getPaymentDate());
-				courseHistory.setEndDate(orderDetail.getExpirationDate());
-				courseHistories.add(courseHistory);
-				
-				courseHistoryRepository.save(courseHistory);
-			}
-		}
+		List<CourseHistory> courseHistories = courseHistoryRepository.findByMember(member);
 		
 		return new ResponseDto<>(
 				ResultCode.SUCCESS.name(),

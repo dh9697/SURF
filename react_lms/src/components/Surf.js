@@ -1,52 +1,52 @@
 import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
 import { NavBar } from "./NavBar";
 import { Main } from "./Main";
-import { AboutMain } from "./Homepage/About/AboutMain";
-import { LevelTestMain } from "./LevelTestMain";
-import { LevelTestStart } from "./LevelTestStart";
+import { AboutMain } from "./About/AboutMain";
+import { LevelTestMain } from "./Leveltest/LevelTestMain";
+import { LevelTestStart } from "./Leveltest/LevelTestStart";
 import { Event } from "./Event";
 import { Login } from "./Login";
 import { Register } from "./Register";
 import { Footer } from "./Footer";
 import styled from "styled-components";
-import { DashboardNavBar } from "./DashboardNavBar";
+import { DashboardNavBar } from "./Dashboard/DashboardNavBar";
 import { useContext } from "react";
 import { AuthContext } from "../AuthContext";
 import { AccountInfo } from "./AccountInfo";
-import { UserDashboard } from "./User/Dashboard/UserDashboard";
-import { MyCourse } from "./User/Dashboard/MyCourse";
-import { Course } from "./Course";
-import { UserCourse } from "./UserCourse.js";
-import { AdminDashboard } from "./Admin/AdminDashboard";
-import { AdminDashboardSideBar } from "./Admin/AdminDashboardSideBar";
-import { AdminCourseManage } from "./Admin/AdminCourseManage";
-import { AdminLevelTestManage } from "./Admin/AdminLevelTestManage";
-import { AdminNoticeManage } from "./Admin/AdminNoticeManage";
-import { AdminPaymentManage } from "./Admin/AdminPaymentManage";
-import { AdminPostManage } from "./Admin/AdminPostManage";
-import { AdminPromotionManage } from "./Admin/AdminPromotionManage";
-import { AdminStatsManage } from "./Admin/AdminStatsManage";
+import { UserDashboard } from "./Dashboard/User/UserDashboard.js";
+import { MyCourse } from "./Dashboard/User/MyCourse";
+import { CourseMain } from "./Subject/CourseMain";
+import { UserCourse } from "./Subject/UserCourse/UserCourse.js";
+import { AdminDashboard } from "./Dashboard/Admin/AdminDashboard";
+import { AdminDashboardSideBar } from "./Dashboard/Admin/AdminDashboardSideBar";
+import { AdminCourseManage } from "./Dashboard/Admin/AdminCourseManage";
+import { AdminLevelTestManage } from "./Dashboard/Admin/AdminLevelTestManage";
+import { AdminNoticeManage } from "./Dashboard/Admin/AdminNoticeManage";
+import { AdminPaymentManage } from "./Dashboard/Admin/AdminPaymentManage";
+import { AdminPostManage } from "./Dashboard/Admin/AdminPostManage";
+import { AdminPromotionManage } from "./Dashboard/Admin/AdminPromotionManage";
+import { AdminStatsManage } from "./Dashboard/Admin/AdminStatsManage";
 import { TestSubject } from "./TestSubject";
-import { InstructorDashboardSideBar } from "./Instructor/InstructorDashboardSideBar";
-import { InstructorDashboard } from "./Instructor/InstructorDashboard";
-import { InstructorScheduleManage } from "./Instructor/InstructorScheduleManage";
-import { InstructorStudentsManage } from "./Instructor/InstructorStudentsManage";
-import { InstructorAssignmentManage } from "./Instructor/InstructorAssignmentManage";
-import { InstructorExamManage } from "./Instructor/InstructorExamManage";
-import { InstructorQnAManage } from "./Instructor/InstructorQnAManage";
-import { InstructorCourseNoticeManage } from "./Instructor/InstructorCourseNoticeManage";
-import { Dashboard } from "./Dashboard";
+import { InstructorDashboardSideBar } from "./Dashboard/Instructor/InstructorDashboardSideBar";
+import { InstructorDashboard } from "./Dashboard/Instructor/InstructorDashboard";
+import { InstructorScheduleManage } from "./Dashboard/Instructor/InstructorScheduleManage";
+import { InstructorStudentsManage } from "./Dashboard/Instructor/InstructorStudentsManage";
+import { InstructorAssignmentManage } from "./Dashboard/Instructor/InstructorAssignmentManage";
+import { InstructorExamManage } from "./Dashboard/Instructor/InstructorExamManage";
+import { InstructorQnAManage } from "./Dashboard/Instructor/InstructorQnAManage";
+import { InstructorCourseNoticeManage } from "./Dashboard/Instructor/InstructorCourseNoticeManage";
+import { Dashboard } from "./Dashboard/Dashboard";
 import { Cart } from "./Cart";
 import { AccountForm } from "./AccountForm";
-import { PurchaseList } from "./User/Dashboard/PurchaseList";
-import { MyComment } from "./User/Dashboard/MyComment";
-import { MyCertificate } from "./User/Dashboard/MyCertificate";
-import { CourseSidebar } from "./CourseSidebar";
-import { CourseTitle } from "./CourseTitle";
-import { BeforeInquiries } from "./BeforeInquiries";
-import { MemberCourse } from "./MemberCourse";
-import { AfterInquiries } from "./AfterInquiries.js";
-import { MemberCourseDescription } from "./MemberCourseDescription.js";
+import { PurchaseList } from "./Dashboard/User/PurchaseList";
+import { MyComment } from "./Dashboard/User/MyComment";
+import { MyCertificate } from "./Dashboard/User/MyCertificate";
+import { CourseSidebar } from "./Subject/CourseSidebar";
+import { CourseTitle } from "./Subject/CourseTitle";
+import { BeforeInquiries } from "./Subject/UserCourse/BeforeInquiries";
+import { MemberCourse } from "./Subject/MemberCourse/MemberCourse";
+import { AfterInquiries } from "./Subject/MemberCourse/AfterInquiries.js";
+import { CourseDescription } from "./Subject/MemberCourse/CourseDescription.js";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -76,13 +76,13 @@ export function Surf() {
                 <Route path="/" element={<NavBar />}>
                   <Route index element={<Main />} />
                   <Route path="/about" element={<AboutMain />} />
-                  <Route path="/course" element={<Course />} />
+                  <Route path="/course" element={<CourseMain />} />
                   <Route path="/course/:courseId" element={<CourseTitle />}>
                     <Route index element={<MemberCourse />} />
                     <Route path="afterinquiries" element={<AfterInquiries />} />
                     <Route
                       path="coursedescription"
-                      element={<MemberCourseDescription />}
+                      element={<CourseDescription />}
                     />
                     {/* User 권한 course 상세 보기 > 권한 나눠야 함
                     <Route index element={<UserCourse />} />

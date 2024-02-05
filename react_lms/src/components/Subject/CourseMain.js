@@ -12,7 +12,7 @@ const CoursesGrid = styled.div`
   gap: 16px;
   list-style: none;
 `;
-export function Course() {
+export function CourseMain() {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {

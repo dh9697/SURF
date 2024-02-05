@@ -1,25 +1,30 @@
 package project.lms.dto;
 
 public class ExamResultDto {
-	private Long examResultId;
+    private Long examResultId;
     private MemberDto member;
     private ExamDto exam;
-    private int submittedAnswer;
-    private String wrongAnsExpl;
-    private Long questionId;
+    private Long examQuestionId;
+    private Integer submittedAnswer;
+    private boolean isCorrect;
+    private Integer correctOptionIndex; // ExamQuestion 에서 가져온 정보
+    private String wrongAnsExpl; // ExamQuestion 에서 가져온 정보
 
+    // 기본 생성자
     public ExamResultDto() {
     }
 
-	public ExamResultDto(Long examResultId, MemberDto member, ExamDto exam, int submittedAnswer, String wrongAnsExpl,
-			Long questionId) {
+	public ExamResultDto(Long examResultId, MemberDto member, ExamDto exam, Long examQuestionId,
+			Integer submittedAnswer, boolean isCorrect, Integer correctOptionIndex, String wrongAnsExpl) {
 		super();
 		this.examResultId = examResultId;
 		this.member = member;
 		this.exam = exam;
+		this.examQuestionId = examQuestionId;
 		this.submittedAnswer = submittedAnswer;
+		this.isCorrect = isCorrect;
+		this.correctOptionIndex = correctOptionIndex;
 		this.wrongAnsExpl = wrongAnsExpl;
-		this.questionId = questionId;
 	}
 
 	public Long getExamResultId() {
@@ -46,12 +51,36 @@ public class ExamResultDto {
 		this.exam = exam;
 	}
 
-	public int getSubmittedAnswer() {
+	public Long getExamQuestionId() {
+		return examQuestionId;
+	}
+
+	public void setExamQuestionId(Long examQuestionId) {
+		this.examQuestionId = examQuestionId;
+	}
+
+	public Integer getSubmittedAnswer() {
 		return submittedAnswer;
 	}
 
-	public void setSubmittedAnswer(int submittedAnswer) {
+	public void setSubmittedAnswer(Integer submittedAnswer) {
 		this.submittedAnswer = submittedAnswer;
+	}
+
+	public boolean isCorrect() {
+		return isCorrect;
+	}
+
+	public void setIsCorrect(boolean isCorrect) {
+		this.isCorrect = isCorrect;
+	}
+
+	public int getCorrectOptionIndex() {
+		return correctOptionIndex;
+	}
+
+	public void setCorrectOptionIndex(int correctOptionIndex) {
+		this.correctOptionIndex = correctOptionIndex;
 	}
 
 	public String getWrongAnsExpl() {
@@ -60,14 +89,6 @@ public class ExamResultDto {
 
 	public void setWrongAnsExpl(String wrongAnsExpl) {
 		this.wrongAnsExpl = wrongAnsExpl;
-	}
-
-	public Long getQuestionId() {
-		return questionId;
-	}
-
-	public void setQuestionId(Long questionId) {
-		this.questionId = questionId;
 	}
 
 }

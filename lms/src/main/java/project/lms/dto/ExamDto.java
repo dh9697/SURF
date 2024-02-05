@@ -43,4 +43,11 @@ public class ExamDto {
 	    
 	    return exam;
 	}
+	
+	// from exam 을 ExamDto로 변환해주는 메서드
+	public static ExamDto from(Exam exam) {
+        if(exam == null) return null;
+        
+        return new ExamDto(exam.getContent().getContentId(), exam.getExamIsActive());
+    }
 }

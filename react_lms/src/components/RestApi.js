@@ -296,3 +296,10 @@ export function apiGetAllOrderDetails() {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+
+//CourseHistory
+export function apiGetMyCourseHistroies() {
+  return axios.get("http://localhost:8080/api/course-histories", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}

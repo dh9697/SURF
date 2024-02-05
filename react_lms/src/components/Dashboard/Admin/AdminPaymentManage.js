@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { apiGetAllOrderDetails } from "../RestApi";
+import { apiGetAllOrderDetails } from "../../RestApi";
 import { useEffect, useState } from "react";
 
 export function AdminPaymentManage() {

@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { AuthContext } from "../../AuthContext";
-import SearchBar from "../SearchBar";
+import { AuthContext } from "../../../AuthContext";
+import SearchBar from "../../SearchBar";
 
 const Container = styled.div`
   width: 100%;
@@ -44,7 +44,7 @@ const DashboardMain = styled.div`
   height: 100%;
 `;
 
-export function AdminDashboardSideBar() {
+export function InstructorDashboardSideBar() {
   const { user } = useContext(AuthContext);
   return (
     <>
@@ -53,41 +53,40 @@ export function AdminDashboardSideBar() {
           <NavBar>
             <StyledNavLink
               className="dashboard"
-              to={`/dashboard/admin/${user.loginId}`}
+              to={`/dashboard/instructor/${user.loginId}`}
             >
-              관리자 님
+              선생님 님
             </StyledNavLink>
             <SearchBar />
             <StyledNavLink
-              to={`/dashboard/admin/${user.loginId}/course_manage`}
+              to={`/dashboard/instructor/${user.loginId}/schedule_manage`}
             >
-              코스 및 강의 관리
+              수업/스케줄 관리
             </StyledNavLink>
             <StyledNavLink
-              to={`/dashboard/admin/${user.loginId}/payment_manage`}
+              to={`/dashboard/instructor/${user.loginId}/students_manage`}
             >
-              수업/결제
+              학생 관리
             </StyledNavLink>
             <StyledNavLink
-              to={`/dashboard/admin/${user.loginId}/leveltest_manage`}
+              to={`/dashboard/instructor/${user.loginId}/assignment_manage`}
             >
-              레벨테스트 관리
-            </StyledNavLink>
-            <StyledNavLink to={`/dashboard/admin/${user.loginId}/post_manage`}>
-              게시물 관리
+              과제 관리
             </StyledNavLink>
             <StyledNavLink
-              to={`/dashboard/admin/${user.loginId}/notice_manage`}
+              to={`/dashboard/instructor/${user.loginId}/exam_manage`}
             >
-              공지사항 관리
-            </StyledNavLink>
-            <StyledNavLink to={`/dashboard/admin/${user.loginId}/stats_manage`}>
-              통계
+              시험 관리
             </StyledNavLink>
             <StyledNavLink
-              to={`/dashboard/admin/${user.loginId}/promotion_manage`}
+              to={`/dashboard/instructor/${user.loginId}/qna_manage`}
             >
-              프로모션 관리
+              Q&A 관리
+            </StyledNavLink>
+            <StyledNavLink
+              to={`/dashboard/instructor/${user.loginId}/coursenotice_manage`}
+            >
+              강의 공지사항 관리
             </StyledNavLink>
           </NavBar>
           <DashboardMain>
