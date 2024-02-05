@@ -88,7 +88,20 @@ export function CourseDescription() {
               <button>등록</button>
             </InputBox>
             <Reviews>
-              <Review></Review>
+              <colgroup>
+                <col style={{ width: 130 + "px" }} />
+                <col style={{ width: 300 + "px" }} />
+                <col style={{ width: 130 + "px" }} />
+                <col style={{ width: 130 + "px" }} />
+              </colgroup>
+              <Review>
+                <tr>
+                  <td>9342</td>
+                  <td>당장 널 만나러 가지 않으면</td>
+                  <td>이찬혁</td>
+                  <td>2024-02-05</td>
+                </tr>
+              </Review>
             </Reviews>
           </ReviewBox>
         </div>

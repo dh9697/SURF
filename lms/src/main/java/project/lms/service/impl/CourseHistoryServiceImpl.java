@@ -10,11 +10,13 @@ import project.lms.dto.CourseHistoryDto;
 import project.lms.dto.ResponseDto;
 import project.lms.enumstatus.ResultCode;
 import project.lms.exception.InvalidRequestException;
+import project.lms.model.Content;
 import project.lms.model.CourseHistory;
 import project.lms.model.ExamHistory;
 import project.lms.model.Member;
 import project.lms.model.OrderDetail;
 import project.lms.repository.ContentHistoryRepository;
+import project.lms.repository.ContentRepository;
 import project.lms.repository.CourseHistoryRepository;
 import project.lms.repository.CourseRepository;
 import project.lms.repository.ExamHistoryRepository;
@@ -28,19 +30,22 @@ public class CourseHistoryServiceImpl implements CourseHistoryService{
 
 	private final CourseHistoryRepository courseHistoryRepository;
 	private final CourseRepository courseRepository;
+	private final ContentRepository contentRepository;
 	private final ContentHistoryRepository contentHistoryRepository;
 	private final MemberRepository memberRepository;
 	private final ExamHistoryRepository examHistoryRepository;
 	
 	@Autowired
 	public CourseHistoryServiceImpl(CourseHistoryRepository courseHistoryRepository, CourseRepository courseRepository,
-			ContentHistoryRepository contentHistoryRepository, MemberRepository memberRepository, ExamHistoryRepository examHistoryRepository) {
+			ContentHistoryRepository contentHistoryRepository, MemberRepository memberRepository, ExamHistoryRepository examHistoryRepository,
+			ContentRepository contentRepository) {
 		super();
 		this.courseHistoryRepository = courseHistoryRepository;
 		this.courseRepository = courseRepository;
 		this.contentHistoryRepository = contentHistoryRepository;
 		this.memberRepository = memberRepository;
 		this.examHistoryRepository = examHistoryRepository;
+		this.contentRepository = contentRepository;
 	}
 
 
@@ -106,8 +111,8 @@ public class CourseHistoryServiceImpl implements CourseHistoryService{
         Long totalContents = courseRepository.countContentsByCourseId(courseId);
         Long completedContents = contentHistoryRepository.countByMemberMemberIdAndIsCompletedTrue(memberId);
         
-        // boolean AllExamcompleted
-        
+        // examHistory의 examCompletion 
+
         CourseHistoryDto courseHistoryDto = new CourseHistoryDto();
         courseHistoryDto.setCourseHistory(courseHistory);
         courseHistoryDto.setTotalContents(totalContents);
