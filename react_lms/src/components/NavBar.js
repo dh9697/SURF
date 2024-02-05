@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import surfLogo from "./image/surf_logo.png";
-import { seEffect, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { apiGetAllSubject, apiGetCurrentUserInfo } from "./RestApi";
 import { AuthContext } from "../AuthContext";
 
@@ -133,13 +133,26 @@ export function NavBar() {
               <NavSectionItem className="levelTest" to={"/level_test"}>
                 Level Test
               </NavSectionItem>
-              <NavSectionItem className="community" to={"/community"}>
-                Community
-              </NavSectionItem>
+
+              <HoverableNavItem>
+                <NavSectionItem className="community" to={"/community"}>
+                  Community
+                </NavSectionItem>
+                <SubMenu>
+                  <SubMenuItem to={"/community/resolutions"}>
+                    오늘의 각오
+                  </SubMenuItem>
+                  <SubMenuItem to={"/community/halloffame"}>
+                    명예의 전당
+                  </SubMenuItem>
+                  <SubMenuItem to={"/community/reviews"}>수강평</SubMenuItem>
+                </SubMenu>
+              </HoverableNavItem>
+
               <NavSectionItem className="event" to={"/event"}>
                 Event
               </NavSectionItem>
-              <NavSectionItem className="contact" to={"/contact"}>
+              <NavSectionItem className="contact" to={"/faq"}>
                 Contact
               </NavSectionItem>
             </NavSection>

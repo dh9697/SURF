@@ -6,7 +6,7 @@ import {
   apiGetContentByCourse,
   apiCreateCart,
   apiAddCourseToCart,
-} from "./RestApi";
+} from "../RestApi";
 import { NavLink } from "react-router-dom";
 
 const Container = styled.div`

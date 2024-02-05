@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import project.lms.dto.ResponseDto;
 import project.lms.model.Cart;
 import project.lms.service.CartService;
-import project.lms.service.MemberService;
 
 @RestController
 @RequestMapping("/api/cart")

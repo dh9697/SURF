@@ -3,21 +3,24 @@ package project.lms.service;
 import java.util.List;
 
 import project.lms.dto.ExamResultDto;
+import project.lms.dto.ResponseDto;
 
 public interface ExamResultService {
 
-    List<ExamResultDto> getAllExamResults();
+	ResponseDto<List<ExamResultDto>> getAllExamResults();
 
-    ExamResultDto getExamResult(Long examResultId);
+    ResponseDto<ExamResultDto> getExamResult(Long examResultId);
     
-    List<ExamResultDto> getExamResultsByMemberMemberId(Long memberId);
+    ResponseDto<List<ExamResultDto>> getExamResultsByMemberMemberId(Long memberId);
 
-    ExamResultDto createExamResult(ExamResultDto examResultDto, Long examId, Long memberId, Long questionId);
+    ResponseDto<ExamResultDto> createExamResult(ExamResultDto examResultDto, Long examId, Long memberId, Long questionId);
 
-    ExamResultDto updateExamResult(Long examResultId, ExamResultDto examResultDto);
+    ResponseDto<ExamResultDto> updateExamResult(Long examResultId, ExamResultDto examResultDto);
 
-    void deleteExamResult(Long examResultId);
+    ResponseDto<String> deleteExamResult(Long examResultId);
 
-    void checkAnswer(Long examResultId, Long questionId);
+    ResponseDto<String> checkAnswer(Long examResultId, Long questionId);
+
+    ResponseDto<Integer> countExamResultsByExamId(Long examId);
     
 }

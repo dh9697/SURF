@@ -2,26 +2,27 @@ package project.lms.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
+import project.lms.dto.ResponseDto;
 import project.lms.model.Book;
-import project.lms.repository.BookRepository;
 
-@Service
-public class BookService {
+public interface BookService {
 
-	private final BookRepository bookRepository;
+	// Book 저장
+    public ResponseDto<Book> saveBook(Book book);
 
-	public BookService(BookRepository bookRepository) {
-		super();
-		this.bookRepository = bookRepository;
-	}
+    // 모든 Book 조회
+    public ResponseDto<List<Book>> getAllBooks();
+
+    // 특정 Book 조회 by ID
+    public ResponseDto<Book> getBookById(Long bookId);
+    
+    // 특정 Course의 모든 Book 조회 by Course ID
+    public ResponseDto<List<Book>> getBooksByCourseId(Long courseId);
+
+    // Book 업데이트
+    public ResponseDto<Book> updateBook(Long bookId, Book updatedBook);
+
+    // Book 삭제
+    public ResponseDto<String> deleteBook(Long bookId);
 	
-	public List<Book> getAllBooks(){
-		return bookRepository.findAll();
-	}
-	
-	public Book createBook(Book book) {
-		return bookRepository.save(book);
-	}
 }

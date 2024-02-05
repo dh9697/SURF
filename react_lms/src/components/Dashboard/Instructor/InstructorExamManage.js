@@ -5,7 +5,7 @@ import {
   apiGetQuestionsForExam,
   apiPostQuestionsForExam,
   apiPutQuestionsForExam,
-} from "../RestApi";
+} from "../../RestApi";
 
 const Container = styled.div`
   width: 100%;

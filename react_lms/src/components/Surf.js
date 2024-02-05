@@ -12,7 +12,7 @@ import styled from "styled-components";
 import { DashboardNavBar } from "./Dashboard/DashboardNavBar";
 import { useContext } from "react";
 import { AuthContext } from "../AuthContext";
-import { AccountInfo } from "./AccountInfo";
+import { AccountInfo } from "./Account/AccountInfo";
 import { UserDashboard } from "./Dashboard/User/UserDashboard.js";
 import { MyCourse } from "./Dashboard/User/MyCourse";
 import { CourseMain } from "./Subject/CourseMain";
@@ -36,8 +36,8 @@ import { InstructorExamManage } from "./Dashboard/Instructor/InstructorExamManag
 import { InstructorQnAManage } from "./Dashboard/Instructor/InstructorQnAManage";
 import { InstructorCourseNoticeManage } from "./Dashboard/Instructor/InstructorCourseNoticeManage";
 import { Dashboard } from "./Dashboard/Dashboard";
-import { Cart } from "./Cart";
-import { AccountForm } from "./AccountForm";
+import { Cart } from "./Account/Cart";
+import { AccountForm } from "./Account/AccountForm";
 import { PurchaseList } from "./Dashboard/User/PurchaseList";
 import { MyComment } from "./Dashboard/User/MyComment";
 import { MyCertificate } from "./Dashboard/User/MyCertificate";
@@ -47,6 +47,10 @@ import { BeforeInquiries } from "./Subject/UserCourse/BeforeInquiries";
 import { MemberCourse } from "./Subject/MemberCourse/MemberCourse";
 import { AfterInquiries } from "./Subject/MemberCourse/AfterInquiries.js";
 import { CourseDescription } from "./Subject/MemberCourse/CourseDescription.js";
+import { CourseReview } from "./Communitiy/CourseReview.js";
+import { HallofFame } from "./Communitiy/HallofFame.js";
+import { TodayResolutions } from "./Communitiy/TodayResolutions.js";
+import { FAQ } from "./FAQ.js";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -95,6 +99,16 @@ export function Surf() {
                   <Route path="/event" element={<Event />} />
                   <Route path="/cart" element={<Cart />} />
                   <Route path="/accountform" element={<AccountForm />} />
+                  <Route
+                    path="/community/resolutions"
+                    element={<TodayResolutions />}
+                  />
+                  <Route
+                    path="/community/halloffame"
+                    element={<HallofFame />}
+                  />
+                  <Route path="/community/reviews" element={<CourseReview />} />
+                  <Route path="/faq" element={<FAQ />} />
                   {/* 학생 Dashboard */}
                   {isLoggedIn && (
                     <Route

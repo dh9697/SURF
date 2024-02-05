@@ -1,17 +1,20 @@
 package project.lms.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import project.lms.dto.ExamDto;
+import project.lms.dto.ExamQuestionDto;
 import project.lms.dto.ResponseDto;
 import project.lms.enumstatus.ResultCode;
 import project.lms.exception.InvalidRequestException;
 import project.lms.model.Content;
 import project.lms.model.Exam;
+import project.lms.model.ExamQuestion;
 import project.lms.repository.ContentRepository;
 import project.lms.repository.ExamRepository;
 import project.lms.service.ExamService;
@@ -46,6 +49,31 @@ public class ExamServiceImpl implements ExamService {
 					"시험 목록을 조회하였습니다.");
 		}
 	}
+	
+	// 시험 문제 조회
+	@Override
+	public ResponseDto<List<ExamQuestionDto>> getExamQuestions(Long examId) {
+	    // examId를 이용하여 Exam 객체를 조회
+	    Exam exam = examRepository.findById(examId)
+	        .orElseThrow(() -> new InvalidRequestException("Exam not found", "해당 시험을 찾을 수 없습니다."));
+
+	    // Exam 객체에서 문제 목록을 가져온다.
+	    List<ExamQuestion> examQuestions = exam.getExamQuestions();
+
+	    // ExamQuestion 객체들을 ExamQuestionDto로 변환
+	    List<ExamQuestionDto> examQuestionDtos = examQuestions.stream()
+	        .map(examQuestion -> toDto(examQuestion))
+	        .collect(Collectors.toList());
+
+	    // 변환된 ExamQuestionDto 리스트를 반환
+	    return new ResponseDto<>("SUCCESS", examQuestionDtos, "Exam questions retrieved successfully");
+	}
+
+	// ExamQuestion 객체를 ExamQuestionDto로 변환하는 메서드
+	private ExamQuestionDto toDto(ExamQuestion examQuestion) {
+	    return ExamQuestionDto.from(examQuestion);
+	}
+
 
 	// 컨텐츠에 따라 시험 목록 
 	@Override

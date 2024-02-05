@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { apiGetAllCourses } from "./RestApi";
+import { apiGetAllCourses } from "../RestApi";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 

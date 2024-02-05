@@ -1,38 +1,67 @@
 package project.lms.controller;
 
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
+import project.lms.dto.ResponseDto;
 import project.lms.model.Book;
 import project.lms.service.BookService;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/test")
-@CrossOrigin(origins="http://localhost:3000",
-	methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
+@RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:3000", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT })
 public class BookController {
 
-	private final BookService bookService;
+    private final BookService bookService;
 
-	public BookController(BookService bookService) {
-		super();
-		this.bookService = bookService;
-	}
-	
-	@GetMapping("/book")
-	public List<Book> getAllBooks(){
-		return bookService.getAllBooks();
-	}
-	
-	@PostMapping("/book")
-	public Book create(@RequestBody Book book) {
-		return bookService.createBook(book);
-	}
+    @Autowired
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
+
+    // 모든 Book을 조회
+    @GetMapping("/book")
+    public ResponseEntity<ResponseDto<List<Book>>> getAllBooks() {
+        ResponseDto<List<Book>> responseDto = bookService.getAllBooks();
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+
+    // Book 아이디로 특정 Book을 조회
+    @GetMapping("/book/{bookId}")
+    public ResponseEntity<ResponseDto<Book>> getBookById(@PathVariable Long bookId) {
+        ResponseDto<Book> responseDto = bookService.getBookById(bookId);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+
+    // Book을 저장
+    @PostMapping("/book/save")
+    public ResponseEntity<ResponseDto<Book>> saveBook(@RequestBody Book book) {
+        ResponseDto<Book> responseDto = bookService.saveBook(book);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+    
+    // Book을 수정
+    @PutMapping("/book/update/{bookId}")
+    public ResponseEntity<ResponseDto<Book>> updateBook(@PathVariable Long bookId, @RequestBody Book book) {
+        ResponseDto<Book> responseDto = bookService.updateBook(bookId, book);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+
+    // Book을 삭제
+    @DeleteMapping("/book/delete/{bookId}")
+    public ResponseEntity<ResponseDto<String>> deleteBook(@PathVariable Long bookId) {
+        ResponseDto<String> responseDto = bookService.deleteBook(bookId);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+
+    // 특정 Course의 모든 Book을 조회
+    @GetMapping("/book/course/{courseId}")
+    public ResponseEntity<ResponseDto<List<Book>>> getBooksByCourseId(@PathVariable Long courseId) {
+        ResponseDto<List<Book>> responseDto = bookService.getBooksByCourseId(courseId);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
 }

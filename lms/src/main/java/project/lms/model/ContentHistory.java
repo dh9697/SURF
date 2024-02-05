@@ -16,7 +16,6 @@ import jakarta.persistence.TemporalType;
 @Entity
 @Table(name = "contentHistory")
 public class ContentHistory {
-
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,29 +29,25 @@ public class ContentHistory {
 	@JoinColumn(name = "contentId", nullable = false)
 	private Content content;
 	
-    @Column(name = "contentStatus")
-    private boolean contentStatus;
+    @Column(name = "isCompleted")
+    private boolean isCompleted;
 	
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime lastAccessed;
-	
-	@Column(name = "progress", nullable = false)
-	private Float progress;
 
 	public ContentHistory() {
 		super();
 	}
 
-	public ContentHistory(Long contentHistoryId, Member member, Content content, boolean contentStatus,
-			LocalDateTime lastAccessed, Float progress) {
+	public ContentHistory(Long contentHistoryId, Member member, Content content, boolean isCompleted,
+			LocalDateTime lastAccessed) {
 		super();
 		this.contentHistoryId = contentHistoryId;
 		this.member = member;
 		this.content = content;
-		this.contentStatus = contentStatus;
+		this.isCompleted = isCompleted;
 		this.lastAccessed = lastAccessed;
-		this.progress = progress;
 	}
 
 	public Long getContentHistoryId() {
@@ -79,12 +74,12 @@ public class ContentHistory {
 		this.content = content;
 	}
 
-	public boolean isContentStatus() {
-		return contentStatus;
+	public boolean isCompleted() {
+		return isCompleted;
 	}
 
-	public void setContentStatus(boolean contentStatus) {
-		this.contentStatus = contentStatus;
+	public void setCompleted(boolean isCompleted) {
+		this.isCompleted = isCompleted;
 	}
 
 	public LocalDateTime getLastAccessed() {
@@ -93,13 +88,5 @@ public class ContentHistory {
 
 	public void setLastAccessed(LocalDateTime lastAccessed) {
 		this.lastAccessed = lastAccessed;
-	}
-
-	public Float getProgress() {
-		return progress;
-	}
-
-	public void setProgress(Float progress) {
-		this.progress = progress;
 	}
 }

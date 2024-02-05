@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import project.lms.dto.CourseHistoryDto;
 import project.lms.dto.ResponseDto;
 import project.lms.model.CourseHistory;
 import project.lms.service.CourseHistoryService;
-import project.lms.service.CourseService;
 
 @RestController
 @RequestMapping("/api/course-histories")
@@ -49,8 +49,8 @@ public class CourseHistoryController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<ResponseDto<List<CourseHistory>>> getMyCourseHistories() {
-		ResponseDto<List<CourseHistory>> courseHistories = courseHistoryService.getMyCourseHistories();
-		return new ResponseEntity<>(courseHistories, HttpStatus.OK);
+	public ResponseEntity<ResponseDto<List<CourseHistoryDto>>> getMyCourseHistories() {
+		ResponseDto<List<CourseHistoryDto>> courseHistoryDtos = courseHistoryService.getMyCourseHistories();
+		return new ResponseEntity<>(courseHistoryDtos, HttpStatus.OK);
 	}
 }

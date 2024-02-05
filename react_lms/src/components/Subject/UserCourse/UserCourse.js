@@ -6,7 +6,7 @@ import {
   apiGetContentByCourse,
   apiCreateCart,
   apiAddCourseToCart,
-} from "./RestApi";
+} from "../../RestApi";
 
 const ContentWrap = styled.div`
   width: 100%;
@@ -69,7 +69,7 @@ export function UserCourse() {
   if (!course) {
     return <div>Loading...</div>;
   }
-
+  //핸들러 이용해서 버튼 누를 때마다 위치 조정
   return (
     <>
       {course && content && (

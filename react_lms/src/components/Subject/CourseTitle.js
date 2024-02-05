@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import surf_logo from "./image/surf_logo.png";
+import surf_logo from "../image/surf_logo.png";
 import { Outlet, useParams, NavLink } from "react-router-dom";
 import { CourseSidebar } from "./CourseSidebar";
 import { CourseMenu } from "./CourseMenu";

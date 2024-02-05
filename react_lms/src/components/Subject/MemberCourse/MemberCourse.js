@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { CourseTitle } from "./CourseTitle";
+import { CourseTitle } from "../CourseTitle";
 
 const Container = styled.div`
   width: 100%;

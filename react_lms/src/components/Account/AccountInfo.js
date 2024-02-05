@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "../../AuthContext";
 import { useContext } from "react";
-import { apiWithdrawalByAxiosPost } from "./RestApi";
+import { apiWithdrawalByAxiosPost } from "../RestApi";
 
 const Container = styled.div`
   width: 100%;

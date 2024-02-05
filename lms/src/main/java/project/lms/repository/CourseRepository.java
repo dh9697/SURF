@@ -3,6 +3,8 @@ package project.lms.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import project.lms.model.Course;
 
@@ -22,4 +24,8 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
 	// 서브젝트로 찾기
 	List<Course> findBySubject_SubjectId(Long subjectId);
+	
+	// course 당 content 개수
+	@Query("SELECT COUNT(c) FROM Content c WHERE c.course.courseId = :courseId")
+    Long countContentsByCourseId(@Param("courseId") Long courseId);
 }

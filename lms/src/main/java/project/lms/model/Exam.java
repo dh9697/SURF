@@ -1,13 +1,7 @@
 package project.lms.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "exams")
@@ -24,39 +18,50 @@ public class Exam {
     @Column(name = "examIsActive")
     private Boolean examIsActive;
 
-	public Exam() {
-		super();
-	}
+    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL)
+    private List<ExamQuestion> examQuestions;
 
-	public Exam(Long examId, Content content, Boolean examIsActive) {
-		super();
-		this.examId = examId;
-		this.content = content;
-		this.examIsActive = examIsActive;
-	}
+    public Exam() {
+        super();
+    }
 
-	public Long getExamId() {
-		return examId;
-	}
+    public Exam(Long examId, Content content, Boolean examIsActive) {
+        super();
+        this.examId = examId;
+        this.content = content;
+        this.examIsActive = examIsActive;
+    }
 
-	public void setExamId(Long examId) {
-		this.examId = examId;
-	}
+    public Long getExamId() {
+        return examId;
+    }
 
-	public Content getContent() {
-		return content;
-	}
+    public void setExamId(Long examId) {
+        this.examId = examId;
+    }
 
-	public void setContent(Content content) {
-		this.content = content;
-	}
+    public Content getContent() {
+        return content;
+    }
 
-	public Boolean getExamIsActive() {
-		return examIsActive;
-	}
+    public void setContent(Content content) {
+        this.content = content;
+    }
 
-	public void setExamIsActive(Boolean examIsActive) {
-		this.examIsActive = examIsActive;
-	}
-	
+    public Boolean getExamIsActive() {
+        return examIsActive;
+    }
+
+    public void setExamIsActive(Boolean examIsActive) {
+        this.examIsActive = examIsActive;
+    }
+
+    public List<ExamQuestion> getExamQuestions() {
+        return this.examQuestions;
+    }
+
+    public void setExamQuestions(List<ExamQuestion> examQuestions) {
+        this.examQuestions = examQuestions;
+    }
+    
 }

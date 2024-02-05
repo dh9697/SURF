@@ -1,3 +1,3 @@
 export function Event() {
-  return <></>;
+  return <>Event</>;
 }

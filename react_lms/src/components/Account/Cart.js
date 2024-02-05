@@ -5,7 +5,7 @@ import {
   apiDeleteCourseFromCart,
   apiGetCurrentUserCart,
   apiUpdateQuantityCart,
-} from "./RestApi";
+} from "../RestApi";
 
 const AccountBtn = styled(NavLink)`
   text-decoration: none;

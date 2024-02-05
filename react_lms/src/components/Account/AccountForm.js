@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { NavLink, useNavigate } from "react-router-dom";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "../../AuthContext";
 import { useContext, useEffect, useState } from "react";
-import { apiCreateOrder } from "./RestApi";
+import { apiCreateOrder } from "../RestApi";
 
 const Container = styled.div`
   display: grid;
