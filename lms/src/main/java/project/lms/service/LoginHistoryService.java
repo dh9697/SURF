@@ -1,27 +1,16 @@
 package project.lms.service;
 
+import project.lms.dto.ResponseDto;
+import project.lms.model.LoginHistory;
 import java.util.List;
 
-import org.springframework.stereotype.Service;
+public interface LoginHistoryService {
+    // 전체 회원의 로그인 이력을 조회하고, 로그인 시간을 기준으로 내림차순 정렬하는 메서드
+    ResponseDto<List<LoginHistory>> getAllLoginHistories();
 
-import project.lms.model.LoginHistory;
-import project.lms.repository.LoginHistoryRepository;
+    // 전체 회원의 가장 최근 로그인 이력을 조회하는 메서드
+    ResponseDto<LoginHistory> getLatestLoginHistory();
 
-@Service
-public class LoginHistoryService {
-
-	private final LoginHistoryRepository loginHistoryRepository;
-
-	public LoginHistoryService(LoginHistoryRepository loginHistoryRepository) {
-		super();
-		this.loginHistoryRepository = loginHistoryRepository;
-	}
-	
-	public List<LoginHistory> getAllLoginHistories(){
-		return loginHistoryRepository.findAll();
-	}
-	
-	public LoginHistory createLoginHistory(LoginHistory loginHistory) {
-		return loginHistoryRepository.save(loginHistory);
-	}
+    // 로그인 이력을 저장하는 메서드. LoginHistory 객체를 받아서 저장.
+    LoginHistory save(LoginHistory loginHistory);
 }

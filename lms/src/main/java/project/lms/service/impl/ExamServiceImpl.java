@@ -8,28 +8,37 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import project.lms.dto.ExamDto;
+import project.lms.dto.ExamHistoryDto;
 import project.lms.dto.ExamQuestionDto;
 import project.lms.dto.ResponseDto;
 import project.lms.enumstatus.ResultCode;
 import project.lms.exception.InvalidRequestException;
 import project.lms.model.Content;
 import project.lms.model.Exam;
+import project.lms.model.ExamHistory;
 import project.lms.model.ExamQuestion;
+import project.lms.model.Member;
 import project.lms.repository.ContentRepository;
+import project.lms.repository.ExamHistoryRepository;
 import project.lms.repository.ExamRepository;
+import project.lms.repository.MemberRepository;
 import project.lms.service.ExamService;
 
 @Service
 public class ExamServiceImpl implements ExamService {
 
 	private ExamRepository examRepository;
+	private MemberRepository memberRepository;
 	private ContentRepository contentRepository;
+	private ExamHistoryRepository examHistoryRepository;
 
 	@Autowired
-	public ExamServiceImpl(ExamRepository examRepository, ContentRepository contentRepository) {
+	public ExamServiceImpl(ExamRepository examRepository, MemberRepository memberRepository, ContentRepository contentRepository, ExamHistoryRepository examHistoryRepository) {
 		super();
 		this.examRepository = examRepository;
+		this.memberRepository = memberRepository;
 		this.contentRepository = contentRepository;
+		this.examHistoryRepository = examHistoryRepository;
 	}
 	
 	// 시험 전체 조회 - 각 course의 선생님 권한

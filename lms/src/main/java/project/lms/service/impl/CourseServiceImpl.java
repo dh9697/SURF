@@ -2,11 +2,9 @@ package project.lms.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.authentication.preauth.x509.SubjectDnX509PrincipalExtractor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,8 +54,8 @@ public class CourseServiceImpl implements CourseService {
 	        course.setAnnouncement(courseDto.getAnnouncement());
 	        course.setCourseThumbnail(courseDto.getCourseThumbnail());
 	        
-	        if (courseDto.getSubjectId() != null) {
-	             Subject subject = subjectRepository.findById(courseDto.getSubjectId())
+	        if (courseDto.getSubject() != null) {
+	             Subject subject = subjectRepository.findById(courseDto.getSubject().getSubjectId())
 	                 .orElseThrow(() -> new InvalidRequestException("Subject not found.", "과목을 찾을 수 없습니다."));
 	             course.setSubject(subject);
 	        }
@@ -75,7 +73,7 @@ public class CourseServiceImpl implements CourseService {
 	            
 	            // teachingCourses 업데이트
 	            instructor.getTeachingCourses().add(course);
-	            memberRepository.save(instructor);   
+	            memberRepository.save(instructor);
 	        }
 	        
 	        courseDto.setCourseId(course.getCourseId()); 
@@ -168,8 +166,8 @@ public class CourseServiceImpl implements CourseService {
 		 course.setAnnouncement(courseDto.getAnnouncement());
 		 course.setCourseThumbnail(courseDto.getCourseThumbnail());
 		 
-		 if (courseDto.getSubjectId() != null) {
-		        Subject subject = subjectRepository.findById(courseDto.getSubjectId())
+		 if (courseDto.getSubject() != null) {
+		        Subject subject = subjectRepository.findById(courseDto.getSubject().getSubjectId())
 		            .orElseThrow(() -> new InvalidRequestException("Subject not found.", "과목을 찾을 수 없습니다."));
 		        course.setSubject(subject);
 		    }
@@ -214,10 +212,4 @@ public class CourseServiceImpl implements CourseService {
 	     return new ResponseDto<>(ResultCode.SUCCESS.name(), null, "Course deleted successfully.");
 
 	    }
-	 
-	 @Override
-	 public Course findById(Long courseId) {
-		 return courseRepository.findById(courseId)
-				 .orElseThrow(() -> new InvalidRequestException("courseId not found", "해당 아이디의 강좌를 찾을 수 없습니다."));
-	 }
 }

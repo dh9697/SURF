@@ -30,7 +30,6 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 		this.examRepository = examRepository;
 	}
 
-	// 모든 시험 문제 조회
 	@Override
 	public ResponseDto<List<ExamQuestionDto>> getAllExamQuestions(){
 		List<ExamQuestion> examQuestions = examQuestionRepository.findAll();
@@ -51,8 +50,6 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 		}
 	}
 	
-	// 해당 강사만 할 수 있게 수정 필요
-	// 해당 시험 문제 조회
 	@Override
 	public ResponseDto<List<ExamQuestionDto>> getExamQuestionsForExam(Long examId) {
 		List<ExamQuestion> examQuestions = examQuestionRepository.findByExam_ExamId(examId);
@@ -73,7 +70,6 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 	    }
 	}
 			
-	// 시험 문제 저장
 	@Transactional
 	@Override
 	public ResponseDto<ExamQuestionDto> saveExamQuestions(ExamQuestionDto examQuestionDto){
@@ -87,7 +83,6 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 		            .orElseThrow(() -> new InvalidRequestException("Invalid Request", "시험을 찾을 수 없습니다."));
 	
 			examQuestion.setExam(exam);
-			
 			examQuestion.setQuestParagraph(examQuestionDto.getQuestParagraph());
 			examQuestion.setQuestionText(examQuestionDto.getQuestionText());
 			examQuestion.setOptions(examQuestionDto.getOptions());
@@ -107,7 +102,6 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 		}
 	}
 	
-	// 시험 문제 수정
 	@Transactional
 	@Override
 	public ResponseDto<ExamQuestionDto> updateExamQuestions(Long examQuestionId, ExamQuestionDto examQuestionDto) {
@@ -135,7 +129,6 @@ public class ExamQuestionServiceImpl implements ExamQuestionService{
 	    }
 	}
 	
-	// 시험 문제 삭제
 	@Transactional
 	@Override
 	public ResponseDto<String> deleteExamQuestions(Long examQuestionId) {

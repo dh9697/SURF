@@ -21,14 +21,18 @@ public class Subject {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    // 기본 생성자
     public Subject() {
     }
 
+    // 전체 생성자
     public Subject(Long subjectId, String subjectName, String description) {
         this.subjectId = subjectId;
         this.subjectName = subjectName;
         this.description = description;
     }
+
+    // Getters and Setters
 
     public Long getSubjectId() {
         return subjectId;

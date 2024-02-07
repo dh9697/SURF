@@ -59,8 +59,11 @@ public class SecurityConfig {
                 
                 // RestAPI 보안 여부 설정
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                		// 회원가입시 user권한 부여하기 때문에 db에 role_user 있어야함
-                		.requestMatchers("/api/signup", "/api/login").permitAll()          
+                		.requestMatchers("/api/signup").permitAll()
+                		.requestMatchers("/api/login").permitAll()
+                		.requestMatchers("/api/subject").permitAll()
+                		.requestMatchers("/api/course/list").permitAll()
+                        // Token이 없다면 401 Unauthorized Error                  
                         .anyRequest().authenticated()
                 )
 

@@ -26,6 +26,8 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 	List<Course> findBySubject_SubjectId(Long subjectId);
 	
 	// course 당 content 개수
+	// 코드 추가
 	@Query("SELECT COUNT(c) FROM Content c WHERE c.course.courseId = :courseId")
-    Long countContentsByCourseId(@Param("courseId") Long courseId);
+	   Long countContentsByCourseId(@Param("courseId") Long courseId);
+	
 }

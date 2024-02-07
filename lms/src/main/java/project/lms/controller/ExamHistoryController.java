@@ -23,7 +23,7 @@ import project.lms.service.ExamHistoryService;
 
 @RestController
 @RequestMapping("/api/exam-histories")
-@CrossOrigin(origins = "http://localhost:3000",
+@CrossOrigin(origins="http://localhost:3000",
 	methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class ExamHistoryController {
 
@@ -42,14 +42,14 @@ public class ExamHistoryController {
 		ResponseDto<List<ExamHistoryDto>> responseDto = examHistoryService.getAllExamHistories();
 		return ResponseEntity.ok(responseDto);
 	}
-		
+	
 	// 특정 시험 이력 조회
 	@GetMapping("/list/{examHistoryId}")
 	public ResponseEntity<ResponseDto<ExamHistoryDto>> getExamHistory(@PathVariable Long examHistoryId){
 		ResponseDto<ExamHistoryDto> responseDto = examHistoryService.getExamHistory(examHistoryId);
 		return ResponseEntity.ok(responseDto);
 	}
-		
+	
 	// 특정 회원의 시험 이력 조회
 	@GetMapping("/list/member/{memberId}")
 	public ResponseEntity<ResponseDto<List<ExamHistoryDto>>> getExamHistoriesByMemberId(@PathVariable Long memberId){
@@ -64,7 +64,7 @@ public class ExamHistoryController {
 		ResponseDto<ExamHistoryDto> responseDto = examHistoryService.createExamHistory(examHistoryDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
 	}
-		
+	
 	// 특정 시험 이력 수정
 	@PutMapping("/update/{examHistoryId}")
 	@PreAuthorize("hasAnyRole('INSTRUCTOR')")
@@ -74,7 +74,7 @@ public class ExamHistoryController {
 		ResponseDto<ExamHistoryDto> responseDto = examHistoryService.updateExamHistory(examHistoryId, examHistoryDto);
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
-		
+	
 	// 특정 시험 이력 삭제
 	@DeleteMapping("/delete/{examHistoryId}")
 	@PreAuthorize("hasAnyRole('INSTRUCTOR')")

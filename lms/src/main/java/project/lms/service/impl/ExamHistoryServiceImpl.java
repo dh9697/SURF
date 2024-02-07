@@ -1,9 +1,5 @@
 package project.lms.service.impl;
 
-
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,18 +16,21 @@ import project.lms.repository.ExamHistoryRepository;
 import project.lms.repository.MemberRepository;
 import project.lms.service.ExamHistoryService;
 
-@Service
-public class ExamHistoryServiceImpl implements ExamHistoryService{
+import java.util.List;
+import java.util.stream.Collectors;
 
-	private ExamHistoryRepository examHistoryRepository;
+@Service
+public class ExamHistoryServiceImpl implements ExamHistoryService {
+
+    private ExamHistoryRepository examHistoryRepository;
     private ContentRepository contentRepository;
     private MemberRepository memberRepository;
     
     @Autowired
     public ExamHistoryServiceImpl(ExamHistoryRepository examHistoryRepository, ContentRepository contentRepository, MemberRepository memberRepository) {
         this.examHistoryRepository = examHistoryRepository;
-        this.contentRepository = contentRepository; 
-        this.memberRepository = memberRepository; 
+        this.contentRepository = contentRepository; // ContentRepository 초기화
+        this.memberRepository = memberRepository; // MemberRepository 초기화
     }
     
     // 모든 시험 이력 조회
@@ -54,7 +53,7 @@ public class ExamHistoryServiceImpl implements ExamHistoryService{
                     "시험 이력 목록을 조회하였습니다.");
         }
     }
-    
+
     // 특정 시험 이력 조회
     @Override
     public ResponseDto<ExamHistoryDto> getExamHistory(Long examHistoryId) {
@@ -92,7 +91,7 @@ public class ExamHistoryServiceImpl implements ExamHistoryService{
                     "해당 회원의 시험 이력 목록을 조회하였습니다.");
         }
     }
-    
+
     // 시험 이력 생성
     @Transactional
     @Override
@@ -122,7 +121,8 @@ public class ExamHistoryServiceImpl implements ExamHistoryService{
             throw new InvalidRequestException("Invalid Request", "시험 이력 저장에 실패하였습니다.");
         }
     }
-    
+
+
     // 특정 시험 이력 수정
     @Transactional
     @Override
@@ -151,7 +151,8 @@ public class ExamHistoryServiceImpl implements ExamHistoryService{
             throw new InvalidRequestException("Invalid Request", "시험 이력 업데이트에 실패하였습니다.");
         }
     }
-    
+
+
     // 특정 시험 이력 삭제
     @Transactional
     @Override

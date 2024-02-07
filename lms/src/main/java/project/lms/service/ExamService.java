@@ -20,4 +20,5 @@ public interface ExamService {
 	public ResponseDto<String> deleteExam(Long examId);
 	
 	public ResponseDto<List<ExamQuestionDto>> getExamQuestions(Long examId);
+
 }

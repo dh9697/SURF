@@ -11,5 +11,7 @@ import project.lms.model.Member;
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
 	List<Cart> findAllByMember(Member member);
+	
 	Cart findByMemberAndCourse(Member member, Course course);
+	
 }

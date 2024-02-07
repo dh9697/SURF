@@ -36,23 +36,23 @@ public class CourseHistory {
 	@Column
 	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime endDate;
-	
+    
 	@Column
-	private boolean status;
+    private boolean contentStatus;
 
 	public CourseHistory() {
 		super();
 	}
 
 	public CourseHistory(Long courseHistoryId, Member member, Course course, LocalDateTime startDate,
-			LocalDateTime endDate, boolean status) {
+			LocalDateTime endDate, boolean contentStatus) {
 		super();
 		this.courseHistoryId = courseHistoryId;
 		this.member = member;
 		this.course = course;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.status = status;
+		this.contentStatus = contentStatus;
 	}
 
 	public Long getCourseHistoryId() {
@@ -95,11 +95,11 @@ public class CourseHistory {
 		this.endDate = endDate;
 	}
 
-	public boolean isStatus() {
-		return status;
+	public boolean isContentStatus() {
+		return contentStatus;
 	}
 
-	public void setStatus(boolean status) {
-		this.status = status;
+	public void setContentStatus(boolean contentStatus) {
+		this.contentStatus = contentStatus;
 	}
 }

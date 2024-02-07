@@ -7,7 +7,7 @@ import project.lms.dto.ResponseDto;
 
 public interface ExamResultService {
 
-	ResponseDto<List<ExamResultDto>> getAllExamResults();
+    ResponseDto<List<ExamResultDto>> getAllExamResults();
 
     ResponseDto<ExamResultDto> getExamResult(Long examResultId);
     

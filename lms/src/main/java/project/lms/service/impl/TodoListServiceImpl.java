@@ -27,14 +27,12 @@ public class TodoListServiceImpl implements TodoListService {
         this.todoListRepository = todoListRepository;
     }
 
-    @Transactional
     @Override
     public ResponseDto<List<TodoList>> getTodoListByMember(Member member) {
         List<TodoList> todoList = todoListRepository.findByMember(member);
         return new ResponseDto<>(ResultCode.SUCCESS.name(), todoList, "TodoList를 성공적으로 조회하였습니다.");
     }
 
-    @Transactional
     @Override
     public ResponseDto<TodoList> getTodoListById(Long taskId) {
         Optional<TodoList> optionalTodoList = todoListRepository.findById(taskId);
@@ -43,7 +41,6 @@ public class TodoListServiceImpl implements TodoListService {
     }
 
     @Transactional
-    @Override
     public ResponseDto<TodoList> saveTodoList(TodoList todoList) {
         try {
             TodoList savedTodoList = todoListRepository.save(todoList);
@@ -54,7 +51,7 @@ public class TodoListServiceImpl implements TodoListService {
         }
     }
     
-    @Override
+    @Transactional
     public ResponseDto<TodoList> updateTodoList(Long taskId, TodoList todoList) {
         Optional<TodoList> optionalTodoList = todoListRepository.findById(taskId);
         if (optionalTodoList.isPresent()) {

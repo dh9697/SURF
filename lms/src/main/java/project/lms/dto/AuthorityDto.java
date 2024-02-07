@@ -28,4 +28,5 @@ public class AuthorityDto {
 	    authority.setAuthorityName(this.authorityName);
 	    return authority;
 	}
+	
 }

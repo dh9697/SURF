@@ -24,7 +24,6 @@ import project.lms.repository.CourseHistoryRepository;
 import project.lms.repository.MemberRepository;
 import project.lms.repository.OrderDetailRepository;
 import project.lms.repository.OrderRepository;
-import project.lms.service.CourseHistoryService;
 import project.lms.service.OrderService;
 import project.lms.util.SecurityUtil;
 

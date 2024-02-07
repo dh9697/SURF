@@ -14,6 +14,8 @@ import project.lms.model.Member;
 
 public class MemberDto {
 
+	private Long memberId;
+	
 	@NotBlank
 	private String loginId;
 
@@ -55,8 +57,8 @@ public class MemberDto {
 	public MemberDto() {
 		super();
 	}
-		
-	public MemberDto(@NotBlank String loginId, Set<AuthorityDto> authorityDtoSet,
+
+	public MemberDto(Long memberId, @NotBlank String loginId, Set<AuthorityDto> authorityDtoSet,
 			@NotBlank @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&*!])[A-Za-z\\d@#$%^&*!]{8,20}$", message = "영문, 숫자, 특수문자를 포함하여 8~20자리로 입력해주세요.") String password,
 			@NotBlank String name,
 			@NotBlank @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$", message = "날짜형식(YYYY-MM-DD)을 확인해주세요.") String birthDate,
@@ -66,6 +68,7 @@ public class MemberDto {
 			@NotBlank @Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$", message = "올바른 전화번호 형식이 아닙니다.") String phoneNum,
 			LocalDateTime joinDate) {
 		super();
+		this.memberId = memberId;
 		this.loginId = loginId;
 		this.authorityDtoSet = authorityDtoSet;
 		this.password = password;
@@ -77,7 +80,15 @@ public class MemberDto {
 		this.phoneNum = phoneNum;
 		this.joinDate = joinDate;
 	}
-	
+
+	public Long getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(Long memberId) {
+		this.memberId = memberId;
+	}
+
 	public String getLoginId() {
 		return loginId;
 	}
@@ -165,12 +176,13 @@ public class MemberDto {
 		Set<AuthorityDto> authorityDtoSet = member.getAuthorities().stream().map(authority -> new AuthorityDto(authority.getAuthorityName()))
 				.collect(Collectors.toSet());
 	
-		return new MemberDto(member.getLoginId(),  authorityDtoSet, null, member.getName(), member.getBirthDate().toString(), 
+		return new MemberDto(member.getMemberId(), member.getLoginId(), authorityDtoSet, null, member.getName(), member.getBirthDate().toString(), 
 				member.getGender().name(), member.getNationality().name(), member.getEmail(), member.getPhoneNum(), member.getJoinDate());
 	}
 	
 	public Member toMember() {
 	    Member member = new Member();
+	    member.setMemberId(this.memberId);
 	    member.setLoginId(this.loginId);
 	    // AuthorityDto 집합을 Authority 객체의 집합으로 변환
 	    member.setAuthorities(this.authorityDtoSet.stream().map(AuthorityDto::toAuthority).collect(Collectors.toSet()));
@@ -185,4 +197,5 @@ public class MemberDto {
 	    
 	    return member;
 	}
+
 }

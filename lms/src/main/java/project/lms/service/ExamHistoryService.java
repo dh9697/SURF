@@ -7,7 +7,7 @@ import project.lms.dto.ResponseDto;
 
 public interface ExamHistoryService {
 	
-	// 시험 이력 생성 메서드
+    // 시험 이력 생성 메서드
     ResponseDto<ExamHistoryDto> createExamHistory(ExamHistoryDto examHistoryDto);
     
     // 특정 시험 이력 조회 메서드
@@ -24,5 +24,5 @@ public interface ExamHistoryService {
     
     // 특정 시험 이력 삭제 메서드
     ResponseDto<String> deleteExamHistory(Long examHistoryId);
-	
+    
 }

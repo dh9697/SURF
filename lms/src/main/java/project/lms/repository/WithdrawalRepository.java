@@ -10,4 +10,5 @@ import project.lms.model.Withdrawal;
 public interface WithdrawalRepository extends JpaRepository<Withdrawal, Long> {
 	
 	List<Withdrawal> findByIsDeletedFalseAndWithdrawalTimeBefore(LocalDateTime dateTime);
+	
 }

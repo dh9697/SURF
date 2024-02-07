@@ -9,4 +9,5 @@ import project.lms.model.Exam;
 public interface ExamRepository extends JpaRepository<Exam, Long>{
 
 	List<Exam> findByContentContentId(Long contentId);
+	
 }

@@ -1,12 +1,7 @@
 package project.lms.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import project.lms.dto.ResponseDto;
 import project.lms.enumstatus.ResultCode;
 import project.lms.exception.InvalidRequestException;
@@ -18,12 +13,15 @@ import project.lms.repository.MemberRepository;
 import project.lms.service.ContentHistoryService;
 import project.lms.util.SecurityUtil;
 
+import java.util.List;
+
 @Service
 public class ContentHistoryServiceImpl implements ContentHistoryService {
+	
+	private final ContentHistoryRepository contentHistoryRepository;
 
-	private ContentHistoryRepository contentHistoryRepository;
-	private MemberRepository memberRepository;
-
+	private final MemberRepository memberRepository;
+	
 	@Autowired
 	public ContentHistoryServiceImpl(ContentHistoryRepository contentHistoryRepository, MemberRepository memberRepository) {
 		super();
@@ -31,52 +29,96 @@ public class ContentHistoryServiceImpl implements ContentHistoryService {
 		this.memberRepository = memberRepository;
 	}
 	
-	// 로그인 유저의 조회
-	private Member getCurrentUser() {
-        String username = SecurityUtil.getCurrentloginId()
-                .orElseThrow(() -> new InvalidRequestException("not found username", "현재 해당 사용자를 찾을 수 없습니다."));
-        
-        return memberRepository.findByLoginId(username);
+	// 콘텐츠 클릭 시 ContentHistory 생성
+    @Override
+    public ResponseDto<ContentHistory> createContentHistory(Member member, Content content) {
+        ContentHistory newContentHistory = new ContentHistory();
+        newContentHistory.setMember(member);
+        newContentHistory.setContent(content);
+        newContentHistory.setIsCompleted(false);
+
+        contentHistoryRepository.save(newContentHistory);
+
+        return new ResponseDto<>(
+            ResultCode.SUCCESS.name(),
+            newContentHistory,
+            "ContentHistory가 생성되었습니다."
+        );
     }
-	
+
+    // 학습 완료 버튼 클릭 시 isCompleted 필드 업데이트
+    @Override
+    public ResponseDto<ContentHistory> completeContentHistory(Member member, Content content) {
+        ContentHistory existingContentHistory = contentHistoryRepository.findByMemberAndContent(member, content)
+            .orElseThrow(() -> new InvalidRequestException("not found contentHistory", "ContentHistory를 찾을 수 없습니다."));
+
+        existingContentHistory.setIsCompleted(true);
+        contentHistoryRepository.save(existingContentHistory);
+
+        return new ResponseDto<>(
+            ResultCode.SUCCESS.name(),
+            existingContentHistory,
+            "ContentHistory의 isCompleted가 업데이트되었습니다."
+        );
+    }
+
+	// 전체 조회
 	@Override
-	public ResponseDto<List<ContentHistory>> getMyContentHistories() {
-		Member member = getCurrentUser();
-		List<ContentHistory> contentHistories = contentHistoryRepository.findByMember(member);
-		
+	public ResponseDto<List<ContentHistory>> getAllContentHistories(){
+		List<ContentHistory> contentHistories = contentHistoryRepository.findAll();
 		return new ResponseDto<>(
 				ResultCode.SUCCESS.name(),
 				contentHistories,
-				"contentHistory를 조회하였습니다.");
+				"모든 contentHistory를 조회하였습니다.");
 	}
 	
-	// 컨텐츠 수강 시작
-	@Transactional
-	public ResponseDto<ContentHistory> startContent(Member member, Content content) {
-		ContentHistory contentHistory = new ContentHistory();
-		contentHistory.setMember(member);
-		contentHistory.setContent(content);
-		contentHistory.setLastAccessed(LocalDateTime.now());
-		contentHistory.setCompleted(false);
-		
+	// 콘텐츠별 조회
+	@Override
+	public ResponseDto<List<ContentHistory>> getContentHistoriesByContent(Long contentId){
+		List<ContentHistory> contentHistories = contentHistoryRepository.findByContentContentId(contentId);
 		return new ResponseDto<>(
 				ResultCode.SUCCESS.name(),
-				contentHistory,
-				"수강을 시작하였습니다.");
+				contentHistories,
+				"contentHistory를 content에 따라 조회하였습니다.");
 	}
 	
-	// 컨텐츠 수강 완료
-	@Transactional
-	public ResponseDto<ContentHistory> completeContent(Long contentHistoryId) {
-		ContentHistory contentHistory = contentHistoryRepository.findById(contentHistoryId)
-				.orElseThrow(() -> new InvalidRequestException("ContentHistory not found", "contentHistory를 찾을 수 없습니다."));
-        contentHistory.setLastAccessed(LocalDateTime.now());
-        contentHistory.setCompleted(true);
-        contentHistory = contentHistoryRepository.save(contentHistory);
+	// 완료된 학습 이력 조회
+	@Override
+	public ResponseDto<List<ContentHistory>> getCompletedContentHistories(){
+		List<ContentHistory> contentHistories = contentHistoryRepository.findByIsCompletedTrue();
+		return new ResponseDto<>(
+				ResultCode.SUCCESS.name(),
+				contentHistories,
+				"완료된 학습 이력을 조회하였습니다.");
+	}
+	
+	// 완료되지 않은 학습 이력 조회
+	@Override
+	public ResponseDto<List<ContentHistory>> getIncompleteContentHistories(){
+		List<ContentHistory> contentHistories = contentHistoryRepository.findByIsCompletedFalse();
+		return new ResponseDto<>(
+				ResultCode.SUCCESS.name(),
+				contentHistories,
+				"완료되지 않은 학습 이력을 조회하였습니다.");
+	}
+	
+	// 로그인 유저의 조회
+		private Member getCurrentUser() {
+	        String username = SecurityUtil.getCurrentloginId()
+	                .orElseThrow(() -> new InvalidRequestException("not found username", "현재 해당 사용자를 찾을 수 없습니다."));
+	        
+	        return memberRepository.findByLoginId(username);
+	    }
+		
+		@Override
+		public ResponseDto<List<ContentHistory>> getMyContentHistories() {
+			Member member = getCurrentUser();
+			List<ContentHistory> contentHistories = contentHistoryRepository.findByMember(member);
+			
+			return new ResponseDto<>(
+					ResultCode.SUCCESS.name(),
+					contentHistories,
+					"로그인한 사용자가 학습 중인 contentHistory를 조회하였습니다.");
+		}
 
-        return new ResponseDto<>(
-                ResultCode.SUCCESS.name(),
-                contentHistory,
-                "수강을 완료하였습니다.");
-    }
 }

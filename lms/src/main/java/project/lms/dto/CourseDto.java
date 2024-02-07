@@ -3,11 +3,12 @@ package project.lms.dto;
 import java.util.List;
 
 import project.lms.model.Course;
+import project.lms.model.Subject;
 
 public class CourseDto {
 	private Long courseId;
 	
-    private Long subjectId;
+    private Subject subject;
     
     private List<String> instructorLoginIds;
     
@@ -30,13 +31,13 @@ public class CourseDto {
 	public CourseDto() {
 		super();
 	}
-	
-	public CourseDto(Long courseId, Long subjectId, List<String> instructorLoginIds, List<String> instructorNames,
+
+	public CourseDto(Long courseId, Subject subject, List<String> instructorLoginIds, List<String> instructorNames,
 			String courseName, String description, Integer durationMins, byte[] courseThumbnail, String contentLevel,
 			Integer price, String announcement) {
 		super();
 		this.courseId = courseId;
-		this.subjectId = subjectId;
+		this.subject = subject;
 		this.instructorLoginIds = instructorLoginIds;
 		this.instructorNames = instructorNames;
 		this.courseName = courseName;
@@ -47,7 +48,7 @@ public class CourseDto {
 		this.price = price;
 		this.announcement = announcement;
 	}
-	
+
 	public Long getCourseId() {
 		return courseId;
 	}
@@ -56,12 +57,12 @@ public class CourseDto {
 		this.courseId = courseId;
 	}
 
-	public Long getSubjectId() {
-		return subjectId;
+	public Subject getSubject() {
+		return subject;
 	}
 
-	public void setSubjectId(Long subjectId) {
-		this.subjectId = subjectId;
+	public void setSubject(Subject subject) {
+		this.subject = subject;
 	}
 
 	public List<String> getInstructorLoginIds() {
@@ -147,9 +148,7 @@ public class CourseDto {
         courseDto.setDescription(course.getDescription());
         courseDto.setDurationMins(course.getDurationMins());
         courseDto.setPrice(course.getPrice());
-        if(course.getSubject() != null) {
-            courseDto.setSubjectId(course.getSubject().getSubjectId());
-        }
+        courseDto.setSubject(course.getSubject());
         
         return courseDto;
 	}

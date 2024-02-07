@@ -10,12 +10,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "contentHistory")
 public class ContentHistory {
+
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,25 +28,23 @@ public class ContentHistory {
 	@JoinColumn(name = "contentId", nullable = false)
 	private Content content;
 	
-    @Column(name = "isCompleted")
-    private boolean isCompleted;
-	
 	@Column(nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime lastAccessed;
+	
+	@Column(name = "isCompleted", nullable = false)
+	private Boolean isCompleted;
 
 	public ContentHistory() {
 		super();
 	}
 
-	public ContentHistory(Long contentHistoryId, Member member, Content content, boolean isCompleted,
-			LocalDateTime lastAccessed) {
+	public ContentHistory(Long contentHistoryId, Member member, Content content, LocalDateTime lastAccessed, Boolean isCompleted) {
 		super();
 		this.contentHistoryId = contentHistoryId;
 		this.member = member;
 		this.content = content;
-		this.isCompleted = isCompleted;
 		this.lastAccessed = lastAccessed;
+		this.isCompleted = isCompleted;
 	}
 
 	public Long getContentHistoryId() {
@@ -74,14 +71,6 @@ public class ContentHistory {
 		this.content = content;
 	}
 
-	public boolean isCompleted() {
-		return isCompleted;
-	}
-
-	public void setCompleted(boolean isCompleted) {
-		this.isCompleted = isCompleted;
-	}
-
 	public LocalDateTime getLastAccessed() {
 		return lastAccessed;
 	}
@@ -89,4 +78,13 @@ public class ContentHistory {
 	public void setLastAccessed(LocalDateTime lastAccessed) {
 		this.lastAccessed = lastAccessed;
 	}
+
+	public Boolean getIsCompleted() {
+		return isCompleted;
+	}
+
+	public void setIsCompleted(Boolean isCompleted) {
+		this.isCompleted = isCompleted;
+	}
+	
 }

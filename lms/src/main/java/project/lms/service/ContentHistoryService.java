@@ -8,9 +8,26 @@ import project.lms.model.ContentHistory;
 import project.lms.model.Member;
 
 public interface ContentHistoryService {
-
-	public ResponseDto<List<ContentHistory>> getMyContentHistories();
-	public ResponseDto<ContentHistory> startContent(Member member, Content content);
-	public ResponseDto<ContentHistory> completeContent(Long contentHistoryId);
 	
+	// 모든 학습 이력 조회
+	public ResponseDto<List<ContentHistory>> getAllContentHistories();
+	
+	// 특정 콘텐츠 ID에 대한 학습 이력 조회
+	public ResponseDto<List<ContentHistory>> getContentHistoriesByContent(Long contentId);
+	
+	// 특정 회원의 학습 이력 조회
+	public ResponseDto<List<ContentHistory>> getMyContentHistories();
+
+	// 완료된 학습 이력 조회
+    public ResponseDto<List<ContentHistory>> getCompletedContentHistories();
+
+    // 완료되지 않은 학습 이력 조회
+    public ResponseDto<List<ContentHistory>> getIncompleteContentHistories();
+    
+    // 콘텐츠 클릭 시 ContentHistory 생성
+    public ResponseDto<ContentHistory> createContentHistory(Member member, Content content);
+
+    // 학습 완료 버튼 클릭 시 isCompleted 필드 업데이트
+    public ResponseDto<ContentHistory> completeContentHistory(Member member, Content content);
+    
 }

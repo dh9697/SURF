@@ -32,13 +32,16 @@ public class Content {
     
     @Column(name = "contentImg")
     private String contentImg;
+    
+    @Column(name = "contentStatus")
+    private boolean contentStatus;
 
 	public Content() {
 		super();
 	}
 
 	public Content(Long contentId, Course course, String contentTitle, String description, Integer contentDuration,
-			String contentImg) {
+			String contentImg, boolean contentStatus) {
 		super();
 		this.contentId = contentId;
 		this.course = course;
@@ -46,6 +49,7 @@ public class Content {
 		this.description = description;
 		this.contentDuration = contentDuration;
 		this.contentImg = contentImg;
+		this.contentStatus = contentStatus;
 	}
 
 	public Long getContentId() {
@@ -94,6 +98,14 @@ public class Content {
 
 	public void setContentImg(String contentImg) {
 		this.contentImg = contentImg;
+	}
+
+	public boolean isContentStatus() {
+		return contentStatus;
+	}
+
+	public void setContentStatus(boolean contentStatus) {
+		this.contentStatus = contentStatus;
 	}
 	
 }

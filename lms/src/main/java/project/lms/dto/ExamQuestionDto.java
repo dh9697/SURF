@@ -17,9 +17,9 @@ public class ExamQuestionDto {
 	public ExamQuestionDto() {
 		super();
 	}
-	
-	public ExamQuestionDto(Long examQuestionId, Long examId, String questParagraph, String questionText,
-			List<String> options, int correctOptionIndex, String wrongAnsExpl) {
+
+	public ExamQuestionDto(Long examQuestionId, Long examId, String questParagraph, String questionText, List<String> options,
+			int correctOptionIndex, String wrongAnsExpl) {
 		super();
 		this.examQuestionId = examQuestionId;
 		this.examId = examId;
@@ -45,7 +45,7 @@ public class ExamQuestionDto {
 	public void setExamId(Long examId) {
 		this.examId = examId;
 	}
-
+	
 	public String getQuestParagraph() {
 		return questParagraph;
 	}
@@ -78,6 +78,10 @@ public class ExamQuestionDto {
 		this.correctOptionIndex = correctOptionIndex;
 	}
 
+	public String getOptionAsString() {
+		return String.join(",", this.options);
+	}
+	
 	public String getWrongAnsExpl() {
 		return wrongAnsExpl;
 	}
@@ -85,7 +89,7 @@ public class ExamQuestionDto {
 	public void setWrongAnsExpl(String wrongAnsExpl) {
 		this.wrongAnsExpl = wrongAnsExpl;
 	}
-
+	
 	public static ExamQuestionDto from(ExamQuestion examQuestion) {
 		if(examQuestion == null) return null;
 		

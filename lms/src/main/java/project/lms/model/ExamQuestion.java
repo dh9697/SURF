@@ -24,22 +24,20 @@ public class ExamQuestion {
 	@JoinColumn(name = "examId", nullable = false)
 	private Exam exam;
 	
-	@Column
 	private String questParagraph;
 	
 	@Column(nullable = false)
 	private String questionText;
 	
 	@ElementCollection
-	@Column(nullable = false)
+    @Column(nullable = false)
 	private List<String> options;
 	
 	@Column(nullable = false)
 	private Integer correctOptionIndex;
-
-	@Column
-	private String wrongAnsExpl;
 	
+	private String wrongAnsExpl;
+
 	public ExamQuestion() {
 		super();
 	}
@@ -111,4 +109,5 @@ public class ExamQuestion {
 	public void setWrongAnsExpl(String wrongAnsExpl) {
 		this.wrongAnsExpl = wrongAnsExpl;
 	}
+	
 }

@@ -9,6 +9,7 @@ import project.lms.model.Notification;
 
 import java.util.List;
 
+@Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
     // 특정 회원이 받은 알림을 조회하는 메서드

@@ -2,6 +2,8 @@ package project.lms.model;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,8 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "loginHistory")
@@ -25,27 +25,24 @@ public class LoginHistory {
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;
 
+    @CreationTimestamp
     @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime loginTime;
 
-    @Column(nullable = false, length = 50)
     private String ipAddress;
-    
-    @Column(nullable = false)
-    private boolean status;
+   
 
-	public LoginHistory() {
-		super();
-	}
+    // 기본 생성자
+    public LoginHistory() {
+        super();
+    }
 
-	public LoginHistory(Long logId, Member member, LocalDateTime loginTime, String ipAddress, boolean status) {
+	public LoginHistory(Long logId, Member member, LocalDateTime loginTime, String ipAddress) {
 		super();
 		this.logId = logId;
 		this.member = member;
 		this.loginTime = loginTime;
 		this.ipAddress = ipAddress;
-		this.status = status;
 	}
 
 	public Long getLogId() {
@@ -80,12 +77,5 @@ public class LoginHistory {
 		this.ipAddress = ipAddress;
 	}
 
-	public boolean isStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-    
+	
 }

@@ -2,6 +2,8 @@ package project.lms.model;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,8 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "courseReviews")
@@ -21,22 +21,21 @@ public class CourseReview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
 
-    @ManyToOne // ManyToOne 관계 설정: 하나의 리뷰는 여러 회원 ID를 가질 수 있음
+    @ManyToOne
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;
 
-    @ManyToOne // ManyToOne 관계 설정: 하나의 리뷰는 여러 강의 ID를 가질 수 있음
+    @ManyToOne
     @JoinColumn(name = "courseId", nullable = false)
     private Course course;
 
     @Column(nullable = false)
     private Integer rating;
 
-    @Column(nullable = true, length = 2000) // 리뷰 내용은 필수가 아닐 수 있음
+    @Column(nullable = true, length = 2000)
     private String comment;
 
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     private LocalDateTime reviewDate;
 
     // 기본 생성자

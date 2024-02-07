@@ -6,7 +6,6 @@ import project.lms.model.Exam;
 public class ExamDto {
 
 	private Long contentId;
-	
 	private Boolean examIsActive;
 	
 	public ExamDto() {
@@ -26,7 +25,7 @@ public class ExamDto {
 	public void setContentId(Long contentId) {
 		this.contentId = contentId;
 	}
-	
+
 	public Boolean getExamIsActive() {
 		return examIsActive;
 	}
@@ -35,7 +34,6 @@ public class ExamDto {
 		this.examIsActive = examIsActive;
 	}
 	
-	// examHistroySI에서 사용
 	public Exam toExam(Content content) {
 	    Exam exam = new Exam();
 	    exam.setContent(content);
@@ -45,9 +43,10 @@ public class ExamDto {
 	}
 	
 	// from exam 을 ExamDto로 변환해주는 메서드
-	public static ExamDto from(Exam exam) {
+    public static ExamDto from(Exam exam) {
         if(exam == null) return null;
         
         return new ExamDto(exam.getContent().getContentId(), exam.getExamIsActive());
     }
+	
 }

@@ -16,7 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/announcement")
 @CrossOrigin(origins="http://localhost:3000", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT})
 public class AnnouncementController {
 
@@ -30,13 +30,13 @@ public class AnnouncementController {
         this.announcementService = announcementService;
     }
 
-    @GetMapping("/announcement")
+    @GetMapping
     public ResponseEntity<List<Announcement>> getAllAnnouncements() {
         List<Announcement> announcements = announcementService.getAllAnnouncements();
         return new ResponseEntity<>(announcements, HttpStatus.OK);
     }
 
-    @PostMapping("/announcement/save")
+    @PostMapping("/save")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Announcement> saveAnnouncement(@RequestBody Announcement announcement) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -46,7 +46,7 @@ public class AnnouncementController {
         return new ResponseEntity<>(savedAnnouncement, HttpStatus.CREATED);
     }
 
-    @PutMapping("/announcement/update/{announcementId}")
+    @PutMapping("/update/{announcementId}")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Announcement> updateAnnouncement(@PathVariable Long announcementId, @RequestBody Announcement announcement) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -59,7 +59,7 @@ public class AnnouncementController {
         return new ResponseEntity<>(updatedAnnouncement, HttpStatus.OK);
     }
 
-    @DeleteMapping("/announcement/delete/{announcementId}")
+    @DeleteMapping("/delete/{announcementId}")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> deleteAnnouncement(@PathVariable Long announcementId) {
         announcementService.deleteAnnouncement(announcementId);

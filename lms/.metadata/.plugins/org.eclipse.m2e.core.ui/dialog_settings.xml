@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="C:\Users\admin\Desktop\lmsProject지희\lms"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>

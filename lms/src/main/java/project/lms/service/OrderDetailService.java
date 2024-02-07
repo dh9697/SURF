@@ -8,5 +8,7 @@ import project.lms.model.OrderDetail;
 public interface OrderDetailService {
 
 	public ResponseDto<List<OrderDetail>> getOrderDetail();
+	
 	public ResponseDto<List<OrderDetail>> getAllOrderDetails();
+	
 }

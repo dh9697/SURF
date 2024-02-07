@@ -1,7 +1,5 @@
 package project.lms.model;
 
-import java.util.Date;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,49 +8,42 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import java.time.LocalDate;
 
 @Entity
-@Table (name = "books")
+@Table(name = "books")
 public class Book {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long bookId;
-	
-	@ManyToOne
-	@JoinColumn(name = "courseId")
-	private Course course;
-	
-	@Column
-	private String bookTitle;
-	
-	@Column
-	private String authorName;
-	
-	@Column
-	private String publisher;
-	
-	@Column
-	@Temporal(TemporalType.DATE)
-	private Date publicationDate;
-	
-	@Column
-	private String isbn;
-	
-	@Column
-	private String description;
-	
-	@Column
-	private String bookThumnail;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long bookId;
 
-	public Book() {
-		super();
-	}
+    @ManyToOne
+    @JoinColumn(name = "courseId", nullable = false)
+    private Course course;
 
-	public Book(Long bookId, Course course, String bookTitle, String authorName, String publisher, Date publicationDate,
-			String isbn, String description, String bookThumnail) {
+    private String bookTitle;
+    
+    private String authorName;
+
+    private String publisher;
+
+    private LocalDate publicationDate;
+
+    private String isbn;
+
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
+    private String bookThumbnail;
+
+    // 기본 생성자
+    public Book() {
+    }
+
+    // 전체 생성자
+    public Book(Long bookId, Course course, String bookTitle, String authorName, String publisher,
+			LocalDate publicationDate, String isbn, String description, String bookThumbnail) {
 		super();
 		this.bookId = bookId;
 		this.course = course;
@@ -62,9 +53,10 @@ public class Book {
 		this.publicationDate = publicationDate;
 		this.isbn = isbn;
 		this.description = description;
-		this.bookThumnail = bookThumnail;
+		this.bookThumbnail = bookThumbnail;
 	}
-
+    
+    // Getters and Setters
 	public Long getBookId() {
 		return bookId;
 	}
@@ -105,11 +97,11 @@ public class Book {
 		this.publisher = publisher;
 	}
 
-	public Date getPublicationDate() {
+	public LocalDate getPublicationDate() {
 		return publicationDate;
 	}
 
-	public void setPublicationDate(Date publicationDate) {
+	public void setPublicationDate(LocalDate publicationDate) {
 		this.publicationDate = publicationDate;
 	}
 
@@ -129,12 +121,12 @@ public class Book {
 		this.description = description;
 	}
 
-	public String getBookThumnail() {
-		return bookThumnail;
+	public String getBookThumbnail() {
+		return bookThumbnail;
 	}
 
-	public void setBookThumnail(String bookThumnail) {
-		this.bookThumnail = bookThumnail;
+	public void setBookThumbnail(String bookThumbnail) {
+		this.bookThumbnail = bookThumbnail;
 	}
-	
+    
 }

@@ -15,4 +15,5 @@ public interface ExamQuestionRepository extends JpaRepository<ExamQuestion, Long
 	
 	// 시험 정답안
 	List<Integer> findCorrectOptionIndexByExam_ExamId(Long examId);
+	
 }
