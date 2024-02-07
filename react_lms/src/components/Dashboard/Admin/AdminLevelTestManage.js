@@ -5,7 +5,7 @@ const Container = styled.div``;
 export function AdminLevelTestManage() {
   return (
     <>
-      <Container></Container>
+      <Container>xxxxxxxxxxx</Container>
     </>
   );
 }

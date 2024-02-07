@@ -63,10 +63,8 @@ export function AdminDashboardSideBar() {
             >
               코스 및 강의 관리
             </StyledNavLink>
-            <StyledNavLink
-              to={`/dashboard/admin/${user.loginId}/payment_manage`}
-            >
-              수업/결제
+            <StyledNavLink to={`/dashboard/admin/${user.loginId}/user_manage`}>
+              회원 정보
             </StyledNavLink>
             <StyledNavLink
               to={`/dashboard/admin/${user.loginId}/leveltest_manage`}

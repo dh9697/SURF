@@ -22,7 +22,7 @@ import { AdminDashboardSideBar } from "./Dashboard/Admin/AdminDashboardSideBar";
 import { AdminCourseManage } from "./Dashboard/Admin/AdminCourseManage";
 import { AdminLevelTestManage } from "./Dashboard/Admin/AdminLevelTestManage";
 import { AdminNoticeManage } from "./Dashboard/Admin/AdminNoticeManage";
-import { AdminPaymentManage } from "./Dashboard/Admin/AdminPaymentManage";
+import { AdminUserManage } from "./Dashboard/Admin/AdminUserManage";
 import { AdminPostManage } from "./Dashboard/Admin/AdminPostManage";
 import { AdminPromotionManage } from "./Dashboard/Admin/AdminPromotionManage";
 import { AdminStatsManage } from "./Dashboard/Admin/AdminStatsManage";
@@ -86,6 +86,7 @@ export function Surf() {
                     element={<CourseMain />}
                   />
                   <Route path="/course/:courseId" element={<CourseTitle />}>
+                    {/* <Route index element={<UserCourse />} /> */}
                     <Route index element={<MemberCourse />} />
                     <Route path="afterinquiries" element={<AfterInquiries />} />
                     <Route
@@ -154,8 +155,8 @@ export function Surf() {
                         element={<AdminCourseManage />}
                       />
                       <Route
-                        path={`/dashboard/admin/${user.loginId}/payment_manage`}
-                        element={<AdminPaymentManage />}
+                        path={`/dashboard/admin/${user.loginId}/user_manage`}
+                        element={<AdminUserManage />}
                       />
                       <Route
                         path={`/dashboard/admin/${user.loginId}/leveltest_manage`}

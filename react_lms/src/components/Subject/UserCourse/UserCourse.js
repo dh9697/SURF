@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   apiGetCourse,
   apiGetContentByCourse,
   apiCreateCart,
   apiAddCourseToCart,
+  apiGetMyCourseHistroies,
 } from "../../RestApi";
+import { AuthContext } from "../../../AuthContext";
 
 const ContentWrap = styled.div`
   width: 100%;
@@ -34,37 +36,46 @@ const Section = styled.div`
 `;
 
 export function UserCourse() {
-  const { courseId } = useParams(); //동적 경로를 위함
+  const { user } = useContext(AuthContext);
+  const { courseId } = useParams();
   const [course, setCourse] = useState([]);
   const [content, setContent] = useState([]);
+  const [courseHistory, setCourseHistory] = useState([]);
 
+  // courseId로 course 조회
   useEffect(() => {
-    // courseId를 사용하여 강의 정보를 불러옴
     apiGetCourse(courseId)
       .then((response) => {
-        setCourse(response.data.data); // 불러온 강의 정보를 상태에 저장
+        setCourse(response.data.data);
       })
       .catch((error) => {
         console.error("강의 정보 불러오기 오류: ", error);
       });
-  }, [courseId]); // courseId가 변경될 때마다 useEffect를 다시 실행
+  }, [courseId]);
 
+  // courseId로 content 조회
   useEffect(() => {
-    console.log(course);
-  }, [course]);
-
-  useEffect(() => {
-    // courseId를 사용하여 강의 정보를 불러옴
     apiGetContentByCourse(courseId)
       .then((response) => {
-        setContent(response.data.data); // 불러온 강의 정보를 상태에 저장
+        setContent(response.data.data);
       })
       .catch((error) => {
         console.error("컨텐츠 정보 불러오기 오류: ", error);
       });
-  }, [courseId]); // courseId가 변경될 때마다 useEffect를 다시 실행
+  }, [courseId]);
 
-  console.log(content.map((item) => item.contentTitle));
+  // 로그인 유저의 courseHistory 조회
+  useEffect(() => {
+    if (user) {
+      apiGetMyCourseHistroies(user.id)
+        .then((response) => {
+          setCourseHistory(response.data.data);
+        })
+        .catch((error) => {
+          console.error("코스 히스토리 불러오기 오류: ", error);
+        });
+    }
+  }, [user]);
 
   if (!course) {
     return <div>Loading...</div>;

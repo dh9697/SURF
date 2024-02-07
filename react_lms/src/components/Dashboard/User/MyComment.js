@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { apiGetCourseReviewByMember } from "../../RestApi";
 
 const ButtonBox = styled.div`
   width: 100%;
@@ -33,10 +34,15 @@ const ReviewContainer = styled.div`
 
 export function MyComment() {
   const [selectedTab, setSelectedTab] = useState("qna");
+  const [reviews, setReviews] = useState([]);
 
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
   };
+
+  // useEffect(() => {
+  //   apiGetCourseReviewByMember();
+  // });
 
   return (
     <>
@@ -49,14 +55,10 @@ export function MyComment() {
       </ButtonBox>
       <CommentBox>
         {selectedTab === "qna" && (
-          <QnaContainer>
-            {/* 작성한 수강 문의 불러오기 */}내가 작성한 수강 문의입니다.
-          </QnaContainer>
+          <QnaContainer>내가 작성한 수강 문의입니다.</QnaContainer>
         )}
         {selectedTab === "coursereview" && (
-          <ReviewContainer>
-            {/* 작성한 수강평 불러오기 */}내가 작성한 수강평입니다.
-          </ReviewContainer>
+          <ReviewContainer>내가 작성한 수강평입니다.</ReviewContainer>
         )}
       </CommentBox>
     </>

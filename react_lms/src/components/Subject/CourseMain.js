@@ -1,7 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { apiGetAllCourses, apiGetCourseBySubject } from "../RestApi";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  apiGetAllCourses,
+  apiGetCourseBySubject,
+  apiGetMyCourseHistroies,
+} from "../RestApi";
 import styled from "styled-components";
 import { NavLink, useLocation, useParams } from "react-router-dom";
+import { AuthContext } from "../../AuthContext";
 // import { thumbnailSample } from "../image/귀찮네.webp";
 
 const Container = styled.div`
@@ -14,9 +19,11 @@ const CoursesGrid = styled.div`
   list-style: none;
 `;
 export function CourseMain() {
+  const { user } = useContext(AuthContext);
   const [courses, setCourses] = useState([]);
   const location = useLocation();
   const subjectId = location.pathname.split("/")[3];
+  const [courseHistory, setCourseHistory] = useState([]);
 
   useEffect(() => {
     if (location.pathname.includes("subject")) {
@@ -39,6 +46,20 @@ export function CourseMain() {
         });
     }
   }, [location, subjectId]);
+
+  // 로그인 유저의 courseHistory 조회 수강자일 때 무언가하려고 했는데 일단 restApi뿌리러 갑니다.
+  useEffect(() => {
+    if (user) {
+      apiGetMyCourseHistroies(user.id)
+        .then((response) => {
+          setCourseHistory(response.data.data);
+          console.log(response.data.data);
+        })
+        .catch((error) => {
+          console.error("코스 히스토리 불러오기 오류: ", error);
+        });
+    }
+  }, [user]);
 
   return (
     <Container>

@@ -85,14 +85,16 @@ export function MemberCourse() {
             <p>내가 최근에 한 질문</p>
           </Section>
           <Section className="mylearning">
-            <p>내 학습 같은 것</p>
+            <p>내 학습 같은 것(완료 수업 총 학습 시간)</p>
           </Section>
           <Section className="contents">
             <p>커리큘럼</p>
             {content.map((item, index) => (
               <div key={index}>
                 {`${index + 1}. ${item.contentTitle}`}
-                <NavLink to={`/content/${index + 1}`}>수강 듣기</NavLink>
+                <NavLink to={`/content/${index + 1}`}>
+                  contentDuration추가 수강 듣기
+                </NavLink>
                 {/* restApi 추가 후 index 진행 */}
                 <div>
                   contentId - examID - examquestionId "과제 index+1"

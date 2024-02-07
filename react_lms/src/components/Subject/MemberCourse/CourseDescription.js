@@ -1,7 +1,12 @@
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
-import { apiGetCourse, apiGetContentByCourse } from "../../RestApi";
+import {
+  apiGetCourse,
+  apiGetContentByCourse,
+  apiGetCourseReviewByCourse,
+  apiPostCourseReview,
+} from "../../RestApi";
 import { AuthContext } from "../../../AuthContext";
 
 const Container = styled.div`
@@ -43,7 +48,7 @@ const ReviewBox = styled.div`
   border: 1px solid black;
 `;
 
-const InputBox = styled.div`
+const InputBox = styled.form`
   display: flex;
   gap: 1rem;
   height: 30px;
@@ -56,16 +61,16 @@ const Review = styled.tr``;
 
 export function CourseDescription() {
   const location = useLocation();
-  const courseId = location.pathname.split("/")[2]; // Extract courseId from the URL
+  const courseId = location.pathname.split("/")[2];
   const { user } = useContext(AuthContext);
   const [course, setCourse] = useState(null);
   const [content, setContent] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [reviewText, setReviewText] = useState(""); //수강평 내용
-  const [starRating, setStarRating] = useState(0); //별점
+  const [comment, setComment] = useState(""); //수강평 내용
+  const [rating, setRating] = useState(0); //별점
 
+  // 해당 강의 조회
   useEffect(() => {
-    // Fetch course details based on courseId
     apiGetCourse(courseId)
       .then((response) => {
         setCourse(response.data.data);
@@ -75,37 +80,35 @@ export function CourseDescription() {
       });
   }, [courseId]);
 
-  console.log(course);
-
+  // 해당 강의 컨텐츠 조회
   useEffect(() => {
-    // courseId를 사용하여 강의 정보를 불러옴
     apiGetContentByCourse(courseId)
       .then((response) => {
-        setContent(response.data.data); // 불러온 강의 정보를 상태에 저장
+        setContent(response.data.data);
       })
       .catch((error) => {
         console.error("컨텐츠 정보 불러오기 오류: ", error);
       });
-  }, [courseId]); // courseId가 변경될 때마다 useEffect를 다시 실행
+  }, [courseId]);
 
-  console.log(content.map((item) => item.description));
+  // 해당 강의 리뷰 조회
+  useEffect(() => {
+    apiGetCourseReviewByCourse(courseId).then((response) => {
+      setReviews(response.data.data);
+    });
+  }, [courseId]);
 
-  //리뷰 내용과 별점이 0이 아닐 때 add
-  const addReview = () => {
-    if (!reviewText || starRating === 0) {
-      return;
-    }
-
-    const newReview = {
-      name: user.name,
-      reviewText: reviewText,
-      starRating: starRating,
-      time: new Date().toISOString().split("T")[0], //백엔드 CourseReview.model에 localDate(날짜까지)time을 받아서 하면 되지 않을까
-    };
-
-    setReviews([...reviews, newReview]);
-    setReviewText("");
-    setStarRating(0);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    apiPostCourseReview({
+      memberId: user.memberId,
+      courseId: courseId,
+      comment,
+      rating,
+    }).then(() => {
+      setComment("");
+      setRating(0);
+    });
   };
 
   return (
@@ -133,16 +136,16 @@ export function CourseDescription() {
             <p>
               <strong>수강평</strong>
             </p>
-            <InputBox>
+            <InputBox onSubmit={handleSubmit}>
               <input
                 type="text"
                 placeholder="다른 수강생들이 볼 수 있게 수강 후기와 별점을 남겨 주세요"
-                value={reviewText}
-                onChange={(e) => setReviewText(e.target.value)}
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
               />
               <select
-                value={starRating}
-                onChange={(e) => setStarRating(parseInt(e.target.value))}
+                value={rating}
+                onChange={(e) => setRating(e.target.value)}
               >
                 <option value="0">별점 선택</option>
                 <option value="1">1</option>
@@ -151,7 +154,7 @@ export function CourseDescription() {
                 <option value="4">4</option>
                 <option value="5">5</option>
               </select>
-              <button onClick={addReview}>등록</button>
+              <button type="submit">등록</button>
             </InputBox>
             <Reviews>
               <colgroup>
@@ -162,10 +165,10 @@ export function CourseDescription() {
               </colgroup>
               {reviews.map((review, index) => (
                 <Review key={index}>
-                  <td className="name">{review.name}</td>
-                  <td className="reviewText">{review.reviewText}</td>
-                  <td className="starRating">{review.starRating}</td>
-                  <td className="time">{review.time}</td>
+                  <td className="name">{review.member.name}</td>
+                  <td className="reviewText">{review.comment}</td>
+                  <td className="starRating">{review.rating}</td>
+                  <td className="time">{review.reviewDate}</td>
                 </Review>
               ))}
             </Reviews>

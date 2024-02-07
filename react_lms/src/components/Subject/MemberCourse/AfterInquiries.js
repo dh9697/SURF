@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { AuthContext } from "../../../AuthContext";
 import { useContext, useState } from "react";
+import { apiCreateQnABoard } from "../../RestApi";
 
 const Container = styled.div``;
 const InputBox = styled.div``;
@@ -9,25 +10,78 @@ const Button = styled.button``;
 const PostBox = styled.div``;
 
 export function AfterInquiries() {
-  const { user } = useContext(AuthContext);
+  const { user, courseId, memberId, qnaId } = useContext(AuthContext);
   const [qnas, setQnas] = useState([]);
   const [questionText, setQuestionText] = useState("");
   const [editQuestionText, setEditQuestionText] = useState("");
   const [editingIndex, setEditingIndex] = useState(null); // 수정 중인 질문의 인덱스
 
-  const addQnA = () => {
+  const addQnA = async () => {
+    console.log("courseId:", courseId); // courseId 출력
+    console.log("memberId:", memberId); // memberId 출력
+    console.log("questionText:", questionText); // questionText 출력
+
     if (!questionText) {
       return;
     }
-
-    const newQnA = {
-      name: user.name,
-      questionText: questionText,
-      time: new Date().toISOString().split("T")[0],
-    };
-    setQnas([...qnas, newQnA]);
-    setQuestionText("");
+    try {
+      const response = await apiCreateQnABoard(
+        courseId,
+        memberId,
+        questionText
+      );
+      const newQnA = {
+        name: user.name,
+        questionText: questionText,
+        time: new Date().toISOString().split("T")[0],
+      };
+      setQnas([...qnas, newQnA]);
+      setQuestionText("");
+    } catch (error) {
+      console.error("error adding QnA:", error);
+    }
   };
+
+  // const addQnA = async () => {
+  //   if (!questionText) {
+  //     return;
+  //   }
+  //   try {
+  //     const response = await apiCreateQnABoard(courseId, memberId, questionText);
+  //     const newQnA = {
+  //       name: user.name,
+  //       questionText: questionText,
+  //       time: new Date().toISOString().split("T")[0],
+  //     };
+  //     setQnas([...qnas, newQnA]);
+  //     setQuestionText("");
+  //   } catch (error) {
+  //     console.error("error adding QnA:", error);
+  //   }
+  // };
+
+  // const addQnA = async () => {
+  //   if (!questionText) {
+  //     return;
+  //   }
+  //   try {
+  //     const response = await apiCreateQnABoard(
+  //       courseId,
+  //       memberId,
+  //       qnaId,
+  //       questionText
+  //     );
+  //     const newQnA = {
+  //       name: user.name,
+  //       questionText: questionText,
+  //       time: new Date().toISOString().split("T")[0],
+  //     };
+  //     setQnas([...qnas, newQnA]);
+  //     setQuestionText("");
+  //   } catch (error) {
+  //     console.error("error adding QnA:", error);
+  //   }
+  // };
 
   const startEdit = (index) => {
     setEditingIndex(index); // 수정 중인 질문의 인덱스 설정
