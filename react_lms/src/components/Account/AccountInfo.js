@@ -16,7 +16,7 @@ const Section = styled.div`
 
 export function AccountInfo() {
   const { user, handleLogout } = useContext(AuthContext);
-  const token = localStorage.getItem("Token");
+  const token = sessionStorage.getItem("Token");
 
   const handleWithdrawal = () => {
     const withdrawalReason = prompt("탈퇴 사유를 입력하세요.");

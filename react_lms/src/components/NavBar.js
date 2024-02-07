@@ -47,6 +47,7 @@ const NavSectionItem = styled(NavLink)`
   color: #6b7280;
   margin-top: 0.7%;
   white-space: nowrap;
+  position: relative; // 추가
   &.join,
   &.dashboard {
     background-color: #3182f6;
@@ -88,20 +89,27 @@ const HoverableNavItem = styled.div`
 `;
 
 export function NavBar() {
-  const { isLoggedIn, user, handleLogout } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const [subjects, setSubjects] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await apiGetAllSubject();
-        setSubjects(response.data);
+        setSubjects(response.data.data);
       } catch (error) {
         console.error("Error fetching subjects:", error);
       }
     };
-
     fetchData();
   }, []);
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("Token");
+    setUser(null);
+    navigate("/");
+  };
 
   return (
     <>
@@ -123,7 +131,7 @@ export function NavBar() {
                   {subjects.map((subject) => (
                     <SubMenuItem
                       key={subject.subjectId}
-                      to={`/subject/${subject.subjectId}`}
+                      to={`course/subject/${subject.subjectId}`}
                     >
                       {subject.subjectName}
                     </SubMenuItem>
@@ -157,7 +165,7 @@ export function NavBar() {
               </NavSectionItem>
             </NavSection>
           </Section>
-          {isLoggedIn ? (
+          {user ? (
             <Section>
               <NavSectionItem
                 className="logout"

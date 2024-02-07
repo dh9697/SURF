@@ -2,10 +2,11 @@ import styled from "styled-components";
 import google from "./image/google.png";
 import naver from "./image/naver.png";
 import kakao from "./image/kakao.png";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import { TestWave } from "./TestWave";
 import { apiLoginByAxiosPost } from "./RestApi";
+import { AuthContext } from "../AuthContext";
 
 const Container = styled.div`
   width: 100%;
@@ -112,6 +113,7 @@ const Img = styled.img`
 `;
 
 export function Login() {
+  const { user, fetchUser } = useContext(AuthContext);
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -119,15 +121,11 @@ export function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      console.log("로그인 시도");
       const response = await apiLoginByAxiosPost(loginId, password);
-      console.log("서버 응답: ", response);
       if (response.data.resultCode === "SUCCESS") {
-        console.log("토큰:", response.data.data.token);
-        localStorage.setItem("Token", response.data.data.token);
+        sessionStorage.setItem("Token", response.data.data.token);
+        fetchUser();
         window.alert("로그인이 성공적으로 이루어졌습니다.");
-        navigate("/");
-        console.log("로그인 성공");
       } else {
         console.log(response.data.message);
       }
@@ -135,6 +133,12 @@ export function Login() {
       console.log("로그인 오류", err);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
 
   // enter 로그인
   const handleKeyPress = (e) => {

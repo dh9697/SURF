@@ -23,7 +23,7 @@ const ContentBox = styled.div`
 
 export function MyCourse() {
   const [courseHistoryDtos, setCourseHistoryDtos] = useState([]);
-  const [isAnswerNote, setAnswerNote] = useState(false); // 배열 비구조화 할당 사용
+  const [isAnswerNote, setAnswerNote] = useState(false);
 
   useEffect(() => {
     apiGetMyCourseHistroies().then((response) => {

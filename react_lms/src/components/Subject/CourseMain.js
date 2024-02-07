@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { apiGetAllCourses } from "../RestApi";
+import { apiGetAllCourses, apiGetCourseBySubject } from "../RestApi";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
+// import { thumbnailSample } from "../image/귀찮네.webp";
 
 const Container = styled.div`
   width: 100%;
@@ -14,20 +15,30 @@ const CoursesGrid = styled.div`
 `;
 export function CourseMain() {
   const [courses, setCourses] = useState([]);
+  const location = useLocation();
+  const subjectId = location.pathname.split("/")[3];
 
   useEffect(() => {
-    loadCourses();
-  }, []);
-
-  const loadCourses = () => {
-    apiGetAllCourses()
-      .then((response) => {
-        setCourses(response.data.data);
-      })
-      .catch((error) => {
-        console.error("코스 불러오기 오류: ", error);
-      });
-  };
+    if (location.pathname.includes("subject")) {
+      // '/course/subject/:subjectId' 경로에서 렌더링되는 경우
+      apiGetCourseBySubject(subjectId)
+        .then((response) => {
+          setCourses(response.data.data);
+        })
+        .catch((error) => {
+          console.log("서브젝트 코스 불러오기 오류: ", error);
+        });
+    } else {
+      // '/course' 경로에서 렌더링되는 경우
+      apiGetAllCourses()
+        .then((response) => {
+          setCourses(response.data.data);
+        })
+        .catch((error) => {
+          console.error("코스 불러오기 오류: ", error);
+        });
+    }
+  }, [location, subjectId]);
 
   return (
     <Container>
@@ -40,12 +51,11 @@ export function CourseMain() {
                   {course.courseName}
                 </NavLink>
               </strong>
-              <p>코스 썸네일 올려야함</p>
+              {/* <img src={thumbnailSample} alt="sample" /> */}
               <p>설명: {course.description}</p>
               <p>수업 시간: {course.durationMins} 분</p>
               <p>콘텐츠 레벨: {course.contentLevel}</p>
               <p>가격: {course.price} 원</p>
-              <p>공지사항: {course.announcement}</p>
               <p>선생님: {course.instructorNames}</p>
             </div>
           ))}

@@ -1,4 +1,8 @@
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { apiGetCourse, apiGetContentByCourse } from "../../RestApi";
+import { NavLink } from "react-router-dom";
 import { CourseTitle } from "../CourseTitle";
 
 const Container = styled.div`
@@ -17,7 +21,7 @@ const DashboardWrap = styled.div`
 const Section = styled.div`
   border: 2px solid gray;
   padding: 20px;
-  &.notice {
+  &.announcement {
     grid-column: span 5;
     grid-row: span 1;
   }
@@ -38,12 +42,44 @@ const Section = styled.div`
 const DescriptionWrap = styled.div``;
 
 export function MemberCourse() {
+  const location = useLocation();
+  const courseId = location.pathname.split("/")[2]; // Extract courseId from the URL
+  const [course, setCourse] = useState(null);
+  const [content, setContent] = useState([]);
+
+  useEffect(() => {
+    // Fetch course details based on courseId
+    apiGetCourse(courseId)
+      .then((response) => {
+        console.log(response.data.data);
+        setCourse(response.data.data);
+      })
+      .catch((error) => {
+        console.error("코스 정보 불러오기 오류: ", error);
+      });
+  }, [courseId]);
+
+  useEffect(() => {
+    // courseId를 사용하여 강의 정보를 불러옴
+    apiGetContentByCourse(courseId)
+      .then((response) => {
+        console.log(response.data.data);
+        setContent(response.data.data); // 불러온 강의 정보를 상태에 저장
+      })
+      .catch((error) => {
+        console.error("컨텐츠 정보 불러오기 오류: ", error);
+      });
+  }, [courseId]); // courseId가 변경될 때마다 useEffect를 다시 실행
+
+  console.log(content.map((item) => item.contentTitle));
+
   return (
     <>
       <Container>
         <DashboardWrap>
-          <Section className="notice">
+          <Section className="announcement">
             <p>강의 공지</p>
+            {course && course.announcement && <p>{course.announcement}</p>}
           </Section>
           <Section className="question">
             <p>내가 최근에 한 질문</p>
@@ -53,9 +89,19 @@ export function MemberCourse() {
           </Section>
           <Section className="contents">
             <p>커리큘럼</p>
+            {content.map((item, index) => (
+              <div key={index}>
+                {`${index + 1}. ${item.contentTitle}`}
+                <NavLink to={`/content/${index + 1}`}>수강 듣기</NavLink>
+                {/* restApi 추가 후 index 진행 */}
+                <div>
+                  contentId - examID - examquestionId "과제 index+1"
+                  <button>풀기</button>
+                </div>
+              </div>
+            ))}
           </Section>
         </DashboardWrap>
-        <DescriptionWrap></DescriptionWrap>
       </Container>
     </>
   );

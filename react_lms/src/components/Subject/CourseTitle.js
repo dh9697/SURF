@@ -1,38 +1,34 @@
 import styled from "styled-components";
 import surf_logo from "../image/surf_logo.png";
-import { Outlet, useParams, NavLink } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { CourseSidebar } from "./CourseSidebar";
 import { CourseMenu } from "./CourseMenu";
+import { useEffect, useState } from "react";
+import { apiGetCourse } from "../RestApi";
 
 const Container = styled.div`
   width: 100%;
-  margin: 0 auto;
   background-color: gray;
-  & header {
-    padding: 40px;
+  padding: 30px;
+  & .innerWrapper {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
   }
 `;
 
-const Wrapper = styled.div`
-  display: flex;
-  margin: 0 auto;
+const ImgBox = styled.div`
+  padding: 100px 0;
+  background-color: darkgray;
 `;
 
-const Thumbnail = styled.div`
-  padding: 30px;
+const Img = styled.img`
+  width: 100%;
+  object-fit: cover;
 `;
 
-const ImgBox = styled.img`
-  width: 50%;
+const CourseInfo = styled.div`
+  background-color: red;
 `;
-
-const InfoRight = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 0 0 0 32px;
-`;
-
-const Breadcrumb = styled.div``;
 
 const ContentMain = styled.div`
   width: 100%;
@@ -44,24 +40,35 @@ const ContentMain = styled.div`
 
 export function CourseTitle() {
   const { courseId } = useParams();
+  const [course, setCourse] = useState([]);
+
+  useEffect(() => {
+    apiGetCourse(courseId)
+      .then((response) => {
+        setCourse(response.data.data);
+        console.log(response.data.data);
+      })
+      .catch((error) => {
+        console.error("강의 정보 불러오기 오류: ", error);
+      });
+  }, [courseId]);
 
   return (
     <>
       <Container>
-        <Wrapper>
-          <Thumbnail>
-            <ImgBox src={surf_logo} alt="Sample"></ImgBox>
-          </Thumbnail>
-          <InfoRight>
-            <Breadcrumb>
-              <span>토익</span>
-              <span>화살표 아이콘</span>
-              <span>700 +</span>
-            </Breadcrumb>
-            <div className="header_title">강의 제목을 적어 보아요</div>
-            <div className="star">별 다섯 개</div>
-          </InfoRight>
-        </Wrapper>
+        <div className="innerWrapper">
+          <ImgBox>
+            <Img src={surf_logo} alt="Sample"></Img>
+          </ImgBox>
+          <CourseInfo>
+            <h3>{course.subject && course.subject.subjectName}</h3>
+            <h1>{course.courseName}</h1>
+            <p>{course.instructorNames}</p>
+            <span>화살표 아이콘</span>
+            <span>700 +</span>
+            <div className="star">별 다섯 개 (코스리뷰)</div>
+          </CourseInfo>
+        </div>
       </Container>
       <CourseMenu />
       <ContentMain>

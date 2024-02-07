@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { AuthContext } from "../../../AuthContext";
 import { Icon } from "@iconify/react";
+import { TodoList } from "./TodoList";
 
 const Container = styled.div`
   width: 100%;
@@ -88,7 +89,7 @@ export function UserDashboard() {
       <Container>
         <Header>
           <div>
-            <h2>{user.name}님</h2>
+            <h2>{user.name} 님</h2>
             <BellIcon icon="akar-icons:bell" />
           </div>
           <p>
@@ -97,7 +98,9 @@ export function UserDashboard() {
           </p>
         </Header>
         <Body>
-          <Content className="toDoList">to-do-list 가능?</Content>
+          <Content className="toDoList">
+            <TodoList />
+          </Content>
           <Content className="examSchedule">시험 일정</Content>
           <Content className="recentCourses">최근 강의 내역</Content>
           <Content className="incorrectAnswersNote">나의 오답 노트</Content>

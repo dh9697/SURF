@@ -3,55 +3,34 @@ import {
   apiGetCurrentUserInfo,
   apiLoginByAxiosPost,
 } from "./components/RestApi";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({});
 
+  const fetchUser = async () => {
+    try {
+      const response = await apiGetCurrentUserInfo();
+      setUser(response.data.data);
+    } catch (err) {
+      console.error(err);
+      setUser(null);
+    }
+  };
+
   useEffect(() => {
-    const token = localStorage.getItem("Token");
-    setIsLoggedIn(token);
-
+    const token = sessionStorage.getItem("Token");
     if (token) {
-      setIsLoggedIn(true);
-
-      apiGetCurrentUserInfo()
-        .then((response) => {
-          const userData = response.data.data;
-          setUser(userData);
-        })
-        .catch((err) => {
-          console.error("사용자 정보를 가져오는 중 오류 발생: ", err);
-        });
+      fetchUser();
+    } else {
+      setUser(null);
     }
   }, []);
 
-  // const handleLogin = async (loginId, password) => {
-  //   try {
-  //     const response = await apiLoginByAxiosPost(loginId, password);
-  //     if (response.data.resultCode === "SUCCESS") {
-  //       localStorage.setItem("Token", response.data.data.token);
-  //       window.alert("로그인이 성공적으로 이루어졌습니다.");
-  //     } else {
-  //       console.log(response.data.message);
-  //     }
-  //   } catch (err) {
-  //     console.log("로그인 오류", err);
-  //   }
-  // };
-
-  const handleLogout = () => {
-    localStorage.removeItem("Token");
-    setIsLoggedIn(false);
-    setUser({});
-  };
-
   return (
-    <AuthContext.Provider
-      value={{ isLoggedIn, setIsLoggedIn, user, handleLogout }}
-    >
+    <AuthContext.Provider value={{ user, setUser, fetchUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -81,6 +81,10 @@ export function Surf() {
                   <Route index element={<Main />} />
                   <Route path="/about" element={<AboutMain />} />
                   <Route path="/course" element={<CourseMain />} />
+                  <Route
+                    path="/course/subject/:subjectId"
+                    element={<CourseMain />}
+                  />
                   <Route path="/course/:courseId" element={<CourseTitle />}>
                     <Route index element={<MemberCourse />} />
                     <Route path="afterinquiries" element={<AfterInquiries />} />
@@ -110,7 +114,7 @@ export function Surf() {
                   <Route path="/community/reviews" element={<CourseReview />} />
                   <Route path="/faq" element={<FAQ />} />
                   {/* 학생 Dashboard */}
-                  {isLoggedIn && (
+                  {user && (
                     <Route
                       path={`/dashboard/${user.loginId}`}
                       element={<DashboardNavBar />}
@@ -139,7 +143,7 @@ export function Surf() {
                     </Route>
                   )}
                   {/* 관리자 Dashboard */}
-                  {isLoggedIn && (
+                  {user && (
                     <Route
                       path={`/dashboard/admin/${user.loginId}`}
                       element={<AdminDashboardSideBar />}
@@ -176,7 +180,7 @@ export function Surf() {
                     </Route>
                   )}
                   {/* 선생님 Dashboard */}
-                  {isLoggedIn && (
+                  {user && (
                     <Route
                       path={`/dashboard/instructor/${user.loginId}`}
                       element={<InstructorDashboardSideBar />}
