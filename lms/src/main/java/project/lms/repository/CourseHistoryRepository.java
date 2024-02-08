@@ -20,7 +20,7 @@ public interface CourseHistoryRepository extends JpaRepository<CourseHistory, Lo
 //    // 특정 회원의 수강 이력 조회
 //    List<CourseHistory> findByMember(Member member);
 //
-//    // 특정 강좌의 수강 이력 조회
+    // 특정 강좌의 수강 이력 조회
 //    List<CourseHistory> findByCourse(Course course);
 //
 //    // 특정 날짜 범위 내의 수강 이력 조회

@@ -1,6 +1,8 @@
 package project.lms.dto;
 
 import java.time.LocalDateTime;
+
+import project.lms.model.Course;
 import project.lms.model.CourseReview;
 import project.lms.model.Member;
 
@@ -8,7 +10,7 @@ public class CourseReviewDto {
 
     private Long reviewId;
     private Member member;
-    private Long courseId;
+    private Course course;
     private Integer rating;
     private String comment;
     private LocalDateTime reviewDate;
@@ -17,12 +19,12 @@ public class CourseReviewDto {
 		super();
 	}
 
-	public CourseReviewDto(Long reviewId, Member member, Long courseId, Integer rating, String comment,
+	public CourseReviewDto(Long reviewId, Member member, Course course, Integer rating, String comment,
 			LocalDateTime reviewDate) {
 		super();
 		this.reviewId = reviewId;
 		this.member = member;
-		this.courseId = courseId;
+		this.course = course;
 		this.rating = rating;
 		this.comment = comment;
 		this.reviewDate = reviewDate;
@@ -44,12 +46,12 @@ public class CourseReviewDto {
 		this.member = member;
 	}
 
-	public Long getCourseId() {
-		return courseId;
+	public Course getCourse() {
+		return course;
 	}
 
-	public void setCourseId(Long courseId) {
-		this.courseId = courseId;
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 
 	public Integer getRating() {
@@ -80,7 +82,7 @@ public class CourseReviewDto {
         CourseReviewDto dto = new CourseReviewDto();
         dto.setReviewId(courseReview.getReviewId());
         dto.setMember(courseReview.getMember());
-        dto.setCourseId(courseReview.getCourse().getCourseId());
+        dto.setCourse(courseReview.getCourse());
         dto.setRating(courseReview.getRating());
         dto.setComment(courseReview.getComment());
         dto.setReviewDate(courseReview.getReviewDate());

@@ -38,7 +38,7 @@ public class CourseHistoryController {
 	}
 	
 	@GetMapping("/list/{courseId}")
-	@PreAuthorize("hasAnyRole('ADMIN')")
+//	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<ResponseDto<List<CourseHistory>>> getCourseHistoriesByCourse(@PathVariable Long courseId) {
 		ResponseDto<List<CourseHistory>> courseHistories = courseHistoryService.getCourseHistoriesByCourse(courseId);
 		return new ResponseEntity<>(courseHistories, HttpStatus.OK);

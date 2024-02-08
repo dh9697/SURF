@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { NavLink, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { apiGetOrderDetail } from "../../RestApi";
+import { formatDateTime, formatDateTimeStamp } from "../../Util/util";
 
 const Table = styled.table`
   width: 100%;
@@ -53,10 +54,10 @@ export function PurchaseList() {
             orderDetails.map((orderDetail, index) => (
               <tr key={index}>
                 <Td>{orderDetail.course.courseName}</Td>
-                <Td>{orderDetail.order.orderDate}</Td>
+                <Td>{formatDateTime(orderDetail.order.orderDate)}</Td>
                 <Td>{orderDetail.order.paymentMethod}</Td>
                 <Td>{orderDetail.price}</Td>
-                <Td>{orderDetail.expirationDate}</Td>
+                <Td>{formatDateTime(orderDetail.expirationDate)}</Td>
                 <Td>저는 궁금해요 만료시간이 있어야 하는지 선생님께 여쭙기</Td>
               </tr>
             ))

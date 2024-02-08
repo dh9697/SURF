@@ -1,9 +1,17 @@
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { apiGetCourse, apiGetContentByCourse } from "../../RestApi";
+import { useState, useEffect, useContext } from "react";
+import {
+  apiGetCourse,
+  apiGetContentByCourse,
+  apiGetMyCourseHistroies,
+  apiGetQnABoardsByMember,
+  apiGetQnARepliesByQnABoardId,
+} from "../../RestApi";
 import { NavLink } from "react-router-dom";
 import { CourseTitle } from "../CourseTitle";
+import { AuthContext } from "../../../AuthContext";
+import { formatDateTime } from "../../Util/util";
 
 const Container = styled.div`
   width: 100%;
@@ -40,18 +48,24 @@ const Section = styled.div`
 `;
 
 const DescriptionWrap = styled.div``;
+const QnAs = styled.table``;
+const QnA = styled.tr``;
 
 export function MemberCourse() {
+  const { user } = useContext(AuthContext);
+  const memberId = user.memberId;
   const location = useLocation();
   const courseId = location.pathname.split("/")[2]; // Extract courseId from the URL
   const [course, setCourse] = useState(null);
   const [content, setContent] = useState([]);
+  const [courseHistoryDtos, setCourseHistoryDtos] = useState([]);
+  const [qnas, setQnas] = useState([]);
+  const [replies, setReplies] = useState([]);
 
+  // 해당 코스 조회
   useEffect(() => {
-    // Fetch course details based on courseId
     apiGetCourse(courseId)
       .then((response) => {
-        console.log(response.data.data);
         setCourse(response.data.data);
       })
       .catch((error) => {
@@ -59,19 +73,49 @@ export function MemberCourse() {
       });
   }, [courseId]);
 
+  // 해당 코스 컨텐츠 조회
   useEffect(() => {
-    // courseId를 사용하여 강의 정보를 불러옴
     apiGetContentByCourse(courseId)
       .then((response) => {
-        console.log(response.data.data);
-        setContent(response.data.data); // 불러온 강의 정보를 상태에 저장
+        setContent(response.data.data);
       })
       .catch((error) => {
         console.error("컨텐츠 정보 불러오기 오류: ", error);
       });
-  }, [courseId]); // courseId가 변경될 때마다 useEffect를 다시 실행
+  }, [courseId]);
 
-  console.log(content.map((item) => item.contentTitle));
+  // 로그인 유저의 courseHistory 조회
+  useEffect(() => {
+    if (user) {
+      apiGetMyCourseHistroies(user.memberId)
+        .then((response) => {
+          setCourseHistoryDtos(response.data.data);
+        })
+        .catch((error) => {
+          console.error("코스 히스토리 불러오기 오류: ", error);
+        });
+    }
+  }, [user]);
+
+  // 로그인 유저의 질문 댓글 조회
+  useEffect(() => {
+    apiGetQnABoardsByMember(memberId).then((response) => {
+      setQnas(response.data.data);
+    });
+  }, []);
+
+  function handleLoadReplies(qnaId) {
+    apiGetQnARepliesByQnABoardId(qnaId)
+      .then((response) => {
+        setReplies((prevReplies) => ({
+          ...prevReplies,
+          [qnaId]: response.data.data,
+        })); // 답변 데이터를 상태에 저장
+      })
+      .catch((error) => {
+        console.error("답변 조회 실패: ", error);
+      });
+  }
 
   return (
     <>
@@ -83,22 +127,54 @@ export function MemberCourse() {
           </Section>
           <Section className="question">
             <p>내가 최근에 한 질문</p>
+            <QnAs>
+              <colgroup>
+                <col style={{ width: 130 + "px" }} />
+                <col style={{ width: 300 + "px" }} />
+                <col style={{ width: 130 + "px" }} />
+                <col style={{ width: 130 + "px" }} />
+              </colgroup>
+              {qnas.map((qna, index) => (
+                <QnA key={index}>
+                  <td className="name">{qna.member.name}</td>
+                  <td className="reviewText">{qna.questionText}</td>
+                  <td className="time">{formatDateTime(qna.createdAt)}</td>
+                  <td>
+                    <button onClick={() => handleLoadReplies(qna.qnaId)}>
+                      답변 보기
+                    </button>
+                  </td>
+                  {replies[qna.qnaId] && (
+                    <td>
+                      {replies[qna.qnaId].map((reply) => (
+                        <div key={reply.replyId}>{reply.replyText}</div>
+                      ))}
+                    </td>
+                  )}
+                </QnA>
+              ))}
+            </QnAs>
           </Section>
-          <Section className="mylearning">
-            <p>내 학습 같은 것(완료 수업 총 학습 시간)</p>
-          </Section>
+          {courseHistoryDtos.map((courseHistoryDto, index) => (
+            <Section key={index} className="mylearning">
+              <h3>{user.name}님 학습 상황</h3>
+              <h2>
+                {courseHistoryDto.completedContents} /{" "}
+                {courseHistoryDto.totalContents}
+              </h2>
+            </Section>
+          ))}
           <Section className="contents">
             <p>커리큘럼</p>
             {content.map((item, index) => (
               <div key={index}>
-                {`${index + 1}. ${item.contentTitle}`}
-                <NavLink to={`/content/${index + 1}`}>
+                <NavLink to={`/content/${item.contentId}`}>
                   contentDuration추가 수강 듣기
                 </NavLink>
                 {/* restApi 추가 후 index 진행 */}
                 <div>
                   contentId - examID - examquestionId "과제 index+1"
-                  <button>풀기</button>
+                  <NavLink to={`/content/${item.contentId}`}>풀기</NavLink>
                 </div>
               </div>
             ))}

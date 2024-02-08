@@ -15,6 +15,7 @@ const PostTable = styled.table`
   width: 100%;
   border-collapse: collapse;
 `;
+
 const Th = styled.th`
   border: 1px solid #ddd;
   padding: 8px;

@@ -81,7 +81,7 @@ public class CourseReviewServiceImpl implements CourseReviewService {
     public ResponseDto<CourseReviewDto> saveCourseReview(CourseReviewDto courseReviewDto) {
         Member member = memberRepository.findById(courseReviewDto.getMember().getMemberId())
             .orElseThrow(() -> new InvalidRequestException("Member not found", "해당 회원을 찾을 수 없습니다."));
-        Course course = courseRepository.findById(courseReviewDto.getCourseId())
+        Course course = courseRepository.findById(courseReviewDto.getCourse().getCourseId())
             .orElseThrow(() -> new InvalidRequestException("Course not found", "해당 강의를 찾을 수 없습니다."));
 
         // CourseHistory를 확인하여 해당 회원이 수강 중인 강의인지 확인

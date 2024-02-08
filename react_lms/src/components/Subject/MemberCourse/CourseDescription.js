@@ -8,6 +8,7 @@ import {
   apiPostCourseReview,
 } from "../../RestApi";
 import { AuthContext } from "../../../AuthContext";
+import { formatDateTime } from "../../Util/util";
 
 const Container = styled.div`
   width: 100%;
@@ -105,17 +106,24 @@ export function CourseDescription() {
       courseId: courseId,
       comment,
       rating,
-    }).then(() => {
-      setComment("");
-      setRating(0);
-    });
+    })
+      .then(() => {
+        setComment("");
+        setRating(0);
+        apiGetCourseReviewByCourse(courseId).then((response) => {
+          setReviews(response.data.data);
+        });
+      })
+      .catch((error) => {
+        console.error("리뷰 생성 실패: ", error);
+      });
   };
 
   return (
     <>
       <Container>
         <div className="innerWrapper">
-          <DescriptionBox>
+          <DescriptionBox id="description">
             {course && course.courseName && (
               <strong>{course.courseName} </strong>
             )}
@@ -132,7 +140,7 @@ export function CourseDescription() {
               </List>
             </ListBox>
           </DescriptionBox>
-          <ReviewBox>
+          <ReviewBox id="review">
             <p>
               <strong>수강평</strong>
             </p>
@@ -168,7 +176,7 @@ export function CourseDescription() {
                   <td className="name">{review.member.name}</td>
                   <td className="reviewText">{review.comment}</td>
                   <td className="starRating">{review.rating}</td>
-                  <td className="time">{review.reviewDate}</td>
+                  <td className="time">{formatDateTime(review.reviewDate)}</td>
                 </Review>
               ))}
             </Reviews>

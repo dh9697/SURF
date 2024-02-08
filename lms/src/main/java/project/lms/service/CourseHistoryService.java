@@ -16,6 +16,8 @@ public interface CourseHistoryService {
 	
 	public ResponseDto<CourseHistoryDto> updateCourseHistoryStatus(Long courseHistoryId); // 추가 코드
 
+//  // 특정 강좌의 수강 이력 개수 조회
+//  ResponseDto<Long> getCourseHistoryCountByCourse(Course course);
 
 //    // 특정 회원의 수강 이력 조회
 //    ResponseDto<List<CourseHistory>> getCourseHistoryByMember(Member member);
@@ -38,8 +40,6 @@ public interface CourseHistoryService {
 //    // 특정 회원의 가장 최근 수강 이력 조회
 //    ResponseDto<CourseHistory> getLatestCourseHistoryForMember(Member member);
 //
-//    // 특정 강좌의 수강 이력 개수 조회
-//    ResponseDto<Long> getCourseHistoryCountByCourse(Course course);
 //
 //    // 종료일이 null이고 시작일이 특정 날짜 이전인 수강 이력 조회
 //    ResponseDto<List<CourseHistory>> getOngoingCourseHistoryBeforeDate(LocalDate date);

@@ -1,150 +1,93 @@
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 import { AuthContext } from "../../../AuthContext";
-import { useContext, useState } from "react";
-import { apiCreateQnABoard } from "../../RestApi";
+import { useState, useEffect, useContext } from "react";
+import {
+  apiGetCourse,
+  apiGetQnABoardsByCourse,
+  apiCreateQnABoard,
+} from "../../RestApi";
+import { formatDateTime } from "../../Util/util";
 
 const Container = styled.div``;
-const InputBox = styled.div``;
+const InputBox = styled.form``;
 const Input = styled.input``;
-const Button = styled.button``;
-const PostBox = styled.div``;
+const QnAs = styled.table``;
+const QnA = styled.tr``;
 
 export function AfterInquiries() {
-  const { user, courseId, memberId, qnaId } = useContext(AuthContext);
+  const location = useLocation();
+  const courseId = location.pathname.split("/")[2];
+  const { user } = useContext(AuthContext);
+  const [course, setCourse] = useState(null);
   const [qnas, setQnas] = useState([]);
   const [questionText, setQuestionText] = useState("");
-  const [editQuestionText, setEditQuestionText] = useState("");
-  const [editingIndex, setEditingIndex] = useState(null); // 수정 중인 질문의 인덱스
 
-  const addQnA = async () => {
-    console.log("courseId:", courseId); // courseId 출력
-    console.log("memberId:", memberId); // memberId 출력
-    console.log("questionText:", questionText); // questionText 출력
+  // 해당 강의 조회
+  useEffect(() => {
+    apiGetCourse(courseId)
+      .then((response) => {
+        setCourse(response.data.data);
+      })
+      .catch((error) => {
+        console.error("코스 정보 불러오기 오류: ", error);
+      });
+  }, [courseId]);
 
-    if (!questionText) {
-      return;
-    }
-    try {
-      const response = await apiCreateQnABoard(
-        courseId,
-        memberId,
-        questionText
-      );
-      const newQnA = {
-        name: user.name,
-        questionText: questionText,
-        time: new Date().toISOString().split("T")[0],
-      };
-      setQnas([...qnas, newQnA]);
-      setQuestionText("");
-    } catch (error) {
-      console.error("error adding QnA:", error);
-    }
-  };
+  // 해당 강의 질문 조회
+  useEffect(() => {
+    apiGetQnABoardsByCourse(courseId).then((response) => {
+      setQnas(response.data.data);
+    });
+  }, [courseId]);
 
-  // const addQnA = async () => {
-  //   if (!questionText) {
-  //     return;
-  //   }
-  //   try {
-  //     const response = await apiCreateQnABoard(courseId, memberId, questionText);
-  //     const newQnA = {
-  //       name: user.name,
-  //       questionText: questionText,
-  //       time: new Date().toISOString().split("T")[0],
-  //     };
-  //     setQnas([...qnas, newQnA]);
-  //     setQuestionText("");
-  //   } catch (error) {
-  //     console.error("error adding QnA:", error);
-  //   }
-  // };
-
-  // const addQnA = async () => {
-  //   if (!questionText) {
-  //     return;
-  //   }
-  //   try {
-  //     const response = await apiCreateQnABoard(
-  //       courseId,
-  //       memberId,
-  //       qnaId,
-  //       questionText
-  //     );
-  //     const newQnA = {
-  //       name: user.name,
-  //       questionText: questionText,
-  //       time: new Date().toISOString().split("T")[0],
-  //     };
-  //     setQnas([...qnas, newQnA]);
-  //     setQuestionText("");
-  //   } catch (error) {
-  //     console.error("error adding QnA:", error);
-  //   }
-  // };
-
-  const startEdit = (index) => {
-    setEditingIndex(index); // 수정 중인 질문의 인덱스 설정
-    setEditQuestionText(qnas[index].questionText); // 수정할 질문의 내용을 입력창에 표시
-  };
-
-  const finishEdit = () => {
-    // 수정 완료 후 해당 질문의 내용과 시간을 업데이트하고 수정 중인 상태를 해제
-    const updatedQnas = [...qnas];
-    updatedQnas[editingIndex] = {
-      ...updatedQnas[editingIndex],
-      questionText: editQuestionText,
-      time: new Date().toISOString().split("T")[0],
-    };
-    setQnas(updatedQnas);
-    setEditingIndex(null);
-    setEditQuestionText("");
-  };
-
-  const deleteQnA = (index) => {
-    const updatedQnas = [...qnas];
-    updatedQnas.splice(index, 1);
-    setQnas(updatedQnas);
+  // 질문 작성
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    apiCreateQnABoard({
+      memberId: user.memberId,
+      courseId: courseId,
+      questionText,
+    })
+      .then(() => {
+        setQuestionText("");
+        apiGetQnABoardsByCourse(courseId).then((response) => {
+          setQnas(response.data.data);
+        });
+      })
+      .catch((error) => {
+        console.error("질문 등록 실패: ", error);
+      });
   };
 
   return (
     <>
       <Container>
         <p>수강 문의.</p>
-        <InputBox>
+        <InputBox onSubmit={handleSubmit}>
           <Input
             type="text"
-            placeholder="하고 싶은 질문을 남겨 주세요."
+            placeholder="강의에 대한 질문을 남겨 주세요."
             value={questionText}
             onChange={(e) => setQuestionText(e.target.value)}
           />
-          <Button onClick={addQnA}>등록</Button>
+          <button type="submit">등록</button>
         </InputBox>
-        <PostBox>
+        <QnAs>
+          <colgroup>
+            <col style={{ width: 130 + "px" }} />
+            <col style={{ width: 300 + "px" }} />
+            <col style={{ width: 130 + "px" }} />
+            <col style={{ width: 130 + "px" }} />
+          </colgroup>
           {qnas.map((qna, index) => (
-            <div key={index}>
-              <p className="name">{qna.name}</p>
-              {editingIndex === index ? ( // 수정 중인 질문의 경우 입력창 표시
-                <Input
-                  type="text"
-                  value={editQuestionText}
-                  onChange={(e) => setEditQuestionText(e.target.value)}
-                />
-              ) : (
-                <p className="questionText">{qna.questionText}</p>
-              )}
-              <p className="time">{qna.time}</p>
-              <Button
-                onClick={() =>
-                  editingIndex === index ? finishEdit() : startEdit(index)
-                }
-              >
-                {editingIndex === index ? "수정 완료" : "수정"}
-              </Button>
-              <Button onClick={() => deleteQnA(index)}>삭제</Button>
-            </div>
+            <QnA key={index}>
+              <td className="name">{qna.member.name}</td>
+              <td className="reviewText">{qna.questionText}</td>
+              <td className="time">{formatDateTime(qna.createdAt)}</td>
+            </QnA>
           ))}
-        </PostBox>
+        </QnAs>
       </Container>
     </>
   );

@@ -1,29 +1,102 @@
-import React, { useContext, useEffect, useState } from "react";
-import {
-  apiGetAllCourses,
-  apiGetCourseBySubject,
-  apiGetMyCourseHistroies,
-} from "../RestApi";
+import React, { useEffect, useState } from "react";
+import { apiGetAllCourses, apiGetCourseBySubject } from "../RestApi";
 import styled from "styled-components";
-import { NavLink, useLocation, useParams } from "react-router-dom";
-import { AuthContext } from "../../AuthContext";
-// import { thumbnailSample } from "../image/귀찮네.webp";
+import { NavLink, useLocation } from "react-router-dom";
+import thumbnailSample from "../image/surf_logo.png";
+import { formatPrice } from "../Util/util";
+import { Icon } from "@iconify/react";
 
 const Container = styled.div`
   width: 100%;
+  & .innerWrapper {
+    padding: 2rem 0;
+  }
 `;
 const CoursesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
-  list-style: none;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  & .gridItem {
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    & .courseText {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      & .courseName {
+        font-size: 1.5rem;
+        color: #454545;
+      }
+      & .subjectName {
+        padding-top: 10px;
+      }
+      & .instructorNames {
+      }
+      & .price {
+        color: #3182f6;
+        font-size: 1rem;
+        font-weight: 900;
+      }
+    }
+  }
 `;
+
+const HoverInfo = styled(NavLink)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  text-decoration: none;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: all linear 0.2s;
+  .gridItem:hover & {
+    opacity: 1;
+  }
+  & h3 {
+    font-size: 1.5rem;
+    padding-bottom: 1rem;
+  }
+  & .click {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+  }
+  & .hoverItem {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+`;
+
+const ImgBox = styled.div`
+  width: 300px;
+  height: 200px;
+  background-color: gray;
+  & img {
+    width: 100%;
+  }
+`;
+
+const TitleNavLink = styled(NavLink)`
+  text-decoration: none;
+`;
+
 export function CourseMain() {
-  const { user } = useContext(AuthContext);
   const [courses, setCourses] = useState([]);
   const location = useLocation();
   const subjectId = location.pathname.split("/")[3];
-  const [courseHistory, setCourseHistory] = useState([]);
 
   useEffect(() => {
     if (location.pathname.includes("subject")) {
@@ -47,37 +120,37 @@ export function CourseMain() {
     }
   }, [location, subjectId]);
 
-  // 로그인 유저의 courseHistory 조회 수강자일 때 무언가하려고 했는데 일단 restApi뿌리러 갑니다.
-  useEffect(() => {
-    if (user) {
-      apiGetMyCourseHistroies(user.id)
-        .then((response) => {
-          setCourseHistory(response.data.data);
-          console.log(response.data.data);
-        })
-        .catch((error) => {
-          console.error("코스 히스토리 불러오기 오류: ", error);
-        });
-    }
-  }, [user]);
-
   return (
     <Container>
       <div className="innerWrapper">
         <CoursesGrid>
           {courses.map((course) => (
-            <div key={course.courseId}>
-              <strong>
-                <NavLink to={`/course/${course.courseId}`}>
-                  {course.courseName}
-                </NavLink>
-              </strong>
-              {/* <img src={thumbnailSample} alt="sample" /> */}
-              <p>설명: {course.description}</p>
-              <p>수업 시간: {course.durationMins} 분</p>
-              <p>콘텐츠 레벨: {course.contentLevel}</p>
-              <p>가격: {course.price} 원</p>
-              <p>선생님: {course.instructorNames}</p>
+            <div className="gridItem" key={course.courseId}>
+              <HoverInfo to={`/course/${course.courseId}`}>
+                <h3>{course.courseName}</h3>
+                <div className="hoverItem">
+                  <Icon icon="fontisto:folder"></Icon>
+                  {course.subject && <p>{course.subject.subjectName}</p>}
+                </div>
+                <div className="hoverItem">
+                  <Icon icon="carbon:skill-level-advanced"></Icon>
+                  <p>{course.contentLevel}</p>
+                </div>
+                <div className="hoverItem">
+                  <Icon icon="zondicons:time"></Icon>
+                  <p>{course.durationMins} 분</p>
+                </div>
+                <p className="click">강의 상세 보기</p>
+              </HoverInfo>
+              <ImgBox>
+                <img src={thumbnailSample} alt="sample" />
+              </ImgBox>
+              <div className="courseText">
+                {course.subject && <p>{course.subject.subjectName}</p>}
+                <h2 className="courseName">{course.courseName}</h2>
+                <p className="instructorNames">{course.instructorNames}</p>
+                <p className="price">{formatPrice(course.price)}</p>
+              </div>
             </div>
           ))}
         </CoursesGrid>

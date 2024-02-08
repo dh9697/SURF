@@ -29,12 +29,11 @@ import { AdminStatsManage } from "./Dashboard/Admin/AdminStatsManage";
 import { TestSubject } from "./TestSubject";
 import { InstructorDashboardSideBar } from "./Dashboard/Instructor/InstructorDashboardSideBar";
 import { InstructorDashboard } from "./Dashboard/Instructor/InstructorDashboard";
-import { InstructorScheduleManage } from "./Dashboard/Instructor/InstructorScheduleManage";
 import { InstructorStudentsManage } from "./Dashboard/Instructor/InstructorStudentsManage";
-import { InstructorAssignmentManage } from "./Dashboard/Instructor/InstructorAssignmentManage";
 import { InstructorExamManage } from "./Dashboard/Instructor/InstructorExamManage";
 import { InstructorQnAManage } from "./Dashboard/Instructor/InstructorQnAManage";
 import { InstructorCourseNoticeManage } from "./Dashboard/Instructor/InstructorCourseNoticeManage";
+import { InstructorCourseReviewManage } from "./Dashboard/Instructor/InstructorCourseReviewManage";
 import { Dashboard } from "./Dashboard/Dashboard";
 import { Cart } from "./Account/Cart";
 import { AccountForm } from "./Account/AccountForm";
@@ -43,6 +42,7 @@ import { MyComment } from "./Dashboard/User/MyComment";
 import { MyCertificate } from "./Dashboard/User/MyCertificate";
 import { CourseSidebar } from "./Subject/CourseSidebar";
 import { CourseTitle } from "./Subject/CourseTitle";
+import { CourseDetail } from "./Subject/CourseDetail.js";
 import { BeforeInquiries } from "./Subject/UserCourse/BeforeInquiries";
 import { MemberCourse } from "./Subject/MemberCourse/MemberCourse";
 import { AfterInquiries } from "./Subject/MemberCourse/AfterInquiries.js";
@@ -51,6 +51,7 @@ import { CourseReview } from "./Communitiy/CourseReview.js";
 import { HallofFame } from "./Communitiy/HallofFame.js";
 import { TodayResolutions } from "./Communitiy/TodayResolutions.js";
 import { FAQ } from "./FAQ.js";
+import { ContentComponent } from "./Subject/MemberCourse/Contents/ContentComponent.js";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -86,19 +87,12 @@ export function Surf() {
                     element={<CourseMain />}
                   />
                   <Route path="/course/:courseId" element={<CourseTitle />}>
-                    {/* <Route index element={<UserCourse />} /> */}
-                    <Route index element={<MemberCourse />} />
+                    <Route index element={<CourseDetail />} />
                     <Route path="afterinquiries" element={<AfterInquiries />} />
                     <Route
                       path="coursedescription"
                       element={<CourseDescription />}
                     />
-                    {/* User 권한 course 상세 보기 > 권한 나눠야 함
-                    <Route index element={<UserCourse />} />
-                    <Route
-                      path="beforeinquiries"
-                      element={<BeforeInquiries />}
-                    /> */}
                   </Route>
                   <Route path="/level_test" element={<LevelTestMain />} />
                   <Route path="/event" element={<Event />} />
@@ -188,16 +182,8 @@ export function Surf() {
                     >
                       <Route index element={<InstructorDashboard />} />
                       <Route
-                        path={`/dashboard/instructor/${user.loginId}/schedule_manage`}
-                        element={<InstructorScheduleManage />}
-                      />
-                      <Route
-                        path={`/dashboard/instructor/${user.loginId}/studenets_manage`}
+                        path={`/dashboard/instructor/${user.loginId}/students_manage`}
                         element={<InstructorStudentsManage />}
-                      />
-                      <Route
-                        path={`/dashboard/instructor/${user.loginId}/assignment_manage`}
-                        element={<InstructorAssignmentManage />}
                       />
                       <Route
                         path={`/dashboard/instructor/${user.loginId}/exam_manage`}
@@ -211,6 +197,10 @@ export function Surf() {
                         path={`/dashboard/instructor/${user.loginId}/coursenotice_manage`}
                         element={<InstructorCourseNoticeManage />}
                       />
+                      <Route
+                        path={`/dashboard/instructor/${user.loginId}/coursereview_manage`}
+                        element={<InstructorCourseReviewManage />}
+                      />
                     </Route>
                   )}
                 </Route>
@@ -218,6 +208,12 @@ export function Surf() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/level_test_start" element={<LevelTestStart />} />
                 <Route path="/subject" element={<TestSubject />} />
+                {user && (
+                  <Route
+                    path="/content/:contentId"
+                    element={<ContentComponent />}
+                  ></Route>
+                )}
               </Routes>
             </MainContent>
             <Footer />

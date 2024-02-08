@@ -38,7 +38,7 @@ public class CourseHistory {
 	private LocalDateTime endDate;
     
 	@Column
-    private boolean contentStatus;
+    private boolean contentStatus = false;
 
 	public CourseHistory() {
 		super();

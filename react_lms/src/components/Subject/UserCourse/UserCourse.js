@@ -64,19 +64,6 @@ export function UserCourse() {
       });
   }, [courseId]);
 
-  // 로그인 유저의 courseHistory 조회
-  useEffect(() => {
-    if (user) {
-      apiGetMyCourseHistroies(user.id)
-        .then((response) => {
-          setCourseHistory(response.data.data);
-        })
-        .catch((error) => {
-          console.error("코스 히스토리 불러오기 오류: ", error);
-        });
-    }
-  }, [user]);
-
   if (!course) {
     return <div>Loading...</div>;
   }
@@ -87,17 +74,17 @@ export function UserCourse() {
         <>
           <ContentWrap>
             <ContentBox>
-              <Section>
+              <Section id="description">
                 <h1>강의 소개</h1>
                 <p>{course.description}</p>
               </Section>
-              <Section>
+              <Section id="content">
                 <h1>커리큘럼</h1>
                 {content.map((item, index) => (
                   <p key={index}>{`${index + 1}. ${item.contentTitle}`}</p>
                 ))}
               </Section>
-              <Section>
+              <Section id="review">
                 <h1>수강평</h1>
                 <p>{course.description}</p>
               </Section>

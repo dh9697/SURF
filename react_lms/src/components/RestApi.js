@@ -268,7 +268,7 @@ export function apiGetAllQnABoards() {
 }
 
 // memberId를 통해 해당 member가 쓴 QnA 댓글 조회
-export function apiGetQnABoardsByMemberId(memberId) {
+export function apiGetQnABoardsByMember(memberId) {
   return axios.get(
     `http://localhost:8080/api/qna-boards/list/member/${memberId}`,
     {
@@ -278,7 +278,7 @@ export function apiGetQnABoardsByMemberId(memberId) {
 }
 
 // courseId를 통해 해당하는 course의 QnA 댓글 조회
-export function apiGetQnABoardsByCourseId(courseId) {
+export function apiGetQnABoardsByCourse(courseId) {
   return axios.get(
     `http://localhost:8080/api/qna-boards/list/course/${courseId}`,
     {
@@ -287,58 +287,36 @@ export function apiGetQnABoardsByCourseId(courseId) {
   );
 }
 
-//QNA 댓글 작성(Member) > 코스마다 차단하여 알맞은 코스에 작성할 수 있게 하는 건 IMPL
-// 수정 필요
-export function apiCreateQnABoard(courseId, memberId, questionText) {
-  const qnaBoardDto = {
-    courseId: courseId,
-    memberId: memberId,
-    questionText: questionText,
+//QNA 댓글 작성
+export function apiCreateQnABoard(qnaData) {
+  const payload = {
+    ...qnaData,
+    member: { memberId: qnaData.memberId },
+    course: { courseId: qnaData.courseId },
   };
-  return axios.post("http://localhost:8080/api/qna-boards", qnaBoardDto, {
+  delete payload.memberId;
+  delete payload.courseId;
+  return axios.post("http://localhost:8080/api/qna-boards", payload, {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
 
-// export function apiCreateQnABoard(qnaBoardDto) {
-//   return axios.post("http://localhost:8080/api/qna-boards", qnaBoardDto, {
-//     headers: { Authorization: `Bearer ${token}` },
-//   });
-// }
-
-// export function apiCreateQnABoard(courseId, memberId, qnaId, questionText) {
-//   return axios.post(
-//     `http://localhost:8080/api/qna-boards`,
-//     {
-//       courseId: courseId,
-//       memberId: memberId,
-//       qnaId: qnaId,
-//       questionText: questionText,
-//     },
-//     {
-//       headers: { Authorization: `Bearer ${token}` },
-//     }
-//   );
-// }
-
 //QNA 수정
-export function apiUpdateQnABoard(courseId, memberId, qnaId, questionText) {
+export function apiUpdateQnABoard(qnaId, questionText) {
   return axios.put(
     `http://localhost:8080/api/qna-boards/${qnaId}`,
+    { qnaId: qnaId, questionText: questionText },
     {
-      courseId: courseId,
-      memberId: memberId,
-      qnaId: qnaId,
-      questionText: questionText,
-    },
-    {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     }
   );
 }
 
 //QNA 삭제
-export function apiDeleteQnABoard(qnaId, memberId) {
+export function apiDeleteQnABoard(qnaId) {
   return axios.delete(`http://localhost:8080/api/qna-boards/${qnaId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -362,37 +340,43 @@ export function apiGetQnARepliesByMemberId(memberId) {
   );
 }
 
-//QnA 답변 작성
-export function apiCreateQnAReply(replyId, memberId, qnaId, replyText) {
-  return axios.get(
-    `http://localhost:8080/api/qna-replies`,
-    {
-      replyId: replyId,
-      memberId: memberId,
-      qnaId: qnaId,
-      replyText: replyText,
-    },
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
+// qnaId를 통해 해당하는 qna 답변 조회
+export function apiGetQnARepliesByQnABoardId(qnaId) {
+  return axios.get(`http://localhost:8080/api/qna-replies/${qnaId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+// QnA 답변 작성
+export function apiCreateQnAReply(replyData, qnaData) {
+  const payload = {
+    ...replyData,
+    member: { memberId: qnaData.memberId },
+    qnaBoard: { qnaId: qnaData.qnaId },
+    course: { courseId: qnaData.courseId },
+  };
+  delete payload.memberId;
+  delete payload.courseId;
+  return axios.post("http://localhost:8080/api/qna-replies", payload, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }
 
 //QnA 답변 수정
-export function apiUpdateQnAReply(replyId, memberId, qnaId, replyText) {
-  return axios.get(
-    `http://localhost:8080/api/qna-replies/${replyId}`,
-    {
-      replyId: replyId,
-      memberId: memberId,
-      qnaId: qnaId,
-      replyText: replyText,
-    },
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
-}
+// export function apiUpdateQnAReply(replyId, memberId, qnaId, replyText) {
+//   return axios.get(
+//     `http://localhost:8080/api/qna-replies/${replyId}`,
+//     {
+//       replyId: replyId,
+//       memberId: memberId,
+//       qnaId: qnaId,
+//       replyText: replyText,
+//     },
+//     {
+//       headers: { Authorization: `Bearer ${token}` },
+//     }
+//   );
+// }
 
 //QnA 답변 삭제
 export function apiDeleteQnAReply(replyId, memberId) {
@@ -400,6 +384,7 @@ export function apiDeleteQnAReply(replyId, memberId) {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+
 // CourseReview
 // courseReview 모두 조회
 export function apiGetAllCourseReviews() {
@@ -430,19 +415,24 @@ export function apiPostCourseReview(reviewData) {
   const payload = {
     ...reviewData,
     member: { memberId: reviewData.memberId },
+    course: { courseId: reviewData.courseId },
   };
   delete payload.memberId;
+  delete payload.courseId;
   return axios.post("http://localhost:8080/api/course-reviews", payload, {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
 // courseReview 수정
-export function apiPutCourseReview(reviewId, reviewData) {
+export function apiPutCourseReview(reviewId, comment) {
   return axios.put(
     `http://localhost:8080/api/course-reviews/${reviewId}`,
-    reviewData,
+    { reviewId: reviewId, comment: comment },
     {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     }
   );
 }
@@ -518,12 +508,32 @@ export function apiGetAllOrderDetails() {
   });
 }
 
-//CourseHistory
+// -------- CourseHistory ---------
+// 로그인 유저의 courseHistory 조회
 export function apiGetMyCourseHistroies() {
   return axios.get("http://localhost:8080/api/course-histories", {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+
+// course 전체 조회
+export function apiGetAllCourseHistories() {
+  return axios.get("http://localhost:8080/api/course-histories/list", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+// course로 courseHistory 조회
+export function apiGetCourseHistroiesByCourse(courseId) {
+  return axios.get(
+    `http://localhost:8080/api/course-histories/list/${courseId}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+}
+
+// courseHistory 수료증 자격 업데이트
 
 // TodoList
 // TodoList 조회

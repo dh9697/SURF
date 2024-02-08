@@ -33,7 +33,8 @@ public class ContentServiceImpl implements ContentService {
 	// course에 따라 content 조회
 	@Override
 	public ResponseDto<List<Content>> getContentByCourse(Long courseId){
-		List<Content> contents = contentRepository.findByCourseCourseId(courseId);
+		Optional<Course> course = courseRepository.findById(courseId);
+		List<Content> contents = contentRepository.findByCourse(course.get());
 		if(contents.isEmpty()) {
 			throw new InvalidRequestException("content not found", "해당 과목의 컨텐츠를 찾을 수 없습니다.");
 			}

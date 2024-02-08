@@ -59,19 +59,9 @@ export function InstructorDashboardSideBar() {
             </StyledNavLink>
             <SearchBar />
             <StyledNavLink
-              to={`/dashboard/instructor/${user.loginId}/schedule_manage`}
-            >
-              수업/스케줄 관리
-            </StyledNavLink>
-            <StyledNavLink
               to={`/dashboard/instructor/${user.loginId}/students_manage`}
             >
               학생 관리
-            </StyledNavLink>
-            <StyledNavLink
-              to={`/dashboard/instructor/${user.loginId}/assignment_manage`}
-            >
-              과제 관리
             </StyledNavLink>
             <StyledNavLink
               to={`/dashboard/instructor/${user.loginId}/exam_manage`}
@@ -82,6 +72,11 @@ export function InstructorDashboardSideBar() {
               to={`/dashboard/instructor/${user.loginId}/qna_manage`}
             >
               Q&A 관리
+            </StyledNavLink>
+            <StyledNavLink
+              to={`/dashboard/instructor/${user.loginId}/coursereview_manage`}
+            >
+              수강평 관리
             </StyledNavLink>
             <StyledNavLink
               to={`/dashboard/instructor/${user.loginId}/coursenotice_manage`}

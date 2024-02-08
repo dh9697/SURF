@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthContext";
 import { useContext, useEffect, useState } from "react";
-import { apiCreateOrder } from "../RestApi";
+import { apiCreateOrder, apiGetOrderDetail } from "../RestApi";
 
 const Container = styled.div`
   display: grid;
@@ -82,6 +82,7 @@ export function AccountForm() {
     paymentMethod: "",
   });
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+  const [orderDetails, setOrderDetails] = useState([]);
 
   const handleOrderInfoChange = (e) => {
     const { name, value } = e.target;
@@ -109,6 +110,16 @@ export function AccountForm() {
       console.error("주문 생성 중 오류 발생:", error);
     }
   };
+
+  useEffect(() => {
+    apiGetOrderDetail()
+      .then((response) => {
+        setOrderDetails(response.data.data);
+      })
+      .catch((err) => {
+        console.log("주문 상세 정보 조회 오류: ", err);
+      });
+  }, []);
 
   return (
     <>
@@ -191,11 +202,15 @@ export function AccountForm() {
           <ListBox>
             <p>주문 목록</p>
             <List>
-              <SingleList>
-                <thumbnail className="thumbnail">썸네일</thumbnail>
-                <div className="courseName">강의명</div>
-                <div className="price">가격</div>
-              </SingleList>
+              {orderDetails.map((detail) => (
+                <SingleList key={detail.orderId}>
+                  <div>
+                    <thumbnail className="thumbnail">썸네일</thumbnail>
+                    <p>{detail.course.courseName}</p>
+                    <p>{detail.price}</p>
+                  </div>
+                </SingleList>
+              ))}
             </List>
           </ListBox>
           <AccountBtn onClick={handleOrderSubmit}>결제하기</AccountBtn>

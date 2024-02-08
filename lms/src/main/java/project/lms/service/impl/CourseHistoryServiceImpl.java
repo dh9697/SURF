@@ -160,18 +160,6 @@ public class CourseHistoryServiceImpl implements CourseHistoryService {
 //        }
 //    }
 //
-//    // 특정 강좌의 수강 이력 조회
-//    @Transactional
-//    @Override
-//    public ResponseDto<List<CourseHistory>> getCourseHistoryByCourse(Course course) {
-//        try {
-//            List<CourseHistory> courseHistories = courseHistoryRepository.findByCourse(course);
-//            return new ResponseDto<>(ResultCode.SUCCESS.name(), courseHistories, "강좌의 수강 이력을 성공적으로 조회하였습니다.");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            throw new InvalidRequestException("강좌의 수강 이력 조회 중 오류가 발생했습니다.", e.getMessage());
-//        }
-//    }
 //
 //    // 특정 날짜 범위 내의 수강 이력 조회
 //    @Transactional
