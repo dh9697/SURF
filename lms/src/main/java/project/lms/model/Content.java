@@ -34,7 +34,7 @@ public class Content {
     private String contentImg;
     
     @Column(name = "contentStatus")
-    private boolean contentStatus;
+    private boolean contentStatus = false;
 
 	public Content() {
 		super();

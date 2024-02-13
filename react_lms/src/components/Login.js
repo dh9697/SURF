@@ -7,6 +7,7 @@ import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import { TestWave } from "./TestWave";
 import { apiLoginByAxiosPost } from "./RestApi";
 import { AuthContext } from "../AuthContext";
+import { Icon } from "@iconify/react";
 
 const Container = styled.div`
   width: 100%;
@@ -52,6 +53,7 @@ const LoginForm = styled.form`
   justify-content: center;
   align-items: center;
   gap: 10px;
+  position: relative;
 `;
 const Input = styled.input`
   border: 1px solid rgb(221, 221, 221);
@@ -111,6 +113,13 @@ const Img = styled.img`
   height: 70px;
   cursor: pointer;
 `;
+const StyledIcon = styled(Icon)`
+  position: absolute;
+  top: 75px;
+  right: 1rem;
+  font-size: 1rem;
+  color: #454545;
+`;
 
 export function Login() {
   const { user, fetchUser } = useContext(AuthContext);
@@ -124,8 +133,10 @@ export function Login() {
       const response = await apiLoginByAxiosPost(loginId, password);
       if (response.data.resultCode === "SUCCESS") {
         sessionStorage.setItem("Token", response.data.data.token);
+        sessionStorage.setItem("LoginId", loginId);
         fetchUser();
         window.alert("로그인이 성공적으로 이루어졌습니다.");
+        navigate("/");
       } else {
         console.log(response.data.message);
       }
@@ -134,11 +145,11 @@ export function Login() {
     }
   };
 
-  useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     navigate("/");
+  //   }
+  // }, [user]);
 
   // enter 로그인
   const handleKeyPress = (e) => {
@@ -148,10 +159,10 @@ export function Login() {
     }
   };
 
-  // const [showPassword, setShowPassword] = useState(false);
-  // const togglePasswordVisible = () => {
-  //   setShowPassword(!showPassword);
-  // };
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisible = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <>
@@ -166,13 +177,17 @@ export function Login() {
               onChange={(e) => setLoginId(e.target.value)}
             />
             <Input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="비밀번호 입력"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="off"
               onKeyPress={handleKeyPress}
             />
+            <StyledIcon
+              icon={showPassword ? "mdi:eye-outline" : "mdi:eye-off-outline"}
+              onClick={togglePasswordVisible}
+            ></StyledIcon>
             <LoginSolution>로그인 문제 해결</LoginSolution>
             <LoginBtn type="submit" onClick={handleLogin}>
               로그인

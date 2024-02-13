@@ -76,7 +76,8 @@ export function loginUser(loginId, password) {
 // user 정보
 export function apiGetCurrentUserInfo() {
   const loginId = sessionStorage.getItem("LoginId");
-  if (!token) {
+  const token = sessionStorage.getItem("Token");
+  if (!loginId || !token) {
     return Promise.reject("No Token or LoginId available.");
   }
   return axios.get(`http://localhost:8080/api/dashboard/${loginId}`, {
@@ -85,7 +86,26 @@ export function apiGetCurrentUserInfo() {
     },
   });
 }
-
+// 모든 사용자 조회
+export function apiGetAllSurfers() {
+  return axios.get("http://localhost:8080/api/surfer/list", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+// ROLE_USER 조회
+export function apiGetAllUsers() {
+  return axios.get("http://localhost:8080/api/user/list", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+// ROLE_MEMBER 조회
+export function apiGetAllMembers() {
+  return axios.get("http://localhost:8080/api/member/list", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
 // 강사 정보 조회
 export function apiGetAllInstructors() {
   return axios.get("http://localhost:8080/api/instructor/list", {
@@ -96,6 +116,38 @@ export function apiGetAllInstructors() {
 // 현재 로그인한 토큰 주인의 정보 조회
 export function apiGetCurrentMemberInfo() {
   return axios.get("http://localhost:8080/api/dashboard/loginId", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+// --- exam ---
+// 모든 시험 조회
+export function apiGetAllExams() {
+  return axios.get(`http://localhost:8080/api/exam/list`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+// 과목 별 시험 조회
+export function apiGetExamByContent(contentId) {
+  return axios.get(`http://localhost:8080/api/exam/list/${contentId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+// 시험 등록
+export function apiCreateExam(examDto) {
+  return axios.post(`http://localhost:8080/api/exam/save`, examDto, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+// 시험 수정
+export function apiUpdateExam(examId, examDto) {
+  return axios.put(`http://localhost:8080/api/exam/update/${examId}`, examDto, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+// 시험 삭제
+export function apiDeleteExam(examId) {
+  return axios.delete(`http://localhost:8080/api/exam/delete/${examId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
@@ -348,35 +400,16 @@ export function apiGetQnARepliesByQnABoardId(qnaId) {
 }
 
 // QnA 답변 작성
-export function apiCreateQnAReply(replyData, qnaData) {
-  const payload = {
-    ...replyData,
-    member: { memberId: qnaData.memberId },
-    qnaBoard: { qnaId: qnaData.qnaId },
-    course: { courseId: qnaData.courseId },
-  };
-  delete payload.memberId;
-  delete payload.courseId;
-  return axios.post("http://localhost:8080/api/qna-replies", payload, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export function apiCreateQnAReply(replyText, memberId, qnaId) {
+  const payload = { replyText: replyText };
+  return axios.post(
+    `http://localhost:8080/api/qna-replies?memberId=${memberId}&qnaId=${qnaId}`,
+    payload,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
 }
-
-//QnA 답변 수정
-// export function apiUpdateQnAReply(replyId, memberId, qnaId, replyText) {
-//   return axios.get(
-//     `http://localhost:8080/api/qna-replies/${replyId}`,
-//     {
-//       replyId: replyId,
-//       memberId: memberId,
-//       qnaId: qnaId,
-//       replyText: replyText,
-//     },
-//     {
-//       headers: { Authorization: `Bearer ${token}` },
-//     }
-//   );
-// }
 
 //QnA 답변 삭제
 export function apiDeleteQnAReply(replyId, memberId) {
@@ -450,9 +483,78 @@ export function apiGetContentByCourse(courseId) {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
-// content생성, 수정, 삭제 관리자페이지
+// content 생성
+export function apiPostContentByCourse(courseId, contentDto) {
+  return axios.post("http://localhost:8080/api/content/save", contentDto, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+// content 수정
+export function apiUpdateContent(contentId, contentDto) {
+  return axios.put(
+    `http://localhost:8080/api/content/update/${contentId}`,
+    contentDto,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+}
+// content 삭제
+export function apiDeleteContent(contentId) {
+  return axios.delete(`http://localhost:8080/api/content/delete/${contentId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
 
-// Cart
+// ------------ ContentHistory ------------
+// contentHistory 조회
+export function apiGetAllContentHistories() {
+  return axios.get("http://localhost:8080/api/content-histories/list", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+// content당 contentHistory 조회
+export function apiGetContentHistoriesByCourse(contentId) {
+  return axios.get(`http://localhost:8080/api/content-histories/${contentId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+// 로그인 유저 contentHistory 조회
+export function apiGetMyContentHistory() {
+  return axios.get("http://localhost:8080/api/content-histories", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+// 완료된 contentHistory 조회
+export function apiGetCompletedContentHistories() {
+  return axios.get("http://localhost:8080/api/content-histories/completed");
+}
+// 완료되지 않은 contentHistory 조회
+export function apiGetIncompletedContentHistories() {
+  return axios.get("http://localhost:8080/api/content-histories/incomplete");
+}
+// contentHistory 생성
+export function apiPostStartContentHistory(memberId, contentId) {
+  return axios.post(
+    "http://localhost:8080/api/content-histories/create",
+    { memberId, contentId },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+}
+// 학습 완료
+export function apiPutCompleteContentHistory(memberId, contentId) {
+  return axios.put(
+    "http://localhost:8080/api/content-histories/complete",
+    { memberId, contentId },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+}
+
+// ----------------- Cart -----------------
 // cart 생성
 export function apiCreateCart(courseId) {
   return axios.post(
@@ -548,6 +650,7 @@ export function apiPostMyTodoList(todoData) {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+
 // TodoList 수정
 export function apiPutMyTodoList(taskId) {
   return (
@@ -565,4 +668,11 @@ export function apiDeleteMyTodoList(taskId) {
       headers: { Authorization: `Bearer ${token}` },
     }
   );
+}
+
+// --------------- Announcement Rest API ---------------
+export function apiGetAllAnnouncements() {
+  return axios.get(`http://localhost:8080/api/announcement`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }

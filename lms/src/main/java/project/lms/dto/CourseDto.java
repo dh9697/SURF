@@ -31,7 +31,7 @@ public class CourseDto {
 	public CourseDto() {
 		super();
 	}
-
+	
 	public CourseDto(Long courseId, Subject subject, List<String> instructorLoginIds, List<String> instructorNames,
 			String courseName, String description, Integer durationMins, byte[] courseThumbnail, String contentLevel,
 			Integer price, String announcement) {
@@ -152,5 +152,19 @@ public class CourseDto {
         
         return courseDto;
 	}
+	
+	public Course toCourse() {
+        Course course = new Course();
+        course.setCourseId(this.courseId);
+        course.setCourseName(this.courseName);
+        course.setDescription(this.description);
+        course.setDurationMins(this.durationMins);
+        course.setCourseThumbnail(this.courseThumbnail.clone());
+        course.setContentLevel(this.contentLevel);
+        course.setPrice(this.price);
+        course.setAnnouncement(this.announcement);
+
+        return course;
+    }
 	
 }

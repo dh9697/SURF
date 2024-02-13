@@ -2,7 +2,7 @@ import styled, { keyframes } from "styled-components";
 import wave from "./image/wave.png";
 const Container = styled.div`
   width: 100%;
-  height: calc(100vh - 164px);
+  height: calc(100vh - 654px);
   position: relative;
   background-color: #3182f6;
   overflow: hidden;

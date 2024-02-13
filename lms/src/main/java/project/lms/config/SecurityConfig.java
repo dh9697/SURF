@@ -62,10 +62,13 @@ public class SecurityConfig {
                 		.requestMatchers("/api/signup").permitAll()
                 		.requestMatchers("/api/login").permitAll()
                 		.requestMatchers("/api/subject").permitAll()
+                		.requestMatchers("/api/cart").permitAll()
                 		.requestMatchers("/api/course/list").permitAll()
                 		.requestMatchers("/api/course/list/{courseId}").permitAll()
                 		.requestMatchers("/api/course/subject/{subjectId}").permitAll()
                 		.requestMatchers("/api/content/course/{courseId}").permitAll()
+                		.requestMatchers("/api/course-reviews/list/course/{courseId}").permitAll()
+                		.requestMatchers("/api/content-histories/completed").permitAll()
                 		// Token이 없다면 401 Unauthorized Error                  
                         .anyRequest().authenticated()
                 )

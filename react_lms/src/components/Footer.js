@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import surfLogo from "./image/surf_logo.png";
+import { useLocation } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -52,6 +53,10 @@ const RightTop = styled.div`
 const RightBot = styled.div``;
 
 export function Footer() {
+  const location = useLocation();
+  if (location.pathname.includes('/content/')) {
+    return null;
+  }
   return (
     <>
       <Container>

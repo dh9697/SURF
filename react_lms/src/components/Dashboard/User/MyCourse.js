@@ -46,7 +46,14 @@ export function MyCourse() {
         <h1>내 학습</h1>
         {courseHistoryDtos.map((courseHistoryDto) => (
           <div key={courseHistoryDto.courseHistory.courseHistoryId}>
-            <h2>강의명: {courseHistoryDto.courseHistory.course.courseName}</h2>
+            <StyledNavLink
+              to={`/course/${courseHistoryDto.courseHistory.course.courseId}`}
+              style={{ textDecoration: "none" }}
+            >
+              <h2>
+                강의명: {courseHistoryDto.courseHistory.course.courseName}
+              </h2>
+            </StyledNavLink>
             <p>
               Start Date:{" "}
               {formatDateTime(courseHistoryDto.courseHistory.startDate)}
@@ -61,6 +68,7 @@ export function MyCourse() {
             <p>수료증: 미수료</p>
             <StyledNavLink
               to={`/course/${courseHistoryDto.courseHistory.course.courseId}/coursedescription`}
+              style={{ textDecoration: "none" }}
             >
               수강평 남기러 가기
             </StyledNavLink>

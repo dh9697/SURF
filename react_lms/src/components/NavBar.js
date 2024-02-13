@@ -13,6 +13,7 @@ const Container = styled.div`
     grid-template-columns: 6fr 4fr;
   }
 `;
+
 const Section = styled.div`
   width: 100%;
   height: 100%;
@@ -21,6 +22,7 @@ const Section = styled.div`
   justify-content: center;
   gap: 32px;
 `;
+
 const Logo = styled(NavLink)`
   width: 142px;
   height: 64px;
@@ -29,10 +31,12 @@ const Logo = styled(NavLink)`
   align-items: center;
   justify-content: center;
 `;
+
 const LogoImg = styled.img`
   width: 100%;
   object-fit: cover;
 `;
+
 const NavSection = styled.div`
   width: 100%;
   height: 100%;
@@ -42,11 +46,15 @@ const NavSection = styled.div`
   gap: 32px;
   margin: 0 32px;
 `;
+
 const NavSectionItem = styled(NavLink)`
   text-decoration: none;
   color: #6b7280;
   margin-top: 0.7%;
   white-space: nowrap;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
   position: relative; // 추가
   &.join,
   &.dashboard {
@@ -83,8 +91,8 @@ const SubMenuItem = styled(NavLink)`
 const HoverableNavItem = styled.div`
   position: relative;
   &:hover ${SubMenu} {
-    display: flex;
     position: absolute;
+    display: flex;
   }
 `;
 
@@ -141,22 +149,18 @@ export function NavBar() {
               <NavSectionItem className="levelTest" to={"/level_test"}>
                 Level Test
               </NavSectionItem>
-
               <HoverableNavItem>
                 <NavSectionItem className="community" to={"/community"}>
                   Community
                 </NavSectionItem>
                 <SubMenu>
-                  <SubMenuItem to={"/community/resolutions"}>
+                  <SubMenuItem to={"/todayResolutions"}>
                     오늘의 각오
                   </SubMenuItem>
-                  <SubMenuItem to={"/community/halloffame"}>
-                    명예의 전당
-                  </SubMenuItem>
-                  <SubMenuItem to={"/community/reviews"}>수강평</SubMenuItem>
+                  <SubMenuItem to={"/halloffame"}>명예의 전당</SubMenuItem>
+                  <SubMenuItem to={"/coursereview"}>수강평</SubMenuItem>
                 </SubMenu>
               </HoverableNavItem>
-
               <NavSectionItem className="event" to={"/event"}>
                 Event
               </NavSectionItem>

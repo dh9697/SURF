@@ -94,28 +94,8 @@ public class QnABoardServiceImpl implements QnABoardService {
         qnaBoardRepository.deleteById(qnaId);
         return new ResponseDto<>(ResultCode.SUCCESS.name(), null, "질문 댓글이 성공적으로 삭제되었습니다.");
     }
-//    @Override
-//    public ResponseDto<String> deleteQnABoard(Long qnaId, Long memberId) {
-//        QnABoard qnaBoard = qnaBoardRepository.findById(qnaId)
-//                .orElseThrow(() -> new InvalidRequestException("QnABoard not found", "해당 QnABoard를 찾을 수 없습니다."));
-//
-//        Member member = memberRepository.findById(memberId)
-//                .orElseThrow(() -> new InvalidRequestException("Member not found", "해당 회원을 찾을 수 없습니다."));
-//        
-//        // 삭제하려는 QnABoard를 작성한 작성자 혹은 Admin 권한을 가진 유저만 삭제할 수 있도록 확인
-//        boolean isAdmin = member.getAuthorities().stream()
-//                .anyMatch(auth -> auth.getAuthorityName().equals("ROLE_ADMIN"));
-//
-//        if (!qnaBoard.getMember().getMemberId().equals(member.getMemberId()) && !isAdmin) {
-//            throw new InvalidRequestException("Invalid Member", "QnABoard를 삭제할 권한이 없습니다.");
-//        }
-//
-//        qnaBoardRepository.delete(qnaBoard);
-//
-//        return new ResponseDto<>("Success", null, "QnABoard has been successfully deleted");
-//    }
 
-
+    // 모든 질문 댓글 조회
     @Transactional(readOnly = true)
     public ResponseDto<List<QnABoardDto>> getAllQnABoards() {
         List<QnABoardDto> qnaBoardDtos = qnaBoardRepository.findAll().stream()
@@ -125,6 +105,7 @@ public class QnABoardServiceImpl implements QnABoardService {
         return new ResponseDto<>("Success", qnaBoardDtos, "Successfully retrieved all QnABoards");
     }
 
+    // 특정 회원이 작성한 질문 댓글 조회
     @Transactional(readOnly = true)
     public ResponseDto<List<QnABoardDto>> getQnABoardsByMemberId(Long memberId) {
         Member member = memberRepository.findById(memberId)
@@ -137,6 +118,7 @@ public class QnABoardServiceImpl implements QnABoardService {
         return new ResponseDto<>("Success", qnaBoardDtos, "Successfully retrieved QnABoards by memberId");
     }
     
+    // 코스별 질문 댓글 조회
     @Override
     public ResponseDto<List<QnABoardDto>> getQnABoardsByCourseId(Long courseId) {
         Course course = courseRepository.findById(courseId)

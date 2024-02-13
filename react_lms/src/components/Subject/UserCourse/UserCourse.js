@@ -9,30 +9,19 @@ import {
   apiGetMyCourseHistroies,
 } from "../../RestApi";
 import { AuthContext } from "../../../AuthContext";
+import { CourseCurriculem } from "../CourseCurriculum";
 
-const ContentWrap = styled.div`
+const Container = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
 `;
 
 const ContentBox = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding-top: 30px;
 `;
 
 const Section = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 16px 0;
-  padding: 32px 24px 32px 16px;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
-  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #ddd;
 `;
 
 export function UserCourse() {
@@ -40,7 +29,6 @@ export function UserCourse() {
   const { courseId } = useParams();
   const [course, setCourse] = useState([]);
   const [content, setContent] = useState([]);
-  const [courseHistory, setCourseHistory] = useState([]);
 
   // courseId로 course 조회
   useEffect(() => {
@@ -72,24 +60,21 @@ export function UserCourse() {
     <>
       {course && content && (
         <>
-          <ContentWrap>
+          <Container>
             <ContentBox>
               <Section id="description">
                 <h1>강의 소개</h1>
                 <p>{course.description}</p>
               </Section>
               <Section id="content">
-                <h1>커리큘럼</h1>
-                {content.map((item, index) => (
-                  <p key={index}>{`${index + 1}. ${item.contentTitle}`}</p>
-                ))}
+                <CourseCurriculem />
               </Section>
               <Section id="review">
                 <h1>수강평</h1>
                 <p>{course.description}</p>
               </Section>
             </ContentBox>
-          </ContentWrap>
+          </Container>
         </>
       )}
     </>

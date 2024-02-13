@@ -25,9 +25,9 @@ public interface ContentHistoryService {
     public ResponseDto<List<ContentHistory>> getIncompleteContentHistories();
     
     // 콘텐츠 클릭 시 ContentHistory 생성
-    public ResponseDto<ContentHistory> createContentHistory(Member member, Content content);
+    public ResponseDto<ContentHistory> createContentHistory(Long memberId, Long contentId);
 
     // 학습 완료 버튼 클릭 시 isCompleted 필드 업데이트
-    public ResponseDto<ContentHistory> completeContentHistory(Member member, Content content);
+    public ResponseDto<ContentHistory> completeContentHistory(Long memberId, Long contentId);
     
 }

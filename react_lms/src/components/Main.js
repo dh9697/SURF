@@ -1,10 +1,18 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { TestSwiper } from "./TestSwiper";
+import surfboard2_black from "./image/surfboard2_black.png";
+import surfboard2_color from "./image/surfboard2_color.png";
+import surfboard_black from "./image/surfboard_black.png";
+import surfboard_color from "./image/surfboard_color.png";
+import wave_black from "./image/wave_black.png";
+import wave_color from "./image/wave_color.png";
 // import { Wave } from "./Wave";
 import ad from "./image/ad.jpg";
 import image from "./image/image.png";
+import { useContext } from "react";
+import { AuthContext } from "../AuthContext";
 
 const Container = styled.div`
   width: 100%;
@@ -147,17 +155,28 @@ const ReviewTxt = styled.p`
 
 const ReviewContBox = styled.div`
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  grid-row-gap: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 40px; /* 요소들 사이의 간격 설정 */
   place-items: center;
   padding: 50px 40px;
 `;
 
-const ReviewContents = styled.p`
-  font-size: 100px;
-  color: white;
+const ReviewContents = styled.div`
+  width: 500px;
+  height: 200px;
+  background-color: white;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.2);
+  }
 `;
 
 const Contact = styled.div`
@@ -324,12 +343,66 @@ const CallBtn = styled.button`
   cursor: pointer;
 `;
 
+const Starthiddn = styled.div`
+  width: 110px;
+  height: 55px;
+  border: 2.5px solid transparent; // border shorthand를 사용하여 테두리 스타일링
+  margin-bottom: 8rem;
+`;
+
+const Topline = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 20px;
+`;
+
+const Img = styled.img`
+  width: 50px;
+  height: 50px;
+`;
+
+const ReviewText = styled.div`
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px;
+  text-align: center;
+`;
+
 // 아바타 링크
 // "https://source.boringavatars.com/beam/60/zzZ?colors=E0EFF1,D4ECFD,ABDBFF,BBD6F9,8BC0E5",
 // 60/zzZ? 이 링크의 zzZ 부분의 사용자의 닉네임 혹은 아이디가 들어가야 함
 
 export function Main() {
+  const { user } = useContext(AuthContext);
+  const [name, setName] = useState("");
+  const [phoneNum, setPhoneNum] = useState("");
+  const [isConsentChecked, setIsConsentChecked] = useState(false);
+  const [isBtnEnabled, setIsBtnEnabled] = useState(false);
   // const [postCheckMap, setPostCheckMap] = useState({}); /* 아바타 - 1 차 archive.js 참고하기*/
+
+  useEffect(() => {
+    if (name.trim() !== "" && phoneNum.trim() !== "" && isConsentChecked) {
+      setIsBtnEnabled(true);
+    } else {
+      setIsBtnEnabled(false);
+    }
+  }, [name, phoneNum, isConsentChecked]);
+
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handlePhoneNumChange = (event) => {
+    setPhoneNum(event.target.value);
+  };
+
+  const handleConsentCheckChange = (event) => {
+    setIsConsentChecked(event.target.checked);
+  };
+
+  const handleRequest = () => {
+    alert("상담 신청이 완료되었습니다");
+  };
 
   // 상담 가능 시간 옵션
   const consultationTimes = [
@@ -362,7 +435,11 @@ export function Main() {
             <br />
             SURF와 함께라면 가능합니다
           </Catchphrase>
-          <StartBtn to={"/login"}>START</StartBtn>
+          {user ? (
+            <Starthiddn></Starthiddn>
+          ) : (
+            <StartBtn to={"/login"}>START</StartBtn>
+          )}
         </Slogan>
         {/* <AdBox> */}
         <Square></Square>
@@ -397,36 +474,30 @@ export function Main() {
             </ReviewNum>
           </ReviewBox>
           <ReviewContBox>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
-            <ReviewContents>ㅇ</ReviewContents>
+            <ReviewContents>
+              <Topline>
+                <Img src={surfboard2_black} alt="surfboard2" />
+              </Topline>
+              <ReviewText>
+                선생님이 재미있어서 강의 들을 때 지루하지 않아요. 추천합니당.
+              </ReviewText>
+            </ReviewContents>
+            <ReviewContents>
+              <Topline>
+                <Img src={surfboard_black} alt="surfboard" />
+              </Topline>
+              <ReviewText>
+                외국인인 제가 듣기에도 좋은 강의네요. 추천.
+              </ReviewText>
+            </ReviewContents>
+            <ReviewContents>
+              <Topline>
+                <Img src={wave_black} alt="wave" />
+              </Topline>
+              <ReviewText>
+                강의 재미있네요. ^^ 다들 한 번씩 들어 보시길 추천합니다. ^^7
+              </ReviewText>
+            </ReviewContents>
           </ReviewContBox>
         </Review>
         <Contact>
@@ -438,7 +509,9 @@ export function Main() {
               <Input
                 type="text"
                 placeholder="이름을 입력해 주세요"
+                value={name}
                 name="name"
+                onChange={handleNameChange}
               ></Input>
             </InputBox>
             <InputBox>
@@ -447,6 +520,8 @@ export function Main() {
                 type="text"
                 placeholder="휴대폰 번호를 입력해 주세요"
                 name="phoneNum"
+                value={phoneNum}
+                onChange={handlePhoneNumChange}
               ></Input>
             </InputBox>
             <InputBox>
@@ -465,7 +540,11 @@ export function Main() {
             </InputBox>
             <CheckBox>
               <CheckItem>
-                <CheckboxInput type="checkbox" />
+                <CheckboxInput
+                  type="checkbox"
+                  checked={isConsentChecked}
+                  onChange={handleConsentCheckChange}
+                />
                 [필수] 개인정보 수집·이용 동의
               </CheckItem>
               <CheckItem>
@@ -473,7 +552,9 @@ export function Main() {
                 [선택] SMS 광고 및 마케팅 이용 동의
               </CheckItem>
             </CheckBox>
-            <CallBtn>상담 신청하기</CallBtn>
+            <CallBtn onClick={handleRequest} disabled={!isBtnEnabled}>
+              상담 신청하기
+            </CallBtn>
           </ContactBox>
         </Contact>
       </Container>

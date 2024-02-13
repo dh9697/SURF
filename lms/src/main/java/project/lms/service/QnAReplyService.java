@@ -7,18 +7,16 @@ import java.util.List;
 
 public interface QnAReplyService {
 
-    ResponseDto<Void> createQnAReply(QnAReplyDto qnaReplyDto, Long memberId, Long qnaId);
-
-    ResponseDto<QnAReplyDto> updateQnAReply(Long replyId, QnAReplyDto qnaReplyDto, Long memberId);
-
-    ResponseDto<String> deleteQnAReply(Long replyId, Long memberId);
-
-    ResponseDto<List<QnAReplyDto>> getQnARepliesByQnABoardId(Long qnaId);
-
+    // 모든 답글 조회
     ResponseDto<List<QnAReplyDto>> getAllQnAReplies();
-
-    ResponseDto<List<QnAReplyDto>> getQnARepliesByMemberId(Long memberId);
-
-    ResponseDto<List<QnAReplyDto>> getQnARepliesByQnABoardIdAndMemberId(Long qnaId, Long memberId);
     
+    // QnAId로 해당 질문 댓글에 달린 댓글 조회
+    ResponseDto<List<QnAReplyDto>> getQnARepliesByQnABoardId(Long qnaId);
+    
+    ResponseDto<QnAReplyDto> createQnAReply(QnAReplyDto qnaReplyDto, Long memberId, Long qnaId);
+
+    ResponseDto<String> deleteQnAReply(Long replyId);
+    
+    // 특정 회원이 작성한 모든 질문 조회
+    ResponseDto<List<QnAReplyDto>> getQnARepliesByMemberId(Long memberId);
 }

@@ -113,6 +113,7 @@ export function CourseMain() {
       apiGetAllCourses()
         .then((response) => {
           setCourses(response.data.data);
+          console.log(response.data.data);
         })
         .catch((error) => {
           console.error("코스 불러오기 오류: ", error);

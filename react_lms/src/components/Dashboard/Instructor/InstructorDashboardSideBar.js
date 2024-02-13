@@ -4,9 +4,14 @@ import styled from "styled-components";
 import { AuthContext } from "../../../AuthContext";
 import SearchBar from "../../SearchBar";
 
+// export function InstructorDashboardSideBar() {
+//   return<></>
+// }
+
 const Container = styled.div`
   width: 100%;
   padding: 32px;
+  display: flex;
   & .innerWrapper {
     display: flex;
     flex: 1 1 0px;
@@ -14,7 +19,8 @@ const Container = styled.div`
   }
 `;
 const NavBar = styled.div`
-  width: 17%;
+ display: none !important;
+  width: 200px;
   display: flex;
   flex-direction: column;
 `;
@@ -84,10 +90,10 @@ export function InstructorDashboardSideBar() {
               강의 공지사항 관리
             </StyledNavLink>
           </NavBar>
-          <DashboardMain>
-            <Outlet />
-          </DashboardMain>
         </div>
+              <DashboardMain>
+        <Outlet />
+      </DashboardMain>
       </Container>
     </>
   );

@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthContext";
 import { useContext, useEffect, useState } from "react";
-import { apiCreateOrder, apiGetOrderDetail } from "../RestApi";
+import { apiCreateOrder, apiGetCurrentUserCart } from "../RestApi";
+import { formatPrice } from "../Util/util";
 
 const Container = styled.div`
   display: grid;
@@ -82,7 +83,7 @@ export function AccountForm() {
     paymentMethod: "",
   });
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
-  const [orderDetails, setOrderDetails] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
 
   const handleOrderInfoChange = (e) => {
     const { name, value } = e.target;
@@ -112,13 +113,16 @@ export function AccountForm() {
   };
 
   useEffect(() => {
-    apiGetOrderDetail()
-      .then((response) => {
-        setOrderDetails(response.data.data);
-      })
-      .catch((err) => {
-        console.log("주문 상세 정보 조회 오류: ", err);
-      });
+    const fetchCartItems = async () => {
+      try {
+        const response = await apiGetCurrentUserCart();
+        setCartItems(response.data.data);
+        console.log(response.data.data);
+      } catch (err) {
+        console.log("장바구니 정보를 가져오는 중 오류: ", err);
+      }
+    };
+    fetchCartItems();
   }, []);
 
   return (
@@ -181,7 +185,7 @@ export function AccountForm() {
             <span className="inputLabel">이메일</span>
             <Input
               type="text"
-              placeholder="ex) 010-1234-5678"
+              placeholder="ex) abc123@naver.com"
               name="email"
               value={orderInfo.email}
               onChange={handleOrderInfoChange}
@@ -202,12 +206,16 @@ export function AccountForm() {
           <ListBox>
             <p>주문 목록</p>
             <List>
-              {orderDetails.map((detail) => (
-                <SingleList key={detail.orderId}>
+              {cartItems.map((cartItem) => (
+                <SingleList key={cartItem.cartId}>
                   <div>
-                    <thumbnail className="thumbnail">썸네일</thumbnail>
-                    <p>{detail.course.courseName}</p>
-                    <p>{detail.price}</p>
+                    <p>
+                      [{cartItem.course.contentLevel}]{" "}
+                      {cartItem.course.courseName}
+                    </p>
+                    <p>수량: {cartItem.totalQuantity}</p>
+                    <p>가격: {formatPrice(cartItem.course.price)}</p>
+                    <p>총 가격: {formatPrice(cartItem.totalPrice)}</p>
                   </div>
                 </SingleList>
               ))}

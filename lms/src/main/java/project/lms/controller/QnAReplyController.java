@@ -30,6 +30,12 @@ public class QnAReplyController {
         ResponseDto<List<QnAReplyDto>> responseDto = qnaReplyService.getAllQnAReplies();
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+    
+    @GetMapping("/{qnaId}")
+    public ResponseEntity<ResponseDto<List<QnAReplyDto>>> getQnARepliesByQnABoardId(@PathVariable Long qnaId) {
+        ResponseDto<List<QnAReplyDto>> responseDto = qnaReplyService.getQnARepliesByQnABoardId(qnaId);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 
     @GetMapping("/list/member/{memberId}")
     public ResponseEntity<ResponseDto<List<QnAReplyDto>>> getQnARepliesByMemberId(@PathVariable Long memberId) {
@@ -38,20 +44,14 @@ public class QnAReplyController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDto<Void>> createQnAReply(@RequestBody QnAReplyDto qnaReplyDto, @RequestParam Long memberId, @RequestParam Long qnaId) {
-        ResponseDto<Void> responseDto = qnaReplyService.createQnAReply(qnaReplyDto, memberId, qnaId);
+    public ResponseEntity<ResponseDto<QnAReplyDto>> createQnAReply(@RequestBody QnAReplyDto qnaReplyDto, @RequestParam Long memberId, @RequestParam Long qnaId) {
+        ResponseDto<QnAReplyDto> responseDto = qnaReplyService.createQnAReply(qnaReplyDto, memberId, qnaId);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
-    }
-
-    @PutMapping("/{replyId}")
-    public ResponseEntity<ResponseDto<QnAReplyDto>> updateQnAReply(@PathVariable Long replyId, @RequestBody QnAReplyDto qnaReplyDto, @RequestParam Long memberId) {
-        ResponseDto<QnAReplyDto> responseDto = qnaReplyService.updateQnAReply(replyId, qnaReplyDto, memberId);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{replyId}")
     public ResponseEntity<ResponseDto<String>> deleteQnAReply(@PathVariable Long replyId, @RequestParam Long memberId) {
-        ResponseDto<String> responseDto = qnaReplyService.deleteQnAReply(replyId, memberId);
-        return new ResponseEntity<>(responseDto, HttpStatus.NO_CONTENT);
+        ResponseDto<String> responseDto = qnaReplyService.deleteQnAReply(replyId);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

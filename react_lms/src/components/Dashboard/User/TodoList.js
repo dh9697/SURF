@@ -15,9 +15,7 @@ export function TodoList() {
   const [todos, setTodos] = useState([]);
   const [newTodoContent, setNewTodoContent] = useState("");
   const memberId = user.memberId;
-  console.log(user);
 
-  // TodoList 조회
   useEffect(() => {
     apiGetMyTodoList(memberId)
       .then((response) => {
@@ -26,22 +24,37 @@ export function TodoList() {
       .catch((error) => {
         console.error("TodoList 조회 실패: ", error);
       });
-  }, []);
+  }, [memberId]);
 
-  // TodoList 저장
-  const saveTodo = (todo) => {
-    apiPostMyTodoList(todo)
+  const saveTodo = () => {
+    const todoData = {
+      memberId: memberId,
+      content: newTodoContent,
+    };
+
+    apiPostMyTodoList(todoData)
       .then((response) => {
-        setTodos([...todos, response.data.data]);
+        apiGetMyTodoList(memberId)
+          .then((response) => {
+            setTodos(response.data.data);
+          })
+          .catch((error) => {
+            console.error("TodoList 조회 실패: ", error);
+          });
+        setNewTodoContent(""); // input field 초기화
       })
       .catch((error) => {
         console.error("TodoList 저장 실패: ", error);
       });
   };
 
-  // TodoList 수정
   const updateTodo = (taskId, updatedContent) => {
-    apiPutMyTodoList(taskId, updatedContent)
+    const updatedTodoData = {
+      taskId: taskId,
+      content: updatedContent,
+    };
+
+    apiPutMyTodoList(updatedTodoData)
       .then((response) => {
         setTodos(
           todos.map((todo) =>
@@ -54,7 +67,6 @@ export function TodoList() {
       });
   };
 
-  // TodoList 삭제
   const deleteTodo = (taskId) => {
     apiDeleteMyTodoList(taskId)
       .then(() => {
@@ -64,30 +76,29 @@ export function TodoList() {
         console.error("TodoList 삭제 실패: ", error);
       });
   };
+
   return (
-    <>
-      <Container>
-        <input
-          type="text"
-          value={newTodoContent}
-          onChange={(e) => setNewTodoContent(e.target.value)}
-        />
-        <button onClick={saveTodo}>Add Todo</button>
-        <ul>
-          {todos.map((todo) => (
+    <Container>
+      <input
+        type="text"
+        value={newTodoContent}
+        onChange={(e) => setNewTodoContent(e.target.value)}
+      />
+      <button onClick={saveTodo}>Add Todo</button>
+      <ul>
+        {todos.map((todo) =>
+          todo ? (
             <li key={todo.taskId}>
-              {/* Todo 수정 폼 */}
               <input
                 type="text"
                 value={todo.content}
                 onChange={(e) => updateTodo(todo.taskId, e.target.value)}
               />
-              {/* Todo 삭제 버튼 */}
               <button onClick={() => deleteTodo(todo.taskId)}>Delete</button>
             </li>
-          ))}
-        </ul>
-      </Container>
-    </>
+          ) : null
+        )}
+      </ul>
+    </Container>
   );
 }

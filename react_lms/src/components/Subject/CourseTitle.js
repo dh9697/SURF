@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import surf_logo from "../image/surf_logo.png";
+import thumbnail from "../image/Toeic.jpg";
 import { Outlet, useParams } from "react-router-dom";
 import { MemberCourse } from "./MemberCourse/MemberCourse";
 import { UserCourse } from "./UserCourse/UserCourse";
@@ -18,8 +18,9 @@ import { StarRating } from "../Util/util";
 
 const Container = styled.div`
   width: 100%;
-  background-color: #ddd;
+  background-color: #f3f3f3;
   padding: 30px;
+
   & .innerWrapper {
     display: grid;
     grid-template-columns: 2fr 3fr;
@@ -27,8 +28,8 @@ const Container = styled.div`
 `;
 
 const ImgBox = styled.div`
-  padding: 100px 0;
-  background-color: #3182f6;
+  width: 100%;
+  padding: 1rem 0;
 `;
 
 const Img = styled.img`
@@ -59,15 +60,19 @@ const CourseInfo = styled.div`
 const StyledIcon = styled(Icon)`
   font-size: 1rem;
 `;
-
-const ContentMain = styled.div`
+const ContentWrapper = styled.div`
   & .innerWrapper {
-    width: 100%;
-    height: 100%;
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    grid-gap: 20px;
+    grid-template-columns: 3fr 1fr;
+    padding: 2rem 0;
   }
+`;
+const SideBarWrapper = styled.div`
+  width: 100%;
+  height: 500px;
+  position: sticky;
+  top: 8%;
+  padding: 0 2rem;
 `;
 
 export function CourseTitle() {
@@ -132,7 +137,7 @@ export function CourseTitle() {
       <Container>
         <div className="innerWrapper">
           <ImgBox>
-            <Img src={surf_logo} alt="Sample"></Img>
+            <Img src={thumbnail} alt="Sample"></Img>
           </ImgBox>
           <CourseInfo>
             <div className="box">
@@ -164,12 +169,14 @@ export function CourseTitle() {
         </div>
       </Container>
       <CourseMenu isMemberCourse={isMemberCourse} />
-      <ContentMain>
+      <ContentWrapper>
         <div className="innerWrapper">
           <Outlet isMemberCourse={isMemberCourse} />
-          <CourseSidebar />
+          <SideBarWrapper>
+            <CourseSidebar />
+          </SideBarWrapper>
         </div>
-      </ContentMain>
+      </ContentWrapper>
     </>
   );
 }

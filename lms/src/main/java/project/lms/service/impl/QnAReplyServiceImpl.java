@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import project.lms.dto.QnAReplyDto;
 import project.lms.dto.ResponseDto;
+import project.lms.enumstatus.ResultCode;
 import project.lms.exception.InvalidRequestException;
 import project.lms.model.Course;
 import project.lms.model.Member;
@@ -33,8 +34,8 @@ public class QnAReplyServiceImpl implements QnAReplyService {
     }
 
     // 권한을 확인해 로그인한 선생님이 강의 중인 Course의 QnABoard에만 QnAReply를 작성할 수 있도록
-    @Transactional
-    public ResponseDto<Void> createQnAReply(QnAReplyDto qnaReplyDto, Long memberId, Long qnaId) {
+    @Override
+    public ResponseDto<QnAReplyDto> createQnAReply(QnAReplyDto qnaReplyDto, Long memberId,  Long qnaId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new InvalidRequestException("Member not found", "해당 회원을 찾을 수 없습니다."));
         QnABoard qnaBoard = qnaBoardRepository.findById(qnaId)
@@ -51,53 +52,19 @@ public class QnAReplyServiceImpl implements QnAReplyService {
         qnaReply.setMember(member);
         qnaReply.setReplyText(qnaReplyDto.getReplyText());
 
-        qnaReplyRepository.save(qnaReply);
-
-        return new ResponseDto<>("Success", null, "QnAReply has been successfully created");
-    }
-
-    // 수정하려는 답변을 작성한 선생님만 수정할 수 있도록
-    @Transactional
-    public ResponseDto<QnAReplyDto> updateQnAReply(Long replyId, QnAReplyDto qnaReplyDto, Long memberId) {
-        QnAReply qnaReply = qnaReplyRepository.findById(replyId)
-                .orElseThrow(() -> new InvalidRequestException("QnAReply not found", "해당 QnAReply를 찾을 수 없습니다."));
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new InvalidRequestException("Member not found", "해당 회원을 찾을 수 없습니다."));
-        
-        // 수정하려는 답변을 작성한 선생님이 로그인한 사용자인지 확인
-        if (!qnaReply.getMember().getMemberId().equals(member.getMemberId())) {
-            throw new InvalidRequestException("Invalid Member", "답변을 수정할 권한이 없습니다.");
-        }
-
-        // 답변 내용 업데이트
-        qnaReply.setReplyText(qnaReplyDto.getReplyText());
-
         qnaReply = qnaReplyRepository.save(qnaReply);
-
-        return new ResponseDto<>("Success", QnAReplyDto.from(qnaReply), "답변이 성공적으로 수정되었습니다.");
+        QnAReplyDto createdQnAReplyDto = QnAReplyDto.from(qnaReply);
+        return new ResponseDto<>(ResultCode.SUCCESS.name(), createdQnAReplyDto, "답변 작성이 완료되었습니다.");
     }
 
-    // 삭제하려는 답변을 작성한 선생님 혹은 Admin 권한을 가진 유저만 삭제할 수 있도록
-    @Transactional
-    public ResponseDto<String> deleteQnAReply(Long replyId, Long memberId) {
-        QnAReply qnaReply = qnaReplyRepository.findById(replyId)
-                .orElseThrow(() -> new InvalidRequestException("QnAReply not found", "해당 QnAReply를 찾을 수 없습니다."));
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new InvalidRequestException("Member not found", "해당 회원을 찾을 수 없습니다."));
-        
-        // 삭제하려는 QnAReply를 작성한 작성자 혹은 Admin 권한을 가진 유저만 삭제할 수 있도록 확인
-        boolean isAdmin = member.getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthorityName().equals("ROLE_ADMIN"));
-
-        if (!qnaReply.getMember().getMemberId().equals(member.getMemberId()) && !isAdmin) {
-            throw new InvalidRequestException("Invalid Member", "QnAReply를 삭제할 권한이 없습니다.");
+    // QnA 답변 삭제
+    @Override
+    public ResponseDto<String> deleteQnAReply(Long replyId) {
+        if (!qnaReplyRepository.existsById(replyId)) {
+            throw new InvalidRequestException("Reply not found", "해당 답변을 찾을 수 없습니다.");
         }
-
-        qnaReplyRepository.delete(qnaReply);
-
-        return new ResponseDto<>("Success", null, "QnAReply has been successfully deleted");
+        qnaReplyRepository.deleteById(replyId);
+        return new ResponseDto<>(ResultCode.SUCCESS.name(), null, "답변 댓글이 성공적으로 삭제되었습니다.");
     }
 
     // 모든 QnAReply 목록 조회
@@ -124,7 +91,7 @@ public class QnAReplyServiceImpl implements QnAReplyService {
     }
 
     // 특정 QnABoard에 대한 QnAReply 목록을 조회
-    @Transactional(readOnly = true)
+    @Override
     public ResponseDto<List<QnAReplyDto>> getQnARepliesByQnABoardId(Long qnaId) {
         QnABoard qnaBoard = qnaBoardRepository.findById(qnaId)
                 .orElseThrow(() -> new InvalidRequestException("QnABoard not found", "해당 QnABoard를 찾을 수 없습니다."));

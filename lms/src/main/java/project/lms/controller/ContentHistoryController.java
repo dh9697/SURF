@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import project.lms.dto.ContentHistoryRequestDto;
 import project.lms.dto.ResponseDto;
 import project.lms.model.Content;
 import project.lms.model.ContentHistory;
@@ -17,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/content-histories")
 @CrossOrigin(origins="http://localhost:3000",
-	methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
+	methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class ContentHistoryController {
 
 	private final ContentHistoryService contentHistoryService;
@@ -67,15 +68,17 @@ public class ContentHistoryController {
 	
 	// 콘텐츠 클릭 시 ContentHistory 생성
 	@PostMapping("/create")
-	public ResponseEntity<ResponseDto<ContentHistory>> createContentHistory(@RequestBody Member member, @RequestBody Content content) {
-		ResponseDto<ContentHistory> contentHistory = contentHistoryService.createContentHistory(member, content);
+	public ResponseEntity<ResponseDto<ContentHistory>> createContentHistory(@RequestBody ContentHistoryRequestDto contentHistoryRequestDto) {
+		ResponseDto<ContentHistory> contentHistory = contentHistoryService.createContentHistory(
+				contentHistoryRequestDto.getMemberId(), contentHistoryRequestDto.getContentId());
 		return new ResponseEntity<>(contentHistory, HttpStatus.CREATED);
 	}
 
 	// 학습 완료 버튼 클릭 시 isCompleted 필드 업데이트
 	@PutMapping("/complete")
-	public ResponseEntity<ResponseDto<ContentHistory>> completeContentHistory(@RequestBody Member member, @RequestBody Content content) {
-		ResponseDto<ContentHistory> contentHistory = contentHistoryService.completeContentHistory(member, content);
+	public ResponseEntity<ResponseDto<ContentHistory>> completeContentHistory(@RequestBody ContentHistoryRequestDto contentHistoryRequestDto) {
+		ResponseDto<ContentHistory> contentHistory = contentHistoryService.completeContentHistory(
+				contentHistoryRequestDto.getMemberId(), contentHistoryRequestDto.getContentId());
 		return new ResponseEntity<>(contentHistory, HttpStatus.OK);
 	}
 		

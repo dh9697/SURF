@@ -1,41 +1,33 @@
 package project.lms.dto;
 
-import java.time.LocalDateTime;
-
 import project.lms.model.QnAReply;
 
 public class QnAReplyDto {
 	
 	private Long replyId;
     private Long qnaId;
-    private Long memberId;
     private String replyText;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Long memberId;
     
 	public QnAReplyDto() {
 		super();
 	}
 	
-	public QnAReplyDto(Long replyId, Long qnaId, Long memberId, String replyText, LocalDateTime createdAt,
-			LocalDateTime updatedAt) {
+	public QnAReplyDto(Long replyId, Long qnaId, String replyText, Long memberId) {
 		super();
 		this.replyId = replyId;
 		this.qnaId = qnaId;
-		this.memberId = memberId;
 		this.replyText = replyText;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
+		this.memberId = memberId;
 	}
 	
 	public static QnAReplyDto from(QnAReply qnaReply) {
         QnAReplyDto qnaReplyDto = new QnAReplyDto();
         qnaReplyDto.setReplyId(qnaReply.getReplyId());
         qnaReplyDto.setQnaId(qnaReply.getQnaBoard().getQnaId());
-        qnaReplyDto.setMemberId(qnaReply.getMember().getMemberId());
         qnaReplyDto.setReplyText(qnaReply.getReplyText());
-        qnaReplyDto.setCreatedAt(qnaReply.getCreatedAt());
-        qnaReplyDto.setUpdatedAt(qnaReply.getUpdatedAt());
+      qnaReplyDto.setMemberId(qnaReply.getMember().getMemberId());
+
         return qnaReplyDto;
     }
 
@@ -55,14 +47,6 @@ public class QnAReplyDto {
 		this.qnaId = qnaId;
 	}
 
-	public Long getMemberId() {
-		return memberId;
-	}
-
-	public void setMemberId(Long memberId) {
-		this.memberId = memberId;
-	}
-
 	public String getReplyText() {
 		return replyText;
 	}
@@ -71,20 +55,12 @@ public class QnAReplyDto {
 		this.replyText = replyText;
 	}
 
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
+	public Long getMemberId() {
+		return memberId;
 	}
 
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public LocalDateTime getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
+	public void setMemberId(Long memberId) {
+		this.memberId = memberId;
 	}
 	
 }

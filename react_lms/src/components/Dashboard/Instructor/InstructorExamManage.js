@@ -6,6 +6,7 @@ import {
   apiPostQuestionsForExam,
   apiPutQuestionsForExam,
 } from "../../RestApi";
+import { InstructorExam } from "./InstructorExam";
 
 const Container = styled.div`
   width: 100%;
@@ -266,6 +267,7 @@ export function InstructorExamManage() {
               )}
             </li>
           ))}
+        <InstructorExam />
       </Container>
     </>
   );

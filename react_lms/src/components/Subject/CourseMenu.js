@@ -8,6 +8,9 @@ import {
 import { useEffect, useState } from "react";
 
 const Menu = styled.div`
+  position: sticky;
+  top: 0;
+  background-color: white;
   & .innerWrapper {
     display: flex;
     & .link {

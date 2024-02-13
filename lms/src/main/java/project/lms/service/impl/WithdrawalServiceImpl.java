@@ -66,29 +66,4 @@ public class WithdrawalServiceImpl implements WithdrawalService{
 			throw new InvalidRequestException("No current login", "현재 로그인 정보를 찾을 수 없습니다.");
 		}
 	}
-	
-	// 자정 기준
-		@Scheduled(cron = "0 0 0 * * *")
-		public void scheduleDeleteInactiveMembers() {
-			
-			LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(1);
-			
-			List<Withdrawal> inactiveMembers = 
-					withdrawalRepository.findByIsDeletedFalseAndWithdrawalTimeBefore(sevenDaysAgo);
-			
-			for (Withdrawal withdrawal : inactiveMembers) {
-				project.lms.model.Member member = withdrawal.getMember();
-				
-				if(withdrawal.getWithdrawalTime().isAfter(LocalDateTime.now().minusDays(1))) {
-					withdrawal.setDeleted(true);
-					withdrawalRepository.save(withdrawal);
-					member.setActive(true);
-					memberRepository.save(member);
-				} else {
-				memberRepository.delete(member);
-				withdrawalRepository.delete(withdrawal);
-				}
-			}
-		}
-
 }

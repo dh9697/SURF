@@ -1,10 +1,10 @@
 import styled from "styled-components";
-// import { useContext, useEffect, useState } from "react";
-// import { useLocation } from "react-router-dom";
-// import { AuthContext } from "../../../AuthContext";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../AuthContext";
 import {
   apiGetQnABoardsByCourse,
   apiGetQnARepliesByQnABoardId,
+  apiCreateQnAReply,
 } from "../../RestApi";
 
 const Container = styled.div`
@@ -63,37 +63,89 @@ const ReplyText = styled.input.attrs({ type: "text" })`
 const ReplyButton = styled.button``;
 
 export function InstructorQnAManage() {
+  const { user } = useContext(AuthContext);
+  const courses = user.teachingCourses;
+  const [qnas, setQnas] = useState([]);
+  const [replyTexts, setReplyTexts] = useState({});
+
+  useEffect(() => {
+    const fetchQnas = async () => {
+      const allQnas = [];
+      for (const course of courses) {
+        const response = await apiGetQnABoardsByCourse(course.courseId);
+        const fetchedQnas = response.data.data;
+        for (const qna of fetchedQnas) {
+          qna.courseName = course.courseName; // 강의명 추가
+          qna.courseId = course.courseId; // 강의 ID 추가
+          const response = await apiGetQnARepliesByQnABoardId(qna.qnaId);
+          if (response.data.data.length > 0) {
+            qna.replyId = response.data.data[0].replyId;
+          }
+        }
+        allQnas.push(...fetchedQnas);
+      }
+      setQnas(allQnas);
+    };
+    fetchQnas();
+  }, [courses]);
+
+  const handleReplyChange = (qnaId, text) => {
+    setReplyTexts({ ...replyTexts, [qnaId]: text });
+  };
+
+  const handleReplySubmit = async (qnaId) => {
+    console.log(`Submitting reply for qnaId ${qnaId}`); // qnaId 출력
+    console.log(`Member ID: ${user.memberId}`); // memberId 출력
+    await apiCreateQnAReply(
+      replyTexts[qnaId], // replyTexts[qnaId]를 그대로 보냅니다.
+      user.memberId,
+      qnaId
+    );
+    // 갱신된 QnA 목록을 다시 불러옵니다.
+    window.location.reload();
+  };
+
   return (
     <>
       <Container>
         <p>Q&A 관리</p>
         <NumBox>
-          <NumWrap className="before">
-            <NumTitle>수강 전 문의</NumTitle>
-            <CountNum>34</CountNum>
-          </NumWrap>
           <NumWrap className="after">
             <NumTitle>수강 문의</NumTitle>
-            <CountNum>34</CountNum>
+            <CountNum>{qnas.length}</CountNum>
           </NumWrap>
         </NumBox>
         <QnABox>
           <p>QnA 남겨요</p>
-          <SingleQnA>
-            <QnAwrap>
-              <Textwrap>
-                <QnATitle>강의명: 토익 850+ 자기 전 5 문제만 풀고 자</QnATitle>
-                <QnAText>
-                  강의명을 왜 이렇게 결정하신 건지 물어봐도 되나요?
-                </QnAText>
-              </Textwrap>
-              <AnswerStatus>미답변</AnswerStatus>
-            </QnAwrap>
-            <ReplyBox>
-              <ReplyText placeholder="답변을 입력해 주세요" />
-              <ReplyButton>등록</ReplyButton>
-            </ReplyBox>
-          </SingleQnA>
+          {qnas.map((qna) => (
+            <SingleQnA key={qna.qnaId}>
+              <QnAwrap>
+                <Textwrap>
+                  <QnATitle>강의명: {qna.courseName}</QnATitle>
+                  <QnAText>{qna.questionText}</QnAText>
+                </Textwrap>
+                {qna.replyId ? (
+                  <AnswerStatus>답변 완료</AnswerStatus>
+                ) : (
+                  <ReplyBox>
+                    <ReplyText
+                      value={replyTexts[qna.qnaId] || ""}
+                      onChange={(e) =>
+                        handleReplyChange(qna.qnaId, e.target.value)
+                      }
+                      placeholder="답변을 입력해 주세요"
+                    />
+                    <ReplyButton
+                      onClick={() => handleReplySubmit(qna.qnaId, qna.courseId)}
+                    >
+                      {" "}
+                      등록
+                    </ReplyButton>
+                  </ReplyBox>
+                )}
+              </QnAwrap>
+            </SingleQnA>
+          ))}
         </QnABox>
       </Container>
     </>

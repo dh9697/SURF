@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { apiSignupByAxiosPost } from "./RestApi";
 import { useNavigate } from "react-router-dom";
+import { Icon } from "@iconify/react";
 
 const Container = styled.div`
   width: 100%;
@@ -108,6 +109,50 @@ const RegiserBtn = styled.button`
   cursor: pointer;
 `;
 
+const StyledIcon = styled(Icon)`
+  position: absolute;
+  top: 45px;
+  right: 1rem;
+  font-size: 1rem;
+  color: #454545;
+`;
+
+const CheckItem = styled.label`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 16px;
+`;
+
+const CheckboxInput = styled.input`
+  margin-right: 10px;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 2px solid #3182f6;
+  outline: none;
+  position: relative;
+  cursor: pointer;
+
+  &:checked {
+    background-color: #3182f6;
+  }
+
+  /* 체크박스가 체크될 때 가상 요소 사용 */
+  &:checked::before {
+    content: "";
+    position: absolute;
+    width: 6px; /* 체크 표시의 너비 */
+    height: 12px; /* 체크 표시의 높이 */
+    border: solid white; /* 흰색 체크 표시 */
+    border-width: 0 2px 2px 0; /* 대각선 모양 만들기 */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg); /* 대각선 회전 */
+  }
+`;
+
 export function Register() {
   const navigate = useNavigate();
 
@@ -156,6 +201,11 @@ export function Register() {
     }
   };
 
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisible = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <>
       <Container>
@@ -175,12 +225,16 @@ export function Register() {
             <div className="inputContainer">
               <span className="inputLabel">비밀번호</span>
               <Input
-                type="text"
+                type={showPassword ? "text" : "password"}
                 placeholder="영문, 숫자, 특수문자 모두 포함 8~20자"
                 name="passwordId"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <StyledIcon
+                icon={showPassword ? "mdi:eye-outline" : "mdi:eye-off-outline"}
+                onClick={togglePasswordVisible}
+              ></StyledIcon>
             </div>
             <div className="inputContainer">
               <span className="inputLabel">이름</span>
@@ -272,27 +326,24 @@ export function Register() {
             </div>
           </RegisterForm>
           <CheckBox>
-            <input
-              type="checkbox"
-              checked={isChecked}
-              onChange={handleCheckboxChange}
-            />
-            <label>
-              <span className="textHighlight">이용약관</span> 및{" "}
-              <span className="textHighlight">개인정보 처리방침</span>에
-              동의합니다.
-            </label>
-          </CheckBox>
-          <CheckBox>
-            <input
-              type="checkbox"
-              checked={isChecked}
-              onChange={handleCheckboxChange}
-            />
-            <label>
-              (선택) <span className="textHighlight">이메일 마케팅 정책</span>에
-              동의합니다.
-            </label>
+            <CheckItem>
+              <CheckboxInput
+                type="checkbox"
+                checked={isChecked}
+                onChange={handleCheckboxChange}
+              />
+              <label>
+                <span className="textHighlight">이용약관</span> 및{" "}
+                <span className="textHighlight">개인정보 처리방침</span>에
+                동의합니다.
+              </label>
+            </CheckItem>
+            <CheckItem>
+              <CheckboxInput type="checkbox" />
+              <label>
+                (선택) <span className="textHighlight">이메일 마케팅 정책</span>
+              </label>
+            </CheckItem>
           </CheckBox>
           <RegiserBtn onClick={handleRegister}>회원가입</RegiserBtn>
         </RegisterContainer>

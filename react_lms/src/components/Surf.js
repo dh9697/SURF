@@ -4,12 +4,15 @@ import { Main } from "./Main";
 import { AboutMain } from "./About/AboutMain";
 import { LevelTestMain } from "./Leveltest/LevelTestMain";
 import { LevelTestStart } from "./Leveltest/LevelTestStart";
+import { LevelTestResult } from "./Leveltest/LevelTestResult.js";
 import { Event } from "./Event";
 import { Login } from "./Login";
 import { Register } from "./Register";
 import { Footer } from "./Footer";
 import styled from "styled-components";
-import { DashboardNavBar } from "./Dashboard/DashboardNavBar";
+import { DashboardNavBar } from "./Dashboard/DashboardNavBar.js";
+import { AdminDashboardNavBar } from "./Dashboard/Admin/AdminDashboardNavBar.js";
+import { UserDashboardNavBar } from "./Dashboard/User/UserDashboardNavBar.js";
 import { useContext } from "react";
 import { AuthContext } from "../AuthContext";
 import { AccountInfo } from "./Account/AccountInfo";
@@ -18,14 +21,11 @@ import { MyCourse } from "./Dashboard/User/MyCourse";
 import { CourseMain } from "./Subject/CourseMain";
 import { UserCourse } from "./Subject/UserCourse/UserCourse.js";
 import { AdminDashboard } from "./Dashboard/Admin/AdminDashboard";
-import { AdminDashboardSideBar } from "./Dashboard/Admin/AdminDashboardSideBar";
 import { AdminCourseManage } from "./Dashboard/Admin/AdminCourseManage";
 import { AdminLevelTestManage } from "./Dashboard/Admin/AdminLevelTestManage";
 import { AdminNoticeManage } from "./Dashboard/Admin/AdminNoticeManage";
 import { AdminUserManage } from "./Dashboard/Admin/AdminUserManage";
 import { AdminPostManage } from "./Dashboard/Admin/AdminPostManage";
-import { AdminPromotionManage } from "./Dashboard/Admin/AdminPromotionManage";
-import { AdminStatsManage } from "./Dashboard/Admin/AdminStatsManage";
 import { TestSubject } from "./TestSubject";
 import { InstructorDashboardSideBar } from "./Dashboard/Instructor/InstructorDashboardSideBar";
 import { InstructorDashboard } from "./Dashboard/Instructor/InstructorDashboard";
@@ -47,11 +47,15 @@ import { BeforeInquiries } from "./Subject/UserCourse/BeforeInquiries";
 import { MemberCourse } from "./Subject/MemberCourse/MemberCourse";
 import { AfterInquiries } from "./Subject/MemberCourse/AfterInquiries.js";
 import { CourseDescription } from "./Subject/MemberCourse/CourseDescription.js";
-import { CourseReview } from "./Communitiy/CourseReview.js";
-import { HallofFame } from "./Communitiy/HallofFame.js";
-import { TodayResolutions } from "./Communitiy/TodayResolutions.js";
-import { FAQ } from "./FAQ.js";
+import { Contact } from "./Contact.js";
 import { ContentComponent } from "./Subject/MemberCourse/Contents/ContentComponent.js";
+import { Exam } from "./Subject/MemberCourse/Contents/Exam/Exam.js";
+import { ExamAnswer } from "./Subject/MemberCourse/Contents/Exam/ExamAnswer.js";
+import { CourseCurriculem } from "./Subject/CourseCurriculum.js";
+import { Announcement } from "./Community/Announcement.js";
+import { CourseReview } from "./Community/CourseReview.js";
+import { HallofFame } from "./Community/HallofFame.js";
+import { TodayResolutions } from "./Community/TodayResolutions.js";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -69,8 +73,7 @@ const MainContent = styled.div`
 `;
 
 export function Surf() {
-  const { isLoggedIn, user } = useContext(AuthContext);
-
+  const { user } = useContext(AuthContext);
   return (
     <>
       <BrowserRouter>
@@ -82,138 +85,112 @@ export function Surf() {
                   <Route index element={<Main />} />
                   <Route path="/about" element={<AboutMain />} />
                   <Route path="/course" element={<CourseMain />} />
+                  <Route path="/faq" element={<Contact />} />
                   <Route
                     path="/course/subject/:subjectId"
                     element={<CourseMain />}
                   />
                   <Route path="/course/:courseId" element={<CourseTitle />}>
                     <Route index element={<CourseDetail />} />
+                    <Route
+                      path="/course/:courseId/curriculum"
+                      element={<CourseCurriculem />}
+                    />
                     <Route path="afterinquiries" element={<AfterInquiries />} />
                     <Route
                       path="coursedescription"
                       element={<CourseDescription />}
                     />
                   </Route>
-                  <Route path="/level_test" element={<LevelTestMain />} />
-                  <Route path="/event" element={<Event />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/accountform" element={<AccountForm />} />
-                  <Route
-                    path="/community/resolutions"
-                    element={<TodayResolutions />}
-                  />
-                  <Route
-                    path="/community/halloffame"
-                    element={<HallofFame />}
-                  />
-                  <Route path="/community/reviews" element={<CourseReview />} />
-                  <Route path="/faq" element={<FAQ />} />
-                  {/* 학생 Dashboard */}
                   {user && (
                     <Route
                       path={`/dashboard/${user.loginId}`}
                       element={<DashboardNavBar />}
                     >
-                      <Route index element={<UserDashboard />} />
+                      <Route index element={<Dashboard />} />
+                      <Route
+                        path={`/dashboard/${user.loginId}/coursereview_manage`}
+                        element={<InstructorCourseReviewManage />}
+                      />
+                      <Route
+                        path={`/dashboard/${user.loginId}/qna_manage`}
+                        element={<InstructorQnAManage />}
+                      />
+                      <Route
+                        path={`/dashboard/${user.loginId}/exam_manage`}
+                        element={<InstructorExamManage />}
+                      />
+                      <Route
+                        path={`/dashboard/${user.loginId}/students_manage`}
+                        element={<InstructorStudentsManage />}
+                      />
+                      <Route
+                        path={`/dashboard/${user.loginId}/course_manage`}
+                        element={<AdminCourseManage />}
+                      />
+                      <Route
+                        path={`/dashboard/${user.loginId}/user_manage`}
+                        element={<AdminUserManage />}
+                      />
+                      <Route
+                        path={`/dashboard/${user.loginId}/leveltest_manage`}
+                        element={<AdminLevelTestManage />}
+                      />
+                      <Route
+                        path={`/dashboard/${user.loginId}/post_manage`}
+                        element={<AdminPostManage />}
+                      />
+                      <Route
+                        path={`/dashboard/${user.loginId}/notice_manage`}
+                        element={<AdminNoticeManage />}
+                      />
                       <Route
                         path={`/dashboard/${user.loginId}/courses`}
                         element={<MyCourse />}
-                      />
-                      <Route
-                        path={`/dashboard/${user.loginId}/account_info`}
-                        element={<AccountInfo />}
-                      />
-                      <Route
-                        path={`/dashboard/${user.loginId}/purchaselist`}
-                        element={<PurchaseList />}
                       />
                       <Route
                         path={`/dashboard/${user.loginId}/mycomment`}
                         element={<MyComment />}
                       />
                       <Route
-                        path={`/dashboard/${user.loginId}/mycertificate`}
-                        element={<MyCertificate />}
+                        path={`/dashboard/${user.loginId}/purchaselist`}
+                        element={<PurchaseList />}
+                      />
+                      <Route
+                        path={`/dashboard/${user.loginId}/account_info`}
+                        element={<AccountInfo />}
                       />
                     </Route>
                   )}
-                  {/* 관리자 Dashboard */}
-                  {user && (
-                    <Route
-                      path={`/dashboard/admin/${user.loginId}`}
-                      element={<AdminDashboardSideBar />}
-                    >
-                      <Route index element={<AdminDashboard />} />
-                      <Route
-                        path={`/dashboard/admin/${user.loginId}/course_manage`}
-                        element={<AdminCourseManage />}
-                      />
-                      <Route
-                        path={`/dashboard/admin/${user.loginId}/user_manage`}
-                        element={<AdminUserManage />}
-                      />
-                      <Route
-                        path={`/dashboard/admin/${user.loginId}/leveltest_manage`}
-                        element={<AdminLevelTestManage />}
-                      />
-                      <Route
-                        path={`/dashboard/admin/${user.loginId}/post_manage`}
-                        element={<AdminPostManage />}
-                      />
-                      <Route
-                        path={`/dashboard/admin/${user.loginId}/promotion_manage`}
-                        element={<AdminPromotionManage />}
-                      />
-                      <Route
-                        path={`/dashboard/admin/${user.loginId}/notice_manage`}
-                        element={<AdminNoticeManage />}
-                      />
-                      <Route
-                        path={`/dashboard/admin/${user.loginId}/stats_manage`}
-                        element={<AdminStatsManage />}
-                      />
-                    </Route>
-                  )}
-                  {/* 선생님 Dashboard */}
-                  {user && (
-                    <Route
-                      path={`/dashboard/instructor/${user.loginId}`}
-                      element={<InstructorDashboardSideBar />}
-                    >
-                      <Route index element={<InstructorDashboard />} />
-                      <Route
-                        path={`/dashboard/instructor/${user.loginId}/students_manage`}
-                        element={<InstructorStudentsManage />}
-                      />
-                      <Route
-                        path={`/dashboard/instructor/${user.loginId}/exam_manage`}
-                        element={<InstructorExamManage />}
-                      />
-                      <Route
-                        path={`/dashboard/instructor/${user.loginId}/qna_manage`}
-                        element={<InstructorQnAManage />}
-                      />
-                      <Route
-                        path={`/dashboard/instructor/${user.loginId}/coursenotice_manage`}
-                        element={<InstructorCourseNoticeManage />}
-                      />
-                      <Route
-                        path={`/dashboard/instructor/${user.loginId}/coursereview_manage`}
-                        element={<InstructorCourseReviewManage />}
-                      />
-                    </Route>
-                  )}
+                  ;
+                  <Route path="/level_test" element={<LevelTestMain />} />
+                  <Route
+                    path="/level_test_start"
+                    element={<LevelTestStart />}
+                  />
+                  <Route
+                    path="/level_test_result"
+                    element={<LevelTestResult />}
+                  />
+                  <Route path="/event" element={<Event />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/accountform" element={<AccountForm />} />
+                  <Route path="/announcement" element={<Announcement />} />
+                  <Route path="/coursereview" element={<CourseReview />} />
+                  <Route path="/halloffame" element={<HallofFame />} />
+                  <Route
+                    path="/todayResolutions"
+                    element={<TodayResolutions />}
+                  />
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/level_test_start" element={<LevelTestStart />} />
                 <Route path="/subject" element={<TestSubject />} />
-                {user && (
-                  <Route
-                    path="/content/:contentId"
-                    element={<ContentComponent />}
-                  ></Route>
-                )}
+                <Route path="/testexam2" element={<ExamAnswer />} />
+                <Route
+                  path="/course/:courseId/content/:contentId"
+                  element={<ContentComponent />}
+                />
               </Routes>
             </MainContent>
             <Footer />

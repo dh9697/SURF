@@ -4,6 +4,7 @@ import {
   apiPutCourse,
   apiPostCourse,
   apiDeleteCourse,
+  apiGetAllSubject,
 } from "../../RestApi";
 import styled from "styled-components";
 
@@ -18,6 +19,7 @@ const CoursesGrid = styled.ul`
 `;
 export function AdminCourseManage() {
   const [courses, setCourses] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const [formData, setFormData] = useState({
     courseId: "",
     courseName: "",
@@ -26,7 +28,8 @@ export function AdminCourseManage() {
     contentLevel: "",
     price: 0,
     announcement: "",
-    instructorLoginId: "",
+    instructorLoginId: [""],
+    subejct: [],
   });
 
   useEffect(() => {
@@ -37,6 +40,7 @@ export function AdminCourseManage() {
     apiGetAllCourses()
       .then((response) => {
         setCourses(response.data.data);
+        console.log(response.data.data);
       })
       .catch((error) => {
         console.error("코스 불러오기 오류: ", error);
@@ -44,10 +48,21 @@ export function AdminCourseManage() {
   };
 
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    if (name === "subjectId") {
+      const selectedSubject = subjects.find(
+        (subject) => subject.subjectId === Number(value)
+      );
+      setFormData({
+        ...formData,
+        subject: selectedSubject,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -58,6 +73,7 @@ export function AdminCourseManage() {
       apiPutCourse(formData.courseId, {
         ...formData,
         instructorLoginIds: [formData.instructorLoginId],
+        subject: formData.subject,
       })
         .then((response) => {
           console.log("코스 수정 성공: ", response);
@@ -70,7 +86,8 @@ export function AdminCourseManage() {
       // 등록
       apiPostCourse({
         ...formData,
-        instructorLoginIds: [formData.instructorLoginId], // 배열로 변환
+        instructorLoginIds: [formData.instructorLoginId],
+        subject: formData.subject,
       })
         .then((response) => {
           console.log("코스 등록 성공: ", response);
@@ -90,7 +107,8 @@ export function AdminCourseManage() {
       contentLevel: "",
       price: 0,
       announcement: "",
-      instructorLoginId: "",
+      instructorLoginId: [""],
+      subject: null,
     });
   };
 
@@ -109,11 +127,36 @@ export function AdminCourseManage() {
       });
   };
 
+  // subject 조회
+  useEffect(() => {
+    apiGetAllSubject()
+      .then((response) => {
+        setSubjects(response.data.data);
+      })
+      .catch((error) => {
+        console.error("과목 불러오기 오류: ", error);
+      });
+  }, []);
+
   return (
     <Container>
       <div>
         {/* 코스 관리 부분은 관리자 페이지 코스페이지에서 겟만 해서 보여주기 */}
         <h1>코스 관리</h1>
+        <label>
+          course:
+          <select
+            name="subjectId"
+            value={formData.subjectId}
+            onChange={handleInputChange}
+          >
+            {subjects.map((subject) => (
+              <option key={subject.subjectId} value={subject.subjectId}>
+                {subject.subjectName}
+              </option>
+            ))}
+          </select>
+        </label>
         <form onSubmit={handleSubmit}>
           <label>
             코스 이름:
@@ -194,6 +237,7 @@ export function AdminCourseManage() {
           {courses.map((course) => (
             <li key={course.courseId}>
               <strong>{course.courseName}</strong>
+              <p>course:{course.subject?.subjectName} </p>
               <p>설명: {course.description}</p>
               <p>수업 시간: {course.durationMins} 분</p>
               <p>콘텐츠 레벨: {course.contentLevel}</p>
