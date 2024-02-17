@@ -1,6 +1,7 @@
 package project.lms.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import project.lms.dto.ExamDto;
-import project.lms.dto.ExamHistoryDto;
 import project.lms.dto.ExamQuestionDto;
+import project.lms.dto.ExamResponseDto;
 import project.lms.dto.ResponseDto;
 import project.lms.enumstatus.ResultCode;
 import project.lms.exception.InvalidRequestException;
 import project.lms.model.Content;
 import project.lms.model.Exam;
-import project.lms.model.ExamHistory;
 import project.lms.model.ExamQuestion;
-import project.lms.model.Member;
 import project.lms.repository.ContentRepository;
 import project.lms.repository.ExamHistoryRepository;
 import project.lms.repository.ExamRepository;
@@ -43,20 +42,23 @@ public class ExamServiceImpl implements ExamService {
 	
 	// 시험 전체 조회 - 각 course의 선생님 권한
 	@Override
-	public ResponseDto<List<Exam>> getAllExams() {
-		List<Exam> exams = examRepository.findAll();
-		
-		if(exams == null || exams.isEmpty()) {
-			return new ResponseDto<>(
-					ResultCode.SUCCESS.name(),
-					null,
-					"시험이 존재하지 않습니다.");
-		} else {
-			return new ResponseDto<>(
-					ResultCode.SUCCESS.name(),
-					exams,
-					"시험 목록을 조회하였습니다.");
-		}
+	public ResponseDto<List<ExamResponseDto>> getAllExams() {
+	    List<Exam> exams = examRepository.findAll();
+	    
+	    if(exams == null || exams.isEmpty()) {
+	        return new ResponseDto<>(
+	                ResultCode.SUCCESS.name(),
+	                null,
+	                "시험이 존재하지 않습니다.");
+	    } else {
+	        List<ExamResponseDto> examDtos = exams.stream()
+	            .map(ExamResponseDto::from)
+	            .collect(Collectors.toList());
+	        return new ResponseDto<>(
+	                ResultCode.SUCCESS.name(),
+	                examDtos,
+	                "시험 목록을 조회하였습니다.");
+	    }
 	}
 	
 	// 시험 문제 조회
@@ -86,7 +88,7 @@ public class ExamServiceImpl implements ExamService {
 
 	// 컨텐츠에 따라 시험 목록 
 	@Override
-	public ResponseDto<List<Exam>> getExamByContent(Long contentId) {
+	public ResponseDto<List<ExamResponseDto>> getExamByContent(Long contentId) {
 		List<Exam> exams = examRepository.findByContentContentId(contentId);
 			if (exams == null || exams.isEmpty()) {
 				return new ResponseDto<>(
@@ -94,11 +96,14 @@ public class ExamServiceImpl implements ExamService {
 					null,
 					"해당 컨텐츠에 대한 시험이 없습니다.");
 			} else {
-				return new ResponseDto<>(
-					ResultCode.SUCCESS.name(),
-					exams,
-					"컨텐츠별 시험 목록을 조회하였습니다.");
-			}
+		        List<ExamResponseDto> dtos = exams.stream()
+		                .map(ExamResponseDto::from)
+		                .collect(Collectors.toList());
+		            return new ResponseDto<>(
+		                ResultCode.SUCCESS.name(),
+		                dtos,
+		                "컨텐츠별 시험 목록을 조회하였습니다.");
+		        }
 	}
 	
 	// 컨텐츠에 따라 시험 생성 
@@ -108,9 +113,18 @@ public class ExamServiceImpl implements ExamService {
 		try {
 			Content content = contentRepository.findById(examDto.getContentId())
 		            .orElseThrow(() -> new InvalidRequestException("Invalid Request", "컨텐츠가 존재하지 않거나 찾을 수 없습니다."));
+			
+			List<Exam> existingExams = examRepository.findByContentContentId(content.getContentId());
+		    if (!existingExams.isEmpty()) {
+		      return new ResponseDto<>(
+		          ResultCode.ERROR.name(),
+		          null,
+		          "이미 존재하는 시험입니다.");
+		    }
+		    
 			Exam exam = new Exam();
 			exam.setContent(content);
-			exam.setExamIsActive(examDto.getExamIsActive());
+			exam.setExamIsActive(false);
 			
 			examRepository.save(exam);
 			
@@ -118,6 +132,7 @@ public class ExamServiceImpl implements ExamService {
 					ResultCode.SUCCESS.name(),
 					exam,
 					"시험을 등록 하였습니다.");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseDto<>(

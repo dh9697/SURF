@@ -22,7 +22,6 @@ import project.lms.enumstatus.ResultCode;
 import project.lms.exception.InvalidRequestException;
 import project.lms.model.Authority;
 import project.lms.model.Member;
-import project.lms.model.Withdrawal;
 import project.lms.repository.MemberRepository;
 import project.lms.repository.WithdrawalRepository;
 import project.lms.service.MemberService;

@@ -3,9 +3,7 @@ package project.lms.service;
 import java.util.List;
 
 import project.lms.dto.ResponseDto;
-import project.lms.model.Content;
 import project.lms.model.ContentHistory;
-import project.lms.model.Member;
 
 public interface ContentHistoryService {
 	

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import project.lms.dto.ExamDto;
+import project.lms.dto.ExamResponseDto;
 import project.lms.dto.ResponseDto;
 import project.lms.model.Exam;
 import project.lms.service.ExamService;
@@ -39,17 +40,17 @@ public class ExamController {
 	// 모든 시험 문제 조회
 	@GetMapping("/list")
 	@PreAuthorize("hasAnyRole('INSTRUCTOR')") // 관리자로 변경하기?
-	public ResponseEntity<ResponseDto<List<Exam>>> getAllExam() {
-		ResponseDto<List<Exam>> responseDto = examService.getAllExams();
+	public ResponseEntity<ResponseDto<List<ExamResponseDto>>> getAllExam() {
+		ResponseDto<List<ExamResponseDto>> responseDto = examService.getAllExams();
 		return ResponseEntity.ok(responseDto);
 	}
 	
 	// 과목 별 시험 문제 조회
 	@GetMapping("list/{contentId}")
 	@PreAuthorize("hasAnyRole('INSTRUCTOR')")
-	public ResponseEntity<ResponseDto<List<Exam>>> getExamByCourse(@PathVariable Long contentId) {
-		ResponseDto<List<Exam>> responseDto = examService.getExamByContent(contentId);
-		return ResponseEntity.ok(responseDto);
+	public ResponseEntity<ResponseDto<List<ExamResponseDto>>> getExamByCourse(@PathVariable Long contentId) {
+	    ResponseDto<List<ExamResponseDto>> responseDto = examService.getExamByContent(contentId);
+	    return ResponseEntity.ok(responseDto);
 	}
 	
 	// 시험 등록

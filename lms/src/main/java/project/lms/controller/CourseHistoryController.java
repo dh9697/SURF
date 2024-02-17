@@ -8,12 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import project.lms.dto.CourseHistoryDto;
 import project.lms.dto.ResponseDto;
-import project.lms.model.Course;
 import project.lms.model.CourseHistory;
-import project.lms.model.Member;
 import project.lms.service.CourseHistoryService;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController

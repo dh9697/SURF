@@ -2,14 +2,12 @@ package project.lms.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import project.lms.dto.CourseHistoryDto;
 import project.lms.dto.ResponseDto;
 import project.lms.enumstatus.ResultCode;
 import project.lms.exception.InvalidRequestException;
 import project.lms.model.ContentHistory;
-import project.lms.model.Course;
 import project.lms.model.CourseHistory;
 import project.lms.model.ExamHistory;
 import project.lms.model.Member;
@@ -21,7 +19,6 @@ import project.lms.repository.MemberRepository;
 import project.lms.service.CourseHistoryService;
 import project.lms.util.SecurityUtil;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

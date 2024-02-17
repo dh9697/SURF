@@ -1,12 +1,9 @@
 package project.lms.service.impl;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +11,6 @@ import project.lms.dto.ResponseDto;
 import project.lms.dto.WithdrawalDto;
 import project.lms.enumstatus.ResultCode;
 import project.lms.exception.InvalidRequestException;
-import project.lms.model.Member;
 import project.lms.model.Withdrawal;
 import project.lms.repository.MemberRepository;
 import project.lms.repository.WithdrawalRepository;

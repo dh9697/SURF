@@ -9,7 +9,6 @@ import project.lms.repository.CourseRepository;
 import project.lms.repository.MemberRepository;
 import project.lms.repository.QnABoardRepository;
 import project.lms.service.QnABoardService;
-import project.lms.dto.CourseReviewDto;
 import project.lms.dto.QnABoardDto;
 import project.lms.dto.ResponseDto;
 import project.lms.enumstatus.ResultCode;
@@ -17,7 +16,6 @@ import project.lms.exception.InvalidRequestException;
 import project.lms.model.QnABoard;
 import project.lms.model.Course;
 import project.lms.model.CourseHistory;
-import project.lms.model.CourseReview;
 import project.lms.model.Member;
 
 import java.util.List;

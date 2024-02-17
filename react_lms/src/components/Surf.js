@@ -11,51 +11,39 @@ import { Register } from "./Register";
 import { Footer } from "./Footer";
 import styled from "styled-components";
 import { DashboardNavBar } from "./Dashboard/DashboardNavBar.js";
-import { AdminDashboardNavBar } from "./Dashboard/Admin/AdminDashboardNavBar.js";
-import { UserDashboardNavBar } from "./Dashboard/User/UserDashboardNavBar.js";
 import { useContext } from "react";
 import { AuthContext } from "../AuthContext";
 import { AccountInfo } from "./Account/AccountInfo";
-import { UserDashboard } from "./Dashboard/User/UserDashboard.js";
 import { MyCourse } from "./Dashboard/User/MyCourse";
 import { CourseMain } from "./Subject/CourseMain";
-import { UserCourse } from "./Subject/UserCourse/UserCourse.js";
-import { AdminDashboard } from "./Dashboard/Admin/AdminDashboard";
 import { AdminCourseManage } from "./Dashboard/Admin/AdminCourseManage";
 import { AdminLevelTestManage } from "./Dashboard/Admin/AdminLevelTestManage";
 import { AdminNoticeManage } from "./Dashboard/Admin/AdminNoticeManage";
 import { AdminUserManage } from "./Dashboard/Admin/AdminUserManage";
 import { AdminPostManage } from "./Dashboard/Admin/AdminPostManage";
 import { TestSubject } from "./TestSubject";
-import { InstructorDashboardSideBar } from "./Dashboard/Instructor/InstructorDashboardSideBar";
-import { InstructorDashboard } from "./Dashboard/Instructor/InstructorDashboard";
 import { InstructorStudentsManage } from "./Dashboard/Instructor/InstructorStudentsManage";
 import { InstructorExamManage } from "./Dashboard/Instructor/InstructorExamManage";
 import { InstructorQnAManage } from "./Dashboard/Instructor/InstructorQnAManage";
-import { InstructorCourseNoticeManage } from "./Dashboard/Instructor/InstructorCourseNoticeManage";
 import { InstructorCourseReviewManage } from "./Dashboard/Instructor/InstructorCourseReviewManage";
 import { Dashboard } from "./Dashboard/Dashboard";
 import { Cart } from "./Account/Cart";
 import { AccountForm } from "./Account/AccountForm";
 import { PurchaseList } from "./Dashboard/User/PurchaseList";
 import { MyComment } from "./Dashboard/User/MyComment";
-import { MyCertificate } from "./Dashboard/User/MyCertificate";
-import { CourseSidebar } from "./Subject/CourseSidebar";
 import { CourseTitle } from "./Subject/CourseTitle";
 import { CourseDetail } from "./Subject/CourseDetail.js";
-import { BeforeInquiries } from "./Subject/UserCourse/BeforeInquiries";
-import { MemberCourse } from "./Subject/MemberCourse/MemberCourse";
 import { AfterInquiries } from "./Subject/MemberCourse/AfterInquiries.js";
 import { CourseDescription } from "./Subject/MemberCourse/CourseDescription.js";
 import { Contact } from "./Contact.js";
 import { ContentComponent } from "./Subject/MemberCourse/Contents/ContentComponent.js";
-import { Exam } from "./Subject/MemberCourse/Contents/Exam/Exam.js";
 import { ExamAnswer } from "./Subject/MemberCourse/Contents/Exam/ExamAnswer.js";
 import { CourseCurriculem } from "./Subject/CourseCurriculum.js";
 import { Announcement } from "./Community/Announcement.js";
 import { CourseReview } from "./Community/CourseReview.js";
 import { HallofFame } from "./Community/HallofFame.js";
 import { TodayResolutions } from "./Community/TodayResolutions.js";
+import { InstructorExamQuestion } from "./Dashboard/Instructor/InstructorExamQuestion.js";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -120,6 +108,7 @@ export function Surf() {
                         path={`/dashboard/${user.loginId}/exam_manage`}
                         element={<InstructorExamManage />}
                       />
+                      <Route path={`/dashboard/${user.loginId}/exam_manage/:examId/question`} element={<InstructorExamQuestion />}/>
                       <Route
                         path={`/dashboard/${user.loginId}/students_manage`}
                         element={<InstructorStudentsManage />}

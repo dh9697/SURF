@@ -1,273 +1,197 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  apiDeleteQuestionsForExam,
-  apiGetQuestionsForExam,
-  apiPostQuestionsForExam,
-  apiPutQuestionsForExam,
-} from "../../RestApi";
-import { InstructorExam } from "./InstructorExam";
+import { AuthContext } from "../../../AuthContext";
+import { apiCreateExam, apiDeleteExam, apiGetAllCourses, apiGetContentByCourse, apiGetExamByContent, apiUpdateExam } from "../../RestApi";
+import { Icon } from "@iconify/react";
+import { NavLink } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
+  color: #454545;
 `;
+
+const Select = styled.select`
+  padding: 10px;
+  margin-top: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+`;
+
+const Exam = styled.div`
+  & .examTitle, .examContent{
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr;
+     & .contentButton, .contentIcon{
+      display: flex;
+      justify-content: space-between;
+     }
+  }
+`;
+
+const StyledNavLink = styled(NavLink)``; 
+
 export function InstructorExamManage() {
-  const [examId, setExamId] = useState("1");
-  const [questionText, setQuestionText] = useState("");
-  const [editQuestionText, setEditQuestionText] = useState("");
-  const [options, setOptions] = useState(["", "", "", ""]);
-  const [editOptions, setEditOptions] = useState(["", "", "", ""]);
-  const [correctOptionIndex, setCorrectOptionIndex] = useState(1);
-  const [examQuestionId, setExamQuestionId] = useState(null);
-  const [isFormSubmitted, setFormSubmitted] = useState(false);
-  const [examQuestions, setExamQuestions] = useState([]);
-  const [editMode, setEditMode] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(null);
+  const { user } = useContext(AuthContext);
+  const [courses, setCourses] = useState([]);
+  const [teachingCourses, setTeachingCourses] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState("");
+  const [contents, setContents] = useState([]);
+  const [exams, setExams] = useState([]);
 
-  // examId로 문제 불러오기
+  // 코스 모두 조회
   useEffect(() => {
-    loadExamQuestions();
-    cancelEditMode();
-  }, [examId]);
-
-  const loadExamQuestions = () => {
-    apiGetQuestionsForExam(examId)
+    apiGetAllCourses()
       .then((response) => {
-        setExamQuestions(response.data.data);
+        setCourses(response.data.data);
       })
       .catch((error) => {
-        console.error("시험 문제 불러오기 오류: ", error);
-        console.error(
-          "에러 상세 정보: ",
-          error.response || error.message || error
-        );
+        console.error("코스 불러오기 오류: ", error);
       });
+  }, []);
+
+  // 조회한 코스 중 teachingCourse 조회
+  useEffect(() => {
+    const userTeachingCoursesIds = user.teachingCourses.map(
+      (course) => course.courseId
+    );
+    const userTeachingCourses = courses.filter((course) =>
+      userTeachingCoursesIds.includes(course.courseId)
+    );
+    setTeachingCourses(userTeachingCourses);
+  }, [courses, user]);
+
+  const handleCourseChange = (e) => {
+    setSelectedCourse(e.target.value);
   };
 
-  // 문제 입력
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    apiPostQuestionsForExam(examId, questionText, options, correctOptionIndex)
-      .then((response) => {
-        console.log("시험 문제 입력 성공: ", response);
-        setFormSubmitted(true);
-        setQuestionText([""]);
-        setOptions(["", "", "", ""]);
-        setCorrectOptionIndex(1);
-        loadExamQuestions();
-      })
-      .catch((err) => {
-        console.error("시험 문제 입력 오류: ", err);
-        setFormSubmitted(false);
-      });
-  };
-
-  // 문제 삭제
-  const handleDelete = (examQuestionId) => {
-    const isConfirmed = window.confirm("정말로 삭제하시겠습니까?");
-    if (isConfirmed) {
-      apiDeleteQuestionsForExam(examQuestionId)
+  // selectedCourse에 따라 content 조회, content 당 exam 조회
+  useEffect(() => {
+    if (selectedCourse) {
+      apiGetContentByCourse(selectedCourse)
         .then((response) => {
-          console.log("시험 문제 삭제 성공: ", response);
-          loadExamQuestions();
+          setContents(response.data.data);
+          
+          let examsTemp = [];
+          const fetchExams = async () => {
+            for (let content of response.data.data) {
+              const examResponse = await apiGetExamByContent(content.contentId);
+              examsTemp.push(examResponse.data.data);
+            }
+            setExams(examsTemp);
+          };
+          console.log(examsTemp);
+          fetchExams();
         })
-        .catch((err) => {
-          console.log("시험 문제 삭제 오류: ", err);
+        .catch((error) => {
+          console.error("코스 컨텐츠 가져오기 오류: ", error);
         });
     }
-  };
+  }, [selectedCourse]);
 
-  // 문제 수정 모드로 전환
-  const enterEditMode = (
-    examQuestionId,
-    questionText,
-    options,
-    correctOptionIndex,
-    index
-  ) => {
-    setEditMode(true);
-    setExamQuestionId(examQuestionId);
-    setEditQuestionText(questionText);
-    if (typeof options === "string") {
-      const splittedOptions = options.split(",").map((option) => option.trim());
-      setEditOptions(splittedOptions);
-    }
-    console.log(editOptions);
-    setCorrectOptionIndex(correctOptionIndex);
-    setEditingIndex(index);
-  };
-
-  // 문제 수정 취소
-  const cancelEditMode = () => {
-    setEditMode(false);
-    setExamQuestionId(null);
-    setEditQuestionText("");
-    setEditOptions(editOptions);
-    setCorrectOptionIndex(1);
-  };
-
-  // 문제 수정
-  const handleEdit = () => {
-    apiPutQuestionsForExam(
-      examQuestionId,
-      examId,
-      editQuestionText,
-      editOptions,
-      correctOptionIndex
-    )
-      .then((response) => {
-        console.log("시험 문제 수정 성공: ", response);
-        loadExamQuestions();
-        cancelEditMode();
+  // exam 생성 후 조회
+  const handleCreateExam = (contentId) => {
+    const examDto = {
+      contentId: contentId,
+    };
+    apiCreateExam(examDto)
+      .then(() => {
+        let examsTemp = [];
+        const fetchExams = async () => {
+          for (let content of contents) {
+            const response = await apiGetExamByContent(content.contentId);
+            examsTemp.push(response.data.data);
+          }
+          setExams(examsTemp);
+        };
+        fetchExams();
       })
-      .catch((err) => {
-        console.error("시험 문제 수정 오류: ", err);
+      .catch((error) => {
+        console.error("시험 생성 오류: ", error);
       });
   };
+
+  // 시험 수정
+const handleUpdateExam = (examId) => {
+  const examDto = {
+    examIsActive: true,
+  };
+  apiUpdateExam(examId, examDto)
+    .then(() => {
+      let examsTemp = [];
+      const fetchExams = async () => {
+        for (let content of contents) {
+          const response = await apiGetExamByContent(content.contentId);
+          examsTemp.push(response.data.data);
+        }
+        setExams(examsTemp);
+      };
+      fetchExams();
+    })
+    .catch((error) => {
+      console.error("시험 수정 오류: ", error);
+    });
+};
+
+// 시험 삭제 
+const handleDeleteExam = (examId) => {
+  apiDeleteExam(examId)
+    .then(() => {
+      let examsTemp = [];
+      const fetchExams = async () => {
+        for (let content of contents) {
+          const response = await apiGetExamByContent(content.contentId);
+          examsTemp.push(response.data.data);
+        }
+        setExams(examsTemp);
+      };
+      fetchExams();
+    })
+    .catch((error) => {
+      console.error("시험 삭제 오류: ", error);
+    });
+};
 
   return (
     <>
       <Container>
-        <h1>강사 시험 문제 페이지</h1>
-        <form>
-          <label>
-            시험 선택:
-            <select value={examId} onChange={(e) => setExamId(e.target.value)}>
-              <option value="1">examId1</option>
-              <option value="2">examId2</option>
-              <option value="3">examId3</option>
-            </select>
-          </label>
-          <br />
-          <label>
-            문제:
-            <input
-              type="text"
-              value={questionText}
-              onChange={(e) => setQuestionText(e.target.value)}
-            />
-          </label>
-          <br />
-          <label>
-            선택지:
-            {options.map((option, index) => (
-              <input
-                key={index}
-                type="text"
-                value={option}
-                onChange={(e) => {
-                  const newOptions = [...options];
-                  newOptions[index] = e.target.value;
-                  setOptions(newOptions);
-                }}
-              />
-            ))}
-          </label>
-          <br />
-          <label>
-            정답 선택:
-            <select
-              value={correctOptionIndex}
-              onChange={(e) => setCorrectOptionIndex(Number(e.target.value))}
-            >
-              {options.map((_, index) => (
-                <option key={index + 1} value={index + 1}>
-                  {index + 1}
-                </option>
-              ))}
-            </select>
-          </label>
-          <br />
-          <button type="submit" onClick={handleSubmit}>
-            문제 추가
-          </button>
-        </form>
-        {isFormSubmitted && (
-          <p style={{ color: "green" }}>시험 문제를 저장하였습니다.</p>
-        )}
-        <h2>등록된 시험 문제 목록</h2>
-        {examQuestions &&
-          examQuestions.map((examQuestion, index) => (
-            <li key={examQuestion.examQuestionId}>
-              <strong>{`문제 ${index + 1}`}</strong>
-              {examQuestion.questionText}
-              <br />
-              <strong>선택지:</strong>{" "}
-              {Array.isArray(examQuestion.options)
-                ? examQuestion.options.join(", ")
-                : examQuestion.options}
-              <br />
-              <strong>답안:</strong> {examQuestion.correctOptionIndex}
-              <br />
-              <button
-                onClick={() =>
-                  enterEditMode(
-                    examQuestion.examQuestionId,
-                    examQuestion.questionText,
-                    examQuestion.options,
-                    examQuestion.correctOptionIndex,
-                    index
-                  )
-                }
-              >
-                수정
-              </button>
-              <button onClick={() => handleDelete(examQuestion.examQuestionId)}>
-                삭제
-              </button>
-              {editMode && editingIndex === index && (
-                <div>
-                  <h2>문제 수정</h2>
-                  <label>
-                    문제:
-                    <input
-                      type="text"
-                      value={editQuestionText}
-                      onChange={(e) => setEditQuestionText(e.target.value)}
-                    />
-                  </label>
-                  <br />
-                  {editOptions.map((editOption, index) => (
-                    <div key={index}>
-                      <label>
-                        선택지 {index + 1}:
-                        <input
-                          value={editOption}
-                          onChange={(e) => {
-                            const newEditOptions = [...editOptions];
-                            newEditOptions[index] = e.target.value;
-                            setEditOptions(newEditOptions);
-                          }}
-                        />
-                      </label>
-                    </div>
-                  ))}
-
-                  <br />
-                  <label>
-                    정답 선택:
-                    <select
-                      value={correctOptionIndex}
-                      onChange={(e) =>
-                        setCorrectOptionIndex(Number(e.target.value))
-                      }
-                    >
-                      {options.map((_, index) => (
-                        <option key={index + 1} value={index + 1}>
-                          {index + 1}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <br />
-                  <button onClick={handleEdit}>수정 완료</button>
-                  <button onClick={cancelEditMode}>취소</button>
-                </div>
-              )}
-            </li>
+        <h1>시험 관리</h1>
+        <Select onChange={handleCourseChange}>
+          <option value="">강의 선택</option>
+          {teachingCourses.map((course) => (
+            <option key={course.courseId} value={course.courseId}>
+              {course.courseName}
+            </option>
           ))}
-        <InstructorExam />
+        </Select>
+        <Exam>
+        {contents.map((content) => {
+  const examArray = exams.find((e) => e && e[0] && e[0].contentId === content.contentId);
+  const exam = examArray ? examArray[0] : null;
+  const hasExam = !!exam;
+  const hasQuestions = hasExam && !!exam.examQuestions && exam.examQuestions.length > 0;
+
+  return (
+    <div className="examContent" key={content.contentId}>
+      <div className="content">
+        <p>{content.contentTitle}</p>
+      </div>
+      <div className="contentButton">
+        {!hasExam && <button onClick={() => handleCreateExam(content.contentId)}>시험 생성</button>}
+        {hasExam && <StyledNavLink to={`/dashboard/${user.loginId}/exam_manage/${exam.examId}/question`}>문제 관리</StyledNavLink>}
+        {hasExam && <button onClick={() => handleDeleteExam(exam.examId)}>시험 삭제</button>}
+        {hasQuestions && <button onClick={() => handleUpdateExam(exam.examId)}>시험 활성화</button>}
+      </div>
+      <div className="contentIcon">
+        <Icon icon={"codicon:circle-filled"} color={hasExam ? "#3182f6" : "inherit"}></Icon>
+        <Icon icon={"codicon:circle-filled"} color={hasQuestions ? "#3182f6" : "inherit"}></Icon>
+        <Icon icon={"codicon:circle-filled"}></Icon>
+      </div>
+    </div>
+  );
+})}
+        </Exam>
       </Container>
     </>
   );

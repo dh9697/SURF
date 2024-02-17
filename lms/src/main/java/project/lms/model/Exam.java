@@ -16,7 +16,7 @@ public class Exam {
     private Content content;
 
     @Column(name = "examIsActive")
-    private Boolean examIsActive;
+    private Boolean examIsActive = false;
 
     @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL)
     private List<ExamQuestion> examQuestions;
@@ -25,43 +25,43 @@ public class Exam {
         super();
     }
 
-    public Exam(Long examId, Content content, Boolean examIsActive) {
-        super();
-        this.examId = examId;
-        this.content = content;
-        this.examIsActive = examIsActive;
-    }
+	public Exam(Long examId, Content content, Boolean examIsActive, List<ExamQuestion> examQuestions) {
+		super();
+		this.examId = examId;
+		this.content = content;
+		this.examIsActive = examIsActive;
+		this.examQuestions = examQuestions;
+	}
 
-    public Long getExamId() {
-        return examId;
-    }
+	public Long getExamId() {
+		return examId;
+	}
 
-    public void setExamId(Long examId) {
-        this.examId = examId;
-    }
+	public void setExamId(Long examId) {
+		this.examId = examId;
+	}
 
-    public Content getContent() {
-        return content;
-    }
+	public Content getContent() {
+		return content;
+	}
 
-    public void setContent(Content content) {
-        this.content = content;
-    }
+	public void setContent(Content content) {
+		this.content = content;
+	}
 
-    public Boolean getExamIsActive() {
-        return examIsActive;
-    }
+	public Boolean getExamIsActive() {
+		return examIsActive;
+	}
 
-    public void setExamIsActive(Boolean examIsActive) {
-        this.examIsActive = examIsActive;
-    }
+	public void setExamIsActive(Boolean examIsActive) {
+		this.examIsActive = examIsActive;
+	}
 
-    public List<ExamQuestion> getExamQuestions() {
-        return this.examQuestions;
-    }
+	public List<ExamQuestion> getExamQuestions() {
+		return examQuestions;
+	}
 
-    public void setExamQuestions(List<ExamQuestion> examQuestions) {
-        this.examQuestions = examQuestions;
-    }
-    
+	public void setExamQuestions(List<ExamQuestion> examQuestions) {
+		this.examQuestions = examQuestions;
+	}
 }

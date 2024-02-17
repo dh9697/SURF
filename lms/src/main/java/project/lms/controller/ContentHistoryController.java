@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import project.lms.dto.ContentHistoryRequestDto;
 import project.lms.dto.ResponseDto;
-import project.lms.model.Content;
 import project.lms.model.ContentHistory;
-import project.lms.model.Member;
 import project.lms.service.ContentHistoryService;
 
 import java.util.List;
