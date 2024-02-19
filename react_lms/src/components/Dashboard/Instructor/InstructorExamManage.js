@@ -1,7 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { AuthContext } from "../../../AuthContext";
-import { apiCreateExam, apiDeleteExam, apiGetAllCourses, apiGetContentByCourse, apiGetExamByContent, apiUpdateExam } from "../../RestApi";
+import {
+  apiCreateExam,
+  apiDeleteExam,
+  apiGetAllCourses,
+  apiGetContentByCourse,
+  apiGetExamByContent,
+  apiUpdateExam,
+} from "../../RestApi";
 import { Icon } from "@iconify/react";
 import { NavLink } from "react-router-dom";
 
@@ -20,17 +27,19 @@ const Select = styled.select`
 `;
 
 const Exam = styled.div`
-  & .examTitle, .examContent{
+  & .examTitle,
+  .examContent {
     display: grid;
     grid-template-columns: 3fr 1fr 1fr;
-     & .contentButton, .contentIcon{
+    & .contentButton,
+    .contentIcon {
       display: flex;
       justify-content: space-between;
-     }
+    }
   }
 `;
 
-const StyledNavLink = styled(NavLink)``; 
+const StyledNavLink = styled(NavLink)``;
 
 export function InstructorExamManage() {
   const { user } = useContext(AuthContext);
@@ -72,7 +81,7 @@ export function InstructorExamManage() {
       apiGetContentByCourse(selectedCourse)
         .then((response) => {
           setContents(response.data.data);
-          
+
           let examsTemp = [];
           const fetchExams = async () => {
             for (let content of response.data.data) {
@@ -113,45 +122,45 @@ export function InstructorExamManage() {
   };
 
   // 시험 수정
-const handleUpdateExam = (examId) => {
-  const examDto = {
-    examIsActive: true,
+  const handleUpdateExam = (examId) => {
+    const examDto = {
+      examIsActive: true,
+    };
+    apiUpdateExam(examId, examDto)
+      .then(() => {
+        let examsTemp = [];
+        const fetchExams = async () => {
+          for (let content of contents) {
+            const response = await apiGetExamByContent(content.contentId);
+            examsTemp.push(response.data.data);
+          }
+          setExams(examsTemp);
+        };
+        fetchExams();
+      })
+      .catch((error) => {
+        console.error("시험 수정 오류: ", error);
+      });
   };
-  apiUpdateExam(examId, examDto)
-    .then(() => {
-      let examsTemp = [];
-      const fetchExams = async () => {
-        for (let content of contents) {
-          const response = await apiGetExamByContent(content.contentId);
-          examsTemp.push(response.data.data);
-        }
-        setExams(examsTemp);
-      };
-      fetchExams();
-    })
-    .catch((error) => {
-      console.error("시험 수정 오류: ", error);
-    });
-};
 
-// 시험 삭제 
-const handleDeleteExam = (examId) => {
-  apiDeleteExam(examId)
-    .then(() => {
-      let examsTemp = [];
-      const fetchExams = async () => {
-        for (let content of contents) {
-          const response = await apiGetExamByContent(content.contentId);
-          examsTemp.push(response.data.data);
-        }
-        setExams(examsTemp);
-      };
-      fetchExams();
-    })
-    .catch((error) => {
-      console.error("시험 삭제 오류: ", error);
-    });
-};
+  // 시험 삭제
+  const handleDeleteExam = (examId) => {
+    apiDeleteExam(examId)
+      .then(() => {
+        let examsTemp = [];
+        const fetchExams = async () => {
+          for (let content of contents) {
+            const response = await apiGetExamByContent(content.contentId);
+            examsTemp.push(response.data.data);
+          }
+          setExams(examsTemp);
+        };
+        fetchExams();
+      })
+      .catch((error) => {
+        console.error("시험 삭제 오류: ", error);
+      });
+  };
 
   return (
     <>
@@ -166,31 +175,61 @@ const handleDeleteExam = (examId) => {
           ))}
         </Select>
         <Exam>
-        {contents.map((content) => {
-  const examArray = exams.find((e) => e && e[0] && e[0].contentId === content.contentId);
-  const exam = examArray ? examArray[0] : null;
-  const hasExam = !!exam;
-  const hasQuestions = hasExam && !!exam.examQuestions && exam.examQuestions.length > 0;
+          {contents.map((content) => {
+            const examArray = exams.find(
+              (e) => e && e[0] && e[0].contentId === content.contentId
+            );
+            const exam = examArray ? examArray[0] : null;
+            const hasExam = !!exam;
+            const hasQuestions =
+              hasExam && !!exam.examQuestions && exam.examQuestions.length > 0;
 
-  return (
-    <div className="examContent" key={content.contentId}>
-      <div className="content">
-        <p>{content.contentTitle}</p>
-      </div>
-      <div className="contentButton">
-        {!hasExam && <button onClick={() => handleCreateExam(content.contentId)}>시험 생성</button>}
-        {hasExam && <StyledNavLink to={`/dashboard/${user.loginId}/exam_manage/${exam.examId}/question`}>문제 관리</StyledNavLink>}
-        {hasExam && <button onClick={() => handleDeleteExam(exam.examId)}>시험 삭제</button>}
-        {hasQuestions && <button onClick={() => handleUpdateExam(exam.examId)}>시험 활성화</button>}
-      </div>
-      <div className="contentIcon">
-        <Icon icon={"codicon:circle-filled"} color={hasExam ? "#3182f6" : "inherit"}></Icon>
-        <Icon icon={"codicon:circle-filled"} color={hasQuestions ? "#3182f6" : "inherit"}></Icon>
-        <Icon icon={"codicon:circle-filled"}></Icon>
-      </div>
-    </div>
-  );
-})}
+            return (
+              <div className="examContent" key={content.contentId}>
+                <div className="content">
+                  <p>{content.contentTitle}</p>
+                </div>
+                <div className="contentButton">
+                  {!hasExam && (
+                    <button onClick={() => handleCreateExam(content.contentId)}>
+                      시험 생성
+                    </button>
+                  )}
+                  {hasExam && (
+                    <StyledNavLink
+                      to={`/dashboard/${user.loginId}/exam_manage/${exam.examId}/question`}
+                    >
+                      문제 관리
+                    </StyledNavLink>
+                  )}
+                  {hasExam && (
+                    <button onClick={() => handleDeleteExam(exam.examId)}>
+                      시험 삭제
+                    </button>
+                  )}
+                  {hasQuestions && (
+                    <button onClick={() => handleUpdateExam(exam.examId)}>
+                      시험 활성화
+                    </button>
+                  )}
+                </div>
+                <div className="contentIcon">
+                  <Icon
+                    icon={"codicon:circle-filled"}
+                    color={hasExam ? "#3182f6" : "white"}
+                  ></Icon>
+                  <Icon
+                    icon={"codicon:circle-filled"}
+                    color={hasQuestions ? "#3182f6" : "white"}
+                  ></Icon>
+                  <Icon
+                    icon={"codicon:circle-filled"}
+                    color={exam?.examIsActive ? "#3182f6" : "white"}
+                  ></Icon>
+                </div>
+              </div>
+            );
+          })}
         </Exam>
       </Container>
     </>

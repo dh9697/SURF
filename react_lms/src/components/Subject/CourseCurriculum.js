@@ -34,7 +34,7 @@ export function CourseCurriculem() {
   const { courseId } = useParams();
   const [content, setContent] = useState([]);
   const [completedContents, setCompletedContents] = useState([]);
-  const [exam, setExam] = useState([]);
+  const [exams, setExams] = useState([]);
   const [examQuestions, setExamQuestions] = useState([]);
 
   // 해당 코스 컨텐츠 조회
@@ -60,6 +60,34 @@ export function CourseCurriculem() {
       });
   }, []);
 
+  // 컨텐츠당 exam 조회
+  // useEffect(() => {
+  //   apiGetExamByContent(content.contentId)
+  //     .then((response) => {
+  //       setExams(response.data.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log("컨텐츠당 시험 조회 실패", error);
+  //     });
+  // });
+
+  useEffect(() => {
+    const fetchExams = async () => {
+      const examsTemp = [];
+      for (let item of content) {
+        try {
+          const response = await apiGetExamByContent(item.contentId);
+          examsTemp.push(response.data.data);
+        } catch (error) {
+          console.error("시험 조회 오류: ", error);
+        }
+      }
+      setExams(examsTemp);
+    };
+
+    fetchExams();
+  }, [content]);
+
   return (
     <>
       <Container>
@@ -80,6 +108,8 @@ export function CourseCurriculem() {
           const isCompleted = completedContents.find(
             (history) => history.content.contentId === item.contentId
           );
+          const exam = exams.find((exam) => exam?.contentId === item.contentId);
+          console.log();
           return (
             <div
               className={`content ${isCompleted ? "completed" : ""}`}
@@ -94,6 +124,17 @@ export function CourseCurriculem() {
               >
                 {isCompleted ? "서핑 완료" : "서핑하기"}
               </StyledNavLink>
+              {exam && !exam.examIsActive && (
+                <button disabled>시험 생성 중</button>
+              )}
+              {exam?.examIsActive && (
+                <StyledNavLink to={`/exam/${exam.examId}`}>
+                  시험 보러 가기
+                </StyledNavLink>
+              )}
+              {exam?.examQuestions && (
+                <button disabled>시험 문제 생성 중</button>
+              )}
               <TaskWrapper>
                 <span>{item.contentId}-1 과제</span>
                 <StyledNavLink to="/testexam2">풀기</StyledNavLink>

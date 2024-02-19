@@ -16,7 +16,7 @@ public class Exam {
     private Content content;
 
     @Column(name = "examIsActive")
-    private Boolean examIsActive = false;
+    private Boolean examIsActive;
 
     @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL)
     private List<ExamQuestion> examQuestions;

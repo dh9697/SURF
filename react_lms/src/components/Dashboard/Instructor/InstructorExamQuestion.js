@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { apiDeleteQuestionsForExam, apiGetQuestionsForExam, apiPostQuestionsForExam, apiPutQuestionsForExam } from "../../RestApi";
+import {
+  apiDeleteQuestionsForExam,
+  apiGetQuestionsForExam,
+  apiPostQuestionsForExam,
+  apiPutQuestionsForExam,
+} from "../../RestApi";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 
@@ -7,9 +12,11 @@ const Container = styled.div`
   width: 100%;
 `;
 
-export function InstructorExamQuestion(){
-    const { examId } = useParams();
+export function InstructorExamQuestion() {
+  const { examId } = useParams();
+  const [questParagraph, setQuestParagraph] = useState("");
   const [questionText, setQuestionText] = useState("");
+  const [editQuestParagraph, setEidtQuestParagraph] = useState("");
   const [editQuestionText, setEditQuestionText] = useState("");
   const [options, setOptions] = useState(["", "", "", ""]);
   const [editOptions, setEditOptions] = useState(["", "", "", ""]);
@@ -40,10 +47,17 @@ export function InstructorExamQuestion(){
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    apiPostQuestionsForExam(examId, questionText, options, correctOptionIndex)
+    apiPostQuestionsForExam(
+      examId,
+      questParagraph,
+      questionText,
+      options,
+      correctOptionIndex
+    )
       .then((response) => {
         console.log("시험 문제 입력 성공: ", response);
         setFormSubmitted(true);
+        setQuestParagraph([""]);
         setQuestionText([""]);
         setOptions(["", "", "", ""]);
         setCorrectOptionIndex(1);
@@ -73,6 +87,7 @@ export function InstructorExamQuestion(){
   // 문제 수정 모드로 전환
   const enterEditMode = (
     examQuestionId,
+    questParagraph,
     questionText,
     options,
     correctOptionIndex,
@@ -80,6 +95,7 @@ export function InstructorExamQuestion(){
   ) => {
     setEditMode(true);
     setExamQuestionId(examQuestionId);
+    setQuestionParagraph(questParagraph);
     setEditQuestionText(questionText);
     if (typeof options === "string") {
       const splittedOptions = options.split(",").map((option) => option.trim());
@@ -94,6 +110,7 @@ export function InstructorExamQuestion(){
   const cancelEditMode = () => {
     setEditMode(false);
     setExamQuestionId(null);
+    setQuestParagraph("");
     setEditQuestionText("");
     setEditOptions(editOptions);
     setCorrectOptionIndex(1);
@@ -104,6 +121,7 @@ export function InstructorExamQuestion(){
     apiPutQuestionsForExam(
       examQuestionId,
       examId,
+      editQuestParagraph,
       editQuestionText,
       editOptions,
       correctOptionIndex
@@ -118,10 +136,19 @@ export function InstructorExamQuestion(){
       });
   };
 
-    return <>
-    <Container>
+  return (
+    <>
+      <Container>
         <h1>강사 시험 문제 페이지</h1>
         <form>
+          <label>
+            본문:
+            <input
+              type="text"
+              value={questParagraph}
+              onChange={(e) => setQuestParagraph(e.target.value)}
+            />
+          </label>
           <label>
             문제:
             <input
@@ -172,6 +199,9 @@ export function InstructorExamQuestion(){
         {examQuestions &&
           examQuestions.map((examQuestion, index) => (
             <li key={examQuestion.examQuestionId}>
+              <strong>본문: </strong>
+              {examQuestion.questParagraph}
+              <br />
               <strong>{`문제 ${index + 1}`}</strong>
               {examQuestion.questionText}
               <br />
@@ -186,6 +216,7 @@ export function InstructorExamQuestion(){
                 onClick={() =>
                   enterEditMode(
                     examQuestion.examQuestionId,
+                    examQuestion.questionParagraph,
                     examQuestion.questionText,
                     examQuestion.options,
                     examQuestion.correctOptionIndex,
@@ -250,5 +281,6 @@ export function InstructorExamQuestion(){
             </li>
           ))}
       </Container>
-    </>;
+    </>
+  );
 }

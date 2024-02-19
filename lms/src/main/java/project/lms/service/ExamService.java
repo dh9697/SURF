@@ -16,7 +16,7 @@ public interface ExamService {
 	
 	public ResponseDto<Exam> createExam(ExamDto examDto);
 	
-	public ResponseDto<Exam> updateExam(Long examId, ExamDto examDto);
+	public ResponseDto<ExamResponseDto> updateExam(Long examId, ExamDto examDto);
 	
 	public ResponseDto<String> deleteExam(Long examId);
 	

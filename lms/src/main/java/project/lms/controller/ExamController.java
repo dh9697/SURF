@@ -64,8 +64,8 @@ public class ExamController {
 	// 시험 수정
 	@PutMapping("/update/{examId}")
 	@PreAuthorize("hasAnyRole('INSTRUCTOR')")
-	public ResponseEntity<ResponseDto<Exam>> updateExam(@PathVariable Long examId, @RequestBody ExamDto examDto) {
-		ResponseDto<Exam> responseDto = examService.updateExam(examId, examDto);
+	public ResponseEntity<ResponseDto<ExamResponseDto>> updateExam(@PathVariable Long examId, @RequestBody ExamDto examDto) {
+		ResponseDto<ExamResponseDto> responseDto = examService.updateExam(examId, examDto);
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 	

@@ -145,7 +145,7 @@ public class ExamServiceImpl implements ExamService {
 	// 시험 수정
 	@Transactional
 	@Override
-	public ResponseDto<Exam> updateExam(Long examId, ExamDto examDto) {
+	public ResponseDto<ExamResponseDto> updateExam(Long examId, ExamDto examDto) {
 		try {
 			Exam exam = examRepository.findById(examId)
 					.orElseThrow(() -> new InvalidRequestException("Invalid Request", "해당 시험이 존재하지 않거나 찾을 수 없습니다."));
@@ -154,9 +154,14 @@ public class ExamServiceImpl implements ExamService {
 			
 			examRepository.save(exam);
 			
+			ExamResponseDto examResponseDto = new ExamResponseDto();
+	        examResponseDto.setExamId(exam.getExamId());
+	        examResponseDto.setContentId(exam.getContent().getContentId());
+	        examResponseDto.setExamIsActive(exam.getExamIsActive());
+			
 			return new ResponseDto<>(
 					ResultCode.SUCCESS.name(),
-					exam,
+					examResponseDto,
 					"시험을 수정하였습니다.");
 		} catch (Exception e) {
 			e.printStackTrace();

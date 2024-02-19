@@ -177,6 +177,7 @@ export function apiGetQuestionsForExam(examId) {
 // 시험 문제 저장
 export function apiPostQuestionsForExam(
   examId,
+  questParagraph,
   questionText,
   options,
   correctOptionIndex
@@ -185,6 +186,7 @@ export function apiPostQuestionsForExam(
     "http://localhost:8080/api/exam-questions/save",
     {
       examId: examId,
+      questParagraph: questParagraph,
       questionText: questionText,
       options: options,
       correctOptionIndex: correctOptionIndex,
@@ -197,6 +199,7 @@ export function apiPostQuestionsForExam(
 export function apiPutQuestionsForExam(
   examQuestionId,
   examId,
+  questParagraph,
   questionText,
   options,
   correctOptionIndex
@@ -205,6 +208,7 @@ export function apiPutQuestionsForExam(
     `http://localhost:8080/api/exam-questions/update/${examQuestionId}`,
     {
       examId: examId,
+      questParagraph: questParagraph,
       questionText: questionText,
       options: options,
       correctOptionIndex: correctOptionIndex,
