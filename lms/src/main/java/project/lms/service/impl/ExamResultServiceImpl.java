@@ -51,14 +51,14 @@ public class ExamResultServiceImpl implements ExamResultService {
 	    this.examHistoryRepository = examHistoryRepository;
 	}
 	
-	// 모든 시험 결과를 조회하여 ResponseDto<List<ExamResultDto>>로 반환하는 메서드
+	// 모든 시험 조회
 	@Override
 	public ResponseDto<List<ExamResultDto>> getAllExamResults(){
 		List<ExamResultDto> result = examResultRepository.findAll().stream().map(this::toDto).collect(Collectors.toList());
 		return new ResponseDto<>("SUCCESS", result, "All exam results retrieved successfully");
 	}
 	
-	// examResultId를 기반으로 해당 시험 결과를 조회하여 ResponseDto<ExamResultDto>로 반환하는 메서드
+	// 해당 시험 결과 조회
 	@Override
 	public ResponseDto<ExamResultDto> getExamResult(Long examResultId) {
 		ExamResultDto result = toDto(examResultRepository.findById(examResultId)
@@ -66,23 +66,22 @@ public class ExamResultServiceImpl implements ExamResultService {
 		return new ResponseDto<>("SUCCESS", result, "Exam result retrieved successfully");
 	}
 
-	// memberId를 기반으로 해당 사용자의 모든 시험 결과를 조회하여 ResponseDto<List<ExamResultDto>>로 반환하는 메서드
+	// memberId를 기반으로 해당 사용자의 모든 시험 결과를 조회
 	@Override
 	public ResponseDto<List<ExamResultDto>> getExamResultsByMemberMemberId(Long memberId) {
 		 List<ExamResultDto> result = examResultRepository.findByMemberMemberId(memberId).stream().map(this::toDto).collect(Collectors.toList());
 		 return new ResponseDto<>("SUCCESS", result, "Exam results for member retrieved successfully");
 	}
 
-	// 시험 결과를 생성하고, 저장한 후 ResponseDto<ExamResultDto>로 반환하는 메서드
+	// 시험 결과 중복 생성 코드 추가하기
+	// 시험 결과를 생성하고, 저장
 	@Override
 	public ResponseDto<ExamResultDto> createExamResult(ExamResultDto examResultDto, Long examId, Long memberId, Long questionId) {
-	    // memberId와 examId를 이용하여 Member와 Exam 객체를 조회
 	    Member member = memberRepository.findById(memberId)
 	            .orElseThrow(() -> new InvalidRequestException("Member not found", "해당 회원을 찾을 수 없습니다."));
 	    Exam exam = examRepository.findById(examId)
 	            .orElseThrow(() -> new InvalidRequestException("Exam not found", "해당 시험을 찾을 수 없습니다."));
 	    
-	    // ExamHistory를 조회하거나 새로 생성
 	    ExamHistory examHistory = examHistoryRepository.findByMember_MemberIdAndExam_ExamId(memberId, examId)
 	            .orElseGet(() -> {
 	                ExamHistory newExamHistory = new ExamHistory();
@@ -195,14 +194,12 @@ public class ExamResultServiceImpl implements ExamResultService {
 	    return new ResponseDto<>("SUCCESS", toDto(examResult), "Exam result updated successfully");
 	}
 	
-	// examResultId를 기반으로 ExamResult 객체를 조회하고, 조회된 ExamResult 객체를 삭제하고, 결과를 ResponseDto<String>로 반환하는 메서드
+	// 삭제
 	@Override
 	public ResponseDto<String> deleteExamResult(Long examResultId) {
-		// examResultId를 기반으로 ExamResult 객체를 조회
 		ExamResult examResult = examResultRepository.findById(examResultId)
 		        .orElseThrow(() -> new InvalidRequestException("ExamResult not found", "해당 시험 결과를 찾을 수 없습니다."));
 	    
-		// 조회된 ExamResult 객체를 삭제
 		examResultRepository.delete(examResult);
 	    return new ResponseDto<>("SUCCESS", "ExamResult deleted successfully", null);
 	}

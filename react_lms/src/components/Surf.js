@@ -44,148 +44,184 @@ import { CourseReview } from "./Community/CourseReview.js";
 import { HallofFame } from "./Community/HallofFame.js";
 import { TodayResolutions } from "./Community/TodayResolutions.js";
 import { InstructorExamQuestion } from "./Dashboard/Instructor/InstructorExamQuestion.js";
+import { MyExam } from "./Dashboard/User/MyExam.js";
+import { Exam } from "./Subject/MemberCourse/Contents/Exam/Exam.js";
+import { ContentExam } from "./Dashboard/User/ContentExam.js";
 
 const Wrapper = styled.div`
-  width: 100%;
-  height: 100vh;
+   width: 100%;
+   height: 100vh;
 `;
 
 const ContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+   display: flex;
+   flex-direction: column;
+   height: 100%;
 `;
 
 const MainContent = styled.div`
-  flex: 1;
+   flex: 1;
 `;
 
 export function Surf() {
-  const { user } = useContext(AuthContext);
-  return (
-    <>
-      <BrowserRouter>
-        <Wrapper>
-          <ContentWrapper>
-            <MainContent>
-              <Routes>
-                <Route path="/" element={<NavBar />}>
-                  <Route index element={<Main />} />
-                  <Route path="/about" element={<AboutMain />} />
-                  <Route path="/course" element={<CourseMain />} />
-                  <Route path="/faq" element={<Contact />} />
-                  <Route
-                    path="/course/subject/:subjectId"
-                    element={<CourseMain />}
-                  />
-                  <Route path="/course/:courseId" element={<CourseTitle />}>
-                    <Route index element={<CourseDetail />} />
-                    <Route
-                      path="/course/:courseId/curriculum"
-                      element={<CourseCurriculem />}
-                    />
-                    <Route path="afterinquiries" element={<AfterInquiries />} />
-                    <Route
-                      path="coursedescription"
-                      element={<CourseDescription />}
-                    />
-                  </Route>
-                  {user && (
-                    <Route
-                      path={`/dashboard/${user.loginId}`}
-                      element={<DashboardNavBar />}
-                    >
-                      <Route index element={<Dashboard />} />
-                      <Route
-                        path={`/dashboard/${user.loginId}/coursereview_manage`}
-                        element={<InstructorCourseReviewManage />}
-                      />
-                      <Route
-                        path={`/dashboard/${user.loginId}/qna_manage`}
-                        element={<InstructorQnAManage />}
-                      />
-                      <Route
-                        path={`/dashboard/${user.loginId}/exam_manage`}
-                        element={<InstructorExamManage />}
-                      />
-                      <Route path={`/dashboard/${user.loginId}/exam_manage/:examId/question`} element={<InstructorExamQuestion />}/>
-                      <Route
-                        path={`/dashboard/${user.loginId}/students_manage`}
-                        element={<InstructorStudentsManage />}
-                      />
-                      <Route
-                        path={`/dashboard/${user.loginId}/course_manage`}
-                        element={<AdminCourseManage />}
-                      />
-                      <Route
-                        path={`/dashboard/${user.loginId}/user_manage`}
-                        element={<AdminUserManage />}
-                      />
-                      <Route
-                        path={`/dashboard/${user.loginId}/leveltest_manage`}
-                        element={<AdminLevelTestManage />}
-                      />
-                      <Route
-                        path={`/dashboard/${user.loginId}/post_manage`}
-                        element={<AdminPostManage />}
-                      />
-                      <Route
-                        path={`/dashboard/${user.loginId}/notice_manage`}
-                        element={<AdminNoticeManage />}
-                      />
-                      <Route
-                        path={`/dashboard/${user.loginId}/courses`}
-                        element={<MyCourse />}
-                      />
-                      <Route
-                        path={`/dashboard/${user.loginId}/mycomment`}
-                        element={<MyComment />}
-                      />
-                      <Route
-                        path={`/dashboard/${user.loginId}/purchaselist`}
-                        element={<PurchaseList />}
-                      />
-                      <Route
-                        path={`/dashboard/${user.loginId}/account_info`}
-                        element={<AccountInfo />}
-                      />
-                    </Route>
-                  )}
-                  ;
-                  <Route path="/level_test" element={<LevelTestMain />} />
-                  <Route
-                    path="/level_test_start"
-                    element={<LevelTestStart />}
-                  />
-                  <Route
-                    path="/level_test_result"
-                    element={<LevelTestResult />}
-                  />
-                  <Route path="/event" element={<Event />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/accountform" element={<AccountForm />} />
-                  <Route path="/announcement" element={<Announcement />} />
-                  <Route path="/coursereview" element={<CourseReview />} />
-                  <Route path="/halloffame" element={<HallofFame />} />
-                  <Route
-                    path="/todayResolutions"
-                    element={<TodayResolutions />}
-                  />
-                </Route>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/subject" element={<TestSubject />} />
-                <Route path="/testexam2" element={<ExamAnswer />} />
-                <Route
-                  path="/course/:courseId/content/:contentId"
-                  element={<ContentComponent />}
-                />
-              </Routes>
-            </MainContent>
-            <Footer />
-          </ContentWrapper>
-        </Wrapper>
-      </BrowserRouter>
-    </>
-  );
+   const { user } = useContext(AuthContext);
+   return (
+      <>
+         <BrowserRouter>
+            <Wrapper>
+               <ContentWrapper>
+                  <MainContent>
+                     <Routes>
+                        <Route path="/" element={<NavBar />}>
+                           <Route index element={<Main />} />
+                           <Route path="/about" element={<AboutMain />} />
+                           <Route path="/course" element={<CourseMain />} />
+                           <Route path="/faq" element={<Contact />} />
+                           <Route
+                              path="/course/subject/:subjectId"
+                              element={<CourseMain />}
+                           />
+                           <Route
+                              path="/course/:courseId"
+                              element={<CourseTitle />}
+                           >
+                              <Route index element={<CourseDetail />} />
+                              <Route
+                                 path="/course/:courseId/curriculum"
+                                 element={<CourseCurriculem />}
+                              />
+                              <Route
+                                 path="afterinquiries"
+                                 element={<AfterInquiries />}
+                              />
+                              <Route
+                                 path="coursedescription"
+                                 element={<CourseDescription />}
+                              />
+                           </Route>
+                           {user && (
+                              <Route
+                                 path={`/dashboard/${user.loginId}`}
+                                 element={<DashboardNavBar />}
+                              >
+                                 <Route index element={<Dashboard />} />
+                                 <Route
+                                    path={`/dashboard/${user.loginId}/coursereview_manage`}
+                                    element={<InstructorCourseReviewManage />}
+                                 />
+                                 <Route
+                                    path={`/dashboard/${user.loginId}/qna_manage`}
+                                    element={<InstructorQnAManage />}
+                                 />
+                                 <Route
+                                    path={`/dashboard/${user.loginId}/exam_manage`}
+                                    element={<InstructorExamManage />}
+                                 />
+                                 <Route
+                                    path={`/dashboard/${user.loginId}/exam_manage/:examId/question`}
+                                    element={<InstructorExamQuestion />}
+                                 />
+                                 <Route
+                                    path={`/dashboard/${user.loginId}/students_manage`}
+                                    element={<InstructorStudentsManage />}
+                                 />
+                                 <Route
+                                    path={`/dashboard/${user.loginId}/course_manage`}
+                                    element={<AdminCourseManage />}
+                                 />
+                                 <Route
+                                    path={`/dashboard/${user.loginId}/user_manage`}
+                                    element={<AdminUserManage />}
+                                 />
+                                 <Route
+                                    path={`/dashboard/${user.loginId}/leveltest_manage`}
+                                    element={<AdminLevelTestManage />}
+                                 />
+                                 <Route
+                                    path={`/dashboard/${user.loginId}/post_manage`}
+                                    element={<AdminPostManage />}
+                                 />
+                                 <Route
+                                    path={`/dashboard/${user.loginId}/notice_manage`}
+                                    element={<AdminNoticeManage />}
+                                 />
+                                 <Route
+                                    path={`/dashboard/${user.loginId}/courses`}
+                                    element={<MyCourse />}
+                                 />
+                                 <Route
+                                    path={`/dashboard/${user.loginId}/exams`}
+                                    element={<MyExam />}
+                                 >
+                                    <Route
+                                       path={`/dashboard/${user.loginId}/exams/:contentId`}
+                                       element={<ContentExam />}
+                                    />
+                                 </Route>
+                                 <Route
+                                    path={`/dashboard/${user.loginId}/mycomment`}
+                                    element={<MyComment />}
+                                 />
+                                 <Route
+                                    path={`/dashboard/${user.loginId}/purchaselist`}
+                                    element={<PurchaseList />}
+                                 />
+                                 <Route
+                                    path={`/dashboard/${user.loginId}/account_info`}
+                                    element={<AccountInfo />}
+                                 />
+                              </Route>
+                           )}
+                           ;
+                           <Route
+                              path="/level_test"
+                              element={<LevelTestMain />}
+                           />
+                           <Route
+                              path="/level_test_start"
+                              element={<LevelTestStart />}
+                           />
+                           <Route
+                              path="/level_test_result"
+                              element={<LevelTestResult />}
+                           />
+                           <Route path="/event" element={<Event />} />
+                           <Route path="/cart" element={<Cart />} />
+                           <Route
+                              path="/accountform"
+                              element={<AccountForm />}
+                           />
+                           <Route
+                              path="/announcement"
+                              element={<Announcement />}
+                           />
+                           <Route
+                              path="/coursereview"
+                              element={<CourseReview />}
+                           />
+                           <Route path="/halloffame" element={<HallofFame />} />
+                           <Route
+                              path="/todayResolutions"
+                              element={<TodayResolutions />}
+                           />
+                        </Route>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/subject" element={<TestSubject />} />
+                        <Route
+                           path="/course/:courseId/content/:contentId"
+                           element={<ContentComponent />}
+                        />
+                        <Route
+                           path="/course/:courseId/content/:contentId/exam/:examId"
+                           element={<ExamAnswer />}
+                        />
+                     </Routes>
+                  </MainContent>
+                  <Footer />
+               </ContentWrapper>
+            </Wrapper>
+         </BrowserRouter>
+      </>
+   );
 }

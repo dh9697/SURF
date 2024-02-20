@@ -47,7 +47,6 @@ public class ExamController {
 	
 	// 과목 별 시험 문제 조회
 	@GetMapping("list/{contentId}")
-	@PreAuthorize("hasAnyRole('INSTRUCTOR')")
 	public ResponseEntity<ResponseDto<List<ExamResponseDto>>> getExamByCourse(@PathVariable Long contentId) {
 	    ResponseDto<List<ExamResponseDto>> responseDto = examService.getExamByContent(contentId);
 	    return ResponseEntity.ok(responseDto);
