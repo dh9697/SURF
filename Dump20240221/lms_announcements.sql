@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `lms` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `lms`;
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
--- Host: localhost    Database: lms
+-- Host: 127.0.0.1    Database: lms
 -- ------------------------------------------------------
--- Server version	8.0.36
+-- Server version	8.2.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,34 +16,31 @@ USE `lms`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `todo_list`
+-- Table structure for table `announcements`
 --
 
-DROP TABLE IF EXISTS `todo_list`;
+DROP TABLE IF EXISTS `announcements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `todo_list` (
-  `task_id` bigint NOT NULL AUTO_INCREMENT,
-  `completion_date` date DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `due_date` datetime(6) DEFAULT NULL,
-  `is_completed` bit(1) DEFAULT NULL,
-  `priority` int DEFAULT NULL,
-  `task_name` varchar(255) DEFAULT NULL,
+CREATE TABLE `announcements` (
+  `announcement_id` bigint NOT NULL AUTO_INCREMENT,
+  `announcement_date` datetime(6) DEFAULT NULL,
+  `announcement_text` varchar(255) DEFAULT NULL,
+  `is_important` bit(1) DEFAULT NULL,
   `member_id` bigint NOT NULL,
-  PRIMARY KEY (`task_id`),
-  KEY `FK3x6rbqoxekyny3cnvvcb9tp9y` (`member_id`),
-  CONSTRAINT `FK3x6rbqoxekyny3cnvvcb9tp9y` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
+  PRIMARY KEY (`announcement_id`),
+  KEY `FKq21yt2yotgnlw0dv6rh46unpr` (`member_id`),
+  CONSTRAINT `FKq21yt2yotgnlw0dv6rh46unpr` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `todo_list`
+-- Dumping data for table `announcements`
 --
 
-LOCK TABLES `todo_list` WRITE;
-/*!40000 ALTER TABLE `todo_list` DISABLE KEYS */;
-/*!40000 ALTER TABLE `todo_list` ENABLE KEYS */;
+LOCK TABLES `announcements` WRITE;
+/*!40000 ALTER TABLE `announcements` DISABLE KEYS */;
+/*!40000 ALTER TABLE `announcements` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -57,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-17 23:48:40
+-- Dump completed on 2024-02-21 20:00:05

@@ -11,15 +11,15 @@ import project.lms.model.Member;
 
 public interface ContentHistoryRepository extends JpaRepository<ContentHistory, Long> {
 	
-	List<ContentHistory> findByMember(Member member);
+List<ContentHistory> findByMember(Member member);
 	
 	List<ContentHistory> findByContentContentId(Long contentId);
 	
-	List<ContentHistory> findByIsCompletedTrue();
+	List<ContentHistory> findByMemberMemberIdAndIsCompletedTrue(Long memberId);
 	
-	List<ContentHistory> findByIsCompletedFalse();
+	List<ContentHistory> findByMemberMemberIdAndIsCompletedFalse(Long memberId);
 	
-	Long countByMemberMemberIdAndIsCompletedTrue(Long memberId); // 코드 추가
+	Long countByMemberMemberIdAndIsCompletedTrue(Long memberId); 
 
 	Optional<ContentHistory> findByMemberAndContent(Member member, Content content);
 	

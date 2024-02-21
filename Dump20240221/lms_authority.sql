@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `lms` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `lms`;
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
--- Host: localhost    Database: lms
+-- Host: 127.0.0.1    Database: lms
 -- ------------------------------------------------------
--- Server version	8.0.36
+-- Server version	8.2.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,31 +16,26 @@ USE `lms`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `withdrawal`
+-- Table structure for table `authority`
 --
 
-DROP TABLE IF EXISTS `withdrawal`;
+DROP TABLE IF EXISTS `authority`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `withdrawal` (
-  `withdrawal_id` bigint NOT NULL AUTO_INCREMENT,
-  `is_deleted` bit(1) DEFAULT NULL,
-  `reason` varchar(255) NOT NULL,
-  `withdrawal_time` datetime(6) NOT NULL,
-  `member_id` bigint NOT NULL,
-  PRIMARY KEY (`withdrawal_id`),
-  KEY `FKjy0789uood48lwb0ocetjcvha` (`member_id`),
-  CONSTRAINT `FKjy0789uood48lwb0ocetjcvha` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
+CREATE TABLE `authority` (
+  `authority_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`authority_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `withdrawal`
+-- Dumping data for table `authority`
 --
 
-LOCK TABLES `withdrawal` WRITE;
-/*!40000 ALTER TABLE `withdrawal` DISABLE KEYS */;
-/*!40000 ALTER TABLE `withdrawal` ENABLE KEYS */;
+LOCK TABLES `authority` WRITE;
+/*!40000 ALTER TABLE `authority` DISABLE KEYS */;
+INSERT INTO `authority` VALUES ('ROLE_ADMIN'),('ROLE_INSTRUCTOR'),('ROLE_MEMBER'),('ROLE_USER');
+/*!40000 ALTER TABLE `authority` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +47,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-17 23:48:40
+-- Dump completed on 2024-02-21 20:00:05

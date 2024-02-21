@@ -1,6 +1,7 @@
 package project.lms.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +74,6 @@ public class ExamResultServiceImpl implements ExamResultService {
 		 return new ResponseDto<>("SUCCESS", result, "Exam results for member retrieved successfully");
 	}
 
-	// 시험 결과 중복 생성 코드 추가하기
 	// 시험 결과를 생성하고, 저장
 	@Override
 	public ResponseDto<ExamResultDto> createExamResult(ExamResultDto examResultDto, Long examId, Long memberId, Long questionId) {
@@ -81,6 +81,13 @@ public class ExamResultServiceImpl implements ExamResultService {
 	            .orElseThrow(() -> new InvalidRequestException("Member not found", "해당 회원을 찾을 수 없습니다."));
 	    Exam exam = examRepository.findById(examId)
 	            .orElseThrow(() -> new InvalidRequestException("Exam not found", "해당 시험을 찾을 수 없습니다."));
+	    ExamQuestion examQuestion = examQuestionRepository.findById(questionId)
+	            .orElseThrow(() -> new InvalidRequestException("ExamQuestion not found", "해당 시험 문제를 찾을 수 없습니다."));
+	    
+	    Optional<ExamResult> existingExamResult = examResultRepository.findByMemberAndExamAndExamQuestion(member, exam, examQuestion);
+	    if(existingExamResult.isPresent()) {
+	    	throw new InvalidRequestException("Duplicate exam result", "이미 저장된 시험 결과입니다.");
+	    }
 	    
 	    ExamHistory examHistory = examHistoryRepository.findByMember_MemberIdAndExam_ExamId(memberId, examId)
 	            .orElseGet(() -> {
@@ -96,26 +103,20 @@ public class ExamResultServiceImpl implements ExamResultService {
 	    examResult.setMember(member);
 	    examResult.setExam(exam);
 	    examResult.setSubmittedAnswer(examResultDto.getSubmittedAnswer());
-
-	    // questionId를 이용하여 ExamQuestion 객체를 조회하고, ExamResult에 설정
-	    ExamQuestion examQuestion = examQuestionRepository.findById(questionId)
-	            .orElseThrow(() -> new InvalidRequestException("ExamQuestion not found", "해당 시험 문제를 찾을 수 없습니다."));
 	    examResult.setExamQuestion(examQuestion);
 
-	    // 시험 결과를 저장
 	    examResult = examResultRepository.save(examResult);
 
 	    // 사용자가 제출한 답안이 정답인지 확인
 	    checkAnswer(examResult.getExamResultId(), questionId);
-	    
-	    // 시험에 속한 문제의 수와 그 시험에 대한 시험 결과의 수를 비교합니다.
+
+	    // 시험 문제를 다 풀었다면 history 수정
 	    int totalQuestions = exam.getExamQuestions().size();
 	    int totalResults = examResultRepository.countByExam_ExamId(examId);
 
-	    // 모든 문제에 대한 시험 결과가 생성되었는지 확인하고, 그렇다면 완료 상태를 true로 변경합니다.
 	    if (totalQuestions == totalResults) {
 	        examHistory.setExamCompletionStatus(true);
-	        examHistoryRepository.save(examHistory);  // 변경 사항을 저장
+	        examHistoryRepository.save(examHistory);  
 	    }
 
 	    return new ResponseDto<>("SUCCESS", toDto(examResult), "Exam result created successfully");
@@ -133,11 +134,9 @@ public class ExamResultServiceImpl implements ExamResultService {
 	// 제출한 답안이 맞는지 확인하고, 결과를 ResponseDto<String>로 반환하는 메서드
 	@Override
 	public ResponseDto<String> checkAnswer(Long examResultId, Long questionId) {
-	    // examResultId를 기반으로 ExamResult 객체를 조회
 		ExamResult examResult = examResultRepository.findById(examResultId)
 		        .orElseThrow(() -> new InvalidRequestException("ExamResult not found", "해당 시험 결과를 찾을 수 없습니다."));
-	    
-	    // 해당 시험 문제를 조회
+
 		ExamQuestion examQuestion = examQuestionRepository.findById(questionId)
 		        .orElseThrow(() -> new InvalidRequestException("ExamQuestion not found", "해당 시험 문제를 찾을 수 없습니다."));
 	    
@@ -148,7 +147,6 @@ public class ExamResultServiceImpl implements ExamResultService {
 	        examResult.setCorrect(false);
 	    }
 	    
-	    // ExamResult 객체를 업데이트
 		examResultRepository.save(examResult);
 	    return new ResponseDto<>("SUCCESS", "Answer checked successfully", null);
 	}

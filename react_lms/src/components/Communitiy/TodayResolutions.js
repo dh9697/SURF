@@ -1,90 +1,157 @@
 import styled from "styled-components";
-import wave from "../image/wave.png";
+import { useState, useContext } from "react";
+import { AuthContext } from "../../AuthContext";
 
 const Container = styled.div`
   width: 100%;
-  & .innerWrapper {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 0px;
-    gap: 2rem;
-  }
+  padding: 0 20%;
+`;
+
+const InnerWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const Title = styled.h1`
+  margin-top: 10px;
+  font-size: 1.5rem;
 `;
 
 const InputBox = styled.div`
   display: flex;
   gap: 1rem;
+  align-items: center;
   height: 50px;
-  & .date {
-    text-align: center;
-    line-height: 50px;
-    width: 100px;
-    background-color: lightblue; // 배경색을 원하는 색상으로 설정
-    border: none;
-  }
-  & input {
-    flex: 1;
-  }
+`;
+
+const Date = styled.div`
+  width: 100px;
+  text-align: center;
+  line-height: 50px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+`;
+
+const Input = styled.input`
+  flex: 1;
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+`;
+
+const Button = styled.button`
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+  background-color: #3182f6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 `;
 
 const RealTimeBox = styled.div`
-  height: 300px;
+  height: 100px;
   background-color: #3182f6;
-  & .wave {
-    height: 100%;
-    background: url(${wave}) no-repeat center;
-    .title {
-      height: 50px;
-    }
-    .resolve {
-      height: 250px;
-      background-color: gray;
-      opacity: 0.5;
-      padding: 0 40px;
-    }
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-const AccumBox = styled.div``;
+const RealTimeText = styled.div`
+  color: white;
+  font-weight: bold;
+  font-size: 2rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+`;
+
+const AccumBox = styled.div`
+  margin-top: 2rem;
+`;
+
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+`;
+
+const Col = styled.col`
+  width: ${({ width }) => width};
+`;
+
+const TableHeader = styled.th`
+  padding: 1rem;
+  text-align: left;
+  background-color: #3182f6;
+  color: white;
+  font-weight: bold;
+`;
+
+const TableCell = styled.td`
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+`;
 
 export function TodayResolutions() {
+  const { user } = useContext(AuthContext);
+  const [resolution, setResolution] = useState("");
+  const [realTimeResolution, setRealTimeResolution] = useState("");
+  const [accumulatedResolutions, setAccumulatedResolutions] = useState([]);
+
+  const handleButtonClick = () => {
+    setRealTimeResolution(resolution);
+    setAccumulatedResolutions([...accumulatedResolutions, resolution]);
+    setResolution("");
+  };
+
+  const handleInputChange = (e) => {
+    setResolution(e.target.value);
+  };
+
   return (
-    <>
-      <Container>
-        <div className="innerWrapper">
-          <h1>오늘의 각오</h1>
-          <InputBox>
-            <div className="date">오늘 날짜</div>
-            <input type="text" placeholder="오늘의 각오를 적어 주세요!" />
-            <button>파이팅</button>
-          </InputBox>
-          <RealTimeBox>
-            <div className="wave">
-              <div className="title">실시간 오늘의 각오</div>
-              <div className="resolve">아 춥다 시발</div>
-            </div>
-          </RealTimeBox>
-          <AccumBox>
-            <div>지금까지의 오늘의 각오</div>
-            <table>
-              <colgroup>
-                <col style={{ width: 130 + "px" }} />
-                <col style={{ width: 300 + "px" }} />
-                <col style={{ width: 130 + "px" }} />
-                <col style={{ width: 130 + "px" }} />
-              </colgroup>
-              <tbody>
-                <tr>
-                  <td>9342</td>
-                  <td>당장 널 만나러 가지 않으면</td>
-                  <td>이찬혁</td>
-                  <td>2024-02-05</td>
-                </tr>
-              </tbody>
-            </table>
-          </AccumBox>
-        </div>
-      </Container>
-    </>
+    <Container>
+      <InnerWrapper>
+        <Title>오늘의 각오</Title>
+        <InputBox>
+          <Date>2월 13일</Date>
+          <Input
+            type="text"
+            placeholder="오늘의 각오를 적어 주세요!"
+            value={resolution}
+            onChange={handleInputChange}
+          />
+          <Button onClick={handleButtonClick}>파이팅</Button>
+        </InputBox>
+        <RealTimeBox>
+          <RealTimeText>{realTimeResolution}</RealTimeText>
+        </RealTimeBox>
+        <AccumBox>
+          <Title>지금까지 오늘의 각오</Title>
+          <Table>
+            <colgroup>
+              <Col width="130px" />
+              <Col width="300px" />
+              <Col width="130px" />
+              <Col width="130px" />
+            </colgroup>
+            <tbody>
+              {accumulatedResolutions
+                .slice(0)
+                .reverse()
+                .map((res, index) => (
+                  <tr key={index}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{res}</TableCell>
+                    <TableCell>{user.name}</TableCell>
+                    <TableCell>2/13</TableCell>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
+        </AccumBox>
+      </InnerWrapper>
+    </Container>
   );
 }

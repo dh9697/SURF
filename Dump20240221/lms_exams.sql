@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `lms` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `lms`;
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
--- Host: localhost    Database: lms
+-- Host: 127.0.0.1    Database: lms
 -- ------------------------------------------------------
--- Server version	8.0.36
+-- Server version	8.2.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,32 +16,30 @@ USE `lms`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `exam_history`
+-- Table structure for table `exams`
 --
 
-DROP TABLE IF EXISTS `exam_history`;
+DROP TABLE IF EXISTS `exams`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `exam_history` (
-  `exam_history_id` bigint NOT NULL AUTO_INCREMENT,
-  `exam_completion_status` bit(1) NOT NULL,
-  `exam_id` bigint NOT NULL,
-  `member_id` bigint NOT NULL,
-  PRIMARY KEY (`exam_history_id`),
-  KEY `FK1uur8qwrxn80nhe5v63phkwf6` (`exam_id`),
-  KEY `FKp7pbhtcgx7ejm733vydwilsrs` (`member_id`),
-  CONSTRAINT `FK1uur8qwrxn80nhe5v63phkwf6` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`exam_id`),
-  CONSTRAINT `FKp7pbhtcgx7ejm733vydwilsrs` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `exams` (
+  `exam_id` bigint NOT NULL AUTO_INCREMENT,
+  `exam_is_active` bit(1) DEFAULT NULL,
+  `content_id` bigint NOT NULL,
+  PRIMARY KEY (`exam_id`),
+  KEY `FKaqugi5glqghsa5q91c8utngpp` (`content_id`),
+  CONSTRAINT `FKaqugi5glqghsa5q91c8utngpp` FOREIGN KEY (`content_id`) REFERENCES `contents` (`content_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `exam_history`
+-- Dumping data for table `exams`
 --
 
-LOCK TABLES `exam_history` WRITE;
-/*!40000 ALTER TABLE `exam_history` DISABLE KEYS */;
-/*!40000 ALTER TABLE `exam_history` ENABLE KEYS */;
+LOCK TABLES `exams` WRITE;
+/*!40000 ALTER TABLE `exams` DISABLE KEYS */;
+INSERT INTO `exams` VALUES (10,_binary '',1),(11,_binary '',2);
+/*!40000 ALTER TABLE `exams` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-17 23:48:40
+-- Dump completed on 2024-02-21 20:00:04

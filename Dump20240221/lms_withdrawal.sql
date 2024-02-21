@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `lms` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `lms`;
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
--- Host: localhost    Database: lms
+-- Host: 127.0.0.1    Database: lms
 -- ------------------------------------------------------
--- Server version	8.0.36
+-- Server version	8.2.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,30 +16,31 @@ USE `lms`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `teaching_courses`
+-- Table structure for table `withdrawal`
 --
 
-DROP TABLE IF EXISTS `teaching_courses`;
+DROP TABLE IF EXISTS `withdrawal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `teaching_courses` (
+CREATE TABLE `withdrawal` (
+  `withdrawal_id` bigint NOT NULL AUTO_INCREMENT,
+  `is_deleted` bit(1) DEFAULT NULL,
+  `reason` varchar(255) NOT NULL,
+  `withdrawal_time` datetime(6) NOT NULL,
   `member_id` bigint NOT NULL,
-  `course_id` bigint NOT NULL,
-  PRIMARY KEY (`member_id`,`course_id`),
-  KEY `FKt58ddbk9f27mpew5a37x3itf7` (`course_id`),
-  CONSTRAINT `FKbdhp7mvjr3x1qjj1odcye75jy` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`),
-  CONSTRAINT `FKt58ddbk9f27mpew5a37x3itf7` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
+  PRIMARY KEY (`withdrawal_id`),
+  KEY `FKjy0789uood48lwb0ocetjcvha` (`member_id`),
+  CONSTRAINT `FKjy0789uood48lwb0ocetjcvha` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `teaching_courses`
+-- Dumping data for table `withdrawal`
 --
 
-LOCK TABLES `teaching_courses` WRITE;
-/*!40000 ALTER TABLE `teaching_courses` DISABLE KEYS */;
-INSERT INTO `teaching_courses` VALUES (2,1),(4,2),(5,3),(6,4),(7,5),(8,6),(9,7),(10,8),(11,9),(12,10),(13,11),(14,12);
-/*!40000 ALTER TABLE `teaching_courses` ENABLE KEYS */;
+LOCK TABLES `withdrawal` WRITE;
+/*!40000 ALTER TABLE `withdrawal` DISABLE KEYS */;
+/*!40000 ALTER TABLE `withdrawal` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-17 23:48:40
+-- Dump completed on 2024-02-21 20:00:06

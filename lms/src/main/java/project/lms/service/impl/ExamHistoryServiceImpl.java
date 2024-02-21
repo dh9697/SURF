@@ -92,6 +92,7 @@ public class ExamHistoryServiceImpl implements ExamHistoryService {
         }
     }
 
+    // 이거 왜 넣었는지 물어보기
     // 시험 이력 생성
     @Transactional
     @Override

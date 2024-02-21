@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `lms` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `lms`;
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
--- Host: localhost    Database: lms
+-- Host: 127.0.0.1    Database: lms
 -- ------------------------------------------------------
--- Server version	8.0.36
+-- Server version	8.2.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,28 +16,33 @@ USE `lms`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `members_group`
+-- Table structure for table `exam_history`
 --
 
-DROP TABLE IF EXISTS `members_group`;
+DROP TABLE IF EXISTS `exam_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `members_group` (
-  `group_id` bigint NOT NULL AUTO_INCREMENT,
-  `description` text,
-  `group_name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`group_id`),
-  UNIQUE KEY `UK_gid8hsmgfxjb32ns6hsqybo27` (`group_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `exam_history` (
+  `exam_history_id` bigint NOT NULL AUTO_INCREMENT,
+  `exam_completion_status` bit(1) NOT NULL,
+  `exam_id` bigint NOT NULL,
+  `member_id` bigint NOT NULL,
+  PRIMARY KEY (`exam_history_id`),
+  KEY `FK1uur8qwrxn80nhe5v63phkwf6` (`exam_id`),
+  KEY `FKp7pbhtcgx7ejm733vydwilsrs` (`member_id`),
+  CONSTRAINT `FK1uur8qwrxn80nhe5v63phkwf6` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`exam_id`),
+  CONSTRAINT `FKp7pbhtcgx7ejm733vydwilsrs` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `members_group`
+-- Dumping data for table `exam_history`
 --
 
-LOCK TABLES `members_group` WRITE;
-/*!40000 ALTER TABLE `members_group` DISABLE KEYS */;
-/*!40000 ALTER TABLE `members_group` ENABLE KEYS */;
+LOCK TABLES `exam_history` WRITE;
+/*!40000 ALTER TABLE `exam_history` DISABLE KEYS */;
+INSERT INTO `exam_history` VALUES (1,_binary '',10,17);
+/*!40000 ALTER TABLE `exam_history` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-17 23:48:39
+-- Dump completed on 2024-02-21 20:00:05

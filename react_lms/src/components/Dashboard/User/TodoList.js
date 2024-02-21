@@ -41,7 +41,7 @@ export function TodoList() {
           .catch((error) => {
             console.error("TodoList 조회 실패: ", error);
           });
-        setNewTodoContent(""); // input field 초기화
+        setNewTodoContent("");
       })
       .catch((error) => {
         console.error("TodoList 저장 실패: ", error);

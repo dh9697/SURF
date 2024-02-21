@@ -112,8 +112,8 @@ public class ContentHistoryServiceImpl implements ContentHistoryService {
 	
 	// 완료된 학습 이력 조회
 	@Override
-	public ResponseDto<List<ContentHistory>> getCompletedContentHistories(){
-		List<ContentHistory> contentHistories = contentHistoryRepository.findByIsCompletedTrue();
+	public ResponseDto<List<ContentHistory>> getCompletedContentHistories(Long memberId){
+		List<ContentHistory> contentHistories = contentHistoryRepository.findByMemberMemberIdAndIsCompletedTrue(memberId);
 		return new ResponseDto<>(
 				ResultCode.SUCCESS.name(),
 				contentHistories,
@@ -122,8 +122,8 @@ public class ContentHistoryServiceImpl implements ContentHistoryService {
 	
 	// 완료되지 않은 학습 이력 조회
 	@Override
-	public ResponseDto<List<ContentHistory>> getIncompleteContentHistories(){
-		List<ContentHistory> contentHistories = contentHistoryRepository.findByIsCompletedFalse();
+	public ResponseDto<List<ContentHistory>> getIncompleteContentHistories(Long memberId){
+		List<ContentHistory> contentHistories = contentHistoryRepository.findByMemberMemberIdAndIsCompletedFalse(memberId);
 		return new ResponseDto<>(
 				ResultCode.SUCCESS.name(),
 				contentHistories,

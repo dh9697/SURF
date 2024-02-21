@@ -12,8 +12,6 @@ const Container = styled.div`
 
 const NavBar = styled.div``;
 
-const DashboardMain = styled.div``;
-
 export function DashboardNavBar() {
   const [userRoles, setUserRole] = useState([]);
 

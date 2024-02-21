@@ -17,10 +17,10 @@ public interface ContentHistoryService {
 	public ResponseDto<List<ContentHistory>> getMyContentHistories();
 
 	// 완료된 학습 이력 조회
-    public ResponseDto<List<ContentHistory>> getCompletedContentHistories();
+    public ResponseDto<List<ContentHistory>> getCompletedContentHistories(Long memberId);
 
     // 완료되지 않은 학습 이력 조회
-    public ResponseDto<List<ContentHistory>> getIncompleteContentHistories();
+    public ResponseDto<List<ContentHistory>> getIncompleteContentHistories(Long memberId);
     
     // 콘텐츠 클릭 시 ContentHistory 생성
     public ResponseDto<ContentHistory> createContentHistory(Long memberId, Long contentId);

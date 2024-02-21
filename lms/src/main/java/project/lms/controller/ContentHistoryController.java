@@ -51,16 +51,16 @@ public class ContentHistoryController {
 	}
 	
 	// 완료된 학습 이력 조회
-	@GetMapping("/completed")
-	public ResponseEntity<ResponseDto<List<ContentHistory>>> getCompletedContentHistories() {
-		ResponseDto<List<ContentHistory>> contentHistories = contentHistoryService.getCompletedContentHistories();
+	@GetMapping("{memberId}/completed")
+	public ResponseEntity<ResponseDto<List<ContentHistory>>> getCompletedContentHistories(@PathVariable Long memberId) {
+		ResponseDto<List<ContentHistory>> contentHistories = contentHistoryService.getCompletedContentHistories(memberId);
 		return new ResponseEntity<>(contentHistories, HttpStatus.OK);
 	}
 	
 	// 완료되지 않은 학습 이력 조회
-	@GetMapping("/incomplete")
-	public ResponseEntity<ResponseDto<List<ContentHistory>>> getIncompleteContentHistories() {
-		ResponseDto<List<ContentHistory>> contentHistories = contentHistoryService.getIncompleteContentHistories();
+	@GetMapping("{memberId}/incomplete")
+	public ResponseEntity<ResponseDto<List<ContentHistory>>> getIncompleteContentHistories(@PathVariable Long memberId) {
+		ResponseDto<List<ContentHistory>> contentHistories = contentHistoryService.getIncompleteContentHistories(memberId);
 		return new ResponseEntity<>(contentHistories, HttpStatus.OK);
 	}
 	

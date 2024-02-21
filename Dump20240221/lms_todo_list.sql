@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `lms` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `lms`;
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
--- Host: localhost    Database: lms
+-- Host: 127.0.0.1    Database: lms
 -- ------------------------------------------------------
--- Server version	8.0.36
+-- Server version	8.2.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,35 +16,34 @@ USE `lms`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `carts`
+-- Table structure for table `todo_list`
 --
 
-DROP TABLE IF EXISTS `carts`;
+DROP TABLE IF EXISTS `todo_list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `carts` (
-  `cart_id` bigint NOT NULL AUTO_INCREMENT,
-  `create_date` datetime(6) NOT NULL,
-  `total_price` int NOT NULL,
-  `total_quantity` int NOT NULL,
-  `course_id` bigint DEFAULT NULL,
-  `member_id` bigint DEFAULT NULL,
-  PRIMARY KEY (`cart_id`),
-  KEY `FKm17vvrdg59e9or41oe43p0ph7` (`course_id`),
-  KEY `FKr82uc2e12g45wtitmrq51wsmy` (`member_id`),
-  CONSTRAINT `FKm17vvrdg59e9or41oe43p0ph7` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`),
-  CONSTRAINT `FKr82uc2e12g45wtitmrq51wsmy` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `todo_list` (
+  `task_id` bigint NOT NULL AUTO_INCREMENT,
+  `completion_date` date DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `due_date` datetime(6) DEFAULT NULL,
+  `is_completed` bit(1) DEFAULT NULL,
+  `priority` int DEFAULT NULL,
+  `task_name` varchar(255) DEFAULT NULL,
+  `member_id` bigint NOT NULL,
+  PRIMARY KEY (`task_id`),
+  KEY `FK3x6rbqoxekyny3cnvvcb9tp9y` (`member_id`),
+  CONSTRAINT `FK3x6rbqoxekyny3cnvvcb9tp9y` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `carts`
+-- Dumping data for table `todo_list`
 --
 
-LOCK TABLES `carts` WRITE;
-/*!40000 ALTER TABLE `carts` DISABLE KEYS */;
-INSERT INTO `carts` VALUES (1,'2024-02-13 10:36:50.973767',200000,1,1,1);
-/*!40000 ALTER TABLE `carts` ENABLE KEYS */;
+LOCK TABLES `todo_list` WRITE;
+/*!40000 ALTER TABLE `todo_list` DISABLE KEYS */;
+/*!40000 ALTER TABLE `todo_list` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -58,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-17 23:48:39
+-- Dump completed on 2024-02-21 20:00:04

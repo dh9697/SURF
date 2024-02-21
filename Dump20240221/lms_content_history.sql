@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `lms` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `lms`;
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
--- Host: localhost    Database: lms
+-- Host: 127.0.0.1    Database: lms
 -- ------------------------------------------------------
--- Server version	8.0.36
+-- Server version	8.2.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -35,7 +33,7 @@ CREATE TABLE `content_history` (
   KEY `FKehcc7al1fuxw81pyw1jhav9ne` (`member_id`),
   CONSTRAINT `FKehcc7al1fuxw81pyw1jhav9ne` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`),
   CONSTRAINT `FKt4fu94n7vpacujc7hwv8jx06x` FOREIGN KEY (`content_id`) REFERENCES `contents` (`content_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +42,7 @@ CREATE TABLE `content_history` (
 
 LOCK TABLES `content_history` WRITE;
 /*!40000 ALTER TABLE `content_history` DISABLE KEYS */;
-INSERT INTO `content_history` VALUES (1,_binary '','2024-02-13 11:29:28.155625',1,15),(2,_binary '\0','2024-02-13 11:29:37.380617',2,15),(3,_binary '\0','2024-02-13 11:30:03.780546',3,15),(4,_binary '','2024-02-17 20:25:22.223761',2,2);
+INSERT INTO `content_history` VALUES (1,_binary '','2024-02-13 11:29:28.155625',1,15),(2,_binary '\0','2024-02-13 11:29:37.380617',2,15),(3,_binary '\0','2024-02-13 11:30:03.780546',3,15),(4,_binary '','2024-02-17 20:25:22.223761',2,2),(5,_binary '','2024-02-21 13:36:06.363913',3,17),(6,_binary '','2024-02-21 13:41:18.269009',1,17),(7,_binary '','2024-02-21 13:41:23.436104',2,17),(8,_binary '','2024-02-21 19:01:50.682957',1,19);
 /*!40000 ALTER TABLE `content_history` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-17 23:48:39
+-- Dump completed on 2024-02-21 20:00:07
