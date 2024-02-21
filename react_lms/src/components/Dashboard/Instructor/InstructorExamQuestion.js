@@ -11,7 +11,7 @@ import { useParams } from "react-router-dom";
 const Container = styled.div`
    width: 100%;
 `;
-
+// 수정합시다.
 export function InstructorExamQuestion() {
    const { examId } = useParams();
    const [questParagraph, setQuestParagraph] = useState("");
