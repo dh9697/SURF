@@ -15,7 +15,7 @@ public interface ExamResultRepository extends JpaRepository<ExamResult, Long> {
 	Optional<ExamResult> findByMemberAndExamAndExamQuestion(Member member, Exam exam, ExamQuestion examQuestion);
 	
     List<ExamResult> findByMemberMemberId(Long memberId);
-    
-    int countByExam_ExamId(Long examId);
+
+    int countByMemberAndExam(Member member, Exam exam);
     
 }

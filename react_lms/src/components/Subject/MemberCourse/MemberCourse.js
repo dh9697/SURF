@@ -8,13 +8,12 @@ import {
   apiGetMyCourseHistroies,
   apiGetQnABoardsByMember,
   apiGetQnARepliesByQnABoardId,
+  apiGetMyExamHistory,
+  apiGetMyContentHistory,
 } from "../../RestApi";
-import { NavLink } from "react-router-dom";
-import { CourseTitle } from "../CourseTitle";
 import { AuthContext } from "../../../AuthContext";
-import { formatDateTime, fo, formatTime } from "../../Util/util";
+import { ProgressBar, formatDateTime } from "../../Util/util";
 import { Icon } from "@iconify/react";
-import { ProgressBar } from "react-bootstrap";
 import { CourseCurriculem } from "../CourseCurriculum";
 
 const Container = styled.div`
@@ -26,13 +25,16 @@ const Container = styled.div`
 const DashboardWrap = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   gap: 2rem;
   & .question {
-    grid-row: span 2;
+    grid-row: span 3;
   }
   & .contents {
     grid-column: span 2;
+  }
+  & .mylearning {
+    grid-row: span 2;
   }
 `;
 
@@ -51,14 +53,6 @@ const Section = styled.div`
   &.mylearning {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    div {
-      display: flex;
-      gap: 1rem;
-      & .highlight {
-        color: #3182f6;
-      }
-    }
   }
   &.contents {
     & .content {
@@ -85,11 +79,28 @@ const StyledIcon = styled(Icon)`
   color: #3182f6;
   font-size: 1rem;
 `;
-const DescriptionWrap = styled.div``;
-const QnAs = styled.div``;
+const ProgressBox = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  & .progressTitle {
+    display: flex;
+    gap: 1rem;
+    & .highlight {
+      color: #3182f6;
+    }
+  }
+`;
+const QnAs = styled.div`
+  max-height: 336px;
+  overflow: auto;
+`;
 const QnA = styled.div`
   display: flex;
-  gap: 1rem;
+  padding-top: 1rem;
+  & .qnaInfo {
+  }
 `;
 
 export function MemberCourse() {
@@ -98,10 +109,14 @@ export function MemberCourse() {
   const location = useLocation();
   const courseId = location.pathname.split("/")[2]; // Extract courseId from the URL
   const [course, setCourse] = useState(null);
-  const [courseHistoryDtos, setCourseHistoryDtos] = useState([]);
+  const [contents, setContents] = useState([]);
+  const [contentHistories, setContentHistories] = useState([]);
+  const [examHistories, setExamHistories] = useState([]);
   const [qnas, setQnas] = useState([]);
   const [replies, setReplies] = useState([]);
   const [showReplies, setShowReplies] = useState({});
+  const [completedContentCount, setCompletedContentCount] = useState(0);
+  const [completedExamCount, setCompletedExamCount] = useState(0);
 
   // 해당 코스 조회
   useEffect(() => {
@@ -115,19 +130,60 @@ export function MemberCourse() {
   }, [courseId]);
 
   // 해당 코스 컨텐츠 조회
-
-  // 로그인 유저의 courseHistory 조회
   useEffect(() => {
-    if (user) {
-      apiGetMyCourseHistroies(user.memberId)
-        .then((response) => {
-          setCourseHistoryDtos(response.data.data);
-        })
-        .catch((error) => {
-          console.error("코스 히스토리 불러오기 오류: ", error);
-        });
-    }
-  }, [user]);
+    apiGetContentByCourse(courseId)
+      .then((response) => {
+        setContents(response.data.data);
+      })
+      .catch((err) => {
+        console.log("해당 코스 컨텐츠 조회 실패 ", err);
+      });
+  }, [courseId]);
+
+  // 로그인 유저의 contentHistory 조회 및 해당 contnet의 examHistory 조회
+  useEffect(() => {
+    apiGetMyContentHistory()
+      .then((response) => {
+        const filteredContentHistories = response.data.data.filter(
+          (contentHistory) =>
+            contentHistory.content.course.courseId === Number(courseId)
+        );
+        setContentHistories(filteredContentHistories);
+        console.log(filteredContentHistories);
+
+        // completedContentCount 계산
+        const totalCompletedContentCount = filteredContentHistories.filter(
+          (contentHistory) => contentHistory.isCompleted
+        ).length;
+        setCompletedContentCount(totalCompletedContentCount);
+
+        apiGetMyExamHistory(memberId)
+          .then((response) => {
+            const filteredExamHistories = response.data.data.filter(
+              (examHistory) =>
+                filteredContentHistories.some(
+                  (contentHistory) =>
+                    contentHistory.content.contentId ===
+                    examHistory.exam.contentId
+                )
+            );
+            setExamHistories(filteredExamHistories);
+            console.log(filteredExamHistories);
+
+            // completedExamCount 계산
+            const totalCompletedExamCount = filteredExamHistories.filter(
+              (examHistory) => examHistory.examCompletionStatus
+            ).length;
+            setCompletedExamCount(totalCompletedExamCount);
+          })
+          .catch((err) => {
+            console.log("유저의 시험 이력 조회 실패 ", err);
+          });
+      })
+      .catch((err) => {
+        console.log("유저의 컨텐츠 이력 조회 실패 ", err);
+      });
+  }, [memberId, courseId, contents.length]);
 
   // 로그인 유저의 질문 댓글 조회
   useEffect(() => {
@@ -210,67 +266,61 @@ export function MemberCourse() {
                 .slice()
                 .reverse()
                 .map((qna, index) => (
-                  <React.Fragment key={index}>
+                  <div key={index} style={{ marginBottom: "20px" }}>
                     <QnA>
                       <p className="reviewText">{qna.questionText}</p>
-                      <p className="time">{formatDateTime(qna.createdAt)}</p>
-                      {replies[qna.qnaId] && replies[qna.qnaId].length > 0 ? (
-                        <button onClick={() => handleLoadReplies(qna.qnaId)}>
-                          {showReplies[qna.qnaId] ? "답변 닫기" : "답변 보기"}
-                        </button>
-                      ) : (
-                        <p>답변 기다리는 중</p>
-                      )}
+                      <div className="qnaInfo">
+                        <p className="time">{formatDateTime(qna.createdAt)}</p>
+                        {replies[qna.qnaId] && replies[qna.qnaId].length > 0 ? (
+                          <button onClick={() => handleLoadReplies(qna.qnaId)}>
+                            {showReplies[qna.qnaId] ? "답변 닫기" : "답변 보기"}
+                          </button>
+                        ) : (
+                          <p>답변 기다리는 중</p>
+                        )}
+                      </div>
                     </QnA>
                     {showReplies[qna.qnaId] && (
                       <QnA>
-                        {replies[qna.qnaId] &&
-                          replies[qna.qnaId].map((reply) => (
-                            <p key={reply.replyId}>{reply.replyText}</p>
-                          ))}
+                        <p>
+                          {replies[qna.qnaId] &&
+                            replies[qna.qnaId].map((reply) => (
+                              <p key={reply.replyId}>{reply.replyText}</p>
+                            ))}
+                        </p>
                       </QnA>
                     )}
-                  </React.Fragment>
+                  </div>
                 ))}
             </QnAs>
           </Section>
-          {courseHistoryDtos
-            .filter((courseHistoryDto) => {
-              return (
-                courseHistoryDto.courseHistory.course.courseId ===
-                  Number(courseId) &&
-                courseHistoryDto.courseHistory.member.memberId === user.memberId
-              );
-            })
-            .map((courseHistoryDto, index) => (
-              <Section key={index} className="mylearning">
-                <h2 className="title">{user.name}님 학습 상황</h2>
-                <div>
-                  <p>수업진행률</p>
-                  <h2>
-                    <span className="highlight">
-                      {courseHistoryDto.completedContents}
-                    </span>{" "}
-                    / {courseHistoryDto.totalContents}
-                  </h2>
-                </div>
-                <div
-                  style={{
-                    backgroundColor: "#f3f3f3",
-                    height: "20px",
-                    width: "100%",
-                    borderRadius: "5px",
-                  }}
-                >
-                  <ProgressBar
-                    now={courseHistoryDto.completedContents}
-                    max={courseHistoryDto.totalContents}
-                    variant="success"
-                    style={{ height: "100%", borderRadius: "5px" }}
-                  />
-                </div>
-              </Section>
-            ))}
+          <Section className="mylearning">
+            <h2 className="title">{user.name}님 학습 상황</h2>
+            <ProgressBox>
+              <div className="progressTitle">
+                <p>수강 진행률</p>
+                <h2>
+                  <span className="highlight">{completedContentCount}</span>/
+                  {contents?.length}
+                </h2>
+              </div>
+              <ProgressBar
+                completed={(completedContentCount / contents?.length) * 100}
+              />
+            </ProgressBox>
+            <ProgressBox>
+              <div className="progressTitle">
+                <p>과제 진행률</p>
+                <h2>
+                  <span className="highlight">{completedExamCount}</span>/
+                  {contents?.length}
+                </h2>
+              </div>
+              <ProgressBar
+                completed={(completedExamCount / contents?.length) * 100}
+              />
+            </ProgressBox>
+          </Section>
           <Section className="contents">
             <CourseCurriculem />
           </Section>

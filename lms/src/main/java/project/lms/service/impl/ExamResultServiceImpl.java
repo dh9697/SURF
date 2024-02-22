@@ -112,7 +112,7 @@ public class ExamResultServiceImpl implements ExamResultService {
 
 	    // 시험 문제를 다 풀었다면 history 수정
 	    int totalQuestions = exam.getExamQuestions().size();
-	    int totalResults = examResultRepository.countByExam_ExamId(examId);
+	    int totalResults = examResultRepository.countByMemberAndExam(member, exam);
 
 	    if (totalQuestions == totalResults) {
 	        examHistory.setExamCompletionStatus(true);
@@ -121,15 +121,6 @@ public class ExamResultServiceImpl implements ExamResultService {
 
 	    return new ResponseDto<>("SUCCESS", toDto(examResult), "Exam result created successfully");
 	}
-
-	
-	@Override
-	public ResponseDto<Integer> countExamResultsByExamId(Long examId) {
-	    int count = examResultRepository.countByExam_ExamId(examId);
-	    return new ResponseDto<>("SUCCESS", count, "Count of exam results retrieved successfully");
-	}
-
-
 
 	// 제출한 답안이 맞는지 확인하고, 결과를 ResponseDto<String>로 반환하는 메서드
 	@Override

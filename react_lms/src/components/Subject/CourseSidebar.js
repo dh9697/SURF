@@ -72,7 +72,6 @@ export function CourseSidebar() {
     apiGetCourse(courseId)
       .then((response) => {
         setCourse(response.data.data);
-        console.log(response.data.data);
       })
       .catch((error) => {
         console.error("강의 정보 불러오기 오류: ", error);

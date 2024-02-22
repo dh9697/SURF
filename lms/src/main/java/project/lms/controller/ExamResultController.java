@@ -38,12 +38,6 @@ public class ExamResultController {
 		return ResponseEntity.ok(examResultService.getExamResult(examResultId));
 	}
 	
-	// 특정 시험에 대한 시험 결과의 수 조회
-	@GetMapping("/count/{examId}")
-	public ResponseEntity<ResponseDto<Integer>> countExamResultsByExamId(@PathVariable Long examId){
-	    return ResponseEntity.ok(examResultService.countExamResultsByExamId(examId));
-	}
-	
 	// 특정 사용자의 모든 시험 결과 조회
 	@GetMapping("/list/member/{memberId}")
 	public ResponseEntity<ResponseDto<List<ExamResultDto>>> getExamResultsByMember(@PathVariable Long memberId){

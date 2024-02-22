@@ -156,6 +156,14 @@ export function apiDeleteExam(examId) {
 // 모든 시험 결과 조회
 // 해당 시험 결과 조회
 // memberId의 시험 결과 조회
+export function apiGetMyExamResult(memberId) {
+  return axios.get(
+    `http://localhost:8080/api/exam-results/list/member/${memberId}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+}
 // 시험 결과 수정
 // 시험 결과 삭제
 // 시험 결과 생성
@@ -575,13 +583,19 @@ export function apiGetMyContentHistory() {
 // 완료된 contentHistory 조회
 export function apiGetCompletedContentHistories(memberId) {
   return axios.get(
-    `http://localhost:8080/api/content-histories/${memberId}/completed`
+    `http://localhost:8080/api/content-histories/${memberId}/completed`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
   );
 }
 // 완료되지 않은 contentHistory 조회
 export function apiGetIncompletedContentHistories(memberId) {
   return axios.get(
-    `http://localhost:8080/api/content-histories/${memberId}/incomplete`
+    `http://localhost:8080/api/content-histories/${memberId}/incomplete`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
   );
 }
 // contentHistory 생성

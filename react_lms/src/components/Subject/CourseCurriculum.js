@@ -28,6 +28,7 @@ const StyledNavLink = styled(NavLink)`
 
 export function CourseCurriculem() {
   const { user } = useContext(AuthContext);
+  const memberId = user.memberId;
   const { courseId } = useParams();
   const [content, setContent] = useState([]);
   const [completedContents, setCompletedContents] = useState([]);
@@ -45,16 +46,18 @@ export function CourseCurriculem() {
       });
   }, [courseId]);
 
-  // 완료된 컨텐츠 히스토리 조회
+  // 유저의 완료된 컨텐츠 히스토리 조회
   useEffect(() => {
-    apiGetCompletedContentHistories(user.memberId)
-      .then((response) => {
-        setCompletedContents(response.data.data);
-      })
-      .catch((error) => {
-        console.error("완료된 학습 이력 조회 오류: ", error);
-      });
-  }, [user.memberId]);
+    if (memberId) {
+      apiGetCompletedContentHistories(memberId)
+        .then((response) => {
+          setCompletedContents(response.data.data);
+        })
+        .catch((error) => {
+          console.error("완료된 학습 이력 조회 오류: ", error);
+        });
+    }
+  }, [memberId]);
 
   // 컨텐츠당 exam 조회
   useEffect(() => {
@@ -65,7 +68,6 @@ export function CourseCurriculem() {
         );
         const examsTemp = response.map((res) => res.data.data);
         setExams(examsTemp);
-        console.log(examsTemp);
       } catch (error) {
         console.error("시험 조회 오류: ", error);
       }

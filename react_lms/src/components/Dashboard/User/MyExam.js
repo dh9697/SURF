@@ -7,6 +7,7 @@ import {
   apiGetExamByContent,
   apiGetMyCourseHistroies,
   apiGetMyExamHistory,
+  apiGetMyExamResult,
 } from "../../RestApi";
 import { AuthContext } from "../../../AuthContext";
 import sample from "../../image/Thumbnail.jpg";
@@ -104,73 +105,85 @@ export function MyExam() {
   return (
     <>
       <Container>
-        {myCourseHistories.map((myCourseHistory) => (
-          <Course key={myCourseHistory.courseHistory.courseHistoryId}>
-            <h3>{myCourseHistory.courseHistory.course.courseName}</h3>
-            <div className="grid">
-              {contents
-                .filter(
-                  (content) =>
-                    content.course.courseId ===
-                    myCourseHistory.courseHistory.course.courseId
-                )
-                .map((content) => {
-                  const completed = completedContent.find(
-                    (completedItem) =>
-                      completedItem.content.contentId === content.contentId
-                  );
-                  const exam = exams.find(
-                    (examItem) =>
-                      examItem && examItem.contentId === content.contentId
-                  );
-                  const examHistory = examHistories.find(
-                    (examHistoryItem) =>
-                      examHistoryItem.exam.contentId === content.contentId
-                  );
-                  return (
-                    <Content key={content.contentId}>
-                      <div className="image" style={{ width: "200px" }}>
-                        <img src={sample} style={{ width: "100%" }} />
-                      </div>
-                      <p>{content.contentTitle}</p>
-                      {completed && (
-                        <div>
-                          <p>
-                            최근 수강
-                            {formatDateTimeStamp(completed.lastAccessed)}
-                          </p>
-                          <p>{completed.isCompleted ? "수강완료" : ""}</p>
+        {myCourseHistories && myCourseHistories.length > 0 ? (
+          myCourseHistories.map((myCourseHistory) => (
+            <Course key={myCourseHistory.courseHistory.courseHistoryId}>
+              <h3>{myCourseHistory.courseHistory.course.courseName}</h3>
+              <div className="grid">
+                {contents
+                  .filter(
+                    (content) =>
+                      content.course.courseId ===
+                      myCourseHistory.courseHistory.course.courseId
+                  )
+                  .map((content) => {
+                    const completed =
+                      completedContent &&
+                      completedContent.find(
+                        (completedItem) =>
+                          completedItem.content.contentId === content.contentId
+                      );
+                    const exam =
+                      exams &&
+                      exams.find(
+                        (examItem) =>
+                          examItem && examItem.contentId === content.contentId
+                      );
+                    const examHistory =
+                      examHistories &&
+                      examHistories.find(
+                        (examHistoryItem) =>
+                          examHistoryItem.exam.contentId === content.contentId
+                      );
+                    return (
+                      <Content key={content.contentId}>
+                        <div className="image" style={{ width: "200px" }}>
+                          <img src={sample} style={{ width: "100%" }} />
+                        </div>
+                        <p>{content.contentTitle}</p>
+                        {completed && (
                           <div>
-                            {exam && (
-                              <>
-                                {examHistory &&
-                                examHistory.examCompletionStatus ? (
-                                  <StyledNavLink
-                                    to={`/dashboard/${user.loginId}/exam-results/${content.contentId}`}
-                                  >
-                                    시험 결과 보기
-                                  </StyledNavLink>
-                                ) : (
-                                  exam.examIsActive && (
+                            <p>
+                              최근 수강
+                              {formatDateTimeStamp(completed.lastAccessed)}
+                            </p>
+                            <p>{completed.isCompleted ? "수강완료" : ""}</p>
+                            <div>
+                              {exam && (
+                                <>
+                                  {examHistory &&
+                                  examHistory.examCompletionStatus ? (
                                     <StyledNavLink
                                       to={`/dashboard/${user.loginId}/exams/${content.contentId}`}
                                     >
-                                      과제 풀기
+                                      시험 결과 보기
                                     </StyledNavLink>
-                                  )
-                                )}
-                              </>
-                            )}
-                            <button>오답 노트</button>
+                                  ) : (
+                                    exam.examIsActive && (
+                                      <StyledNavLink
+                                        to={`/dashboard/${user.loginId}/exams/${content.contentId}`}
+                                      >
+                                        과제 풀기
+                                      </StyledNavLink>
+                                    )
+                                  )}
+                                </>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </Content>
-                  );
-                })}
-            </div>
-          </Course>
-        ))}
+                        )}
+                      </Content>
+                    );
+                  })}
+              </div>
+            </Course>
+          ))
+        ) : (
+          <div>
+            <h2>내 과제</h2>
+            <p>강의를 구매해주세요.</p>
+          </div>
+        )}
       </Container>
     </>
   );

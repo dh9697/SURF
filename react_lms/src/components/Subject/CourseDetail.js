@@ -19,7 +19,6 @@ export function CourseDetail() {
       apiGetMyCourseHistroies(user.memberId)
         .then((response) => {
           const courseHistories = response.data.data;
-          console.log(courseHistories);
           if (
             courseHistories.some(
               ({ courseHistory }) =>

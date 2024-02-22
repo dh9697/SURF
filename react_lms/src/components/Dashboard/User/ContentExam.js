@@ -1,7 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { apiGetExamByContent, apiPostExamResult } from "../../RestApi";
+import {
+  apiGetExamByContent,
+  apiGetMyExamHistory,
+  apiGetMyExamResult,
+  apiPostExamResult,
+} from "../../RestApi";
 import { AuthContext } from "../../../AuthContext";
 
 const Container = styled.div`
@@ -17,9 +22,12 @@ export function ContentExam() {
   const memberId = user.memberId;
   const { contentId } = useParams();
   const [exams, setExams] = useState([]);
+  const [examResults, setExamResults] = useState([]);
+  const [examHistories, setExamHistories] = useState([]);
   const [submittedAnswers, setSubmittedAnswers] = useState({});
   const [userSubmittedAnswer, setUserSubmittedAnswer] = useState({});
 
+  // contentId에 따라 exam 조회
   useEffect(() => {
     apiGetExamByContent(contentId)
       .then((response) => {
@@ -30,6 +38,36 @@ export function ContentExam() {
         console.log("시험 불러 오기 오류: ", error);
       });
   }, [contentId]);
+
+  // 로그인 유저와 contentId에 따라 examResult 조회
+  useEffect(() => {
+    apiGetMyExamResult(memberId)
+      .then((response) => {
+        const filteredExamResultByContent = response.data.data.filter(
+          (examResult) => examResult.exam.contentId === Number(contentId)
+        );
+        setExamResults(filteredExamResultByContent);
+        console.log(filteredExamResultByContent);
+      })
+      .catch((err) => {
+        console.log("시험 결과 조회 실패 ", err);
+      });
+  }, [memberId, contentId]);
+
+  // 유저의 examHistory 조회
+  useEffect(() => {
+    apiGetMyExamHistory(memberId)
+      .then((response) => {
+        const filtererdExamHistoryByContent = response.data.data.filter(
+          (examHistory) => examHistory.exam.contentId === Number(contentId)
+        );
+        setExamHistories(filtererdExamHistoryByContent);
+        console.log(filtererdExamHistoryByContent);
+      })
+      .catch((err) => {
+        console.log("시험 이력 조회 실패 ", err);
+      });
+  }, [memberId]);
 
   const handleOptionChange = (questionId, optionIndex) => {
     setSubmittedAnswers({
@@ -59,7 +97,12 @@ export function ContentExam() {
 
   return (
     <>
+      {/* examHistory가 존재하지 않을 때와 
+      examHistory가 존재하지만 examHistory.examCompletionStatus가 false일 때 
+      문제를 풀 수 있게 하고 만약 examHistory가 존재하고 examHistory.examCompletionStatus가
+      true일 때 문제 결과를 보여지게  */}
       <Container>
+        <h1>안 푼 문제 모아보기?</h1>
         <ExamWrapper>
           {exams.length > 0 ? (
             exams.map((exam, index) => (

@@ -37,13 +37,13 @@ export function formatTime(mins) {
 export function formatTimeSeconds(seconds) {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
-  // 문자열 앞에 0을 추가하고, 뒤에서 두 자리를 가져옵니다. 이렇게 하면 항상 두 자리 수가 됩니다.
-  const paddedMinutes = String(minutes).padStart(2, '0');
-  const paddedSeconds = String(remainingSeconds).padStart(2, '0');
+  // 문자열 앞에 0을 추가하고, 뒤에서 두 자리를 가져와서 항상 두 자리 수
+  const paddedMinutes = String(minutes).padStart(2, "0");
+  const paddedSeconds = String(remainingSeconds).padStart(2, "0");
   return `${paddedMinutes}:${paddedSeconds}`;
 }
 
-// 한화
+// 한화 단위
 export function formatPrice(price) {
   return new Intl.NumberFormat("ko-KR", {
     style: "currency",
@@ -76,3 +76,28 @@ export function StarRating({ averageRating }) {
     </span>
   );
 }
+
+// progressBar
+export const ProgressBar = ({ completed }) => {
+  const fillerStyles = {
+    height: "100%",
+    width: `${completed}%`,
+    backgroundColor: "#3182f6",
+    borderRadius: "inherit",
+    textAlign: "right",
+  };
+
+  return (
+    <div
+      style={{
+        backgroundColor: "#f3f3f3",
+        height: "20px",
+        width: "100%",
+        borderRadius: "5px",
+        overflow: "hidden",
+      }}
+    >
+      <div style={fillerStyles}></div>
+    </div>
+  );
+};
