@@ -16,28 +16,38 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `exam_question_options`
+-- Table structure for table `notifications`
 --
 
-DROP TABLE IF EXISTS `exam_question_options`;
+DROP TABLE IF EXISTS `notifications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `exam_question_options` (
-  `exam_question_exam_question_id` bigint NOT NULL,
-  `options` varchar(255) NOT NULL,
-  KEY `FKb7lx1ei1yj1xddcsyb1nndiqo` (`exam_question_exam_question_id`),
-  CONSTRAINT `FKb7lx1ei1yj1xddcsyb1nndiqo` FOREIGN KEY (`exam_question_exam_question_id`) REFERENCES `exam_questions` (`exam_question_id`)
+CREATE TABLE `notifications` (
+  `notification_id` bigint NOT NULL AUTO_INCREMENT,
+  `is_read` bit(1) DEFAULT NULL,
+  `notification_date` datetime(6) DEFAULT NULL,
+  `notification_text` varchar(255) DEFAULT NULL,
+  `notification_type` varchar(255) DEFAULT NULL,
+  `course_id` bigint DEFAULT NULL,
+  `receiver_id` bigint NOT NULL,
+  `sender_id` bigint NOT NULL,
+  PRIMARY KEY (`notification_id`),
+  KEY `FKoh27fkx95ebxkq14oyp13jvej` (`course_id`),
+  KEY `FKp51madb59uipxbcdmwghbxm15` (`receiver_id`),
+  KEY `FK7aia5dn4p9ymmlrfw1ogslp6c` (`sender_id`),
+  CONSTRAINT `FK7aia5dn4p9ymmlrfw1ogslp6c` FOREIGN KEY (`sender_id`) REFERENCES `members` (`member_id`),
+  CONSTRAINT `FKoh27fkx95ebxkq14oyp13jvej` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`),
+  CONSTRAINT `FKp51madb59uipxbcdmwghbxm15` FOREIGN KEY (`receiver_id`) REFERENCES `members` (`member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `exam_question_options`
+-- Dumping data for table `notifications`
 --
 
-LOCK TABLES `exam_question_options` WRITE;
-/*!40000 ALTER TABLE `exam_question_options` DISABLE KEYS */;
-INSERT INTO `exam_question_options` VALUES (5,'anyone'),(5,'whomever'),(5,'someone'),(5,'whoever'),(4,'they'),(4,'this'),(4,'what'),(4,'that'),(6,'which'),(6,'that'),(6,'why'),(6,'when'),(7,'일번'),(7,'이번'),(7,'삼번'),(7,'사번'),(8,'과연'),(8,'정답은'),(8,'삼번'),(8,'입니다.'),(9,'맞춤법이'),(9,'맞나요?'),(9,'모르겠네'),(9,'사번입니다.');
-/*!40000 ALTER TABLE `exam_question_options` ENABLE KEYS */;
+LOCK TABLES `notifications` WRITE;
+/*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
+/*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-21 20:00:06
+-- Dump completed on 2024-02-22 16:52:41

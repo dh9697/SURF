@@ -16,28 +16,37 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `subjects`
+-- Table structure for table `exam_results`
 --
 
-DROP TABLE IF EXISTS `subjects`;
+DROP TABLE IF EXISTS `exam_results`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `subjects` (
-  `subject_id` bigint NOT NULL AUTO_INCREMENT,
-  `description` text,
-  `subject_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`subject_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `exam_results` (
+  `exam_result_id` bigint NOT NULL AUTO_INCREMENT,
+  `is_correct` bit(1) DEFAULT NULL,
+  `submitted_answer` int DEFAULT NULL,
+  `exam_id` bigint DEFAULT NULL,
+  `exam_question_id` bigint DEFAULT NULL,
+  `member_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`exam_result_id`),
+  KEY `FKtf85ht7yquiorwjx2xbdx3fxw` (`exam_id`),
+  KEY `FKac0uhnlql0d2krvffw5q2g2fl` (`exam_question_id`),
+  KEY `FK8doilcruh6jchd3nhodr7kaix` (`member_id`),
+  CONSTRAINT `FK8doilcruh6jchd3nhodr7kaix` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`),
+  CONSTRAINT `FKac0uhnlql0d2krvffw5q2g2fl` FOREIGN KEY (`exam_question_id`) REFERENCES `exam_questions` (`exam_question_id`),
+  CONSTRAINT `FKtf85ht7yquiorwjx2xbdx3fxw` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`exam_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `subjects`
+-- Dumping data for table `exam_results`
 --
 
-LOCK TABLES `subjects` WRITE;
-/*!40000 ALTER TABLE `subjects` DISABLE KEYS */;
-INSERT INTO `subjects` VALUES (1,'TOEIC','토익'),(10,'TOEFL','토플'),(11,'TEPS','텝스'),(12,'TOS/OPic','토스/오픽');
-/*!40000 ALTER TABLE `subjects` ENABLE KEYS */;
+LOCK TABLES `exam_results` WRITE;
+/*!40000 ALTER TABLE `exam_results` DISABLE KEYS */;
+INSERT INTO `exam_results` VALUES (1,_binary '\0',3,10,4,17),(2,_binary '\0',3,10,5,17),(3,_binary '',2,10,6,17),(4,_binary '\0',3,11,7,17),(5,_binary '',3,11,8,17),(6,_binary '',4,11,9,17);
+/*!40000 ALTER TABLE `exam_results` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-21 20:00:05
+-- Dump completed on 2024-02-22 16:52:40

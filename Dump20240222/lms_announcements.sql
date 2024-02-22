@@ -16,34 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `content_history`
+-- Table structure for table `announcements`
 --
 
-DROP TABLE IF EXISTS `content_history`;
+DROP TABLE IF EXISTS `announcements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `content_history` (
-  `content_history_id` bigint NOT NULL AUTO_INCREMENT,
-  `is_completed` bit(1) NOT NULL,
-  `last_accessed` datetime(6) NOT NULL,
-  `content_id` bigint NOT NULL,
+CREATE TABLE `announcements` (
+  `announcement_id` bigint NOT NULL AUTO_INCREMENT,
+  `announcement_date` datetime(6) DEFAULT NULL,
+  `announcement_text` varchar(255) DEFAULT NULL,
+  `is_important` bit(1) DEFAULT NULL,
   `member_id` bigint NOT NULL,
-  PRIMARY KEY (`content_history_id`),
-  KEY `FKt4fu94n7vpacujc7hwv8jx06x` (`content_id`),
-  KEY `FKehcc7al1fuxw81pyw1jhav9ne` (`member_id`),
-  CONSTRAINT `FKehcc7al1fuxw81pyw1jhav9ne` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`),
-  CONSTRAINT `FKt4fu94n7vpacujc7hwv8jx06x` FOREIGN KEY (`content_id`) REFERENCES `contents` (`content_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`announcement_id`),
+  KEY `FKq21yt2yotgnlw0dv6rh46unpr` (`member_id`),
+  CONSTRAINT `FKq21yt2yotgnlw0dv6rh46unpr` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `content_history`
+-- Dumping data for table `announcements`
 --
 
-LOCK TABLES `content_history` WRITE;
-/*!40000 ALTER TABLE `content_history` DISABLE KEYS */;
-INSERT INTO `content_history` VALUES (1,_binary '','2024-02-13 11:29:28.155625',1,15),(2,_binary '\0','2024-02-13 11:29:37.380617',2,15),(3,_binary '\0','2024-02-13 11:30:03.780546',3,15),(4,_binary '','2024-02-17 20:25:22.223761',2,2),(5,_binary '','2024-02-21 13:36:06.363913',3,17),(6,_binary '','2024-02-21 13:41:18.269009',1,17),(7,_binary '','2024-02-21 13:41:23.436104',2,17),(8,_binary '','2024-02-21 19:01:50.682957',1,19);
-/*!40000 ALTER TABLE `content_history` ENABLE KEYS */;
+LOCK TABLES `announcements` WRITE;
+/*!40000 ALTER TABLE `announcements` DISABLE KEYS */;
+/*!40000 ALTER TABLE `announcements` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-21 20:00:07
+-- Dump completed on 2024-02-22 16:52:39

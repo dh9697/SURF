@@ -34,7 +34,7 @@ CREATE TABLE `qna_reply` (
   KEY `FKc8dygxmdmhmvie5gthdne0h28` (`qna_id`),
   CONSTRAINT `FKc8dygxmdmhmvie5gthdne0h28` FOREIGN KEY (`qna_id`) REFERENCES `qna_board` (`qna_id`),
   CONSTRAINT `FKf89wlc5ik3r7wcms0j7aku03b` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `qna_reply` (
 
 LOCK TABLES `qna_reply` WRITE;
 /*!40000 ALTER TABLE `qna_reply` DISABLE KEYS */;
-INSERT INTO `qna_reply` VALUES (1,'2024-02-13 11:12:04.458824','2 번 문제는 본문을 잘 읽으면 충분히 해결할 수 있는 문제입니다. 본문을 다시 한번 잘 읽어 본 뒤에도 이해가 되지 않으면 그때 다시 질문해 주세요.','2024-02-13 11:12:04.458824',2,1);
+INSERT INTO `qna_reply` VALUES (1,'2024-02-13 11:12:04.458824','2 번 문제는 본문을 잘 읽으면 충분히 해결할 수 있는 문제입니다. 본문을 다시 한번 잘 읽어 본 뒤에도 이해가 되지 않으면 그때 다시 질문해 주세요.','2024-02-13 11:12:04.458824',2,1),(2,'2024-02-22 15:05:08.245308','답변 테스트','2024-02-22 15:05:08.245308',2,15);
 /*!40000 ALTER TABLE `qna_reply` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-21 20:00:04
+-- Dump completed on 2024-02-22 16:52:38
