@@ -1,15 +1,15 @@
-import styled from "styled-components";
-import { useParams } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
 import {
   apiGetCourse,
   apiGetContentByCourse,
   apiCreateCart,
   apiAddCourseToCart,
   apiGetMyCourseHistroies,
-} from "../../RestApi";
-import { AuthContext } from "../../../AuthContext";
-import { CourseCurriculem } from "../CourseCurriculum";
+} from '../../RestApi';
+import { AuthContext } from '../../../AuthContext';
+import { CourseCurriculem } from '../CourseCurriculum';
 
 const Container = styled.div`
   width: 100%;
@@ -37,7 +37,7 @@ export function UserCourse() {
         setCourse(response.data.data);
       })
       .catch((error) => {
-        console.error("강의 정보 불러오기 오류: ", error);
+        console.error('강의 정보 불러오기 오류: ', error);
       });
   }, [courseId]);
 
@@ -48,7 +48,7 @@ export function UserCourse() {
         setContent(response.data.data);
       })
       .catch((error) => {
-        console.error("컨텐츠 정보 불러오기 오류: ", error);
+        console.error('컨텐츠 정보 불러오기 오류: ', error);
       });
   }, [courseId]);
 

@@ -1,15 +1,15 @@
-import { NavLink, useParams } from "react-router-dom";
-import styled from "styled-components";
+import { NavLink, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   apiGetContentByCourse,
   apiGetExamByContent,
   apiGetQuestionsForExam,
   apiGetAllExamQuestions,
   apiGetCompletedContentHistories,
-} from "../RestApi";
-import { formatTime } from "../Util/util";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../AuthContext";
+} from '../RestApi';
+import { formatTime } from '../Util/util';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../AuthContext';
 
 const Container = styled.div`
   .content.completed {
@@ -28,7 +28,7 @@ const StyledNavLink = styled(NavLink)`
 
 export function CourseCurriculem() {
   const { user } = useContext(AuthContext);
-  const memberId = user.memberId;
+  const memberId = user ? user.memberId : null;
   const { courseId } = useParams();
   const [content, setContent] = useState([]);
   const [completedContents, setCompletedContents] = useState([]);
@@ -42,7 +42,7 @@ export function CourseCurriculem() {
         setContent(response.data.data);
       })
       .catch((error) => {
-        console.error("컨텐츠 정보 불러오기 오류: ", error);
+        console.error('컨텐츠 정보 불러오기 오류: ', error);
       });
   }, [courseId]);
 
@@ -54,7 +54,7 @@ export function CourseCurriculem() {
           setCompletedContents(response.data.data);
         })
         .catch((error) => {
-          console.error("완료된 학습 이력 조회 오류: ", error);
+          console.error('완료된 학습 이력 조회 오류: ', error);
         });
     }
   }, [memberId]);
@@ -69,7 +69,7 @@ export function CourseCurriculem() {
         const examsTemp = response.map((res) => res.data.data);
         setExams(examsTemp);
       } catch (error) {
-        console.error("시험 조회 오류: ", error);
+        console.error('시험 조회 오류: ', error);
       }
     };
 
@@ -82,7 +82,7 @@ export function CourseCurriculem() {
         <h2 className="title">
           커리큘럼
           <span className="contentInfo">
-            총 {content?.length || 0}개,{" "}
+            총 {content?.length || 0}개,{' '}
             {formatTime(
               content?.reduce(
                 (acc, cur) => acc + (cur.course.durationMins || 0),
@@ -101,7 +101,7 @@ export function CourseCurriculem() {
             .find((exam) => exam?.contentId === item.contentId);
           return (
             <div
-              className={`content ${isCompleted ? "completed" : ""}`}
+              className={`content ${isCompleted ? 'completed' : ''}`}
               key={index}
             >
               <p>
@@ -113,7 +113,7 @@ export function CourseCurriculem() {
                 className="text"
                 to={`/course/${courseId}/content/${item.contentId}`}
               >
-                {isCompleted ? "서핑 완료" : "서핑하기"}
+                {isCompleted ? '서핑 완료' : '서핑하기'}
               </StyledNavLink>
               {isCompleted && (
                 <>

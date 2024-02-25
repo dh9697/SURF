@@ -1,20 +1,16 @@
-import styled from "styled-components";
-import thumbnail from "../image/Toeic.jpg";
-import { Outlet, useParams } from "react-router-dom";
-import { MemberCourse } from "./MemberCourse/MemberCourse";
-import { UserCourse } from "./UserCourse/UserCourse";
-import { CourseSidebar } from "./CourseSidebar";
-import { CourseMenu } from "./CourseMenu";
-import { useContext, useEffect, useState } from "react";
+import styled from 'styled-components';
+import thumbnail from '../image/Toeic.jpg';
+import { Outlet, useParams } from 'react-router-dom';
+import { CourseSidebar } from './CourseSidebar';
+import { CourseMenu } from './CourseMenu';
+import { useEffect, useState } from 'react';
 import {
   apiGetCourse,
   apiGetCourseHistroiesByCourse,
   apiGetCourseReviewByCourse,
-  apiGetMyCourseHistroies,
-} from "../RestApi";
-import { AuthContext } from "../../AuthContext";
-import { Icon } from "@iconify/react";
-import { StarRating } from "../Util/util";
+} from '../RestApi';
+import { Icon } from '@iconify/react';
+import { StarRating } from '../Util/util';
 
 const Container = styled.div`
   width: 100%;
@@ -47,12 +43,25 @@ const CourseInfo = styled.div`
   & .box {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.7rem;
     & .instructorNames {
       font-weight: 900;
     }
     & .highlight {
       font-weight: 900;
+    }
+    & p {
+      position: relative;
+    }
+    &:last-of-type > p:not(:last-of-type)::after {
+      content: '';
+      position: absolute;
+      right: -5px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 1rem;
+      background: #dbdbdb;
     }
   }
 `;
@@ -76,7 +85,6 @@ const SideBarWrapper = styled.div`
 `;
 
 export function CourseTitle() {
-  const { user } = useContext(AuthContext);
   const { courseId } = useParams();
   const [course, setCourse] = useState([]);
   const [isMemberCourse, setIsMemberCourse] = useState(false);
@@ -90,37 +98,17 @@ export function CourseTitle() {
         setCourse(response.data.data);
       })
       .catch((error) => {
-        console.error("강의 정보 불러오기 오류: ", error);
+        console.error('강의 정보 불러오기 오류: ', error);
       });
   }, [courseId]);
 
-  // 수강자 확인
-  useEffect(() => {
-    if (user) {
-      apiGetMyCourseHistroies(user.memberId)
-        .then((response) => {
-          const courseHistories = response.data.data;
-          if (
-            courseHistories.some(
-              ({ courseHistory }) =>
-                courseHistory.course.courseId.toString() === courseId
-            )
-          )
-            setIsMemberCourse(true);
-        })
-        .catch((error) => {
-          console.error("코스 히스토리 불러오기 오류: ", error);
-        });
-    }
-  }, [user, courseId]);
-
   // course로 courseHistory 조회 하고 수강자 확인?
-  // useEffect(() => {
-  //   apiGetCourseHistroiesByCourse(courseId).then((response) => {
-  //     setCourseHistories(response.data.data);
-  //     console.log(response.data.data);
-  //   });
-  // }, [courseId]);
+  useEffect(() => {
+    apiGetCourseHistroiesByCourse(courseId).then((response) => {
+      setCourseHistories(response.data.data);
+      console.log(response.data.data);
+    });
+  }, [courseId]);
 
   // 해당 강의 리뷰 조회
   useEffect(() => {
@@ -142,20 +130,20 @@ export function CourseTitle() {
           <CourseInfo>
             <div className="box">
               <h3>Course</h3>
-              <StyledIcon icon={"mingcute:right-line"}></StyledIcon>
+              <StyledIcon icon={'mingcute:right-line'}></StyledIcon>
               <h3>{course.subject && course.subject.subjectName}</h3>
             </div>
             <h1>{course.courseName}</h1>
             <div className="box">
-              <Icon icon={"material-symbols:person"}></Icon>
+              <Icon icon={'material-symbols:person'}></Icon>
               <p className="instructorNames">{course.instructorNames}</p>
             </div>
             <div className="box">
-              <Icon icon={"carbon:skill-level-advanced"}></Icon>
+              <Icon icon={'carbon:skill-level-advanced'}></Icon>
               <p>{course.contentLevel}</p>
             </div>
             <div className="box">
-              <Icon icon={"zondicons:time"}></Icon>
+              <Icon icon={'zondicons:time'}></Icon>
               <p>총 {course.durationMins}분 </p>
             </div>
             <div className="box">
@@ -163,7 +151,10 @@ export function CourseTitle() {
               <p>
                 <span className="highlight">{reviews?.length}</span>개의 수강평
               </p>
-              <p>(가능하면)명의 수강생</p>
+              <p>
+                <span className="highlight">{courseHistories.length}</span>명의
+                수강생
+              </p>
             </div>
           </CourseInfo>
         </div>

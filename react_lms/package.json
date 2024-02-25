@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.4",
     "chart.js": "^4.4.1",
+    "js-tokens": "^9.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.1",
     "react-chartjs-2": "^5.2.0",
@@ -15,6 +16,7 @@
     "react-progressbar": "^15.4.1",
     "react-router-dom": "^6.21.1",
     "react-scripts": "5.0.1",
+    "resolve-url-loader": "^5.0.0",
     "styled-components": "^6.1.6",
     "swiper": "^11.0.5",
     "web-vitals": "^2.1.4"

@@ -69,6 +69,8 @@ public class SecurityConfig {
                 		.requestMatchers("/api/content/course/{courseId}").permitAll()
                 		.requestMatchers("/api/course-reviews/list/course/{courseId}").permitAll()
                 		.requestMatchers("/api/content-histories/{memberId}/completed").permitAll()
+                		.requestMatchers("/api/course-histories").permitAll()
+                		.requestMatchers("/api/course-histories/list/{courseId}").permitAll()
                 		// Token이 없다면 401 Unauthorized Error                  
                         .anyRequest().authenticated()
                 )

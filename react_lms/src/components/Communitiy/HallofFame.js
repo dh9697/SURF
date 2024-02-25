@@ -1,20 +1,13 @@
-import styled from "styled-components";
-import { TestWave } from "../TestWave";
+import styled from 'styled-components';
+import { TestWave } from '../TestWave';
 
 const Container = styled.div`
-  position: relative;
-  height: 50px; /* TestWave의 높이와 일치해야 합니다. */
-`;
-
-const StyledTestWave = styled(TestWave)`
-  position: absolute;
   width: 100%;
   height: 100%;
-  top: 0;
-  left: 0;
 `;
+
+const StyledTestWave = styled(TestWave)``;
 const Wrapper = styled.div`
-  margin-top: 50px;
   display: flex;
   justify-content: center;
   gap: 100px;
@@ -24,7 +17,7 @@ const HallOfFameContent = styled.div`
   width: 200px;
   height: 300px;
   display: flex;
-  flex-direction: column; /* 내부 요소들을 세로로 정렬하기 위해 추가 */
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   padding: 10px;

@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
-import styled from "styled-components";
+import { useContext, useEffect, useState } from 'react';
+import { NavLink, Outlet } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   apiGetCompletedContentHistories,
   apiGetContentByCourse,
@@ -8,10 +8,10 @@ import {
   apiGetMyCourseHistroies,
   apiGetMyExamHistory,
   apiGetMyExamResult,
-} from "../../RestApi";
-import { AuthContext } from "../../../AuthContext";
-import sample from "../../image/Thumbnail.jpg";
-import { formatDateTimeStamp } from "../../Util/util";
+} from '../../RestApi';
+import { AuthContext } from '../../../AuthContext';
+import sample from '../../image/Thumbnail.jpg';
+import { formatDateTimeStamp } from '../../Util/util';
 
 const Container = styled.div`
   width: 100%;
@@ -54,11 +54,11 @@ export function MyExam() {
             setContents(myCourseContents);
           })
           .catch((err) => {
-            console.log("수강중인 강의 컨텐츠 조회 실패 ", err);
+            console.log('수강중인 강의 컨텐츠 조회 실패 ', err);
           });
       })
       .catch((err) => {
-        console.log("수강중인 강의 조회 실패 ", err);
+        console.log('수강중인 강의 조회 실패 ', err);
       });
   }, []);
 
@@ -82,11 +82,11 @@ export function MyExam() {
             console.log(completedContentExams);
           })
           .catch((err) => {
-            console.log("완료한 컨텐츠 시험 조회 실패 ", err);
+            console.log('완료한 컨텐츠 시험 조회 실패 ', err);
           });
       })
       .catch((err) => {
-        console.log("완료한 컨텐츠 불러오기 실패: ", err);
+        console.log('완료한 컨텐츠 불러오기 실패: ', err);
       });
   }, [memberId]);
 
@@ -98,7 +98,7 @@ export function MyExam() {
         console.log(response.data.data);
       })
       .catch((err) => {
-        console.log("유저의 시험 이력 조회 실패 ", err);
+        console.log('유저의 시험 이력 조회 실패 ', err);
       });
   }, [memberId]);
 
@@ -137,8 +137,8 @@ export function MyExam() {
                       );
                     return (
                       <Content key={content.contentId}>
-                        <div className="image" style={{ width: "200px" }}>
-                          <img src={sample} style={{ width: "100%" }} />
+                        <div className="image" style={{ width: '200px' }}>
+                          <img src={sample} style={{ width: '100%' }} />
                         </div>
                         <p>{content.contentTitle}</p>
                         {completed && (
@@ -147,7 +147,7 @@ export function MyExam() {
                               최근 수강
                               {formatDateTimeStamp(completed.lastAccessed)}
                             </p>
-                            <p>{completed.isCompleted ? "수강완료" : ""}</p>
+                            <p>{completed.isCompleted ? '수강완료' : ''}</p>
                             <div>
                               {exam && (
                                 <>

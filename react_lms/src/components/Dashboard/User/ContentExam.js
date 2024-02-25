@@ -1,20 +1,25 @@
-import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
+import { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   apiGetExamByContent,
   apiGetMyExamHistory,
   apiGetMyExamResult,
   apiPostExamResult,
-} from "../../RestApi";
-import { AuthContext } from "../../../AuthContext";
+} from '../../RestApi';
+import { AuthContext } from '../../../AuthContext';
 
 const Container = styled.div`
   width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 `;
 
 const ExamWrapper = styled.div`
-  background-color: #3182f6;
+  /* background-color: #3182f6; */
+  border: 1px solid #ddd;
+  border-radius: 5px;
 `;
 
 export function ContentExam() {
@@ -35,7 +40,7 @@ export function ContentExam() {
         console.log(response.data.data);
       })
       .catch((error) => {
-        console.log("시험 불러 오기 오류: ", error);
+        console.log('시험 불러 오기 오류: ', error);
       });
   }, [contentId]);
 
@@ -50,7 +55,7 @@ export function ContentExam() {
         console.log(filteredExamResultByContent);
       })
       .catch((err) => {
-        console.log("시험 결과 조회 실패 ", err);
+        console.log('시험 결과 조회 실패 ', err);
       });
   }, [memberId, contentId]);
 
@@ -65,7 +70,7 @@ export function ContentExam() {
         console.log(filtererdExamHistoryByContent);
       })
       .catch((err) => {
-        console.log("시험 이력 조회 실패 ", err);
+        console.log('시험 이력 조회 실패 ', err);
       });
   }, [memberId]);
 
@@ -91,26 +96,22 @@ export function ContentExam() {
         [questionId]: submittedAnswer,
       });
     } catch (error) {
-      console.log("답안 제출 중 오류 발생: ", error);
+      console.log('답안 제출 중 오류 발생: ', error);
     }
   };
 
   return (
     <>
-      {/* examHistory가 존재하지 않을 때와 
-      examHistory가 존재하지만 examHistory.examCompletionStatus가 false일 때 
-      문제를 풀 수 있게 하고 만약 examHistory가 존재하고 examHistory.examCompletionStatus가
-      true일 때 문제 결과를 보여지게  */}
       <Container>
-        <h1>안 푼 문제 모아보기?</h1>
         <ExamWrapper>
           {exams.length > 0 ? (
             exams.map((exam, index) => (
               <div key={exam.examId}>
-                <h2>Exam #{index + 1}</h2>
+                <h2>Exam</h2>
                 {exam.examQuestions.map((question, index) => (
                   <div key={question.examQuestionId}>
-                    <p>문제: {question.questionText}</p>
+                    <h3>문제</h3>
+                    <p>{question.questionText}</p>
                     <p>선택지:</p>
                     {question.options.map((option, index) => (
                       <div key={index}>
@@ -152,6 +153,37 @@ export function ContentExam() {
             ))
           ) : (
             <p>시험 정보를 불러오는 중...</p>
+          )}
+        </ExamWrapper>
+        <ExamWrapper>
+          <h2>오답</h2>
+          {examHistories.map((examHistory) =>
+            examHistory.exam.contentId === Number(contentId) &&
+            examHistory.examCompletionStatus === true ? (
+              examResults
+                .sort((a, b) => a.examQuestionId - b.examQuestionId)
+                .map((examResult) => (
+                  <div key={examResult.examResultId}>
+                    <p>
+                      제출한 답안:
+                      <span
+                        style={{
+                          backgroundColor: examResult.correct ? 'green' : 'red',
+                          color: 'white',
+                        }}
+                      >
+                        {examResult.submittedAnswer}
+                      </span>
+                    </p>
+                    {!examResult.correct && (
+                      <p>정답: {examResult.correctOptionIndex}</p>
+                    )}
+                    <p>문제 해설: {examResult.wrongAnsExpl}</p>
+                  </div>
+                ))
+            ) : (
+              <p>시험을 풀어주세요. </p>
+            )
           )}
         </ExamWrapper>
       </Container>
