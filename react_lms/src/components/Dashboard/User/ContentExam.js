@@ -219,6 +219,7 @@ export function ContentExam() {
               </div>
             ))
           ) : (
+            // 수정 필요
             <p>시험 정보를 불러오는 중...</p>
           )}
         </ExamWrapper>
