@@ -64,7 +64,6 @@ public class ExamServiceImpl implements ExamService {
 	// 시험 문제 조회
 	@Override
 	public ResponseDto<List<ExamQuestionDto>> getExamQuestions(Long examId) {
-	    // examId를 이용하여 Exam 객체를 조회
 	    Exam exam = examRepository.findById(examId)
 	        .orElseThrow(() -> new InvalidRequestException("Exam not found", "해당 시험을 찾을 수 없습니다."));
 

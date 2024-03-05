@@ -29,7 +29,7 @@ public class ExamResult {
 	@JoinColumn(name = "examQuestionId")
 	private ExamQuestion examQuestion;
 	
-	@Column
+	@Column(nullable = false)
 	private Integer submittedAnswer;
 	
 	@Column

@@ -1,5 +1,6 @@
 package project.lms.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import project.lms.enumstatus.ResultCode;
 import project.lms.exception.InvalidRequestException;
 import project.lms.model.Content;
 import project.lms.model.Course;
+import project.lms.model.Exam;
 import project.lms.repository.ContentRepository;
 import project.lms.repository.CourseRepository;
 import project.lms.service.ContentService;
@@ -42,6 +44,20 @@ public class ContentServiceImpl implements ContentService {
 				ResultCode.SUCCESS.name(),
 				contents,
 				"과목에 등록된 컨텐츠를 조회하였습니다.");		
+	}
+	
+	@Override
+	public ResponseDto<List<Content>> getContentByContent(Long contentId){
+	    Content content = contentRepository.findById(contentId)
+	        .orElseThrow(() -> new InvalidRequestException("content not found", "해당 컨텐츠를 찾을 수 없습니다."));
+	    
+	    List<Content> contentList = new ArrayList<>();
+	    contentList.add(content);
+	    
+	    return new ResponseDto<>(
+	        ResultCode.SUCCESS.name(),
+	        contentList,
+	        "컨텐츠를 조회하였습니다.");
 	}
 	
 	// course에 따라 content 생성

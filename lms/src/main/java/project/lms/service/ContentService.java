@@ -10,6 +10,8 @@ public interface ContentService {
 
 	public ResponseDto<List<Content>> getContentByCourse(Long courseId);
 	
+	public ResponseDto<List<Content>> getContentByContent(Long contentId);
+	
 	public ResponseDto<Content> createContent(Long courseId, ContentDto contentDto);
 	
 	public ResponseDto<Content> updateContent(Long contentId, ContentDto contentDto);

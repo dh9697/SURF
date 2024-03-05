@@ -10,5 +10,4 @@ import project.lms.model.Course;
 public interface ContentRepository extends JpaRepository<Content, Long> {
 
 	List<Content> findByCourse(Course course);
-	
 }

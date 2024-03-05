@@ -532,6 +532,12 @@ export function apiDeleteCourseReview(reviewId) {
 }
 
 // --------------- Content Rest API ---------------
+// contentId로 content 조회
+export function apiGetContentByContent(contentId) {
+  return axios.get(`http://localhost:8080/api/content/${contentId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
 // courseId로 content 조회
 export function apiGetContentByCourse(courseId) {
   return axios.get(`http://localhost:8080/api/content/course/${courseId}`, {

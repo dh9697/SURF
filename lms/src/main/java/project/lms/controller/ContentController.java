@@ -42,6 +42,12 @@ public class ContentController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
+	@GetMapping("/{contentId}")
+	public ResponseEntity<ResponseDto<List<Content>>> getContentByContent(@PathVariable Long contentId) {
+		ResponseDto<List<Content>> response = contentService.getContentByContent(contentId);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
 	@PostMapping("/save")
 	public ResponseEntity<ResponseDto<Content>> createContent(@RequestParam Long courseId, @RequestBody ContentDto contentDto) {
 	    ResponseDto<Content> response = contentService.createContent(courseId, contentDto);
