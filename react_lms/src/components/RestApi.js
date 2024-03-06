@@ -721,24 +721,22 @@ export function apiPostMyTodoList(todoData) {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
-
 // TodoList 수정
-export function apiPutMyTodoList(taskId) {
-  return (
-    axios.put(`http://localhost:8080/api/todolist/update/${taskId}`),
+export function apiPutMyTodoList(taskId, todoData) {
+  return axios.put(
+    `http://localhost:8080/api/todolist/update/${taskId}`,
+    todoData,
     {
       headers: { Authorization: `Bearer ${token}` },
     }
   );
 }
+
 // TodoList 삭제
 export function apiDeleteMyTodoList(taskId) {
-  return (
-    axios.delete(`http://localhost:8080/api/todolist/delete/${taskId}`),
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
+  return axios.delete(`http://localhost:8080/api/todolist/delete/${taskId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }
 
 // --------------- Announcement Rest API ---------------

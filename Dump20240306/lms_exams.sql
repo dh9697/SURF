@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: lms
+-- Host: localhost    Database: lms
 -- ------------------------------------------------------
--- Server version	8.2.0
+-- Server version	8.0.36
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,31 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `announcements`
+-- Table structure for table `exams`
 --
 
-DROP TABLE IF EXISTS `announcements`;
+DROP TABLE IF EXISTS `exams`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `announcements` (
-  `announcement_id` bigint NOT NULL AUTO_INCREMENT,
-  `announcement_date` datetime(6) DEFAULT NULL,
-  `announcement_text` varchar(255) DEFAULT NULL,
-  `is_important` bit(1) DEFAULT NULL,
-  `member_id` bigint NOT NULL,
-  PRIMARY KEY (`announcement_id`),
-  KEY `FKq21yt2yotgnlw0dv6rh46unpr` (`member_id`),
-  CONSTRAINT `FKq21yt2yotgnlw0dv6rh46unpr` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `exams` (
+  `exam_id` bigint NOT NULL AUTO_INCREMENT,
+  `exam_is_active` bit(1) DEFAULT NULL,
+  `content_id` bigint NOT NULL,
+  PRIMARY KEY (`exam_id`),
+  KEY `FKaqugi5glqghsa5q91c8utngpp` (`content_id`),
+  CONSTRAINT `FKaqugi5glqghsa5q91c8utngpp` FOREIGN KEY (`content_id`) REFERENCES `contents` (`content_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `announcements`
+-- Dumping data for table `exams`
 --
 
-LOCK TABLES `announcements` WRITE;
-/*!40000 ALTER TABLE `announcements` DISABLE KEYS */;
-/*!40000 ALTER TABLE `announcements` ENABLE KEYS */;
+LOCK TABLES `exams` WRITE;
+/*!40000 ALTER TABLE `exams` DISABLE KEYS */;
+INSERT INTO `exams` VALUES (10,_binary '',1),(11,_binary '',2),(12,_binary '',3),(13,_binary '',4),(14,_binary '',5),(15,_binary '',6),(16,_binary '',8),(17,_binary '',7),(18,_binary '',9),(19,_binary '',10);
+/*!40000 ALTER TABLE `exams` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-22 16:52:39
+-- Dump completed on 2024-03-06 17:12:26

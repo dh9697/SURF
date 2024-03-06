@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: lms
+-- Host: localhost    Database: lms
 -- ------------------------------------------------------
--- Server version	8.2.0
+-- Server version	8.0.36
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,35 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `qna_reply`
+-- Table structure for table `exam_history`
 --
 
-DROP TABLE IF EXISTS `qna_reply`;
+DROP TABLE IF EXISTS `exam_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `qna_reply` (
-  `reply_id` bigint NOT NULL AUTO_INCREMENT,
-  `created_at` datetime(6) DEFAULT NULL,
-  `reply_text` varchar(255) DEFAULT NULL,
-  `updated_at` datetime(6) DEFAULT NULL,
+CREATE TABLE `exam_history` (
+  `exam_history_id` bigint NOT NULL AUTO_INCREMENT,
+  `exam_completion_status` bit(1) NOT NULL,
+  `exam_id` bigint NOT NULL,
   `member_id` bigint NOT NULL,
-  `qna_id` bigint NOT NULL,
-  PRIMARY KEY (`reply_id`),
-  KEY `FKf89wlc5ik3r7wcms0j7aku03b` (`member_id`),
-  KEY `FKc8dygxmdmhmvie5gthdne0h28` (`qna_id`),
-  CONSTRAINT `FKc8dygxmdmhmvie5gthdne0h28` FOREIGN KEY (`qna_id`) REFERENCES `qna_board` (`qna_id`),
-  CONSTRAINT `FKf89wlc5ik3r7wcms0j7aku03b` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
+  PRIMARY KEY (`exam_history_id`),
+  KEY `FK1uur8qwrxn80nhe5v63phkwf6` (`exam_id`),
+  KEY `FKp7pbhtcgx7ejm733vydwilsrs` (`member_id`),
+  CONSTRAINT `FK1uur8qwrxn80nhe5v63phkwf6` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`exam_id`),
+  CONSTRAINT `FKp7pbhtcgx7ejm733vydwilsrs` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `qna_reply`
+-- Dumping data for table `exam_history`
 --
 
-LOCK TABLES `qna_reply` WRITE;
-/*!40000 ALTER TABLE `qna_reply` DISABLE KEYS */;
-INSERT INTO `qna_reply` VALUES (1,'2024-02-13 11:12:04.458824','2 번 문제는 본문을 잘 읽으면 충분히 해결할 수 있는 문제입니다. 본문을 다시 한번 잘 읽어 본 뒤에도 이해가 되지 않으면 그때 다시 질문해 주세요.','2024-02-13 11:12:04.458824',2,1),(2,'2024-02-22 15:05:08.245308','답변 테스트','2024-02-22 15:05:08.245308',2,15);
-/*!40000 ALTER TABLE `qna_reply` ENABLE KEYS */;
+LOCK TABLES `exam_history` WRITE;
+/*!40000 ALTER TABLE `exam_history` DISABLE KEYS */;
+INSERT INTO `exam_history` VALUES (1,_binary '',10,17),(2,_binary '',11,17);
+/*!40000 ALTER TABLE `exam_history` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-22 16:52:38
+-- Dump completed on 2024-03-06 17:12:26

@@ -1,36 +1,46 @@
-import styled from 'styled-components';
-import surf_logo from '../../image/surf_logo.png';
-import { useEffect, useState } from 'react';
-import { MyAnswerNote } from './MyAnswerNote';
-import { apiGetMyCourseHistroies } from '../../RestApi';
-import { formatDateTime, formatDateTimeStamp } from '../../Util/util';
-import { NavLink } from 'react-router-dom';
+import styled from "styled-components";
+import { useContext, useEffect, useState } from "react";
+import { apiGetMyCourseHistroies } from "../../RestApi";
+import { formatDateTime, formatDateTimeStamp } from "../../Util/util";
+import { NavLink } from "react-router-dom";
+import { AuthContext } from "../../../AuthContext";
 
 const Container = styled.div`
   width: 100%;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  background-color: beige;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  color: #454545;
+  & .courseBox {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
 `;
 
-const Imgbox = styled.img`
-  width: 30%;
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+  color: #454545;
 `;
 
-const ContentBox = styled.div`
-  display: flex;
-  justify-content: center;
+const CourseThumbnail = styled.div`
+  width: 300px;
+  & img {
+    width: 100%;
+    height: 100%;
+  }
 `;
-
-const StyledNavLink = styled(NavLink)``;
 
 export function MyCourse() {
+  const { user } = useContext(AuthContext);
   const [courseHistoryDtos, setCourseHistoryDtos] = useState([]);
 
   useEffect(() => {
     apiGetMyCourseHistroies().then((response) => {
-      console.log(response.data.data);
       setCourseHistoryDtos(response.data.data);
     });
   }, []);
@@ -38,40 +48,52 @@ export function MyCourse() {
   return (
     <>
       <Container>
-        <h1>내 학습</h1>
         {courseHistoryDtos.map((courseHistoryDto) => (
-          <div key={courseHistoryDto.courseHistory.courseHistoryId}>
+          <div
+            key={courseHistoryDto.courseHistory.courseHistoryId}
+            className="courseBox"
+          >
+            <CourseThumbnail>
+              <img
+                src={`${courseHistoryDto.courseHistory.course.courseThumbnail}`}
+                alt="코스 썸네일 이미지"
+              />
+            </CourseThumbnail>
             <StyledNavLink
               to={`/course/${courseHistoryDto.courseHistory.course.courseId}`}
-              style={{ textDecoration: 'none' }}
+              style={{ textDecoration: "none" }}
             >
               <h2>
-                강의명: {courseHistoryDto.courseHistory.course.courseName}
+                [{courseHistoryDto.courseHistory.course.subject.subjectName}]{" "}
+                {courseHistoryDto.courseHistory.course.courseName}
               </h2>
             </StyledNavLink>
             <p>
-              Start Date:{' '}
+              Start Date:{" "}
               {formatDateTime(courseHistoryDto.courseHistory.startDate)}
             </p>
             <p>
               End Date: {formatDateTime(courseHistoryDto.courseHistory.endDate)}
             </p>
             <p>
-              {courseHistoryDto.completedContents} /
-              {courseHistoryDto.totalContents} 강
+              총 {courseHistoryDto.totalContents} 강,{" "}
+              {courseHistoryDto.courseHistory.course.durationMins}분
             </p>
-            <p>수료증: 미수료</p>
+
+            <p>
+              수료증:{" "}
+              {courseHistoryDto.courseHistory.contentStatus
+                ? "발급 완료"
+                : "미수료"}
+            </p>
             <StyledNavLink
               to={`/course/${courseHistoryDto.courseHistory.course.courseId}/coursedescription`}
-              style={{ textDecoration: 'none' }}
+              style={{ textDecoration: "none" }}
             >
               수강평 남기러 가기
             </StyledNavLink>
           </div>
         ))}
-        <ContentBox>
-          <Imgbox src={surf_logo} alt="Sample"></Imgbox>
-        </ContentBox>
       </Container>
     </>
   );

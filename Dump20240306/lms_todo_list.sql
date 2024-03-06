@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: lms
+-- Host: localhost    Database: lms
 -- ------------------------------------------------------
--- Server version	8.2.0
+-- Server version	8.0.36
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,33 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `exam_history`
+-- Table structure for table `todo_list`
 --
 
-DROP TABLE IF EXISTS `exam_history`;
+DROP TABLE IF EXISTS `todo_list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `exam_history` (
-  `exam_history_id` bigint NOT NULL AUTO_INCREMENT,
-  `exam_completion_status` bit(1) NOT NULL,
-  `exam_id` bigint NOT NULL,
+CREATE TABLE `todo_list` (
+  `task_id` bigint NOT NULL AUTO_INCREMENT,
+  `completion_date` date DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `due_date` datetime(6) DEFAULT NULL,
+  `is_completed` bit(1) DEFAULT NULL,
+  `priority` int DEFAULT NULL,
+  `task_name` varchar(255) DEFAULT NULL,
   `member_id` bigint NOT NULL,
-  PRIMARY KEY (`exam_history_id`),
-  KEY `FK1uur8qwrxn80nhe5v63phkwf6` (`exam_id`),
-  KEY `FKp7pbhtcgx7ejm733vydwilsrs` (`member_id`),
-  CONSTRAINT `FK1uur8qwrxn80nhe5v63phkwf6` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`exam_id`),
-  CONSTRAINT `FKp7pbhtcgx7ejm733vydwilsrs` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`task_id`),
+  KEY `FK3x6rbqoxekyny3cnvvcb9tp9y` (`member_id`),
+  CONSTRAINT `FK3x6rbqoxekyny3cnvvcb9tp9y` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `exam_history`
+-- Dumping data for table `todo_list`
 --
 
-LOCK TABLES `exam_history` WRITE;
-/*!40000 ALTER TABLE `exam_history` DISABLE KEYS */;
-INSERT INTO `exam_history` VALUES (1,_binary '',10,17),(2,_binary '',11,17);
-/*!40000 ALTER TABLE `exam_history` ENABLE KEYS */;
+LOCK TABLES `todo_list` WRITE;
+/*!40000 ALTER TABLE `todo_list` DISABLE KEYS */;
+INSERT INTO `todo_list` VALUES (3,NULL,NULL,NULL,NULL,NULL,'ㅇㅇ',17),(4,NULL,NULL,NULL,NULL,NULL,'ㅅㅅ',17);
+/*!40000 ALTER TABLE `todo_list` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-22 16:52:39
+-- Dump completed on 2024-03-06 17:12:25

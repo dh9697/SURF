@@ -30,11 +30,9 @@ public class Course {
 	
 	@Column(nullable = false)	    
 	private Integer durationMins;
-	
-	// 일단 비워도 되게 테스트 해보려고
-	@Lob
+
 	@Column(nullable = true, length = 500)
-	private byte[] courseThumbnail;
+	private String courseThumbnail;
 	    
 	@Column(nullable = false)
 	private String contentLevel;
@@ -50,7 +48,7 @@ public class Course {
 	}
 
 	public Course(Long courseId, Subject subject, String courseName, String description,
-			Integer durationMins, byte[] courseThumbnail, String contentLevel, Integer price, String announcement) {
+			Integer durationMins, String courseThumbnail, String contentLevel, Integer price, String announcement) {
 		super();
 		this.courseId = courseId;
 		this.subject = subject;
@@ -103,11 +101,11 @@ public class Course {
 		this.durationMins = durationMins;
 	}
 
-	public byte[] getCourseThumbnail() {
+	public String getCourseThumbnail() {
 		return courseThumbnail;
 	}
 
-	public void setCourseThumbnail(byte[] courseThumbnail) {
+	public void setCourseThumbnail(String courseThumbnail) {
 		this.courseThumbnail = courseThumbnail;
 	}
 

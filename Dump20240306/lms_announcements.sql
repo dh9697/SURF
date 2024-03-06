@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: lms
+-- Host: localhost    Database: lms
 -- ------------------------------------------------------
--- Server version	8.2.0
+-- Server version	8.0.36
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,28 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `members_group`
+-- Table structure for table `announcements`
 --
 
-DROP TABLE IF EXISTS `members_group`;
+DROP TABLE IF EXISTS `announcements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `members_group` (
-  `group_id` bigint NOT NULL AUTO_INCREMENT,
-  `description` text,
-  `group_name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`group_id`),
-  UNIQUE KEY `UK_gid8hsmgfxjb32ns6hsqybo27` (`group_name`)
+CREATE TABLE `announcements` (
+  `announcement_id` bigint NOT NULL AUTO_INCREMENT,
+  `announcement_date` datetime(6) DEFAULT NULL,
+  `announcement_text` varchar(255) DEFAULT NULL,
+  `is_important` bit(1) DEFAULT NULL,
+  `member_id` bigint NOT NULL,
+  PRIMARY KEY (`announcement_id`),
+  KEY `FKq21yt2yotgnlw0dv6rh46unpr` (`member_id`),
+  CONSTRAINT `FKq21yt2yotgnlw0dv6rh46unpr` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `members_group`
+-- Dumping data for table `announcements`
 --
 
-LOCK TABLES `members_group` WRITE;
-/*!40000 ALTER TABLE `members_group` DISABLE KEYS */;
-/*!40000 ALTER TABLE `members_group` ENABLE KEYS */;
+LOCK TABLES `announcements` WRITE;
+/*!40000 ALTER TABLE `announcements` DISABLE KEYS */;
+/*!40000 ALTER TABLE `announcements` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-22 16:52:41
+-- Dump completed on 2024-03-06 17:12:24

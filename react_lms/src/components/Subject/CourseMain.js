@@ -26,6 +26,7 @@ const CoursesGrid = styled.div`
       display: flex;
       flex-direction: column;
       gap: 5px;
+      padding-top: 1rem;
       & .courseName {
         font-size: 1.5rem;
         color: #454545;
@@ -89,10 +90,6 @@ const ImgBox = styled.div`
   }
 `;
 
-const TitleNavLink = styled(NavLink)`
-  text-decoration: none;
-`;
-
 export function CourseMain() {
   const [courses, setCourses] = useState([]);
   const location = useLocation();
@@ -144,7 +141,7 @@ export function CourseMain() {
                 <p className="click">강의 상세 보기</p>
               </HoverInfo>
               <ImgBox>
-                <img src={thumbnailSample} alt="sample" />
+                <img src={course.courseThumbnail} alt="코스 썸네일" />
               </ImgBox>
               <div className="courseText">
                 {course.subject && <p>{course.subject.subjectName}</p>}

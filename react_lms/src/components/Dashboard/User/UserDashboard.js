@@ -1,14 +1,14 @@
-import { useContext, useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { AuthContext } from '../../../AuthContext';
-import { Icon } from '@iconify/react';
-import { TodoList } from './TodoList';
+import { useContext, useEffect, useState } from "react";
+import styled from "styled-components";
+import { AuthContext } from "../../../AuthContext";
+import { Icon } from "@iconify/react";
+import { TodoList } from "./TodoList";
 import {
   apiGetMyCourseHistroies,
   apiGetQnABoardsByMember,
   apiGetAllContentHistories,
   apiGetMyContentHistory,
-} from '../../RestApi';
+} from "../../RestApi";
 
 const Container = styled.div`
   padding: 0 20px;
@@ -123,7 +123,7 @@ export function UserDashboard() {
           console.log(response.data.data);
         })
         .catch((error) => {
-          console.error('코스 히스토리 불러오기 오류: ', error);
+          console.error("코스 히스토리 불러오기 오류: ", error);
         });
     }
   }, [user]);
@@ -136,7 +136,7 @@ export function UserDashboard() {
         console.log(response.data.data);
       })
       .catch((err) => {
-        console.log('유저 컨텐츠 이력 조회 실패 ', err);
+        console.log("유저 컨텐츠 이력 조회 실패 ", err);
       });
   }, []);
 
@@ -147,7 +147,7 @@ export function UserDashboard() {
           setQnas(response.data.data);
         })
         .catch((error) => {
-          console.error('Q&A 게시판 데이터 불러오기 오류: ', error);
+          console.error("Q&A 게시판 데이터 불러오기 오류: ", error);
         });
     }
   }, [user]);
@@ -178,8 +178,8 @@ export function UserDashboard() {
                 <div key={index}>
                   <p>강의명: {course.courseHistory.course.courseName}</p>
                   <p>
-                    수료상태:{' '}
-                    {course.courseHistory.contentStatus ? '수료완료' : '미수료'}
+                    수료상태:{" "}
+                    {course.courseHistory.contentStatus ? "수료완료" : "미수료"}
                   </p>
                 </div>
               ))

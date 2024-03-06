@@ -1,104 +1,101 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../AuthContext";
+import styled from "styled-components";
 import {
   apiDeleteMyTodoList,
   apiGetMyTodoList,
   apiPostMyTodoList,
   apiPutMyTodoList,
 } from "../../RestApi";
-import styled from "styled-components";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../AuthContext";
 
 const Container = styled.div``;
-
 export function TodoList() {
   const { user } = useContext(AuthContext);
   const [todos, setTodos] = useState([]);
-  const [newTodoContent, setNewTodoContent] = useState("");
-  const memberId = user.memberId;
+  const [newTodo, setNewTodo] = useState("");
+  const [updateTaskName, setUpdateTaskName] = useState("");
 
   useEffect(() => {
-    apiGetMyTodoList(memberId)
+    apiGetMyTodoList(user.memberId)
       .then((response) => {
         setTodos(response.data.data);
+        console.log(response.data.data);
       })
-      .catch((error) => {
-        console.error("TodoList 조회 실패: ", error);
+      .catch((err) => {
+        console.log("todo list 조회 실패: ", err);
       });
-  }, [memberId]);
+  }, [user.memberId]);
 
-  const saveTodo = () => {
-    const todoData = {
-      memberId: memberId,
-      content: newTodoContent,
-    };
+  const handleInputChange = (e) => {
+    setNewTodo(e.target.value);
+  };
+
+  const handleTodoSubmit = () => {
+    const todoData = { member: user, taskName: newTodo };
 
     apiPostMyTodoList(todoData)
       .then((response) => {
-        apiGetMyTodoList(memberId)
-          .then((response) => {
-            setTodos(response.data.data);
-          })
-          .catch((error) => {
-            console.error("TodoList 조회 실패: ", error);
-          });
-        setNewTodoContent("");
+        setNewTodo("");
+        return apiGetMyTodoList(user.memberId);
       })
-      .catch((error) => {
-        console.error("TodoList 저장 실패: ", error);
-      });
+      .then((response) => setTodos(response.data.data))
+      .catch((err) => console.log("Todo 등록 실패: ", err));
   };
 
-  const updateTodo = (taskId, updatedContent) => {
-    const updatedTodoData = {
-      taskId: taskId,
-      content: updatedContent,
-    };
-
-    apiPutMyTodoList(updatedTodoData)
+  const handleTodoUpdate = (taskId, updateTaskName) => {
+    const todoData = { member: user, taskName: updateTaskName };
+    apiPutMyTodoList(taskId, todoData)
       .then((response) => {
-        setTodos(
-          todos.map((todo) =>
-            todo.taskId === taskId ? response.data.data : todo
-          )
-        );
+        return apiGetMyTodoList(user.memberId);
       })
-      .catch((error) => {
-        console.error("TodoList 수정 실패: ", error);
-      });
+      .then((response) => {
+        setTodos(response.data.data);
+      })
+      .catch((err) => console.log("todo list 수정 실패: ", err));
   };
 
-  const deleteTodo = (taskId) => {
+  const handleTodoDelete = (taskId) => {
     apiDeleteMyTodoList(taskId)
-      .then(() => {
-        setTodos(todos.filter((todo) => todo.taskId !== taskId));
+      .then((response) => {
+        return apiGetMyTodoList(user.memberId);
       })
-      .catch((error) => {
-        console.error("TodoList 삭제 실패: ", error);
-      });
+      .then((response) => setTodos(response.data.data))
+      .catch((err) => console.log("Todo 삭제 실패: ", err));
   };
 
   return (
-    <Container>
-      <input
-        type="text"
-        value={newTodoContent}
-        onChange={(e) => setNewTodoContent(e.target.value)}
-      />
-      <button onClick={saveTodo}>Add Todo</button>
-      <ul>
-        {todos.map((todo) =>
-          todo ? (
+    <>
+      <Container>
+        <p>Daily Task</p>
+        <input
+          type="text"
+          value={newTodo}
+          onChange={handleInputChange}
+          placeholder="새로운 할 일을 입력하세요."
+        />
+        <button onClick={handleTodoSubmit}>등록</button>
+        <ul>
+          {todos.map((todo) => (
             <li key={todo.taskId}>
+              {todo.taskName}
               <input
                 type="text"
-                value={todo.content}
-                onChange={(e) => updateTodo(todo.taskId, e.target.value)}
+                value={updateTaskName}
+                onChange={(e) => setUpdateTaskName(e.target.value)}
+                placeholder="수정할 내용을 입력하세요."
               />
-              <button onClick={() => deleteTodo(todo.taskId)}>Delete</button>
+              <button
+                onClick={() => handleTodoUpdate(todo.taskId, updateTaskName)}
+              >
+                수정
+              </button>
+              <button onClick={() => handleTodoDelete(todo.taskId)}>
+                삭제
+              </button>
             </li>
-          ) : null
-        )}
-      </ul>
-    </Container>
+          ))}
+        </ul>
+      </Container>
+    </>
   );
 }

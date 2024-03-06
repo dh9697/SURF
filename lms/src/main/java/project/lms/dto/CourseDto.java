@@ -20,7 +20,7 @@ public class CourseDto {
     
 	private Integer durationMins;
 
-	private byte[] courseThumbnail;
+	private String courseThumbnail;
 
 	private String contentLevel;
 
@@ -31,9 +31,9 @@ public class CourseDto {
 	public CourseDto() {
 		super();
 	}
-	
+
 	public CourseDto(Long courseId, Subject subject, List<String> instructorLoginIds, List<String> instructorNames,
-			String courseName, String description, Integer durationMins, byte[] courseThumbnail, String contentLevel,
+			String courseName, String description, Integer durationMins, String courseThumbnail, String contentLevel,
 			Integer price, String announcement) {
 		super();
 		this.courseId = courseId;
@@ -105,11 +105,11 @@ public class CourseDto {
 		this.durationMins = durationMins;
 	}
 
-	public byte[] getCourseThumbnail() {
+	public String getCourseThumbnail() {
 		return courseThumbnail;
 	}
 
-	public void setCourseThumbnail(byte[] courseThumbnail) {
+	public void setCourseThumbnail(String courseThumbnail) {
 		this.courseThumbnail = courseThumbnail;
 	}
 
@@ -159,7 +159,7 @@ public class CourseDto {
         course.setCourseName(this.courseName);
         course.setDescription(this.description);
         course.setDurationMins(this.durationMins);
-        course.setCourseThumbnail(this.courseThumbnail.clone());
+        course.setCourseThumbnail(this.courseThumbnail);
         course.setContentLevel(this.contentLevel);
         course.setPrice(this.price);
         course.setAnnouncement(this.announcement);

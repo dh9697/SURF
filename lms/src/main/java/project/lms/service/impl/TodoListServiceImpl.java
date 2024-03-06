@@ -27,6 +27,7 @@ public class TodoListServiceImpl implements TodoListService {
         this.todoListRepository = todoListRepository;
     }
 
+    // 유저의 todoList 조회
     @Override
     public ResponseDto<List<TodoList>> getTodoListByMember(Member member) {
         List<TodoList> todoList = todoListRepository.findByMember(member);
@@ -40,6 +41,7 @@ public class TodoListServiceImpl implements TodoListService {
                 .orElseGet(() -> new ResponseDto<>(ResultCode.ERROR.name(), null, "TodoList를 찾을 수 없습니다."));
     }
 
+    // 유저의 todoList 저장
     @Transactional
     public ResponseDto<TodoList> saveTodoList(TodoList todoList) {
         try {
@@ -64,7 +66,6 @@ public class TodoListServiceImpl implements TodoListService {
             return new ResponseDto<>(ResultCode.ERROR.name(), null, "TodoList를 찾을 수 없습니다.");
         }
     }
-
 
     @Transactional
     @Override
