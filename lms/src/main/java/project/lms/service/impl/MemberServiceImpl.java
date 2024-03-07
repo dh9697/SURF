@@ -23,7 +23,6 @@ import project.lms.exception.InvalidRequestException;
 import project.lms.model.Authority;
 import project.lms.model.Member;
 import project.lms.repository.MemberRepository;
-import project.lms.repository.WithdrawalRepository;
 import project.lms.service.MemberService;
 import project.lms.util.SecurityUtil;
 
@@ -33,16 +32,11 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	private final MemberRepository memberRepository;
 	
-	@Autowired
-	private final WithdrawalRepository withdrawalRepository;
-	
 	private final PasswordEncoder passwordEncoder;
 	
-	public MemberServiceImpl(MemberRepository memberRepository, WithdrawalRepository withdrawalRepository,
-			PasswordEncoder passwordEncoder) {
+	public MemberServiceImpl(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
 		super();
 		this.memberRepository = memberRepository;
-		this.withdrawalRepository = withdrawalRepository;
 		this.passwordEncoder = passwordEncoder;
 	}
 

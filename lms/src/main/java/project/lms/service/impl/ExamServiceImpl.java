@@ -1,7 +1,6 @@
 package project.lms.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,26 +17,20 @@ import project.lms.model.Content;
 import project.lms.model.Exam;
 import project.lms.model.ExamQuestion;
 import project.lms.repository.ContentRepository;
-import project.lms.repository.ExamHistoryRepository;
 import project.lms.repository.ExamRepository;
-import project.lms.repository.MemberRepository;
 import project.lms.service.ExamService;
 
 @Service
 public class ExamServiceImpl implements ExamService {
 
 	private ExamRepository examRepository;
-	private MemberRepository memberRepository;
 	private ContentRepository contentRepository;
-	private ExamHistoryRepository examHistoryRepository;
 
 	@Autowired
-	public ExamServiceImpl(ExamRepository examRepository, MemberRepository memberRepository, ContentRepository contentRepository, ExamHistoryRepository examHistoryRepository) {
+	public ExamServiceImpl(ExamRepository examRepository, ContentRepository contentRepository) {
 		super();
 		this.examRepository = examRepository;
-		this.memberRepository = memberRepository;
 		this.contentRepository = contentRepository;
-		this.examHistoryRepository = examHistoryRepository;
 	}
 	
 	// 시험 전체 조회 - 각 course의 선생님 권한

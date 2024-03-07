@@ -14,7 +14,6 @@ import project.lms.enumstatus.ResultCode;
 import project.lms.exception.InvalidRequestException;
 import project.lms.model.Content;
 import project.lms.model.Course;
-import project.lms.model.Exam;
 import project.lms.repository.ContentRepository;
 import project.lms.repository.CourseRepository;
 import project.lms.service.ContentService;

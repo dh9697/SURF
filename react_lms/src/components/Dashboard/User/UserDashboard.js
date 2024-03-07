@@ -6,21 +6,25 @@ import { TodoList } from "./TodoList";
 import {
   apiGetMyCourseHistroies,
   apiGetQnABoardsByMember,
-  apiGetAllContentHistories,
   apiGetMyContentHistory,
+  apiGetMyExamHistory,
+  apiGetMyExamResult,
 } from "../../RestApi";
+import { NavLink } from "react-router-dom";
+import { formatDateTimeStamp } from "../../Util/util";
+import { RecentCourse } from "./RecentCourse";
+import { About } from "./../../About";
 
 const Container = styled.div`
-  padding: 0 20px;
   width: 100%;
   height: 100%;
+  color: #212529;
 `;
 const Header = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #212529;
   margin-bottom: 1rem;
   & div {
     display: flex;
@@ -41,8 +45,8 @@ const BellIcon = styled(Icon)`
 const Body = styled.div`
   display: grid;
   grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(6, 1fr);
-  gap: 16px;
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1rem;
 `;
 
 const Content = styled.div`
@@ -52,27 +56,19 @@ const Content = styled.div`
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  /* align-items: center;
-  justify-content: center; */
   text-align: center;
   transition: all 0.3s ease;
-  cursor: pointer;
-
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
   }
-
-  h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
+  & .contentWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-
-  p {
-    font-size: 1.2rem;
-    color: #6b7280;
-  }
-
   &.toDoList {
     grid-column: span 4;
     grid-row: span 4;
@@ -98,11 +94,18 @@ const Content = styled.div`
   }
 `;
 
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+  color: #212529;
+  font-weight: 900;
+  font-size: 1rem;
+`;
+
 export function UserDashboard() {
   const { user } = useContext(AuthContext);
   const [daysSinceJoin, setDaysSinceJoin] = useState(0);
   const [courseHistoryDtos, setCourseHistoryDtos] = useState([]);
-  const [contentHistories, setContentHistories] = useState([]);
+  const [examHistories, setExamHistories] = useState([]);
   const [qnas, setQnas] = useState([]);
 
   useEffect(() => {
@@ -120,25 +123,12 @@ export function UserDashboard() {
       apiGetMyCourseHistroies(user.memberId)
         .then((response) => {
           setCourseHistoryDtos(response.data.data);
-          console.log(response.data.data);
         })
         .catch((error) => {
           console.error("코스 히스토리 불러오기 오류: ", error);
         });
     }
   }, [user]);
-
-  // 로그인 유저의 contentHistory 조회
-  useEffect(() => {
-    apiGetMyContentHistory(user.memberId)
-      .then((response) => {
-        setContentHistories(response.data.data);
-        console.log(response.data.data);
-      })
-      .catch((err) => {
-        console.log("유저 컨텐츠 이력 조회 실패 ", err);
-      });
-  }, []);
 
   useEffect(() => {
     if (user) {
@@ -170,25 +160,45 @@ export function UserDashboard() {
             <TodoList />
           </Content>
           <Content className="recentCourses">
-            <div>최근 강의 내역</div>
+            <StyledNavLink to={`/dashboard/${user.loginId}/courses`}>
+              최근 강의 내역
+            </StyledNavLink>
             {courseHistoryDtos.length === 0 ? (
-              <p>최근에 등록된 강의가 없습니다.</p>
+              <p>등록된 강의가 없습니다.</p>
             ) : (
-              courseHistoryDtos.map((course, index) => (
-                <div key={index}>
-                  <p>강의명: {course.courseHistory.course.courseName}</p>
+              <RecentCourse />
+            )}
+          </Content>
+          <Content className="incorrectAnswersNote">
+            <StyledNavLink to={`/dashboard/${user.loginId}/exams`}>
+              나의 오답 노트
+            </StyledNavLink>
+          </Content>
+          <Content className="certificates">
+            <h3>보유중인 수료증</h3>
+            {courseHistoryDtos.length === 0 ? (
+              <div className="contentWrapper">
+                <p>수료할 강의가 없습니다.</p>
+              </div>
+            ) : (
+              courseHistoryDtos.map((courseHistoryDto, index) => (
+                <div
+                  className="contentWrapper"
+                  key={courseHistoryDto.courseHistory.courseHistoryId}
+                >
                   <p>
-                    수료상태:{" "}
-                    {course.courseHistory.contentStatus ? "수료완료" : "미수료"}
+                    [{courseHistoryDto.courseHistory.course.subject.subjectName}
+                    ]{courseHistoryDto.courseHistory.course.courseName}
+                    {courseHistoryDto.courseHistory.contentStatus
+                      ? " - 수료완료"
+                      : " - 미수료"}
                   </p>
                 </div>
               ))
             )}
           </Content>
-          <Content className="incorrectAnswersNote">나의 오답 노트</Content>
-          <Content className="certificates">보유중인 수료증</Content>
           <Content className="courseReviews">
-            <div>작성한 QnA</div>
+            <h3>작성한 QnA</h3>
             {qnas.length === 0 ? (
               <p>작성한 QnA가 없습니다.</p>
             ) : (

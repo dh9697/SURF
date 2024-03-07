@@ -7,6 +7,7 @@ import {
   apiGetAllCourseReviews,
   apiGetAllQnABoards,
   apiGetQnARepliesByQnABoardId,
+  apiGetAllSurfers,
 } from "../../RestApi";
 import { formatDateTime } from "../../Util/util";
 import React from "react";
@@ -58,14 +59,38 @@ const Columncontent = styled.div`
   font-size: 1.2rem;
 `;
 
+const TotalMem = styled.h3`
+  font-weight: 400;
+  color: black;
+`;
+
 export function AdminDashboard() {
   const { user } = useContext(AuthContext);
   const [subjects, setSubjects] = useState([]);
-  const [highestReview, setHighestReviews] = useState(null);
+  const [highestReview, setHighestReviews] = useState([]);
   const [qnaBoards, setQnaBoards] = useState([]);
   const [qnaReplies, setQnaReplies] = useState({});
   const [showReplies, setShowReplies] = useState({});
   const [courseReviews, setCourseReviews] = useState([]);
+  const [surfers, setSurfers] = useState([]);
+  const [surfersCount, setSurfersCount] = useState(0);
+  const [surferUsers, setSurferUsers] = useState([]);
+  const [surferMembers, setSurferMembers] = useState([]);
+  const [surferInstructors, setSurferInstructors] = useState([]);
+
+  useEffect(() => {
+    fetchSurfers();
+  }, []);
+
+  const fetchSurfers = () => {
+    apiGetAllSurfers().then((response) => {
+      setSurfers(response.data.data);
+      setSurfersCount(response.data.data.length);
+      setSurferUsers([]);
+      setSurferMembers([]);
+      setSurferInstructors([]);
+    });
+  };
 
   //모든 과목 가지고 오기
   useEffect(() => {
@@ -78,6 +103,7 @@ export function AdminDashboard() {
         console.error("Error fetching subjects:", error);
       });
   }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -89,9 +115,9 @@ export function AdminDashboard() {
         const sortedReviews = courseReviewsData.sort(
           (a, b) => b.reviewid - a.reviewid
         );
-        const highestReviews = sortedReviews.slice(0, 5);
+        const highestReview = sortedReviews.slice(0, 5);
 
-        setHighestReviews(highestReviews);
+        setHighestReviews(highestReview);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -157,6 +183,7 @@ export function AdminDashboard() {
             style={{ textDecoration: "none" }}
           >
             <Columntitle>회원 관리</Columntitle>
+            <TotalMem>현재 총 회원 수: {surfersCount} 명</TotalMem>
           </NavLink>
         </Content>
         <Content>
@@ -212,6 +239,28 @@ export function AdminDashboard() {
           >
             <Columntitle>수강평 관리</Columntitle>
           </NavLink>
+          <QnAs>
+            <colgroup>
+              <col style={{ width: "130px" }} />
+              <col style={{ width: "300px" }} />
+              <col style={{ width: "130px" }} />
+              <col style={{ width: "130px" }} />
+            </colgroup>
+            {highestReview
+              .slice(0)
+              .reverse()
+              .map((review, index) => (
+                <React.Fragment key={index}>
+                  <QnA>
+                    <td className="name">{review.member.name}</td>
+                    <td className="reviewText">{review.comment}</td>
+                    <td className="time">
+                      {formatDateTime(review.reviewDate)}
+                    </td>
+                  </QnA>
+                </React.Fragment>
+              ))}
+          </QnAs>
         </Content>
         <Content>
           <NavLink
