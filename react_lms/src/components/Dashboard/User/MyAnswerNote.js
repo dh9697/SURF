@@ -1,22 +1,39 @@
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import { apiGetMyExamHistory, apiGetMyExamResult } from "../../RestApi";
+import { AuthContext } from "../../../AuthContext";
 
-const Container = styled.div`
-  display: ${({ isVisible }) => (isVisible ? "block" : "none")};
-`;
+const Container = styled.div``;
 
-const AnswerBox = styled.div`
-  width: 100%;
-  background-color: gray;
-  padding: 50px;
-`;
+export function MyAnswerNote() {
+  const { user } = useContext(AuthContext);
+  const [examResults, setExamResults] = useState([]);
+  const [examHistories, setExamHistories] = useState([]);
+  useEffect(() => {
+    apiGetMyExamResult(user.memberId)
+      .then((response) => {
+        setExamResults(response.data.data);
+        console.log(response.data.data);
+      })
+      .catch((err) => {
+        console.log("유저의 시험 결과 조회 실패: ", err);
+      });
+  }, [user.memberId]);
 
-export function MyAnswerNote({ isVisible }) {
+  useEffect(() => {
+    apiGetMyExamHistory(user.memberId)
+      .then((response) => {
+        setExamHistories(response.data.data);
+        console.log(response.data.data);
+      })
+      .catch((err) => {
+        console.log("유저의 시험 이력 조회 실패: ", err);
+      });
+  }, [user.memberId]);
+
   return (
     <>
-      <Container isVisible={isVisible}>
-        <h1>나의 오답 노트</h1>
-        <AnswerBox>문제를 어떻게 표현할지 고민</AnswerBox>
-      </Container>
+      <Container>어떻게 구성할지</Container>
     </>
   );
 }

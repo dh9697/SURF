@@ -14,6 +14,9 @@ import { formatDateTimeStamp } from "../../Util/util";
 
 const Container = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 `;
 const Course = styled.div`
   & h2 {
@@ -21,8 +24,10 @@ const Course = styled.div`
   }
   & .grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
+    max-height: 650px;
+    overflow: auto;
   }
 `;
 const Content = styled.div`
@@ -105,7 +110,6 @@ export function MyExam() {
     apiGetCompletedContentHistories(memberId)
       .then((response) => {
         setCompletedContent(response.data.data);
-        console.log(response.data.data);
 
         const examPromises = response.data.data.map((contentHistory) =>
           apiGetExamByContent(contentHistory.content.contentId)
@@ -117,7 +121,6 @@ export function MyExam() {
               (response) => response.data.data
             );
             setExams(completedContentExams);
-            console.log(completedContentExams);
           })
           .catch((err) => {
             console.log("완료한 컨텐츠 시험 조회 실패 ", err);
@@ -133,7 +136,6 @@ export function MyExam() {
     apiGetMyExamHistory(memberId)
       .then((response) => {
         setExamHistories(response.data.data);
-        console.log(response.data.data);
       })
       .catch((err) => {
         console.log("유저의 시험 이력 조회 실패 ", err);

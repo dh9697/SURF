@@ -1,15 +1,11 @@
 import styled from "styled-components";
-import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { apiGetCurrentUserInfo } from "../RestApi";
 import { UserDashboardNavBar } from "./User/UserDashboardNavBar";
 import { AdminDashboardNavBar } from "./Admin/AdminDashboardNavBar";
 import { InstructorDashboardSideBar } from "./Instructor/InstructorDashboardSideBar";
 
-const Container = styled.div`
-  margin: 0 250px;
-`;
-
+const Container = styled.div``;
 const NavBar = styled.div``;
 
 export function DashboardNavBar() {
@@ -34,17 +30,19 @@ export function DashboardNavBar() {
 
   return (
     <Container>
-      <NavBar>
-        {userRoles.includes("ROLE_ADMIN") ? (
-          <AdminDashboardNavBar />
-        ) : userRoles.includes("ROLE_INSTRUCTOR") ? (
-          <InstructorDashboardSideBar />
-        ) : userRoles.some(
-            (role) => role === "ROLE_USER" || role === "ROLE_MEMBER"
-          ) ? (
-          <UserDashboardNavBar />
-        ) : null}
-      </NavBar>
+      <div className="innerWrapper">
+        <NavBar>
+          {userRoles.includes("ROLE_ADMIN") ? (
+            <AdminDashboardNavBar />
+          ) : userRoles.includes("ROLE_INSTRUCTOR") ? (
+            <InstructorDashboardSideBar />
+          ) : userRoles.some(
+              (role) => role === "ROLE_USER" || role === "ROLE_MEMBER"
+            ) ? (
+            <UserDashboardNavBar />
+          ) : null}
+        </NavBar>
+      </div>
     </Container>
   );
 }

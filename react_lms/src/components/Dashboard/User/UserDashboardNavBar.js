@@ -11,7 +11,7 @@ const Container = styled.div`
   gap: 2rem;
 `;
 const NavBar = styled.div`
-  width: 200px;
+  min-width: 200px;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -58,55 +58,53 @@ export function UserDashboardNavBar() {
   return (
     <>
       <Container>
-        <div className="innerWrapper">
-          <NavBar>
-            <StyledNavLink
-              to={`/dashboard/${user.loginId}`}
-              className="dashboard"
-            >
-              대시보드
-            </StyledNavLink>
-            <StyledNavLink
-              activeClassName="active"
-              to={`/dashboard/${user.loginId}/courses`}
-            >
-              내 학습
-            </StyledNavLink>
-            <StyledNavLink
-              activeClassName="active"
-              to={`/dashboard/${user.loginId}/exams`}
-            >
-              내 과제
-            </StyledNavLink>
-            <StyledNavLink
-              activeClassName="active"
-              to={`/dashboard/${user.loginId}/mycomment`}
-            >
-              작성한 게시글
-            </StyledNavLink>
-            <StyledNavLink activeClassName="active" to={"/cart"}>
-              물결 바구니
-            </StyledNavLink>
-            <StyledNavLink
-              activeClassName="active"
-              to={`/dashboard/${user.loginId}/mycertificate`}
-            >
-              수료증
-            </StyledNavLink>
-            <StyledNavLink
-              activeClassName="active"
-              to={`/dashboard/${user.loginId}/purchaselist`}
-            >
-              구매내역
-            </StyledNavLink>
-            <StyledNavLink
-              activeClassName="active"
-              to={`/dashboard/${user.loginId}/account_info`}
-            >
-              계정 정보
-            </StyledNavLink>
-          </NavBar>
-        </div>
+        <NavBar>
+          <StyledNavLink
+            to={`/dashboard/${user.loginId}`}
+            className="dashboard"
+          >
+            대시보드
+          </StyledNavLink>
+          <StyledNavLink
+            activeClassName="active"
+            to={`/dashboard/${user.loginId}/courses`}
+          >
+            내 학습
+          </StyledNavLink>
+          <StyledNavLink
+            activeClassName="active"
+            to={`/dashboard/${user.loginId}/exams`}
+          >
+            내 과제
+          </StyledNavLink>
+          <StyledNavLink
+            activeClassName="active"
+            to={`/dashboard/${user.loginId}/mycomment`}
+          >
+            작성한 게시글
+          </StyledNavLink>
+          <StyledNavLink activeClassName="active" to={"/cart"}>
+            물결 바구니
+          </StyledNavLink>
+          <StyledNavLink
+            activeClassName="active"
+            to={`/dashboard/${user.loginId}/mycertificate`}
+          >
+            수료증
+          </StyledNavLink>
+          <StyledNavLink
+            activeClassName="active"
+            to={`/dashboard/${user.loginId}/purchaselist`}
+          >
+            구매내역
+          </StyledNavLink>
+          <StyledNavLink
+            activeClassName="active"
+            to={`/dashboard/${user.loginId}/account_info`}
+          >
+            계정 정보
+          </StyledNavLink>
+        </NavBar>
         <DashboardMain>
           <Outlet />
         </DashboardMain>

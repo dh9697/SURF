@@ -14,6 +14,7 @@ import { NavLink } from "react-router-dom";
 import { formatDateTimeStamp } from "../../Util/util";
 import { RecentCourse } from "./RecentCourse";
 import { About } from "./../../About";
+import { MyAnswerNote } from "./MyAnswerNote";
 
 const Container = styled.div`
   width: 100%;
@@ -117,7 +118,7 @@ export function UserDashboard() {
     setDaysSinceJoin(daysSinceJoin);
   }, [user.joinDate]);
 
-  // 로그인 유저의 courseHistory 조회
+  // 유저의 courseHistory 조회
   useEffect(() => {
     if (user) {
       apiGetMyCourseHistroies(user.memberId)
@@ -130,6 +131,7 @@ export function UserDashboard() {
     }
   }, [user]);
 
+  // 유저의 qna 조회
   useEffect(() => {
     if (user) {
       apiGetQnABoardsByMember(user.memberId)
@@ -164,7 +166,9 @@ export function UserDashboard() {
               최근 강의 내역
             </StyledNavLink>
             {courseHistoryDtos.length === 0 ? (
-              <p>등록된 강의가 없습니다.</p>
+              <div className="contentWrapper">
+                <p>등록된 강의가 없습니다.</p>
+              </div>
             ) : (
               <RecentCourse />
             )}
@@ -173,6 +177,7 @@ export function UserDashboard() {
             <StyledNavLink to={`/dashboard/${user.loginId}/exams`}>
               나의 오답 노트
             </StyledNavLink>
+            <MyAnswerNote />
           </Content>
           <Content className="certificates">
             <h3>보유중인 수료증</h3>

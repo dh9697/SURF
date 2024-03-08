@@ -322,16 +322,12 @@ export function apiDeleteSubject(subjectId, subjectData) {
 // --------------- Course Rest API ---------------
 // 모든 코스 조회
 export function apiGetAllCourses() {
-  return axios.get("http://localhost:8080/api/course/list", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  return axios.get("http://localhost:8080/api/course/list");
 }
 
 // 서브젝트에 따라 코스 조회
 export function apiGetCourseBySubject(subjectId) {
-  return axios.get(`http://localhost:8080/api/course/subject/${subjectId}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  return axios.get(`http://localhost:8080/api/course/subject/${subjectId}`);
 }
 
 // 특정 코스 조회

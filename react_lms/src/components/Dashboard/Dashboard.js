@@ -10,7 +10,7 @@ export function Dashboard() {
   useEffect(() => {
     const token = sessionStorage.getItem("Token");
     fetchUserInfo(token);
-  }, []);
+  }, [userRoles]);
 
   const fetchUserInfo = async (token) => {
     try {

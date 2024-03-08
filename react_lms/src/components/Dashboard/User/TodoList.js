@@ -69,11 +69,11 @@ export function TodoList() {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState("");
 
+  // 유저의 todo 조회
   useEffect(() => {
     apiGetMyTodoList(user.memberId)
       .then((response) => {
         setTodos(response.data.data);
-        console.log(response.data.data);
       })
       .catch((err) => {
         console.log("todo list 조회 실패: ", err);
@@ -85,8 +85,13 @@ export function TodoList() {
   };
 
   const handleTodoSubmit = () => {
+    if (!newTodo) {
+      alert("공백일 수 없습니다.");
+      return;
+    }
     const todoData = { member: user, taskName: newTodo };
 
+    // 유저의 todo 저장
     apiPostMyTodoList(todoData)
       .then((response) => {
         setNewTodo("");
@@ -100,6 +105,7 @@ export function TodoList() {
     const isCompleted = e.target.value === "done";
     const todoData = { member: user, isCompleted: isCompleted };
 
+    // 유저의 todo completed 수정
     apiPutMyTodoList(taskId, todoData)
       .then((response) => {
         return apiGetMyTodoList(user.memberId);
@@ -110,6 +116,7 @@ export function TodoList() {
       .catch((err) => console.log("todo list 수정 실패: ", err));
   };
 
+  // 유저의 todo 삭제
   const handleTodoDelete = (taskId) => {
     apiDeleteMyTodoList(taskId)
       .then((response) => {
