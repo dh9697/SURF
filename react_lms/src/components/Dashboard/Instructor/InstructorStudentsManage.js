@@ -1,7 +1,10 @@
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../AuthContext";
-import { apiGetCourseHistroiesByCourse } from "../../RestApi";
+import {
+  apiGetCourseHistroiesByCourse,
+  apiGetMyExamResult,
+} from "../../RestApi";
 
 const Container = styled.div`
   color: #454545;
@@ -41,17 +44,32 @@ export function InstructorStudentsManage() {
   const selectedCourse = courses.find(
     (course) => course.courseId === parseInt(selectedCourseId)
   );
+  const [examResults, setExamResults] = useState([]);
 
+  // 컨텐츠 히스토리 조회 => 강의진도율
   // 해당 강의의 코스히스토리 조회
   useEffect(() => {
     const fetchCourseHistories = async () => {
       if (!selectedCourseId) return;
       const response = await apiGetCourseHistroiesByCourse(selectedCourseId);
       setCourseHistories(response.data.data);
+      console.log(response.data.data);
+
+      for (const courseHistory of response.data.data) {
+        const examResultResponse = await apiGetMyExamResult(
+          courseHistory.member.memberId
+        );
+        examResults.push({
+          memberId: courseHistory.member.memberId,
+          memberExamResults: examResultResponse.data.data,
+        });
+      }
+      console.log(examResults);
+      setExamResults(examResults);
     };
 
     fetchCourseHistories();
-  }, [selectedCourseId]);
+  }, [selectedCourseId, examResults]);
 
   const handleSelectChange = (e) => {
     setSelectedCourseId(e.target.value);
@@ -90,23 +108,32 @@ export function InstructorStudentsManage() {
             <tr>
               <Th>학생 이름</Th>
               <Th>성별</Th>
+              <Th>수료증</Th>
+              <Th>질문</Th>
               <Th>강의 진도율</Th>
               <Th>과제율</Th>
-              <Th>질문</Th>
-              <Th>수료증</Th>
             </tr>
           </thead>
           <tbody>
-            {courseHistories.map((courseHistory) => (
-              <tr key={courseHistory.courseHistoryId}>
-                <Td>{courseHistory.member.name}</Td>
-                <Td>{courseHistory.member.gender}</Td>
-                <Td></Td>
-                <Td></Td>
-                <Td></Td>
-                <Td>{courseHistory.contentStatus ? "완료" : "미완료"}</Td>
-              </tr>
-            ))}
+            {courseHistories.map((courseHistory) => {
+              const studentExamResult = examResults.find(
+                (result) => result.memberId === courseHistory.member.memberId
+              );
+              return (
+                <tr key={courseHistory.courseHistoryId}>
+                  <Td>{courseHistory.member.name}</Td>
+                  <Td>{courseHistory.member.gender}</Td>
+                  <Td>{courseHistory.contentStatus ? "완료" : "미완료"}</Td>
+                  <Td></Td>
+                  <Td></Td>
+                  <Td>
+                    {studentExamResult
+                      ? studentExamResult.memberExamResults.length
+                      : 0}
+                  </Td>
+                </tr>
+              );
+            })}
           </tbody>
         </UserTable>
         <DetailTable>

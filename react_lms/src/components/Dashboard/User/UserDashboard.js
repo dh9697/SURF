@@ -81,25 +81,31 @@ const Content = styled.div`
 
   &.incorrectAnswersNote {
     grid-column: span 3;
-    grid-row: span 2;
+    grid-row: span 4;
   }
 
   &.certificates {
     grid-column: span 3;
     grid-row: span 2;
   }
-
-  &.courseReviews {
-    grid-column: span 3;
-    grid-row: span 2;
-  }
 `;
 
 const StyledNavLink = styled(NavLink)`
+  text-align: start;
   text-decoration: none;
   color: #212529;
   font-weight: 900;
   font-size: 1rem;
+  position: relative;
+  & .viewAll {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    font-size: 12px;
+    font-weight: 400;
+    color: #6b7280;
+    transform: translateY(-50%);
+  }
 `;
 
 export function UserDashboard() {
@@ -163,7 +169,7 @@ export function UserDashboard() {
           </Content>
           <Content className="recentCourses">
             <StyledNavLink to={`/dashboard/${user.loginId}/courses`}>
-              최근 강의 내역
+              최근 강의 내역 <span className="viewAll">전체보기</span>
             </StyledNavLink>
             {courseHistoryDtos.length === 0 ? (
               <div className="contentWrapper">
@@ -175,18 +181,20 @@ export function UserDashboard() {
           </Content>
           <Content className="incorrectAnswersNote">
             <StyledNavLink to={`/dashboard/${user.loginId}/exams`}>
-              나의 오답 노트
+              최신 오답 노트 <span className="viewAll">전체보기</span>
             </StyledNavLink>
             <MyAnswerNote />
           </Content>
           <Content className="certificates">
-            <h3>보유중인 수료증</h3>
+            <StyledNavLink to={`/dashboard/${user.loginId}/certificate`}>
+              보유중인 수료증 <span className="viewAll">전체보기</span>
+            </StyledNavLink>
             {courseHistoryDtos.length === 0 ? (
               <div className="contentWrapper">
                 <p>수료할 강의가 없습니다.</p>
               </div>
             ) : (
-              courseHistoryDtos.map((courseHistoryDto, index) => (
+              courseHistoryDtos.map((courseHistoryDto) => (
                 <div
                   className="contentWrapper"
                   key={courseHistoryDto.courseHistory.courseHistoryId}
@@ -198,18 +206,6 @@ export function UserDashboard() {
                       ? " - 수료완료"
                       : " - 미수료"}
                   </p>
-                </div>
-              ))
-            )}
-          </Content>
-          <Content className="courseReviews">
-            <h3>작성한 QnA</h3>
-            {qnas.length === 0 ? (
-              <p>작성한 QnA가 없습니다.</p>
-            ) : (
-              qnas.map((qna, index) => (
-                <div key={index}>
-                  <p>{qna.questionText}</p>
                 </div>
               ))
             )}

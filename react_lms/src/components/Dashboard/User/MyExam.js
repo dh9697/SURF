@@ -11,6 +11,7 @@ import {
 import { AuthContext } from "../../../AuthContext";
 import sample from "../../image/Thumbnail.jpg";
 import { formatDateTimeStamp } from "../../Util/util";
+import { Icon } from "@iconify/react";
 
 const Container = styled.div`
   width: 100%;
@@ -49,6 +50,10 @@ const Content = styled.div`
       position: absolute;
       top: 140%;
       left: 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
     }
   }
   & .contentButtons {
@@ -177,24 +182,26 @@ export function MyExam() {
                       );
                     return (
                       <Content key={content.contentId}>
-                        <div
+                        <NavLink
+                          to={`/course/${content.course.courseId}/content/${content.contentId}`}
                           className="image"
                           style={{ width: "200px", margin: "0 auto" }}
                         >
                           <img src={sample} style={{ width: "100%" }} />
-                        </div>
+                        </NavLink>
                         <p className="contentTitle">{content.contentTitle}</p>
-                        {completed && (
+                        {completed ? (
                           <div>
                             <p className="lastAccessed">
                               최근 수강 기록
                               <span>
+                                <Icon icon="zondicons:time"></Icon>
                                 {formatDateTimeStamp(completed.lastAccessed)}
                               </span>
                             </p>
                             <div className="contentButtons">
                               <button className="completedContent">
-                                {completed.isCompleted ? "수강완료" : ""}
+                                수강완료
                               </button>
                               {exam && (
                                 <>
@@ -218,6 +225,8 @@ export function MyExam() {
                               )}
                             </div>
                           </div>
+                        ) : (
+                          <p>최근 수강 기록이 없습니다.</p>
                         )}
                       </Content>
                     );

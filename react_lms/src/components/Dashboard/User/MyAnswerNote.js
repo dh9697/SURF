@@ -20,17 +20,6 @@ export function MyAnswerNote() {
       });
   }, [user.memberId]);
 
-  useEffect(() => {
-    apiGetMyExamHistory(user.memberId)
-      .then((response) => {
-        setExamHistories(response.data.data);
-        console.log(response.data.data);
-      })
-      .catch((err) => {
-        console.log("유저의 시험 이력 조회 실패: ", err);
-      });
-  }, [user.memberId]);
-
   return (
     <>
       <Container>어떻게 구성할지</Container>

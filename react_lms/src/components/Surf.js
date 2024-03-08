@@ -46,6 +46,7 @@ import { TodayResolutions } from "./Communitiy/TodayResolutions.js";
 import { InstructorExamQuestion } from "./Dashboard/Instructor/InstructorExamQuestion.js";
 import { MyExam } from "./Dashboard/User/MyExam.js";
 import { ContentExam } from "./Dashboard/User/ContentExam.js";
+import { MyCertificate } from "./Dashboard/User/MyCertificate.js";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -157,6 +158,10 @@ export function Surf() {
                       <Route
                         path={`/dashboard/${user.loginId}/purchaselist`}
                         element={<PurchaseList />}
+                      />
+                      <Route
+                        path={`/dashboard/${user.loginId}/certificate`}
+                        element={<MyCertificate />}
                       />
                       <Route
                         path={`/dashboard/${user.loginId}/account_info`}

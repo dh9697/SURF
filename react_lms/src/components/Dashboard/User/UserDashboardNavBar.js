@@ -88,7 +88,7 @@ export function UserDashboardNavBar() {
           </StyledNavLink>
           <StyledNavLink
             activeClassName="active"
-            to={`/dashboard/${user.loginId}/mycertificate`}
+            to={`/dashboard/${user.loginId}/certificate`}
           >
             수료증
           </StyledNavLink>
