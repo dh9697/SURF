@@ -74,6 +74,7 @@ export function ContentExam() {
         console.log("컨텐츠 불러 오기 오류: ", err);
       });
   }, [contentId]);
+
   // contentId에 따라 exam 조회
   useEffect(() => {
     apiGetExamByContent(contentId)

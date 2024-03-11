@@ -7,8 +7,8 @@ public class ExamResultDto {
     private Long examQuestionId;
     private Integer submittedAnswer;
     private boolean isCorrect;
-    private Integer correctOptionIndex; // ExamQuestion 에서 가져온 정보
-    private String wrongAnsExpl; // ExamQuestion 에서 가져온 정보
+    private Integer correctOptionIndex;
+    private String wrongAnsExpl;
 
     // 기본 생성자
     public ExamResultDto() {

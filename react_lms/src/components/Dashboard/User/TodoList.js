@@ -140,7 +140,9 @@ export function TodoList() {
             onChange={handleInputChange}
             placeholder="새로운 할 일을 입력하세요."
           />
-          <button onClick={handleTodoSubmit}>등록</button>
+          <button style={{ cursor: "pointer" }} onClick={handleTodoSubmit}>
+            등록
+          </button>
         </div>
         <ul>
           {todos.map((todo) => (

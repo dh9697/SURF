@@ -166,7 +166,7 @@ export function UserDashboard() {
           </Content>
           <Content className="incorrectAnswersNote">
             <StyledNavLink to={`/dashboard/${user.loginId}/exams`}>
-              최신 오답 노트 <span className="viewAll">전체보기</span>
+              최근 시험 결과 <span className="viewAll">전체보기</span>
             </StyledNavLink>
             <MyAnswerNote />
           </Content>
