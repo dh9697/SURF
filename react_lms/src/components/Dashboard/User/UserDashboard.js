@@ -112,8 +112,6 @@ export function UserDashboard() {
   const { user } = useContext(AuthContext);
   const [daysSinceJoin, setDaysSinceJoin] = useState(0);
   const [courseHistoryDtos, setCourseHistoryDtos] = useState([]);
-  const [examHistories, setExamHistories] = useState([]);
-  const [qnas, setQnas] = useState([]);
 
   useEffect(() => {
     const joinDate = new Date(user.joinDate);
@@ -133,19 +131,6 @@ export function UserDashboard() {
         })
         .catch((error) => {
           console.error("코스 히스토리 불러오기 오류: ", error);
-        });
-    }
-  }, [user]);
-
-  // 유저의 qna 조회
-  useEffect(() => {
-    if (user) {
-      apiGetQnABoardsByMember(user.memberId)
-        .then((response) => {
-          setQnas(response.data.data);
-        })
-        .catch((error) => {
-          console.error("Q&A 게시판 데이터 불러오기 오류: ", error);
         });
     }
   }, [user]);

@@ -6,6 +6,13 @@ export function RestApi() {
 
 const token = sessionStorage.getItem("Token");
 
+// ADMIN이 loginId로 얻는 정보 조회
+// export function apiGetMemberInfo(loginId) {
+//   return axios.get(`http://localhost:8080/api/member/${loginId}`, {
+//     headers: { Authorization: `Bearer ${token}` },
+//   });
+// }
+
 // signup
 export function apiSignupByAxiosPost(
   loginId,
@@ -203,13 +210,6 @@ export function apiGetMyExamHistory(memberId) {
 // 모든 시험 문제 조회
 export function apiGetAllExamQuestions() {
   return axios.get("http://localhost:8080/api/exam-questions/list", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-}
-
-// ADMIN이 loginId로 얻는 정보 조회
-export function apiGetMemberInfo(loginId) {
-  return axios.get(`http://localhost:8080/api/member/${loginId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 }

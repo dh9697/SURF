@@ -40,7 +40,6 @@ public class ExamResultController {
 	
 	// 특정 사용자의 모든 시험 결과 조회
 	@GetMapping("/list/member/{memberId}")
-	@PreAuthorize("hasAnyRole('INSTRUCTOR')")
 	public ResponseEntity<ResponseDto<List<ExamResultDto>>> getExamResultsByMember(@PathVariable Long memberId){
 		return ResponseEntity.ok(examResultService.getExamResultsByMemberMemberId(memberId));
 	}

@@ -19,7 +19,6 @@ const Container = styled.div`
 
 const LoginContainer = styled.div`
   width: 400px;
-  /* 구분선 스타일 */
   .divider-container {
     width: 100%;
     margin: 3rem 0;
@@ -34,7 +33,6 @@ const LoginContainer = styled.div`
     border-top: 1px solid #6b7280;
   }
 
-  /* 텍스트 스타일 */
   .divider-text {
     position: absolute;
     color: #6b7280;
@@ -120,12 +118,18 @@ const StyledIcon = styled(Icon)`
   font-size: 1rem;
   color: #454545;
 `;
-
+const ValidationMessage = styled.p`
+  color: #3182f6;
+  font-size: 12px;
+  padding: 0.5rem 0;
+`;
 export function Login() {
   const { user, fetchUser } = useContext(AuthContext);
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [passwordValidationMessage, setPasswordValidationMessage] =
+    useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -135,21 +139,13 @@ export function Login() {
         sessionStorage.setItem("Token", response.data.data.token);
         sessionStorage.setItem("LoginId", loginId);
         fetchUser();
-        window.alert("로그인이 성공적으로 이루어졌습니다.");
         navigate("/");
-      } else {
-        console.log(response.data.message);
       }
     } catch (err) {
       console.log("로그인 오류", err);
+      window.alert("아이디나 비밀번호가 일치하지 않습니다.");
     }
   };
-
-  // useEffect(() => {
-  //   if (user) {
-  //     navigate("/");
-  //   }
-  // }, [user]);
 
   // enter 로그인
   const handleKeyPress = (e) => {
@@ -162,6 +158,18 @@ export function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisible = () => {
     setShowPassword(!showPassword);
+  };
+
+  const validatePassword = (password) => {
+    const regex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
+    if (regex.test(password)) {
+      setPasswordValidationMessage("사용가능한 비밀번호입니다.");
+    } else {
+      setPasswordValidationMessage(
+        "영문, 숫자, 특수문자를 포함하여 8~20자리로 입력해주세요."
+      );
+    }
   };
 
   return (
@@ -180,10 +188,16 @@ export function Login() {
               type={showPassword ? "text" : "password"}
               placeholder="비밀번호 입력"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                validatePassword(e.target.value);
+              }}
               autoComplete="off"
               onKeyPress={handleKeyPress}
             />
+            {password && (
+              <ValidationMessage>{passwordValidationMessage}</ValidationMessage>
+            )}
             <StyledIcon
               icon={showPassword ? "mdi:eye-outline" : "mdi:eye-off-outline"}
               onClick={togglePasswordVisible}
