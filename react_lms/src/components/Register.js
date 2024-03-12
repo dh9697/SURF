@@ -139,17 +139,16 @@ const CheckboxInput = styled.input`
     background-color: #3182f6;
   }
 
-  /* 체크박스가 체크될 때 가상 요소 사용 */
   &:checked::before {
     content: "";
     position: absolute;
-    width: 6px; /* 체크 표시의 너비 */
-    height: 12px; /* 체크 표시의 높이 */
-    border: solid white; /* 흰색 체크 표시 */
-    border-width: 0 2px 2px 0; /* 대각선 모양 만들기 */
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) rotate(45deg); /* 대각선 회전 */
+    transform: translate(-50%, -50%) rotate(45deg);
   }
 `;
 
@@ -169,6 +168,105 @@ export function Register() {
   const [nationality, setNationality] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
+
+  // 입력 조건 확인
+  const [idValidationMsg, setIdValidationMsg] = useState({
+    message: "",
+    type: "",
+  });
+  const [pwValidationMsg, setPwValidationMsg] = useState({
+    message: "",
+    type: "",
+  });
+  const [bdValidationMsg, setBdValidationMsg] = useState({
+    message: "",
+    type: "",
+  });
+  const [pnValidationMsg, setPnValidationMsg] = useState({
+    message: "",
+    type: "",
+  });
+  const [emailValidationMsg, setEmailValidationMsg] = useState({
+    message: "",
+    type: "",
+  });
+
+  const validateId = (loginId) => {
+    const regex = /^[a-zA-Z0-9]{8,20}$/;
+    if (regex.test(loginId)) {
+      setIdValidationMsg({
+        message: "사용할 수 있는 ID입니다.",
+        type: "success",
+      });
+    } else {
+      setIdValidationMsg({
+        message: "영문, 숫자를 포함한 8~20자의 ID를 입력해 주세요.",
+        type: "error",
+      });
+    }
+  };
+
+  const validatePw = (password) => {
+    const regex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
+    if (regex.test(password)) {
+      setPwValidationMsg({
+        message: "적합한 형식의 비밀번호입니다.",
+        type: "success",
+      });
+    } else {
+      setPwValidationMsg({
+        message:
+          "영문, 숫자, 특수문자를 포함한 8~20자의 비밀번호를 입력해 주세요.",
+        type: "error",
+      });
+    }
+  };
+
+  const validateBd = (birthDate) => {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    if (regex.test(birthDate)) {
+      setBdValidationMsg({
+        message: "생년월일 입력이 완료되었습니다.",
+        type: "success",
+      });
+    } else {
+      setBdValidationMsg({
+        message: "yyyy-mm-dd 형식을 지켜 생년월일을 입력해 주세요.",
+        type: "error",
+      });
+    }
+  };
+
+  const validatePh = (phoneNum) => {
+    const regex = /^\d{3}-\d{4}-\d{4}$/;
+    if (regex.test(phoneNum)) {
+      setPnValidationMsg({
+        message: "휴대폰 번호 입력이 완료되었습니다.",
+        type: "success",
+      });
+    } else {
+      setPnValidationMsg({
+        message: "010-1234-5678 형식을 지켜 휴대폰 번호를 입력해 주세요.",
+        type: "error",
+      });
+    }
+  };
+
+  const validateEmail = (emailId) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (regex.test(emailId)) {
+      setEmailValidationMsg({
+        message: "이메일 입력이 완료되었습니다.",
+        type: "success",
+      });
+    } else {
+      setEmailValidationMsg({
+        message: "youremail@email.com 형식을 지켜 이메일 주소를 입력해 주세요.",
+        type: "error",
+      });
+    }
+  };
 
   const handleClickGender = (e) => {
     setGender(e.target.value);
@@ -219,8 +317,18 @@ export function Register() {
                 placeholder="영문, 숫자 포함 8~20자"
                 name="loginId"
                 value={loginId}
-                onChange={(e) => setLoginId(e.target.value)}
+                onChange={(e) => {
+                  setLoginId(e.target.value);
+                  validateId(e.target.value);
+                }}
               />
+              <small
+                style={{
+                  color: idValidationMsg.type === "success" ? "#3182f6" : "red",
+                }}
+              >
+                {idValidationMsg.message}
+              </small>
             </div>
             <div className="inputContainer">
               <span className="inputLabel">비밀번호</span>
@@ -229,12 +337,22 @@ export function Register() {
                 placeholder="영문, 숫자, 특수문자 모두 포함 8~20자"
                 name="passwordId"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  validatePw(e.target.value);
+                }}
               />
               <StyledIcon
                 icon={showPassword ? "mdi:eye-outline" : "mdi:eye-off-outline"}
                 onClick={togglePasswordVisible}
               ></StyledIcon>
+              <small
+                style={{
+                  color: pwValidationMsg.type === "success" ? "#3182f6" : "red",
+                }}
+              >
+                {pwValidationMsg.message}
+              </small>
             </div>
             <div className="inputContainer">
               <span className="inputLabel">이름</span>
@@ -250,11 +368,21 @@ export function Register() {
               <span className="inputLabel">생년월일</span>
               <Input
                 type="text"
-                placeholder="ex) 1998-01-05"
+                placeholder="ex) 1997-01-19"
                 name="birthId"
                 value={birthDate}
-                onChange={(e) => setBirthDate(e.target.value)}
+                onChange={(e) => {
+                  setBirthDate(e.target.value);
+                  validateBd(e.target.value);
+                }}
               />
+              <small
+                style={{
+                  color: bdValidationMsg.type === "success" ? "#3182f6" : "red",
+                }}
+              >
+                {bdValidationMsg.message}
+              </small>
             </div>
             <div className="radioInputContainerWrapper">
               <div className="radioInputContainer">
@@ -311,8 +439,18 @@ export function Register() {
                 placeholder="ex) 010-1234-5678"
                 name="phoneNumId"
                 value={phoneNum}
-                onChange={(e) => setPhoneNum(e.target.value)}
+                onChange={(e) => {
+                  setPhoneNum(e.target.value);
+                  validatePh(e.target.value);
+                }}
               />
+              <small
+                style={{
+                  color: pnValidationMsg.type === "success" ? "#3182f6" : "red",
+                }}
+              >
+                {pnValidationMsg.message}
+              </small>
             </div>
             <div className="inputContainer">
               <span className="inputLabel">Email</span>
@@ -321,8 +459,19 @@ export function Register() {
                 placeholder="정확히 입력해 주세요"
                 name="emailId"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  validateEmail(e.target.value);
+                }}
               />
+              <small
+                style={{
+                  color:
+                    emailValidationMsg.type === "success" ? "#3182f6" : "red",
+                }}
+              >
+                {emailValidationMsg.message}
+              </small>
             </div>
           </RegisterForm>
           <CheckBox>
