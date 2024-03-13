@@ -16,28 +16,26 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `subjects`
+-- Table structure for table `authority`
 --
 
-DROP TABLE IF EXISTS `subjects`;
+DROP TABLE IF EXISTS `authority`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `subjects` (
-  `subject_id` bigint NOT NULL AUTO_INCREMENT,
-  `description` text,
-  `subject_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`subject_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `authority` (
+  `authority_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`authority_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `subjects`
+-- Dumping data for table `authority`
 --
 
-LOCK TABLES `subjects` WRITE;
-/*!40000 ALTER TABLE `subjects` DISABLE KEYS */;
-INSERT INTO `subjects` VALUES (1,'TOEIC','토익'),(10,'TOEFL','토플'),(11,'TEPS','텝스'),(12,'TOS/OPic','토스/오픽');
-/*!40000 ALTER TABLE `subjects` ENABLE KEYS */;
+LOCK TABLES `authority` WRITE;
+/*!40000 ALTER TABLE `authority` DISABLE KEYS */;
+INSERT INTO `authority` VALUES ('ROLE_ADMIN'),('ROLE_INSTRUCTOR'),('ROLE_MEMBER'),('ROLE_USER');
+/*!40000 ALTER TABLE `authority` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +47,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-06 17:12:25
+-- Dump completed on 2024-03-13 17:24:17

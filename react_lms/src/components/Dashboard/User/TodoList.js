@@ -1,13 +1,13 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import {
   apiDeleteMyTodoList,
   apiGetMyTodoList,
   apiPostMyTodoList,
   apiPutMyTodoList,
-} from "../../RestApi";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../AuthContext";
-import { Icon } from "@iconify/react";
+} from '../../RestApi';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../../AuthContext';
+import { Icon } from '@iconify/react';
 
 const Container = styled.div`
   & .titleTodo {
@@ -67,7 +67,7 @@ const Container = styled.div`
 export function TodoList() {
   const { user } = useContext(AuthContext);
   const [todos, setTodos] = useState([]);
-  const [newTodo, setNewTodo] = useState("");
+  const [newTodo, setNewTodo] = useState('');
 
   // 유저의 todo 조회
   useEffect(() => {
@@ -76,7 +76,7 @@ export function TodoList() {
         setTodos(response.data.data);
       })
       .catch((err) => {
-        console.log("todo list 조회 실패: ", err);
+        console.log('todo list 조회 실패: ', err);
       });
   }, [user.memberId]);
 
@@ -86,7 +86,7 @@ export function TodoList() {
 
   const handleTodoSubmit = () => {
     if (!newTodo) {
-      alert("공백일 수 없습니다.");
+      alert('공백일 수 없습니다.');
       return;
     }
     const todoData = { member: user, taskName: newTodo };
@@ -94,15 +94,15 @@ export function TodoList() {
     // 유저의 todo 저장
     apiPostMyTodoList(todoData)
       .then((response) => {
-        setNewTodo("");
+        setNewTodo('');
         return apiGetMyTodoList(user.memberId);
       })
       .then((response) => setTodos(response.data.data))
-      .catch((err) => console.log("Todo 등록 실패: ", err));
+      .catch((err) => console.log('Todo 등록 실패: ', err));
   };
 
   const handleTodoUpdate = (e, taskId) => {
-    const isCompleted = e.target.value === "done";
+    const isCompleted = e.target.value === 'done';
     const todoData = { member: user, isCompleted: isCompleted };
 
     // 유저의 todo completed 수정
@@ -113,7 +113,7 @@ export function TodoList() {
       .then((response) => {
         setTodos(response.data.data);
       })
-      .catch((err) => console.log("todo list 수정 실패: ", err));
+      .catch((err) => console.log('todo list 수정 실패: ', err));
   };
 
   // 유저의 todo 삭제
@@ -123,14 +123,14 @@ export function TodoList() {
         return apiGetMyTodoList(user.memberId);
       })
       .then((response) => setTodos(response.data.data))
-      .catch((err) => console.log("Todo 삭제 실패: ", err));
+      .catch((err) => console.log('Todo 삭제 실패: ', err));
   };
 
   return (
     <>
       <Container>
         <div className="titleTodo">
-          <Icon icon={"ri:todo-line"}></Icon>
+          <Icon icon={'ri:todo-line'}></Icon>
           <h3>Daily Task</h3>
         </div>
         <div className="postTodo">
@@ -140,7 +140,7 @@ export function TodoList() {
             onChange={handleInputChange}
             placeholder="새로운 할 일을 입력하세요."
           />
-          <button style={{ cursor: "pointer" }} onClick={handleTodoSubmit}>
+          <button style={{ cursor: 'pointer' }} onClick={handleTodoSubmit}>
             등록
           </button>
         </div>
@@ -154,8 +154,8 @@ export function TodoList() {
               />
               <span
                 style={{
-                  textDecoration: todo.isCompleted ? "line-through" : "none",
-                  color: todo.isCompleted ? "#ddd" : "#212529",
+                  textDecoration: todo.isCompleted ? 'line-through' : 'none',
+                  color: todo.isCompleted ? '#ddd' : '#212529',
                 }}
               >
                 {todo.taskName}
@@ -163,7 +163,7 @@ export function TodoList() {
               <Icon
                 className="xIcon"
                 onClick={() => handleTodoDelete(todo.taskId)}
-                icon={"zondicons:close-outline"}
+                icon={'zondicons:close-outline'}
               ></Icon>
             </li>
           ))}

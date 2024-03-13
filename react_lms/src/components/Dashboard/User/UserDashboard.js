@@ -1,20 +1,12 @@
-import { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
-import { AuthContext } from "../../../AuthContext";
-import { Icon } from "@iconify/react";
-import { TodoList } from "./TodoList";
-import {
-  apiGetMyCourseHistroies,
-  apiGetQnABoardsByMember,
-  apiGetMyContentHistory,
-  apiGetMyExamHistory,
-  apiGetMyExamResult,
-} from "../../RestApi";
-import { NavLink } from "react-router-dom";
-import { formatDateTimeStamp } from "../../Util/util";
-import { RecentCourse } from "./RecentCourse";
-import { About } from "./../../About";
-import { MyAnswerNote } from "./MyAnswerNote";
+import { useContext, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { AuthContext } from '../../../AuthContext';
+import { Icon } from '@iconify/react';
+import { TodoList } from './TodoList';
+import { apiGetMyCourseHistroies } from '../../RestApi';
+import { NavLink } from 'react-router-dom';
+import { RecentCourse } from './RecentCourse';
+import { MyAnswerNote } from './MyAnswerNote';
 
 const Container = styled.div`
   width: 100%;
@@ -46,7 +38,7 @@ const BellIcon = styled(Icon)`
 const Body = styled.div`
   display: grid;
   grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-rows: repeat(4, minmax(75px, 1fr));
   gap: 1rem;
 `;
 
@@ -112,6 +104,7 @@ export function UserDashboard() {
   const { user } = useContext(AuthContext);
   const [daysSinceJoin, setDaysSinceJoin] = useState(0);
   const [courseHistoryDtos, setCourseHistoryDtos] = useState([]);
+  const [contentIdFromChild, setContentIdFromChild] = useState(null);
 
   useEffect(() => {
     const joinDate = new Date(user.joinDate);
@@ -128,9 +121,10 @@ export function UserDashboard() {
       apiGetMyCourseHistroies(user.memberId)
         .then((response) => {
           setCourseHistoryDtos(response.data.data);
+          console.log(response.data.data);
         })
         .catch((error) => {
-          console.error("코스 히스토리 불러오기 오류: ", error);
+          console.error('코스 히스토리 불러오기 오류: ', error);
         });
     }
   }, [user]);
@@ -161,14 +155,18 @@ export function UserDashboard() {
                 <p>등록된 강의가 없습니다.</p>
               </div>
             ) : (
-              <RecentCourse />
+              <div className="contentWrapper">
+                <RecentCourse />
+              </div>
             )}
           </Content>
           <Content className="incorrectAnswersNote">
-            <StyledNavLink to={`/dashboard/${user.loginId}/exams`}>
-              최근 시험 결과 <span className="viewAll">전체보기</span>
+            <StyledNavLink
+              to={`/dashboard/${user.loginId}/exams/${contentIdFromChild}`}
+            >
+              최근 시험 결과 <span className="viewAll">오답보기</span>
             </StyledNavLink>
-            <MyAnswerNote />
+            <MyAnswerNote onContentIdUpdate={setContentIdFromChild} />
           </Content>
           <Content className="certificates">
             <StyledNavLink to={`/dashboard/${user.loginId}/certificate`}>
@@ -188,8 +186,8 @@ export function UserDashboard() {
                     [{courseHistoryDto.courseHistory.course.subject.subjectName}
                     ]{courseHistoryDto.courseHistory.course.courseName}
                     {courseHistoryDto.courseHistory.contentStatus
-                      ? " - 수료완료"
-                      : " - 미수료"}
+                      ? ' - 수료완료'
+                      : ' - 미수료'}
                   </p>
                 </div>
               ))

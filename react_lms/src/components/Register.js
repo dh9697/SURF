@@ -1,8 +1,8 @@
-import styled from "styled-components";
-import { useState } from "react";
-import { apiSignupByAxiosPost } from "./RestApi";
-import { useNavigate } from "react-router-dom";
-import { Icon } from "@iconify/react";
+import styled from 'styled-components';
+import { useState } from 'react';
+import { apiSignupByAxiosPost } from './RestApi';
+import { useNavigate } from 'react-router-dom';
+import { Icon } from '@iconify/react';
 
 const Container = styled.div`
   width: 100%;
@@ -140,7 +140,7 @@ const CheckboxInput = styled.input`
   }
 
   &:checked::before {
-    content: "";
+    content: '';
     position: absolute;
     width: 6px;
     height: 12px;
@@ -160,48 +160,48 @@ export function Register() {
     setIsChecked(!isChecked);
   };
 
-  const [loginId, setLoginId] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [birthDate, setBirthDate] = useState("");
-  const [gender, setGender] = useState("");
-  const [nationality, setNationality] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNum, setPhoneNum] = useState("");
+  const [loginId, setLoginId] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [birthDate, setBirthDate] = useState('');
+  const [gender, setGender] = useState('');
+  const [nationality, setNationality] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNum, setPhoneNum] = useState('');
 
   // 입력 조건 확인
   const [idValidationMsg, setIdValidationMsg] = useState({
-    message: "",
-    type: "",
+    message: '',
+    type: '',
   });
   const [pwValidationMsg, setPwValidationMsg] = useState({
-    message: "",
-    type: "",
+    message: '',
+    type: '',
   });
   const [bdValidationMsg, setBdValidationMsg] = useState({
-    message: "",
-    type: "",
+    message: '',
+    type: '',
   });
   const [pnValidationMsg, setPnValidationMsg] = useState({
-    message: "",
-    type: "",
+    message: '',
+    type: '',
   });
   const [emailValidationMsg, setEmailValidationMsg] = useState({
-    message: "",
-    type: "",
+    message: '',
+    type: '',
   });
 
   const validateId = (loginId) => {
     const regex = /^[a-zA-Z0-9]{8,20}$/;
     if (regex.test(loginId)) {
       setIdValidationMsg({
-        message: "사용할 수 있는 ID입니다.",
-        type: "success",
+        message: '사용할 수 있는 ID입니다.',
+        type: 'success',
       });
     } else {
       setIdValidationMsg({
-        message: "영문, 숫자를 포함한 8~20자의 ID를 입력해 주세요.",
-        type: "error",
+        message: '영문, 숫자를 포함한 8~20자의 ID를 입력해 주세요.',
+        type: 'error',
       });
     }
   };
@@ -211,14 +211,14 @@ export function Register() {
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
     if (regex.test(password)) {
       setPwValidationMsg({
-        message: "적합한 형식의 비밀번호입니다.",
-        type: "success",
+        message: '적합한 형식의 비밀번호입니다.',
+        type: 'success',
       });
     } else {
       setPwValidationMsg({
         message:
-          "영문, 숫자, 특수문자를 포함한 8~20자의 비밀번호를 입력해 주세요.",
-        type: "error",
+          '영문, 숫자, 특수문자를 포함한 8~20자의 비밀번호를 입력해 주세요.',
+        type: 'error',
       });
     }
   };
@@ -227,13 +227,13 @@ export function Register() {
     const regex = /^\d{4}-\d{2}-\d{2}$/;
     if (regex.test(birthDate)) {
       setBdValidationMsg({
-        message: "생년월일 입력이 완료되었습니다.",
-        type: "success",
+        message: '생년월일 입력이 완료되었습니다.',
+        type: 'success',
       });
     } else {
       setBdValidationMsg({
-        message: "yyyy-mm-dd 형식을 지켜 생년월일을 입력해 주세요.",
-        type: "error",
+        message: 'yyyy-mm-dd 형식을 지켜 생년월일을 입력해 주세요.',
+        type: 'error',
       });
     }
   };
@@ -242,13 +242,13 @@ export function Register() {
     const regex = /^\d{3}-\d{4}-\d{4}$/;
     if (regex.test(phoneNum)) {
       setPnValidationMsg({
-        message: "휴대폰 번호 입력이 완료되었습니다.",
-        type: "success",
+        message: '휴대폰 번호 입력이 완료되었습니다.',
+        type: 'success',
       });
     } else {
       setPnValidationMsg({
-        message: "010-1234-5678 형식을 지켜 휴대폰 번호를 입력해 주세요.",
-        type: "error",
+        message: '010-1234-5678 형식을 지켜 휴대폰 번호를 입력해 주세요.',
+        type: 'error',
       });
     }
   };
@@ -257,13 +257,13 @@ export function Register() {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (regex.test(emailId)) {
       setEmailValidationMsg({
-        message: "이메일 입력이 완료되었습니다.",
-        type: "success",
+        message: '이메일 입력이 완료되었습니다.',
+        type: 'success',
       });
     } else {
       setEmailValidationMsg({
-        message: "youremail@email.com 형식을 지켜 이메일 주소를 입력해 주세요.",
-        type: "error",
+        message: 'youremail@email.com 형식을 지켜 이메일 주소를 입력해 주세요.',
+        type: 'error',
       });
     }
   };
@@ -288,14 +288,14 @@ export function Register() {
         email,
         phoneNum
       );
-      if (response.data.resultCode === "SUCCESS") {
-        window.alert("회원가입이 성공적으로 처리되었습니다.");
-        navigate("/login");
+      if (response.data.resultCode === 'SUCCESS') {
+        window.alert('회원가입이 성공적으로 처리되었습니다.');
+        navigate('/login');
       } else {
         console.log(response.data.message);
       }
     } catch (err) {
-      console.log("회원가입 오류", err);
+      console.log('회원가입 오류', err);
     }
   };
 
@@ -324,7 +324,7 @@ export function Register() {
               />
               <small
                 style={{
-                  color: idValidationMsg.type === "success" ? "#3182f6" : "red",
+                  color: idValidationMsg.type === 'success' ? '#3182f6' : 'red',
                 }}
               >
                 {idValidationMsg.message}
@@ -333,7 +333,7 @@ export function Register() {
             <div className="inputContainer">
               <span className="inputLabel">비밀번호</span>
               <Input
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 placeholder="영문, 숫자, 특수문자 모두 포함 8~20자"
                 name="passwordId"
                 value={password}
@@ -343,12 +343,12 @@ export function Register() {
                 }}
               />
               <StyledIcon
-                icon={showPassword ? "mdi:eye-outline" : "mdi:eye-off-outline"}
+                icon={showPassword ? 'mdi:eye-outline' : 'mdi:eye-off-outline'}
                 onClick={togglePasswordVisible}
               ></StyledIcon>
               <small
                 style={{
-                  color: pwValidationMsg.type === "success" ? "#3182f6" : "red",
+                  color: pwValidationMsg.type === 'success' ? '#3182f6' : 'red',
                 }}
               >
                 {pwValidationMsg.message}
@@ -378,7 +378,7 @@ export function Register() {
               />
               <small
                 style={{
-                  color: bdValidationMsg.type === "success" ? "#3182f6" : "red",
+                  color: bdValidationMsg.type === 'success' ? '#3182f6' : 'red',
                 }}
               >
                 {bdValidationMsg.message}
@@ -393,7 +393,7 @@ export function Register() {
                     type="radio"
                     name="gender"
                     value="WOMAN"
-                    checked={gender === "WOMAN"}
+                    checked={gender === 'WOMAN'}
                     onChange={handleClickGender}
                   />
                 </label>
@@ -403,7 +403,7 @@ export function Register() {
                     type="radio"
                     name="gender"
                     value="MAN"
-                    checked={gender === "MAN"}
+                    checked={gender === 'MAN'}
                     onChange={handleClickGender}
                   />
                 </label>
@@ -416,7 +416,7 @@ export function Register() {
                     type="radio"
                     name="nationality"
                     value="Domestic"
-                    checked={nationality === "Domestic"}
+                    checked={nationality === 'Domestic'}
                     onChange={handleClickNationality}
                   />
                 </label>
@@ -426,7 +426,7 @@ export function Register() {
                     type="radio"
                     name="nationality"
                     value="Foreigner"
-                    checked={nationality === "Foreigner"}
+                    checked={nationality === 'Foreigner'}
                     onChange={handleClickNationality}
                   />
                 </label>
@@ -446,7 +446,7 @@ export function Register() {
               />
               <small
                 style={{
-                  color: pnValidationMsg.type === "success" ? "#3182f6" : "red",
+                  color: pnValidationMsg.type === 'success' ? '#3182f6' : 'red',
                 }}
               >
                 {pnValidationMsg.message}
@@ -467,7 +467,7 @@ export function Register() {
               <small
                 style={{
                   color:
-                    emailValidationMsg.type === "success" ? "#3182f6" : "red",
+                    emailValidationMsg.type === 'success' ? '#3182f6' : 'red',
                 }}
               >
                 {emailValidationMsg.message}
@@ -482,7 +482,7 @@ export function Register() {
                 onChange={handleCheckboxChange}
               />
               <label>
-                <span className="textHighlight">이용약관</span> 및{" "}
+                <span className="textHighlight">이용약관</span> 및{' '}
                 <span className="textHighlight">개인정보 처리방침</span>에
                 동의합니다.
               </label>

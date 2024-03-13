@@ -16,33 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `exam_history`
+-- Table structure for table `subjects`
 --
 
-DROP TABLE IF EXISTS `exam_history`;
+DROP TABLE IF EXISTS `subjects`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `exam_history` (
-  `exam_history_id` bigint NOT NULL AUTO_INCREMENT,
-  `exam_completion_status` bit(1) NOT NULL,
-  `exam_id` bigint NOT NULL,
-  `member_id` bigint NOT NULL,
-  PRIMARY KEY (`exam_history_id`),
-  KEY `FK1uur8qwrxn80nhe5v63phkwf6` (`exam_id`),
-  KEY `FKp7pbhtcgx7ejm733vydwilsrs` (`member_id`),
-  CONSTRAINT `FK1uur8qwrxn80nhe5v63phkwf6` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`exam_id`),
-  CONSTRAINT `FKp7pbhtcgx7ejm733vydwilsrs` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `subjects` (
+  `subject_id` bigint NOT NULL AUTO_INCREMENT,
+  `description` text,
+  `subject_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`subject_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `exam_history`
+-- Dumping data for table `subjects`
 --
 
-LOCK TABLES `exam_history` WRITE;
-/*!40000 ALTER TABLE `exam_history` DISABLE KEYS */;
-INSERT INTO `exam_history` VALUES (1,_binary '',10,17),(2,_binary '',11,17);
-/*!40000 ALTER TABLE `exam_history` ENABLE KEYS */;
+LOCK TABLES `subjects` WRITE;
+/*!40000 ALTER TABLE `subjects` DISABLE KEYS */;
+INSERT INTO `subjects` VALUES (1,'TOEIC','토익'),(10,'TOEFL','토플'),(11,'TEPS','텝스'),(12,'TOS/OPic','토스/오픽');
+/*!40000 ALTER TABLE `subjects` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-06 17:12:26
+-- Dump completed on 2024-03-13 17:24:17

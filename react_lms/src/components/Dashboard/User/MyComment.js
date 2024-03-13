@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
+import styled from 'styled-components';
+import { useContext, useEffect, useState } from 'react';
 import {
   apiDeleteCourseReview,
   apiGetCourseReviewByMember,
@@ -7,9 +7,9 @@ import {
   apiDeleteQnABoard,
   apiGetQnABoardsByMember,
   apiUpdateQnABoard,
-} from "../../RestApi";
-import { AuthContext } from "../../../AuthContext";
-import { formatDateTimeStamp } from "../../Util/util";
+} from '../../RestApi';
+import { AuthContext } from '../../../AuthContext';
+import { formatDateTimeStamp } from '../../Util/util';
 
 const ButtonBox = styled.div`
   width: 100%;
@@ -46,13 +46,13 @@ const ReviewContainer = styled.div`
 export function MyComment() {
   const { user } = useContext(AuthContext);
   const memberId = user.memberId;
-  const [selectedTab, setSelectedTab] = useState("qna");
+  const [selectedTab, setSelectedTab] = useState('qna');
   const [qnas, setQnas] = useState([]);
   const [editingQnAId, seteditingQnAId] = useState(null);
-  const [newQuestionText, setNewQuestionText] = useState("");
+  const [newQuestionText, setNewQuestionText] = useState('');
   const [reviews, setReviews] = useState([]);
   const [editingReviewId, setEditingReviewId] = useState(null);
-  const [newComment, setNewComment] = useState("");
+  const [newComment, setNewComment] = useState('');
 
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
@@ -60,10 +60,14 @@ export function MyComment() {
 
   // 로그인 유저의 질문 댓글 조회
   useEffect(() => {
-    apiGetQnABoardsByMember(memberId).then((response) => {
-      setQnas(response.data.data);
-    });
-  }, []);
+    apiGetQnABoardsByMember(memberId)
+      .then((response) => {
+        setQnas(response.data.data);
+      })
+      .catch((err) => {
+        console.log('질문 댓글 조회 실패: ', err);
+      });
+  }, [memberId]);
 
   // 로그인 유저의 질문 댓글 수정
   const handleQnABoardUpdate = (qnaId) => {
@@ -72,12 +76,12 @@ export function MyComment() {
         apiGetQnABoardsByMember(memberId).then((response) => {
           setQnas(response.data.data);
         });
-        window.alert("질문이 성공적으로 수정되었습니다.");
+        window.alert('질문이 성공적으로 수정되었습니다.');
         seteditingQnAId(null);
-        setNewQuestionText("");
+        setNewQuestionText('');
       })
       .catch((err) => {
-        console.log("질문 댓글 수정 실패: ", err);
+        console.log('질문 댓글 수정 실패: ', err);
       });
   };
 
@@ -88,10 +92,10 @@ export function MyComment() {
         apiGetQnABoardsByMember(memberId).then((response) => {
           setQnas(response.data.data);
         });
-        window.alert("댓글이 성공적으로 삭제되었습니다.");
+        window.alert('댓글이 성공적으로 삭제되었습니다.');
       })
       .catch((err) => {
-        console.log("댓글 삭제 실패: ", err);
+        console.log('댓글 삭제 실패: ', err);
       });
   };
 
@@ -100,7 +104,7 @@ export function MyComment() {
     apiGetCourseReviewByMember(memberId).then((response) => {
       setReviews(response.data.data);
     });
-  }, []);
+  }, [memberId]);
 
   // 로그인 유저의 코스리뷰 수정
   const handleReviewUpdate = (reviewId) => {
@@ -109,12 +113,12 @@ export function MyComment() {
         apiGetCourseReviewByMember(memberId).then((response) => {
           setReviews(response.data.data);
         });
-        window.alert("리뷰가 성공적으로 수정되었습니다.");
+        window.alert('리뷰가 성공적으로 수정되었습니다.');
         setEditingReviewId(null);
-        setNewComment("");
+        setNewComment('');
       })
       .catch((err) => {
-        console.log("코스리뷰 수정 실패: ", err);
+        console.log('코스리뷰 수정 실패: ', err);
       });
   };
 
@@ -125,10 +129,10 @@ export function MyComment() {
         apiGetCourseReviewByMember(memberId).then((response) => {
           setReviews(response.data.data);
         });
-        window.alert("리뷰가 성공적으로 삭제되었습니다.");
+        window.alert('리뷰가 성공적으로 삭제되었습니다.');
       })
       .catch((err) => {
-        console.log("코스리뷰 삭제 실패: ", err);
+        console.log('코스리뷰 삭제 실패: ', err);
       });
   };
 
@@ -136,13 +140,13 @@ export function MyComment() {
     <>
       <h1>작성한 게시글</h1>
       <ButtonBox>
-        <Button onClick={() => handleTabChange("qna")}>작성한 수강 문의</Button>
-        <Button onClick={() => handleTabChange("coursereview")}>
+        <Button onClick={() => handleTabChange('qna')}>작성한 수강 문의</Button>
+        <Button onClick={() => handleTabChange('coursereview')}>
           작성한 수강평
         </Button>
       </ButtonBox>
       <CommentBox>
-        {selectedTab === "qna" &&
+        {selectedTab === 'qna' &&
           qnas.map((qna, index) => (
             <QnaContainer key={index}>
               <p>{qna.course.courseName}</p>
@@ -172,7 +176,7 @@ export function MyComment() {
               </button>
             </QnaContainer>
           ))}
-        {selectedTab === "coursereview" &&
+        {selectedTab === 'coursereview' &&
           reviews.map((review, index) => (
             <ReviewContainer key={index}>
               <p>{review.course.courseName}</p>

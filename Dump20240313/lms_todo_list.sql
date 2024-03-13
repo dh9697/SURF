@@ -16,35 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `qna_reply`
+-- Table structure for table `todo_list`
 --
 
-DROP TABLE IF EXISTS `qna_reply`;
+DROP TABLE IF EXISTS `todo_list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `qna_reply` (
-  `reply_id` bigint NOT NULL AUTO_INCREMENT,
-  `created_at` datetime(6) DEFAULT NULL,
-  `reply_text` varchar(255) DEFAULT NULL,
-  `updated_at` datetime(6) DEFAULT NULL,
+CREATE TABLE `todo_list` (
+  `task_id` bigint NOT NULL AUTO_INCREMENT,
+  `completion_date` date DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `due_date` datetime(6) DEFAULT NULL,
+  `is_completed` bit(1) DEFAULT NULL,
+  `priority` int DEFAULT NULL,
+  `task_name` varchar(255) DEFAULT NULL,
   `member_id` bigint NOT NULL,
-  `qna_id` bigint NOT NULL,
-  PRIMARY KEY (`reply_id`),
-  KEY `FKf89wlc5ik3r7wcms0j7aku03b` (`member_id`),
-  KEY `FKc8dygxmdmhmvie5gthdne0h28` (`qna_id`),
-  CONSTRAINT `FKc8dygxmdmhmvie5gthdne0h28` FOREIGN KEY (`qna_id`) REFERENCES `qna_board` (`qna_id`),
-  CONSTRAINT `FKf89wlc5ik3r7wcms0j7aku03b` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`task_id`),
+  KEY `FK3x6rbqoxekyny3cnvvcb9tp9y` (`member_id`),
+  CONSTRAINT `FK3x6rbqoxekyny3cnvvcb9tp9y` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `qna_reply`
+-- Dumping data for table `todo_list`
 --
 
-LOCK TABLES `qna_reply` WRITE;
-/*!40000 ALTER TABLE `qna_reply` DISABLE KEYS */;
-INSERT INTO `qna_reply` VALUES (1,'2024-02-13 11:12:04.458824','2 번 문제는 본문을 잘 읽으면 충분히 해결할 수 있는 문제입니다. 본문을 다시 한번 잘 읽어 본 뒤에도 이해가 되지 않으면 그때 다시 질문해 주세요.','2024-02-13 11:12:04.458824',2,1),(2,'2024-02-22 15:05:08.245308','답변 테스트','2024-02-22 15:05:08.245308',2,15);
-/*!40000 ALTER TABLE `qna_reply` ENABLE KEYS */;
+LOCK TABLES `todo_list` WRITE;
+/*!40000 ALTER TABLE `todo_list` DISABLE KEYS */;
+INSERT INTO `todo_list` VALUES (5,NULL,NULL,NULL,_binary '\0',NULL,'유저 - 작성한 게시글 스타일링',17),(6,NULL,NULL,NULL,_binary '\0',NULL,'유저 - 물결 바구니 스타일링',17),(7,NULL,NULL,NULL,_binary '\0',NULL,'유저 - 계정정보, 구매내역 스타일링',17),(8,NULL,NULL,NULL,_binary '\0',NULL,'유저 - 수료증 스타일링 및 기능 구현',17),(9,NULL,NULL,NULL,_binary '',NULL,'유저 - 대시보드 기능 넣기',17);
+/*!40000 ALTER TABLE `todo_list` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-06 17:12:27
+-- Dump completed on 2024-03-13 17:24:17
