@@ -1,15 +1,15 @@
-import styled from "styled-components";
-import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../../../../AuthContext";
+import styled from 'styled-components';
+import { useContext, useState, useEffect } from 'react';
+import { AuthContext } from '../../../../AuthContext';
 import {
   apiGetAllCourses,
   apiGetAllSurfers,
   apiGetAllUsers,
   apiGetAllMembers,
   apiGetAllInstructors,
-} from "../../../RestApi";
-import { Chart as chartJS } from "chart.js/auto";
-import { Pie } from "react-chartjs-2";
+} from '../../../RestApi';
+import { Chart as chartJS } from 'chart.js/auto';
+import { Pie } from 'react-chartjs-2';
 
 const TableContainer = styled.div`
   overflow-y: auto;
@@ -239,10 +239,10 @@ export function UserInfo() {
           <h2>유저 현황</h2>
           <Pie
             data={{
-              labels: ["Surfers", "Users", "Members", "Instructors"],
+              labels: ['Surfers', 'Users', 'Members', 'Instructors'],
               datasets: [
                 {
-                  label: "유저 수",
+                  label: '유저 수',
                   data: [
                     surfersCount,
                     surferUsersCount,
@@ -250,10 +250,10 @@ export function UserInfo() {
                     surferInstructorsCount,
                   ],
                   backgroundColor: [
-                    "lightblue",
-                    "lightgray",
-                    "lightgreen",
-                    "#454545",
+                    'lightblue',
+                    'lightgray',
+                    'lightgreen',
+                    '#454545',
                   ],
                   hoverOffset: 4,
                 },

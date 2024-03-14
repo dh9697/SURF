@@ -55,6 +55,7 @@ public class CourseHistoryServiceImpl implements CourseHistoryService {
 	@Override
 	public ResponseDto<List<CourseHistory>> getCourseHistoriesByCourse(Long courseId){
 		List<CourseHistory> courseHistories = courseHistoryRepository.findByCourseCourseId(courseId);
+	    
 		return new ResponseDto<>(
 				ResultCode.SUCCESS.name(),
 				courseHistories,

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import project.lms.dto.CourseHistoryDto;
 import project.lms.model.Course;
 import project.lms.model.CourseHistory;
 import project.lms.model.Member;
@@ -39,8 +40,4 @@ public interface CourseHistoryRepository extends JpaRepository<CourseHistory, Lo
 //
 //    // 특정 강좌의 수강 이력 개수 조회
 //    long countByCourse(Course course);
-//
-//    // 종료일이 null이고 시작일이 특정 날짜 이전인 수강 이력 조회
-//    List<CourseHistory> findByEndDateIsNullAndStartDateBefore(LocalDate date);
-    
 }

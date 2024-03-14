@@ -105,6 +105,9 @@ export function UserDashboard() {
   const [daysSinceJoin, setDaysSinceJoin] = useState(0);
   const [courseHistoryDtos, setCourseHistoryDtos] = useState([]);
   const [contentIdFromChild, setContentIdFromChild] = useState(null);
+  const toExam = contentIdFromChild
+    ? `/dashboard/${user.loginId}/exams/${contentIdFromChild}`
+    : `/dashboard/${user.loginId}/exams`;
 
   useEffect(() => {
     const joinDate = new Date(user.joinDate);
@@ -161,9 +164,7 @@ export function UserDashboard() {
             )}
           </Content>
           <Content className="incorrectAnswersNote">
-            <StyledNavLink
-              to={`/dashboard/${user.loginId}/exams/${contentIdFromChild}`}
-            >
+            <StyledNavLink to={toExam}>
               최근 시험 결과 <span className="viewAll">오답보기</span>
             </StyledNavLink>
             <MyAnswerNote onContentIdUpdate={setContentIdFromChild} />

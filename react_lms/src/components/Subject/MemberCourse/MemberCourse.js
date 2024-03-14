@@ -1,20 +1,19 @@
-import React from "react";
-import styled from "styled-components";
-import { useLocation } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import React from 'react';
+import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
 import {
   apiGetCourse,
   apiGetContentByCourse,
-  apiGetMyCourseHistroies,
   apiGetQnABoardsByMember,
   apiGetQnARepliesByQnABoardId,
   apiGetMyExamHistory,
   apiGetMyContentHistory,
-} from "../../RestApi";
-import { AuthContext } from "../../../AuthContext";
-import { ProgressBar, formatDateTime } from "../../Util/util";
-import { Icon } from "@iconify/react";
-import { CourseCurriculem } from "../CourseCurriculum";
+} from '../../RestApi';
+import { AuthContext } from '../../../AuthContext';
+import { ProgressBar, formatDateTime } from '../../Util/util';
+import { Icon } from '@iconify/react';
+import { CourseCurriculem } from '../CourseCurriculum';
 
 const Container = styled.div`
   width: 100%;
@@ -107,7 +106,7 @@ export function MemberCourse() {
   const { user } = useContext(AuthContext);
   const memberId = user.memberId;
   const location = useLocation();
-  const courseId = location.pathname.split("/")[2]; // Extract courseId from the URL
+  const courseId = location.pathname.split('/')[2];
   const [course, setCourse] = useState(null);
   const [contents, setContents] = useState([]);
   const [contentHistories, setContentHistories] = useState([]);
@@ -125,7 +124,7 @@ export function MemberCourse() {
         setCourse(response.data.data);
       })
       .catch((error) => {
-        console.error("코스 정보 불러오기 오류: ", error);
+        console.error('코스 정보 불러오기 오류: ', error);
       });
   }, [courseId]);
 
@@ -136,7 +135,7 @@ export function MemberCourse() {
         setContents(response.data.data);
       })
       .catch((err) => {
-        console.log("해당 코스 컨텐츠 조회 실패 ", err);
+        console.log('해당 코스 컨텐츠 조회 실패 ', err);
       });
   }, [courseId]);
 
@@ -177,11 +176,11 @@ export function MemberCourse() {
             setCompletedExamCount(totalCompletedExamCount);
           })
           .catch((err) => {
-            console.log("유저의 시험 이력 조회 실패 ", err);
+            console.log('유저의 시험 이력 조회 실패 ', err);
           });
       })
       .catch((err) => {
-        console.log("유저의 컨텐츠 이력 조회 실패 ", err);
+        console.log('유저의 컨텐츠 이력 조회 실패 ', err);
       });
   }, [memberId, courseId, contents.length]);
 
@@ -215,7 +214,7 @@ export function MemberCourse() {
         })); // 답변 데이터를 상태에 저장
       })
       .catch((error) => {
-        console.error("답변 조회 실패: ", error);
+        console.error('답변 조회 실패: ', error);
       });
   }
 
@@ -242,7 +241,7 @@ export function MemberCourse() {
         })); // 답변을 보여주는 상태를 true로 설정
       })
       .catch((error) => {
-        console.error("답변 조회 실패: ", error);
+        console.error('답변 조회 실패: ', error);
       });
   }
 
@@ -253,7 +252,7 @@ export function MemberCourse() {
           <Section className="announcement">
             <h2 className="title">강의 공지</h2>
             <div>
-              <StyledIcon icon={"mingcute:announcement-line"}></StyledIcon>
+              <StyledIcon icon={'mingcute:announcement-line'}></StyledIcon>
               {course && course.announcement && (
                 <p className="announcementText">{course.announcement}</p>
               )}
@@ -266,14 +265,14 @@ export function MemberCourse() {
                 .slice()
                 .reverse()
                 .map((qna, index) => (
-                  <div key={index} style={{ marginBottom: "20px" }}>
+                  <div key={index} style={{ marginBottom: '20px' }}>
                     <QnA>
                       <p className="reviewText">{qna.questionText}</p>
                       <div className="qnaInfo">
                         <p className="time">{formatDateTime(qna.createdAt)}</p>
                         {replies[qna.qnaId] && replies[qna.qnaId].length > 0 ? (
                           <button onClick={() => handleLoadReplies(qna.qnaId)}>
-                            {showReplies[qna.qnaId] ? "답변 닫기" : "답변 보기"}
+                            {showReplies[qna.qnaId] ? '답변 닫기' : '답변 보기'}
                           </button>
                         ) : (
                           <p>답변 기다리는 중</p>

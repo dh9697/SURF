@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
-import { apiGetMyCourseHistroies } from "../../RestApi";
-import { formatDateTime, formatDateTimeStamp } from "../../Util/util";
-import { NavLink } from "react-router-dom";
-import { AuthContext } from "../../../AuthContext";
+import styled from 'styled-components';
+import { useContext, useEffect, useState } from 'react';
+import { apiGetMyCourseHistroies } from '../../RestApi';
+import { formatDateTime, formatDateTimeStamp } from '../../Util/util';
+import { NavLink } from 'react-router-dom';
+import { AuthContext } from '../../../AuthContext';
 
 const Container = styled.div`
   width: 100%;
@@ -42,6 +42,7 @@ export function MyCourse() {
   useEffect(() => {
     apiGetMyCourseHistroies().then((response) => {
       setCourseHistoryDtos(response.data.data);
+      console.log(response.data.data);
     });
   }, []);
 
@@ -61,34 +62,34 @@ export function MyCourse() {
             </CourseThumbnail>
             <StyledNavLink
               to={`/course/${courseHistoryDto.courseHistory.course.courseId}`}
-              style={{ textDecoration: "none" }}
+              style={{ textDecoration: 'none' }}
             >
               <h2>
-                [{courseHistoryDto.courseHistory.course.subject.subjectName}]{" "}
+                [{courseHistoryDto.courseHistory.course.subject.subjectName}]{' '}
                 {courseHistoryDto.courseHistory.course.courseName}
               </h2>
             </StyledNavLink>
             <p>
-              Start Date:{" "}
+              Start Date:{' '}
               {formatDateTime(courseHistoryDto.courseHistory.startDate)}
             </p>
             <p>
               End Date: {formatDateTime(courseHistoryDto.courseHistory.endDate)}
             </p>
             <p>
-              총 {courseHistoryDto.totalContents} 강,{" "}
+              총 {courseHistoryDto.totalContents} 강,{' '}
               {courseHistoryDto.courseHistory.course.durationMins}분
             </p>
 
             <p>
-              수료증:{" "}
+              수료증:{' '}
               {courseHistoryDto.courseHistory.contentStatus
-                ? "발급 완료"
-                : "미수료"}
+                ? '발급 완료'
+                : '미수료'}
             </p>
             <StyledNavLink
               to={`/course/${courseHistoryDto.courseHistory.course.courseId}/coursedescription`}
-              style={{ textDecoration: "none" }}
+              style={{ textDecoration: 'none' }}
             >
               수강평 남기러 가기
             </StyledNavLink>

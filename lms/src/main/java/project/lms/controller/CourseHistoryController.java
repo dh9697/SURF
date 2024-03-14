@@ -48,11 +48,11 @@ public class CourseHistoryController {
 	}
 	
 	// 수료증 자격 업데이트
-		@PutMapping("/update-status/{courseHistoryId}")
-		public ResponseEntity<ResponseDto<CourseHistoryDto>> updateCourseHistoryStatus(@PathVariable Long courseHistoryId) {
-			ResponseDto<CourseHistoryDto> courseHistoryDto = courseHistoryService.updateCourseHistoryStatus(courseHistoryId);
-			return new ResponseEntity<>(courseHistoryDto, HttpStatus.OK);
-		}
+	@PutMapping("/update-status/{courseHistoryId}")
+	public ResponseEntity<ResponseDto<CourseHistoryDto>> updateCourseHistoryStatus(@PathVariable Long courseHistoryId) {
+		ResponseDto<CourseHistoryDto> courseHistoryDto = courseHistoryService.updateCourseHistoryStatus(courseHistoryId);
+		return new ResponseEntity<>(courseHistoryDto, HttpStatus.OK);
+	}
 	
 }
 
