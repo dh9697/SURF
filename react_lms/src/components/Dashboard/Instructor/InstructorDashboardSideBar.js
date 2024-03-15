@@ -1,25 +1,15 @@
-import { useContext, useEffect, useState } from "react";
-import { NavLink, Outlet, useParams } from "react-router-dom";
-import styled from "styled-components";
-import { AuthContext } from "../../../AuthContext";
-import SearchBar from "../../SearchBar";
-
-// export function InstructorDashboardSideBar() {
-//   return<></>
-// }
+import { useContext, useEffect, useState } from 'react';
+import { NavLink, Outlet, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { AuthContext } from '../../../AuthContext';
 
 const Container = styled.div`
   width: 100%;
   padding: 32px;
   display: flex;
-  & .innerWrapper {
-    display: flex;
-    flex: 1 1 0px;
-    gap: 2rem;
-  }
 `;
 const NavBar = styled.div`
- display: none !important;
+  display: none !important;
   width: 200px;
   display: flex;
   flex-direction: column;
@@ -55,45 +45,32 @@ export function InstructorDashboardSideBar() {
   return (
     <>
       <Container>
-        <div className="innerWrapper">
-          <NavBar>
-            <StyledNavLink
-              className="dashboard"
-              to={`/dashboard/instructor/${user.loginId}`}
-            >
-              선생님 님
-            </StyledNavLink>
-            <SearchBar />
-            <StyledNavLink
-              to={`/dashboard/instructor/${user.loginId}/students_manage`}
-            >
-              학생 관리
-            </StyledNavLink>
-            <StyledNavLink
-              to={`/dashboard/instructor/${user.loginId}/exam_manage`}
-            >
-              시험 관리
-            </StyledNavLink>
-            <StyledNavLink
-              to={`/dashboard/instructor/${user.loginId}/qna_manage`}
-            >
-              Q&A 관리
-            </StyledNavLink>
-            <StyledNavLink
-              to={`/dashboard/instructor/${user.loginId}/coursereview_manage`}
-            >
-              수강평 관리
-            </StyledNavLink>
-            <StyledNavLink
-              to={`/dashboard/instructor/${user.loginId}/coursenotice_manage`}
-            >
-              강의 공지사항 관리
-            </StyledNavLink>
-          </NavBar>
-        </div>
-              <DashboardMain>
-        <Outlet />
-      </DashboardMain>
+        <NavBar>
+          <StyledNavLink
+            className="dashboard"
+            to={`/dashboard/${user.loginId}`}
+          >
+            {user.name} 선생님
+          </StyledNavLink>
+          <StyledNavLink to={`/dashboard/${user.loginId}/students_manage`}>
+            학생 관리
+          </StyledNavLink>
+          <StyledNavLink to={`/dashboard/${user.loginId}/exam_manage`}>
+            시험 관리
+          </StyledNavLink>
+          <StyledNavLink to={`/dashboard/${user.loginId}/qna_manage`}>
+            Q&A 관리
+          </StyledNavLink>
+          <StyledNavLink to={`/dashboard/${user.loginId}/coursereview_manage`}>
+            수강평 관리
+          </StyledNavLink>
+          <StyledNavLink to={`/dashboard/${user.loginId}/coursenotice_manage`}>
+            강의 공지사항 관리
+          </StyledNavLink>
+        </NavBar>
+        <DashboardMain>
+          <Outlet />
+        </DashboardMain>
       </Container>
     </>
   );

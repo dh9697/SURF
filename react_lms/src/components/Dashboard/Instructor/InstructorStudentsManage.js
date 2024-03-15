@@ -32,14 +32,16 @@ const Select = styled.select`
   background-color: #fff;
   cursor: pointer;
 `;
-const UserTable = styled.table``;
+const UserTable = styled.table`
+  border-collapse: collapse;
+`;
 const Th = styled.th`
-  border: 1px solid #ddd;
-  padding: 8px;
+  background-color: #f3f3f3;
+  padding: 0.7rem 0.5rem;
 `;
 const Td = styled.td`
-  border: 1px solid #ddd;
-  padding: 8px;
+  border-bottom: 1px solid #f3f3f3;
+  padding: 0.7rem 0.5rem;
 `;
 
 const BarContainer = styled.div`
@@ -170,7 +172,6 @@ export function InstructorStudentsManage() {
       ).toFixed(2),
     };
   });
-  console.log(contentCompletionRate);
 
   return (
     <>
@@ -222,7 +223,7 @@ export function InstructorStudentsManage() {
                   (history) =>
                     history.memberId === courseHistory.member.memberId
                 );
-                // 학생 수강 진도율
+                // 각 학생 수강 진도율
                 const examProgressRate =
                   studentExamResult && studentExamResult.memberExamHistories
                     ? (
@@ -231,7 +232,7 @@ export function InstructorStudentsManage() {
                         100
                       ).toFixed(2)
                     : 0;
-                // 학생 시험 진도율
+                // 각 학생 시험 진도율
                 const contentProgressRate =
                   studentContentHistory &&
                   studentContentHistory.completedContentHistories
@@ -265,18 +266,14 @@ export function InstructorStudentsManage() {
                     data: contentCompletionRate.map(
                       (rate) => rate.completedContentsRate
                     ),
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1,
+                    backgroundColor: '#FEA0A0',
                   },
                   {
                     label: '시험률',
                     data: contentCompletionRate.map(
                       (rate) => rate.completedExamsRate
                     ),
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1,
+                    backgroundColor: '#55446B',
                   },
                 ],
               }}
@@ -294,7 +291,6 @@ export function InstructorStudentsManage() {
                   },
                 },
                 plugins: {
-                  // 복습하기
                   tooltip: {
                     callbacks: {
                       label: function (context) {
