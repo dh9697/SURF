@@ -11,28 +11,16 @@ import {
 } from "../../RestApi";
 import { formatDateTime } from "../../Util/util";
 import React from "react";
+import { TotalSales } from "./Make/TotalSales";
+import { LearningStatistics } from "./Make/LearningStatistics";
 
 const QnAs = styled.table``;
 const QnA = styled.tr``;
-const Container = styled.div`
-  width: 100%;
-  padding: 20px;
-`;
-
-const Header = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #212529;
-  margin-bottom: 30px;
-  font-size: 40px;
-  font-weight: bold;
-`;
+const Container = styled.div``;
 
 const Body = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   grid-gap: 30px;
 `;
 
@@ -162,29 +150,13 @@ export function AdminDashboard() {
 
   return (
     <Container>
-      <Header>Dashboard</Header>
+      <h2>Dashboard</h2>
       <Body>
         <Content>
-          <NavLink
-            to={`/dashboard/${user.loginId}/course_manage`}
-            style={{ textDecoration: "none" }}
-          >
-            <Columntitle>강의 관리</Columntitle>
-          </NavLink>
-          <ul>
-            {subjects.map((subject) => (
-              <li key={subject.id}>{subject.subjectName}</li>
-            ))}
-          </ul>
+          <TotalSales />
         </Content>
         <Content>
-          <NavLink
-            to={`/dashboard/${user.loginId}/user_manage`}
-            style={{ textDecoration: "none" }}
-          >
-            <Columntitle>회원 관리</Columntitle>
-            <TotalMem>현재 총 회원 수: {surfersCount} 명</TotalMem>
-          </NavLink>
+          <LearningStatistics />
         </Content>
         <Content>
           <NavLink
@@ -192,6 +164,9 @@ export function AdminDashboard() {
             style={{ textDecoration: "none" }}
           >
             <Columntitle>QnA 관리</Columntitle>
+            <p>qna가 많은 course</p>
+            <p>qna member, user 비율</p>
+            <p>답변률?</p>
           </NavLink>
           <QnAs>
             <colgroup>
@@ -206,7 +181,7 @@ export function AdminDashboard() {
               .map((qna, index) => (
                 <React.Fragment key={index}>
                   <QnA>
-                    <td className="name">{qna.member.name}</td>
+                    {/* <td className="name">{qna.member.name}</td>
                     <td className="reviewText">{qna.questionText}</td>
                     <td className="time">
                       {formatDateTime(qna.createdAt)}
@@ -217,8 +192,8 @@ export function AdminDashboard() {
                         </button>
                       ) : (
                         <span>답변 기다리는 중</span>
-                      )}
-                    </td>
+                      )} 
+                    </td>*/}
                   </QnA>
                   {showReplies[qna.qnaId] && (
                     <tr>

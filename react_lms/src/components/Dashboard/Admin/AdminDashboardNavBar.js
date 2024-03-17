@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../../../AuthContext";
-import SearchBar from "../../SearchBar";
 
 const Container = styled.div`
   width: 100%;
@@ -51,32 +50,29 @@ export function AdminDashboardNavBar() {
   return (
     <>
       <Container>
-        <div className="innerWrapper">
-          <NavBar>
-            <StyledNavLink
-              className="dashboard"
-              to={`/dashboard/${user.loginId}`}
-            >
-              관리자 님
-            </StyledNavLink>
-            <SearchBar />
-            <StyledNavLink to={`/dashboard/${user.loginId}/course_manage`}>
-              코스 및 강의 관리
-            </StyledNavLink>
-            <StyledNavLink to={`/dashboard/${user.loginId}/user_manage`}>
-              회원 관리
-            </StyledNavLink>
-            <StyledNavLink to={`/dashboard/${user.loginId}/post_manage`}>
-              게시물 관리
-            </StyledNavLink>
-            <StyledNavLink to={`/dashboard/${user.loginId}/notice_manage`}>
-              공지사항 관리
-            </StyledNavLink>
-            <StyledNavLink to={`/dashboard/${user.loginId}/leveltest_manage`}>
-              레벨테스트 관리
-            </StyledNavLink>
-          </NavBar>
-        </div>
+        <NavBar>
+          <StyledNavLink
+            className="dashboard"
+            to={`/dashboard/${user.loginId}`}
+          >
+            {user.name}님
+          </StyledNavLink>
+          <StyledNavLink to={`/dashboard/${user.loginId}/course_manage`}>
+            코스 및 강의 관리
+          </StyledNavLink>
+          <StyledNavLink to={`/dashboard/${user.loginId}/user_manage`}>
+            회원 관리
+          </StyledNavLink>
+          <StyledNavLink to={`/dashboard/${user.loginId}/post_manage`}>
+            게시물 관리
+          </StyledNavLink>
+          <StyledNavLink to={`/dashboard/${user.loginId}/notice_manage`}>
+            공지사항 관리
+          </StyledNavLink>
+          <StyledNavLink to={`/dashboard/${user.loginId}/leveltest_manage`}>
+            레벨테스트 관리
+          </StyledNavLink>
+        </NavBar>
         <DashboardMain>
           <Outlet />
         </DashboardMain>

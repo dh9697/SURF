@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import project.lms.dto.CourseHistoryDto;
 import project.lms.model.Course;
 import project.lms.model.CourseHistory;
 import project.lms.model.Member;

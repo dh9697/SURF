@@ -9,7 +9,7 @@ const Container = styled.div`
   display: flex;
 `;
 const NavBar = styled.div`
-  display: none !important;
+
   width: 200px;
   display: flex;
   flex-direction: column;
