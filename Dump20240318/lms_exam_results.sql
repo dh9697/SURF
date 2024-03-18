@@ -16,33 +16,37 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `exam_history`
+-- Table structure for table `exam_results`
 --
 
-DROP TABLE IF EXISTS `exam_history`;
+DROP TABLE IF EXISTS `exam_results`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `exam_history` (
-  `exam_history_id` bigint NOT NULL AUTO_INCREMENT,
-  `exam_completion_status` bit(1) NOT NULL,
-  `exam_id` bigint NOT NULL,
-  `member_id` bigint NOT NULL,
-  PRIMARY KEY (`exam_history_id`),
-  KEY `FK1uur8qwrxn80nhe5v63phkwf6` (`exam_id`),
-  KEY `FKp7pbhtcgx7ejm733vydwilsrs` (`member_id`),
-  CONSTRAINT `FK1uur8qwrxn80nhe5v63phkwf6` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`exam_id`),
-  CONSTRAINT `FKp7pbhtcgx7ejm733vydwilsrs` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `exam_results` (
+  `exam_result_id` bigint NOT NULL AUTO_INCREMENT,
+  `is_correct` bit(1) DEFAULT NULL,
+  `submitted_answer` int NOT NULL,
+  `exam_id` bigint DEFAULT NULL,
+  `exam_question_id` bigint DEFAULT NULL,
+  `member_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`exam_result_id`),
+  KEY `FKtf85ht7yquiorwjx2xbdx3fxw` (`exam_id`),
+  KEY `FKac0uhnlql0d2krvffw5q2g2fl` (`exam_question_id`),
+  KEY `FK8doilcruh6jchd3nhodr7kaix` (`member_id`),
+  CONSTRAINT `FK8doilcruh6jchd3nhodr7kaix` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`),
+  CONSTRAINT `FKac0uhnlql0d2krvffw5q2g2fl` FOREIGN KEY (`exam_question_id`) REFERENCES `exam_questions` (`exam_question_id`),
+  CONSTRAINT `FKtf85ht7yquiorwjx2xbdx3fxw` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`exam_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `exam_history`
+-- Dumping data for table `exam_results`
 --
 
-LOCK TABLES `exam_history` WRITE;
-/*!40000 ALTER TABLE `exam_history` DISABLE KEYS */;
-INSERT INTO `exam_history` VALUES (1,_binary '',10,17),(2,_binary '\0',11,17);
-/*!40000 ALTER TABLE `exam_history` ENABLE KEYS */;
+LOCK TABLES `exam_results` WRITE;
+/*!40000 ALTER TABLE `exam_results` DISABLE KEYS */;
+INSERT INTO `exam_results` VALUES (1,_binary '\0',3,10,4,17),(2,_binary '',4,10,5,17),(3,_binary '\0',4,10,6,17),(4,_binary '\0',4,11,7,17);
+/*!40000 ALTER TABLE `exam_results` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-14 19:19:54
+-- Dump completed on 2024-03-18 21:34:41

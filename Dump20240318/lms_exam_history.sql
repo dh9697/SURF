@@ -16,31 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `withdrawal`
+-- Table structure for table `exam_history`
 --
 
-DROP TABLE IF EXISTS `withdrawal`;
+DROP TABLE IF EXISTS `exam_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `withdrawal` (
-  `withdrawal_id` bigint NOT NULL AUTO_INCREMENT,
-  `is_deleted` bit(1) DEFAULT NULL,
-  `reason` varchar(255) NOT NULL,
-  `withdrawal_time` datetime(6) NOT NULL,
+CREATE TABLE `exam_history` (
+  `exam_history_id` bigint NOT NULL AUTO_INCREMENT,
+  `exam_completion_status` bit(1) NOT NULL,
+  `exam_id` bigint NOT NULL,
   `member_id` bigint NOT NULL,
-  PRIMARY KEY (`withdrawal_id`),
-  KEY `FKjy0789uood48lwb0ocetjcvha` (`member_id`),
-  CONSTRAINT `FKjy0789uood48lwb0ocetjcvha` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`exam_history_id`),
+  KEY `FK1uur8qwrxn80nhe5v63phkwf6` (`exam_id`),
+  KEY `FKp7pbhtcgx7ejm733vydwilsrs` (`member_id`),
+  CONSTRAINT `FK1uur8qwrxn80nhe5v63phkwf6` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`exam_id`),
+  CONSTRAINT `FKp7pbhtcgx7ejm733vydwilsrs` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `withdrawal`
+-- Dumping data for table `exam_history`
 --
 
-LOCK TABLES `withdrawal` WRITE;
-/*!40000 ALTER TABLE `withdrawal` DISABLE KEYS */;
-/*!40000 ALTER TABLE `withdrawal` ENABLE KEYS */;
+LOCK TABLES `exam_history` WRITE;
+/*!40000 ALTER TABLE `exam_history` DISABLE KEYS */;
+INSERT INTO `exam_history` VALUES (1,_binary '',10,17),(2,_binary '\0',11,17);
+/*!40000 ALTER TABLE `exam_history` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-14 19:19:55
+-- Dump completed on 2024-03-18 21:34:41

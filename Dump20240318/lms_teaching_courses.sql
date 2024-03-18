@@ -16,28 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `exam_question_options`
+-- Table structure for table `teaching_courses`
 --
 
-DROP TABLE IF EXISTS `exam_question_options`;
+DROP TABLE IF EXISTS `teaching_courses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `exam_question_options` (
-  `exam_question_exam_question_id` bigint NOT NULL,
-  `options` varchar(255) NOT NULL,
-  KEY `FKb7lx1ei1yj1xddcsyb1nndiqo` (`exam_question_exam_question_id`),
-  CONSTRAINT `FKb7lx1ei1yj1xddcsyb1nndiqo` FOREIGN KEY (`exam_question_exam_question_id`) REFERENCES `exam_questions` (`exam_question_id`)
+CREATE TABLE `teaching_courses` (
+  `member_id` bigint NOT NULL,
+  `course_id` bigint NOT NULL,
+  PRIMARY KEY (`member_id`,`course_id`),
+  KEY `FKt58ddbk9f27mpew5a37x3itf7` (`course_id`),
+  CONSTRAINT `FKbdhp7mvjr3x1qjj1odcye75jy` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`),
+  CONSTRAINT `FKt58ddbk9f27mpew5a37x3itf7` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `exam_question_options`
+-- Dumping data for table `teaching_courses`
 --
 
-LOCK TABLES `exam_question_options` WRITE;
-/*!40000 ALTER TABLE `exam_question_options` DISABLE KEYS */;
-INSERT INTO `exam_question_options` VALUES (5,'anyone'),(5,'whomever'),(5,'someone'),(5,'whoever'),(4,'they'),(4,'this'),(4,'what'),(4,'that'),(6,'which'),(6,'that'),(6,'why'),(6,'when'),(7,'일번'),(7,'이번'),(7,'삼번'),(7,'사번'),(8,'과연'),(8,'정답은'),(8,'삼번'),(8,'입니다.'),(9,'맞춤법이'),(9,'맞나요?'),(9,'모르겠네'),(9,'사번입니다.'),(10,'3'),(10,'3'),(10,'3'),(10,'3'),(11,'4'),(11,'4'),(11,'4'),(11,'4'),(12,'5'),(12,'5'),(12,'5'),(12,'5'),(13,'6'),(13,'6'),(13,'6'),(13,'6'),(14,'7'),(14,'7'),(14,'7'),(14,'7'),(15,'8'),(15,'8'),(15,'8'),(15,'8'),(16,'9'),(16,'9'),(16,'9'),(16,'9'),(17,'10'),(17,'10'),(17,'10'),(17,'10');
-/*!40000 ALTER TABLE `exam_question_options` ENABLE KEYS */;
+LOCK TABLES `teaching_courses` WRITE;
+/*!40000 ALTER TABLE `teaching_courses` DISABLE KEYS */;
+INSERT INTO `teaching_courses` VALUES (2,1),(4,2),(5,3),(6,4),(7,5),(8,6),(9,7),(10,8),(11,9),(12,10),(13,11),(14,12);
+/*!40000 ALTER TABLE `teaching_courses` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-14 19:19:54
+-- Dump completed on 2024-03-18 21:34:40

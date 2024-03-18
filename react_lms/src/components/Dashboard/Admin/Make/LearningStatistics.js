@@ -1,25 +1,55 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import {
   apiGetAllContentHistories,
   apiGetAllCourseHistories,
-} from "../../../RestApi";
-import { Bar, Line } from "react-chartjs-2";
+} from '../../../RestApi';
+import { Bar, Line } from 'react-chartjs-2';
 
-const Container = styled.div``;
-export function LearningStatistics() {
+const Container = styled.div`
+  & .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
+    margin-top: 1rem;
+    & .gridItem {
+      border: 1px solid #ddd;
+      border-radius: 0.5rem;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      & .monthly {
+        padding-bottom: 2rem;
+      }
+      & .data {
+        padding-bottom: 1rem;
+        & .dataInfo {
+          color: darkgray;
+          font-size: 12px;
+          padding-top: 3px;
+          padding-bottom: 10px;
+        }
+      }
+    }
+  }
+`;
+
+const GraphContainer = styled.div``;
+
+export function LearningStatistics({ onTotalVolumeUpdate }) {
   const [courseHistories, setCourseHistories] = useState([]);
   const [contentHistories, setContentHistories] = useState([]);
   const [courseMembers, setCourseMembers] = useState({});
   const [mostPopularCourse, setMostPopularCourse] = useState(null);
   const [monthlyPurchases, setMonthlyPurchases] = useState({});
+  const [highestPurchasesDate, setHighestPurchasesDate] = useState(null);
+  const [engagementContents, setEngagementContents] = useState({});
 
   useEffect(() => {
     apiGetAllCourseHistories()
       .then((response) => {
         const newCourseHistories = response.data.data;
         setCourseHistories(newCourseHistories);
-        console.log(newCourseHistories);
+        onTotalVolumeUpdate(newCourseHistories.length);
 
         // 코스별 수강 회원 수 계산
         const courseMembersData = calculateCourseMembers(newCourseHistories);
@@ -27,31 +57,31 @@ export function LearningStatistics() {
 
         // 인기 코스
         setMostPopularCourse(findMostPopularCourse(courseMembersData));
-        console.log(findMostPopularCourse(courseMembersData));
 
         // 월별 강의 구매 추이
         const monthlyPurchasesData =
           calculateMonthlyPurchases(newCourseHistories);
         setMonthlyPurchases(monthlyPurchasesData);
-        console.log(monthlyPurchasesData);
+
+        // 구매량 많은 월
+        setHighestPurchasesDate(findHighestPurchaseMonth(monthlyPurchasesData));
       })
       .catch((err) => {
-        console.log("코스히스토리 조회 실패: ", err);
+        console.log('코스히스토리 조회 실패: ', err);
       });
 
     apiGetAllContentHistories()
       .then((response) => {
         const newContentHistories = response.data.data;
         setContentHistories(newContentHistories);
-        console.log(newContentHistories);
 
         // 수강률 좋은 course, content
         const highEngagementContents =
           analyzeContentHistories(newContentHistories);
-        console.log(highEngagementContents);
+        setEngagementContents(highEngagementContents);
       })
       .catch((err) => {
-        console.log("컨텐츠 히스토리 정보 조회 실패: ", err);
+        console.log('컨텐츠 히스토리 정보 조회 실패: ', err);
       });
   }, []);
 
@@ -88,14 +118,31 @@ export function LearningStatistics() {
   const calculateMonthlyPurchases = (courseHistories) => {
     const monthlyPurchases = {};
     courseHistories.forEach((history) => {
-      const month = new Date(history.startDate).getMonth() + 1; // 월 정보 (1-12)
-      if (monthlyPurchases[month]) {
-        monthlyPurchases[month] += 1;
+      const date = new Date(history.startDate);
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const yearMonth = `${year}-${month}`;
+
+      if (monthlyPurchases[yearMonth]) {
+        monthlyPurchases[yearMonth] += 1;
       } else {
-        monthlyPurchases[month] = 1;
+        monthlyPurchases[yearMonth] = 1;
       }
     });
     return monthlyPurchases;
+  };
+
+  // 최고 구매량 날짜
+  const findHighestPurchaseMonth = (monthlyPurchases) => {
+    let highestMonth = null;
+    let highestPurchases = 0;
+    Object.entries(monthlyPurchases).forEach(([yearMonth, purchase]) => {
+      if (purchase > highestPurchases) {
+        highestMonth = yearMonth;
+        highestPurchases = purchase;
+      }
+    });
+    return highestMonth;
   };
 
   // 수강률이 좋은 content-course 정보
@@ -122,13 +169,13 @@ export function LearningStatistics() {
     contentHistories.forEach((history) => {
       if (history.isCompleted) {
         const contentId = history.content.contentId;
-        const contentName = history.content.contentName;
+        const contentTitle = history.content.contentTitle;
         if (contentEngagement[contentId]) {
           contentEngagement[contentId].memberCounts += 1;
         } else {
           contentEngagement[contentId] = {
             contentId,
-            contentName,
+            contentTitle,
             memberCounts: 1,
           };
         }
@@ -141,79 +188,222 @@ export function LearningStatistics() {
   return (
     <>
       <Container>
-        <p> total sales volume {courseHistories.length}개</p>
-
-        <p>mostPopularCourse</p>
-        <p>
-          {mostPopularCourse?.courseName} {mostPopularCourse?.memberCount}명
-        </p>
-        <div>
-          <Line
-            data={{
-              labels: Object.keys(courseMembers).map(
-                (key) => courseMembers[key].courseName
-              ),
-              datasets: [
-                {
-                  label: "members",
-                  data: Object.values(courseMembers).map(
-                    (courseMember) => courseMember.memberCount
+        <div className="grid">
+          <div className="gridItem">
+            <div className="data">
+              <h3>월별 강의 구매량</h3>
+              <p className="dataInfo">Highest purchases</p>
+              <h2>{highestPurchasesDate}</h2>
+            </div>
+            <GraphContainer>
+              {monthlyPurchases && (
+                <Bar
+                  data={{
+                    labels: Object.keys(monthlyPurchases),
+                    datasets: [
+                      {
+                        label: '구매량',
+                        data: Object.values(monthlyPurchases),
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1,
+                      },
+                    ],
+                  }}
+                  options={{
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        grid: {
+                          display: false,
+                        },
+                      },
+                      x: {
+                        ticks: {
+                          display: false,
+                        },
+                        grid: {
+                          display: false,
+                        },
+                      },
+                    },
+                    plugins: {
+                      legend: {
+                        display: false,
+                      },
+                    },
+                  }}
+                />
+              )}
+            </GraphContainer>
+          </div>
+          <div className="gridItem">
+            <div className="data">
+              <h3>{mostPopularCourse?.courseName}</h3>
+              <p className="dataInfo">Most popular course</p>
+              <h2>{mostPopularCourse?.memberCount} 명</h2>
+            </div>
+            <GraphContainer>
+              <Bar
+                data={{
+                  labels: Object.keys(courseMembers).map(
+                    (key) => courseMembers[key].courseName
                   ),
-                  fill: false,
-                  borderColor: "#3182f6",
-                  backgroundColor: "white",
-                  tension: 0.1,
-                  pointStyle: "circle",
-                  pointRadius: 3,
-                  pointBackgroundColor: "#3182f6",
-                },
-              ],
-            }}
-            options={{
-              scales: {
-                y: {
-                  beginAtZero: true,
-                },
-              },
-              plugins: {
-                legend: {
-                  display: false,
-                },
-              },
-            }}
-          />
+                  datasets: [
+                    {
+                      label: 'members',
+                      data: Object.values(courseMembers).map(
+                        (courseMember) => courseMember.memberCount
+                      ),
+                      backgroundColor: '#3182f6', // 바의 배경색
+                      borderColor: '#3182f6', // 바의 테두리 색
+                      borderWidth: 1, // 바 테두리의 두께
+                    },
+                  ],
+                }}
+                options={{
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      grid: {
+                        display: false,
+                      },
+                    },
+                    x: {
+                      ticks: {
+                        display: false,
+                      },
+                      grid: {
+                        display: false,
+                      },
+                    },
+                  },
+                  plugins: {
+                    legend: {
+                      display: false,
+                    },
+                  },
+                }}
+              />
+            </GraphContainer>
+          </div>
         </div>
-        <p>V수강률이 좋은 content, course</p>
-        <p>V월별 강의 구매 추이</p>
-        <div>
-          <Bar
-            data={{
-              labels: Object.keys(monthlyPurchases),
-              datasets: [
-                {
-                  label: "월별 구매 수",
-                  data: Object.values(monthlyPurchases), // 해당 월의 구매 수
-                  backgroundColor: "rgba(54, 162, 235, 0.2)",
-                  borderColor: "rgba(54, 162, 235, 1)",
-                  borderWidth: 1,
-                },
-              ],
-            }}
-            options={{
-              scales: {
-                y: {
-                  beginAtZero: true,
-                },
-              },
-              plugins: {
-                legend: {
-                  display: true,
-                },
-              },
-            }}
-          />
+        <div className="grid">
+          <div className="gridItem">
+            <div className="data">
+              <h3>강좌별 수강 추이</h3>
+            </div>
+            <GraphContainer>
+              {engagementContents && engagementContents.courseEngagement && (
+                <Line
+                  data={{
+                    labels: Object.keys(
+                      engagementContents.courseEngagement
+                    ).map(
+                      (key) =>
+                        engagementContents.courseEngagement[key].courseName
+                    ),
+                    datasets: [
+                      {
+                        label: '강좌별 참여도',
+                        data: Object.values(
+                          engagementContents.courseEngagement
+                        ).map((course) => course.memberCounts),
+                        fill: false,
+                        borderColor: '#3182f6',
+                        backgroundColor: 'white',
+                        tension: 0.1,
+                        pointStyle: 'circle',
+                        pointRadius: 3,
+                        pointBackgroundColor: '#3182f6',
+                      },
+                    ],
+                  }}
+                  options={{
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        grid: {
+                          display: false,
+                        },
+                      },
+                      x: {
+                        grid: {
+                          display: false,
+                        },
+                        ticks: {
+                          display: false,
+                        },
+                      },
+                    },
+                    plugins: {
+                      legend: {
+                        display: false,
+                      },
+                    },
+                  }}
+                />
+              )}
+            </GraphContainer>
+          </div>
+          <div className="gridItem">
+            <div className="data">
+              <h3>강의별 수강 추이</h3>
+            </div>
+            <GraphContainer>
+              {engagementContents && engagementContents.contentEngagement && (
+                <Line
+                  data={{
+                    labels: Object.keys(
+                      engagementContents.contentEngagement
+                    ).map(
+                      (key) =>
+                        engagementContents.contentEngagement[key].contentTitle
+                    ),
+                    datasets: [
+                      {
+                        label: '강의별 참여도',
+                        data: Object.values(
+                          engagementContents.contentEngagement
+                        ).map((content) => content.memberCounts),
+                        fill: false,
+                        borderColor: '#82ca9d',
+                        backgroundColor: 'white',
+                        tension: 0.1,
+                        pointStyle: 'circle',
+                        pointRadius: 3,
+                        pointBackgroundColor: '#82ca9d',
+                      },
+                    ],
+                  }}
+                  options={{
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        grid: {
+                          display: false,
+                        },
+                      },
+                      x: {
+                        grid: {
+                          display: false,
+                        },
+                        ticks: {
+                          display: false,
+                        },
+                      },
+                    },
+                    plugins: {
+                      legend: {
+                        display: false,
+                      },
+                    },
+                  }}
+                />
+              )}
+            </GraphContainer>
+          </div>
         </div>
-        <p>수료많은 course </p>
       </Container>
     </>
   );

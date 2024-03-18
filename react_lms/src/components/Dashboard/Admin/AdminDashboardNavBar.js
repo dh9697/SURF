@@ -1,17 +1,12 @@
-import { useContext, useEffect, useState } from "react";
-import { NavLink, Outlet, useParams } from "react-router-dom";
-import styled from "styled-components";
-import { AuthContext } from "../../../AuthContext";
+import { useContext, useEffect, useState } from 'react';
+import { NavLink, Outlet, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { AuthContext } from '../../../AuthContext';
 
 const Container = styled.div`
   width: 100%;
   padding: 32px;
   display: flex;
-  & .innerWrapper {
-    display: flex;
-    flex: 1 1 0px;
-    gap: 2rem;
-  }
 `;
 const NavBar = styled.div`
   width: 200px;

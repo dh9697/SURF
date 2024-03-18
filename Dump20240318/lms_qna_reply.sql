@@ -16,35 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `carts`
+-- Table structure for table `qna_reply`
 --
 
-DROP TABLE IF EXISTS `carts`;
+DROP TABLE IF EXISTS `qna_reply`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `carts` (
-  `cart_id` bigint NOT NULL AUTO_INCREMENT,
-  `create_date` datetime(6) NOT NULL,
-  `total_price` int NOT NULL,
-  `total_quantity` int NOT NULL,
-  `course_id` bigint DEFAULT NULL,
-  `member_id` bigint DEFAULT NULL,
-  PRIMARY KEY (`cart_id`),
-  KEY `FKm17vvrdg59e9or41oe43p0ph7` (`course_id`),
-  KEY `FKr82uc2e12g45wtitmrq51wsmy` (`member_id`),
-  CONSTRAINT `FKm17vvrdg59e9or41oe43p0ph7` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`),
-  CONSTRAINT `FKr82uc2e12g45wtitmrq51wsmy` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `qna_reply` (
+  `reply_id` bigint NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(6) DEFAULT NULL,
+  `reply_text` varchar(255) DEFAULT NULL,
+  `updated_at` datetime(6) DEFAULT NULL,
+  `member_id` bigint NOT NULL,
+  `qna_id` bigint NOT NULL,
+  PRIMARY KEY (`reply_id`),
+  KEY `FKf89wlc5ik3r7wcms0j7aku03b` (`member_id`),
+  KEY `FKc8dygxmdmhmvie5gthdne0h28` (`qna_id`),
+  CONSTRAINT `FKc8dygxmdmhmvie5gthdne0h28` FOREIGN KEY (`qna_id`) REFERENCES `qna_board` (`qna_id`),
+  CONSTRAINT `FKf89wlc5ik3r7wcms0j7aku03b` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `carts`
+-- Dumping data for table `qna_reply`
 --
 
-LOCK TABLES `carts` WRITE;
-/*!40000 ALTER TABLE `carts` DISABLE KEYS */;
-INSERT INTO `carts` VALUES (1,'2024-02-13 10:36:50.973767',200000,1,1,1);
-/*!40000 ALTER TABLE `carts` ENABLE KEYS */;
+LOCK TABLES `qna_reply` WRITE;
+/*!40000 ALTER TABLE `qna_reply` DISABLE KEYS */;
+INSERT INTO `qna_reply` VALUES (1,'2024-02-13 11:12:04.458824','2 번 문제는 본문을 잘 읽으면 충분히 해결할 수 있는 문제입니다. 본문을 다시 한번 잘 읽어 본 뒤에도 이해가 되지 않으면 그때 다시 질문해 주세요.','2024-02-13 11:12:04.458824',2,1),(2,'2024-02-22 15:05:08.245308','답변 테스트','2024-02-22 15:05:08.245308',2,15);
+/*!40000 ALTER TABLE `qna_reply` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-14 19:19:53
+-- Dump completed on 2024-03-18 21:34:42

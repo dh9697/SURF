@@ -1,15 +1,36 @@
-import { Icon } from "@iconify/react";
-import styled from "styled-components";
-import { Line } from "react-chartjs-2";
-import { formatPrice } from "../../../Util/util";
-import { useEffect, useState } from "react";
-import { apiGetAllOrderDetails } from "../../../RestApi";
+import styled from 'styled-components';
+import { Bar } from 'react-chartjs-2';
+import { formatPrice } from '../../../Util/util';
+import { useEffect, useState } from 'react';
+import { apiGetAllOrderDetails } from '../../../RestApi';
 
-const Container = styled.div``;
+const Container = styled.div`
+  & .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
+    & .gridItem {
+      border: 1px solid #ddd;
+      border-radius: 0.5rem;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      & .data {
+        padding-bottom: 1rem;
+        & .dataInfo {
+          color: darkgray;
+          font-size: 12px;
+          padding-top: 3px;
+          padding-bottom: 10px;
+        }
+      }
+    }
+  }
+`;
 
-export function TotalSales() {
+const BarContainer = styled.div``;
+
+export function TotalSales({ onTotalSalesUpdate }) {
   const [orderDetails, setOrderDetails] = useState([]);
-  const [totalSales, setTotalSales] = useState(0);
   const [salesByCourse, setSalesByCourse] = useState(0);
   const [salesBySubject, setSalesBySubject] = useState(0);
   const [highestSalesByCourse, setHighestSalesByCourse] = useState({});
@@ -26,7 +47,7 @@ export function TotalSales() {
           (acc, orderDetail) => acc + orderDetail.price,
           0
         );
-        setTotalSales(newTotalSales);
+        onTotalSalesUpdate(newTotalSales);
 
         // course별 매출액
         const newSalesByCourse = newOrderDetails.reduce((acc, orderDetail) => {
@@ -68,115 +89,108 @@ export function TotalSales() {
         setHighestSalesBySubject(newHighestSalesBySubject);
       })
       .catch((err) => {
-        console.log("주문 정보 조회 실패: ", err);
+        console.log('주문 정보 조회 실패: ', err);
       });
   }, []);
 
   return (
     <>
       <Container>
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <div>
-            <p>Total Sales</p>
-            <p style={{ fontSize: "1.5rem" }}>{formatPrice(totalSales)}</p>
-          </div>
-          <Icon
-            icon={"fontisto:dollar"}
-            style={{ fontSize: "2rem", color: "green" }}
-          ></Icon>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-          <div>
-            <p>highestSalesBySubject</p>
-            <p>{highestSalesBySubject.subjectName}</p>
-            <p style={{ fontSize: "1.5rem" }}>
-              {formatPrice(highestSalesBySubject.totalSales)}
-            </p>
-          </div>
-          <div>
-            <p>highestSalesByCourse</p>
-            <p>{highestSalesByCourse.courseName}</p>
-            <p style={{ fontSize: "1.5rem" }}>
-              {formatPrice(highestSalesByCourse.totalSales)}
-            </p>
-          </div>
-        </div>
-        <div>
-          <Line
-            data={{
-              labels: Object.keys(salesByCourse).map(
-                (key) => salesByCourse[key].courseName
-              ),
-              datasets: [
-                {
-                  label: "total sales",
-                  data: Object.values(salesByCourse).map(
-                    (course) => course.totalSales
+        <h2>Sales</h2>
+        <div className="grid">
+          <div className="gridItem">
+            <div className="data">
+              <h3>{highestSalesBySubject.subjectName}</h3>
+              <p className="dataInfo">Highest sales by subject</p>
+              <h2>{formatPrice(highestSalesBySubject.totalSales)}</h2>
+            </div>
+            <BarContainer>
+              <Bar
+                data={{
+                  labels: Object.keys(salesBySubject).map(
+                    (key) => salesBySubject[key].subjectName
                   ),
-                  fill: false,
-                  borderColor: "rgb(255, 99, 132)",
-                  backgroundColor: "white",
-                  tension: 0.1,
-                  pointStyle: "circle",
-                  pointRadius: 3,
-                  pointBackgroundColor: "rgb(255, 99, 132)",
-                },
-              ],
-            }}
-            options={{
-              scales: {
-                y: {
-                  beginAtZero: true,
-                },
-              },
-              plugins: {
-                legend: {
-                  display: false,
-                },
-              },
-            }}
-          />
-          <Line
-            data={{
-              labels: Object.keys(salesBySubject).map(
-                (key) => salesBySubject[key].subjectName
-              ),
-              datasets: [
-                {
-                  label: "total sales",
-                  data: Object.values(salesBySubject).map(
-                    (subject) => subject.totalSales
+                  datasets: [
+                    {
+                      label: 'total sales',
+                      data: Object.values(salesBySubject).map(
+                        (subject) => subject.totalSales
+                      ),
+                      backgroundColor: 'rgb(75, 192, 192)',
+                    },
+                  ],
+                }}
+                options={{
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      grid: {
+                        display: false,
+                      },
+                    },
+                    x: {
+                      grid: {
+                        display: false,
+                      },
+                    },
+                  },
+                  plugins: {
+                    legend: {
+                      display: false,
+                    },
+                  },
+                }}
+              />
+            </BarContainer>
+          </div>
+          <div className="gridItem">
+            <div className="data">
+              <h3>{highestSalesByCourse.courseName}</h3>
+              <p className="dataInfo">Highest sales by course</p>
+              <h2>{formatPrice(highestSalesByCourse.totalSales)}</h2>
+            </div>
+            <BarContainer>
+              <Bar
+                data={{
+                  labels: Object.keys(salesByCourse).map(
+                    (key) => salesByCourse[key].courseName
                   ),
-                  fill: false,
-                  borderColor: "rgb(75, 192, 192)",
-                  backgroundColor: "white",
-                  tension: 0.1,
-                  pointStyle: "circle",
-                  pointRadius: 3,
-                  pointBackgroundColor: "rgb(75, 192, 192)",
-                },
-              ],
-            }}
-            options={{
-              scales: {
-                y: {
-                  beginAtZero: true,
-                },
-              },
-              plugins: {
-                legend: {
-                  display: false,
-                },
-              },
-            }}
-          />
+                  datasets: [
+                    {
+                      label: 'total sales',
+                      data: Object.values(salesByCourse).map(
+                        (course) => course.totalSales
+                      ),
+                      backgroundColor: 'rgb(255, 99, 132)',
+                    },
+                  ],
+                }}
+                options={{
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      grid: {
+                        display: false,
+                      },
+                    },
+                    x: {
+                      ticks: {
+                        display: false,
+                      },
+                      grid: {
+                        display: false,
+                      },
+                    },
+                  },
+                  plugins: {
+                    legend: {
+                      display: false,
+                    },
+                  },
+                }}
+              />
+            </BarContainer>
+          </div>
         </div>
       </Container>
     </>

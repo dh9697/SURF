@@ -3,6 +3,7 @@ package project.lms.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import project.lms.dto.CourseReviewDto;
@@ -27,6 +28,7 @@ public class CourseReviewController {
     
     // 모든 리뷰를 조회하여 반환하는 메서드
     @GetMapping("/list")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<ResponseDto<List<CourseReviewDto>>> getAllReviews() {
         ResponseDto<List<CourseReviewDto>> responseDto = courseReviewService.getAllReviews();
         return new ResponseEntity<>(responseDto, HttpStatus.OK);

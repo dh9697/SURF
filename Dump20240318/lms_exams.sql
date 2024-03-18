@@ -29,7 +29,7 @@ CREATE TABLE `exams` (
   PRIMARY KEY (`exam_id`),
   KEY `FKaqugi5glqghsa5q91c8utngpp` (`content_id`),
   CONSTRAINT `FKaqugi5glqghsa5q91c8utngpp` FOREIGN KEY (`content_id`) REFERENCES `contents` (`content_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE `exams` (
 
 LOCK TABLES `exams` WRITE;
 /*!40000 ALTER TABLE `exams` DISABLE KEYS */;
-INSERT INTO `exams` VALUES (10,_binary '',1),(11,_binary '',2),(12,_binary '',3),(13,_binary '',4),(14,_binary '',5),(15,_binary '',6),(16,_binary '',8),(17,_binary '',7),(18,_binary '',9),(19,_binary '',10);
+INSERT INTO `exams` VALUES (10,_binary '',1),(11,_binary '',2),(12,_binary '',3),(13,_binary '',4),(14,_binary '',5),(15,_binary '',6),(16,_binary '',8),(17,_binary '',7),(18,_binary '',9),(19,_binary '',10),(22,_binary '\0',11);
 /*!40000 ALTER TABLE `exams` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-14 19:19:55
+-- Dump completed on 2024-03-18 21:34:41
