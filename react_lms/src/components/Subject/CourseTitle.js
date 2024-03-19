@@ -1,16 +1,16 @@
-import styled from "styled-components";
-import thumbnail from "../image/Toeic.jpg";
-import { Outlet, useParams } from "react-router-dom";
-import { CourseSidebar } from "./CourseSidebar";
-import { CourseMenu } from "./CourseMenu";
-import { useEffect, useState } from "react";
+import styled from 'styled-components';
+import thumbnail from '../image/Toeic.jpg';
+import { Outlet, useParams } from 'react-router-dom';
+import { CourseSidebar } from './CourseSidebar';
+import { CourseMenu } from './CourseMenu';
+import { useEffect, useState } from 'react';
 import {
   apiGetCourse,
   apiGetCourseHistroiesByCourse,
   apiGetCourseReviewByCourse,
-} from "../RestApi";
-import { Icon } from "@iconify/react";
-import { StarRating } from "../Util/util";
+} from '../RestApi';
+import { Icon } from '@iconify/react';
+import { StarRating } from '../Util/util';
 
 const Container = styled.div`
   width: 100%;
@@ -54,7 +54,7 @@ const CourseInfo = styled.div`
       position: relative;
     }
     &:last-of-type > p:not(:last-of-type)::after {
-      content: "";
+      content: '';
       position: absolute;
       right: -5px;
       top: 50%;
@@ -98,20 +98,14 @@ export function CourseTitle() {
         setCourse(response.data.data);
       })
       .catch((error) => {
-        console.error("강의 정보 불러오기 오류: ", error);
+        console.error('강의 정보 불러오기 오류: ', error);
       });
-  }, [courseId]);
 
-  // course로 courseHistory 조회 하고 수강자 확인?
-  useEffect(() => {
     apiGetCourseHistroiesByCourse(courseId).then((response) => {
       setCourseHistories(response.data.data);
       console.log(response.data.data);
     });
-  }, [courseId]);
 
-  // 해당 강의 리뷰 조회
-  useEffect(() => {
     apiGetCourseReviewByCourse(courseId).then((response) => {
       setReviews(response.data.data);
     });
@@ -130,20 +124,20 @@ export function CourseTitle() {
           <CourseInfo>
             <div className="box">
               <h3>Course</h3>
-              <StyledIcon icon={"mingcute:right-line"}></StyledIcon>
+              <StyledIcon icon={'mingcute:right-line'}></StyledIcon>
               <h3>{course.subject && course.subject.subjectName}</h3>
             </div>
             <h1>{course.courseName}</h1>
             <div className="box">
-              <Icon icon={"material-symbols:person"}></Icon>
+              <Icon icon={'material-symbols:person'}></Icon>
               <p className="instructorNames">{course.instructorNames}</p>
             </div>
             <div className="box">
-              <Icon icon={"carbon:skill-level-advanced"}></Icon>
+              <Icon icon={'carbon:skill-level-advanced'}></Icon>
               <p>{course.contentLevel}</p>
             </div>
             <div className="box">
-              <Icon icon={"zondicons:time"}></Icon>
+              <Icon icon={'zondicons:time'}></Icon>
               <p>총 {course.durationMins}분 </p>
             </div>
             <div className="box">

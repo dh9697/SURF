@@ -15,6 +15,9 @@ const NavBar = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  position: sticky;
+  max-height: 500px;
+  top: 3%;
 `;
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;

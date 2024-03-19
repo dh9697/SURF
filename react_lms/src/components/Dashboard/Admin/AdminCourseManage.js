@@ -255,7 +255,7 @@ export function AdminCourseManage() {
       </SelectForm>
       <CourseForm onSubmit={handleSubmit}>
         <label>
-          강의 이름
+          강좌 이름
           <input
             type="text"
             name="courseName"

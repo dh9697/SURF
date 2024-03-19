@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../AuthContext";
+import styled from 'styled-components';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../../AuthContext';
 import {
   apiGetQnABoardsByCourse,
   apiGetQnARepliesByQnABoardId,
   apiCreateQnAReply,
-} from "../../RestApi";
+} from '../../RestApi';
 
 const Container = styled.div`
   width: 100%; //inner? 그걸로 해결하면 좋을 듯
@@ -54,7 +54,7 @@ const AnswerStatus = styled.div`
 const ReplyBox = styled.div`
   display: flex;
 `;
-const ReplyText = styled.input.attrs({ type: "text" })`
+const ReplyText = styled.input.attrs({ type: 'text' })`
   font-size: 16px;
   padding: 8px;
   border: 1px solid #ccc;
@@ -129,7 +129,7 @@ export function InstructorQnAManage() {
                 ) : (
                   <ReplyBox>
                     <ReplyText
-                      value={replyTexts[qna.qnaId] || ""}
+                      value={replyTexts[qna.qnaId] || ''}
                       onChange={(e) =>
                         handleReplyChange(qna.qnaId, e.target.value)
                       }
@@ -138,7 +138,7 @@ export function InstructorQnAManage() {
                     <ReplyButton
                       onClick={() => handleReplySubmit(qna.qnaId, qna.courseId)}
                     >
-                      {" "}
+                      {' '}
                       등록
                     </ReplyButton>
                   </ReplyBox>

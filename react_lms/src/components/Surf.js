@@ -47,6 +47,7 @@ import { InstructorExamQuestion } from './Dashboard/Instructor/InstructorExamQue
 import { MyExam } from './Dashboard/User/MyExam.js';
 import { ContentExam } from './Dashboard/User/ContentExam.js';
 import { MyCertificate } from './Dashboard/User/MyCertificate.js';
+import { AdminContentManage } from './Dashboard/Admin/AdminContentManage.js';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -120,11 +121,15 @@ export function Surf() {
                         path={`/dashboard/${user.loginId}/students_manage`}
                         element={<InstructorStudentsManage />}
                       />
+                      {/* admin */}
                       <Route
                         path={`/dashboard/${user.loginId}/course_manage`}
                         element={<AdminCourseManage />}
                       />
-                      {/* admin */}
+                      <Route
+                        path={`/dashboard/${user.loginId}/content_manage`}
+                        element={<AdminContentManage />}
+                      />
                       <Route
                         path={`/dashboard/${user.loginId}/user_manage`}
                         element={<AdminUserManage />}

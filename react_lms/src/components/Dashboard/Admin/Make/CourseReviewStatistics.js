@@ -90,8 +90,8 @@ export function CourseReviewStatistics({ onTotalreviewsUpdate }) {
           fill: false,
           borderColor: '#FBE490',
           yAxisID: 'y-axis-2',
-          pointStyle: 'circle',
-          pointRadius: 3,
+          pointStyle: 'star',
+          pointRadius: 10,
           pointBackgroundColor: '#FBE490',
         },
         {

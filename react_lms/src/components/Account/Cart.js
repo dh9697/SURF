@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import {
   apiDeleteCourseFromCart,
   apiGetCurrentUserCart,
   apiUpdateQuantityCart,
-} from "../RestApi";
-import { formatPrice, formatDateTimeStamp } from "../Util/util";
+} from '../RestApi';
+import { formatPrice, formatDateTimeStamp, formatTime } from '../Util/util';
 
 const Container = styled.div`
   max-width: 800px;
@@ -21,10 +21,14 @@ const Title = styled.h1`
 `;
 
 const CartItem = styled.div`
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   border-radius: 5px;
   padding: 20px;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
 `;
 
 const ProductInfo = styled.div`
@@ -70,6 +74,14 @@ const AccountBtn = styled(NavLink)`
   margin-top: 20px;
 `;
 
+const ImgBox = styled.div`
+  width: 300px;
+  height: 200px;
+  background-color: gray;
+  & img {
+    width: 100%;
+  }
+`;
 export function Cart() {
   const [cartItems, setCartItems] = useState([]);
 
@@ -80,7 +92,7 @@ export function Cart() {
         setCartItems(response.data.data);
         console.log(response.data.data);
       } catch (err) {
-        console.log("장바구니 정보를 가져오는 중 오류: ", err);
+        console.log('장바구니 정보를 가져오는 중 오류: ', err);
       }
     };
     fetchCartItems();
@@ -97,10 +109,10 @@ export function Cart() {
       setCartItems(response.data.data);
 
       if (newQuantity === 0) {
-        alert("장바구니에서 해당 강좌가 삭제됩니다.");
+        alert('장바구니에서 해당 강좌가 삭제됩니다.');
       }
     } catch (err) {
-      console.log("수량 업데이트 중 오류: ", err);
+      console.log('수량 업데이트 중 오류: ', err);
     }
   };
 
@@ -110,7 +122,7 @@ export function Cart() {
       const response = await apiGetCurrentUserCart();
       setCartItems(response.data.data);
     } catch (err) {
-      console.log("장바구니 아이템 삭제 중 오류: ", err);
+      console.log('장바구니 아이템 삭제 중 오류: ', err);
     }
   };
 
@@ -121,14 +133,14 @@ export function Cart() {
         <CartItem key={index}>
           {index === 0 && <h2>{item.member.name}의 물결 바구니</h2>}
           <ProductInfo>
+            <ImgBox>
+              <img src={item.course.courseThumbnail} alt="코스 썸네일" />
+            </ImgBox>
             <ProductName>
-              [{item.course.subject.subjectName}] [{item.course.contentLevel}]{" "}
+              [{item.course.subject.subjectName}] [{item.course.contentLevel}]{' '}
               {item.course.courseName} {item.course.instructorNames}
             </ProductName>
-            <p>
-              상품정보: 시간 : {item.course.durationMins}, course정보에 따라
-              불러오셈
-            </p>
+            <p>총 강의 시간: {formatTime(item.course.durationMins)}</p>
             <Price>{formatPrice(item.course.price)}</Price>
             <p>수량: {item.totalQuantity}</p>
             <div className="buttons">
@@ -147,8 +159,11 @@ export function Cart() {
               </QuantityButton>
             </div>
             <p>
-              총 가격:{" "}
-              <span className="totalPrice">{formatPrice(item.totalPrice)}</span>
+              총 가격:
+              <span className="totalPrice">
+                {' '}
+                {formatPrice(item.totalPrice)}
+              </span>
             </p>
             <p>물결 바구니 등록 시간: {formatDateTimeStamp(item.createDate)}</p>
           </ProductInfo>

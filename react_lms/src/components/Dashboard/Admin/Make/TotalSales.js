@@ -5,23 +5,21 @@ import { useEffect, useState } from 'react';
 import { apiGetAllOrderDetails } from '../../../RestApi';
 
 const Container = styled.div`
-  & .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 1rem;
-    & .gridItem {
-      border: 1px solid #ddd;
-      border-radius: 0.5rem;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      padding: 1rem;
-      & .data {
-        padding-bottom: 1rem;
-        & .dataInfo {
-          color: darkgray;
-          font-size: 12px;
-          padding-top: 3px;
-          padding-bottom: 10px;
-        }
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
+  & .gridItem {
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    & .data {
+      padding-bottom: 1rem;
+      & .dataInfo {
+        color: darkgray;
+        font-size: 12px;
+        padding-top: 3px;
+        padding-bottom: 10px;
       }
     }
   }
@@ -96,101 +94,98 @@ export function TotalSales({ onTotalSalesUpdate }) {
   return (
     <>
       <Container>
-        <h2>Sales</h2>
-        <div className="grid">
-          <div className="gridItem">
-            <div className="data">
-              <h3>{highestSalesBySubject.subjectName}</h3>
-              <p className="dataInfo">Highest sales by subject</p>
-              <h2>{formatPrice(highestSalesBySubject.totalSales)}</h2>
-            </div>
-            <BarContainer>
-              <Bar
-                data={{
-                  labels: Object.keys(salesBySubject).map(
-                    (key) => salesBySubject[key].subjectName
-                  ),
-                  datasets: [
-                    {
-                      label: 'total sales',
-                      data: Object.values(salesBySubject).map(
-                        (subject) => subject.totalSales
-                      ),
-                      backgroundColor: '#7CC6C4',
-                    },
-                  ],
-                }}
-                options={{
-                  scales: {
-                    y: {
-                      beginAtZero: true,
-                      grid: {
-                        display: false,
-                      },
-                    },
-                    x: {
-                      grid: {
-                        display: false,
-                      },
-                    },
+        <div className="gridItem">
+          <div className="data">
+            <h3>{highestSalesBySubject.subjectName}</h3>
+            <p className="dataInfo">Highest sales by subject</p>
+            <h2>{formatPrice(highestSalesBySubject.totalSales)}</h2>
+          </div>
+          <BarContainer>
+            <Bar
+              data={{
+                labels: Object.keys(salesBySubject).map(
+                  (key) => salesBySubject[key].subjectName
+                ),
+                datasets: [
+                  {
+                    label: 'total sales',
+                    data: Object.values(salesBySubject).map(
+                      (subject) => subject.totalSales
+                    ),
+                    backgroundColor: '#7CC6C4',
                   },
-                  plugins: {
-                    legend: {
+                ],
+              }}
+              options={{
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    grid: {
                       display: false,
                     },
                   },
-                }}
-              />
-            </BarContainer>
-          </div>
-          <div className="gridItem">
-            <div className="data">
-              <h3>{highestSalesByCourse.courseName}</h3>
-              <p className="dataInfo">Highest sales by course</p>
-              <h2>{formatPrice(highestSalesByCourse.totalSales)}</h2>
-            </div>
-            <BarContainer>
-              <Bar
-                data={{
-                  labels: Object.keys(salesByCourse).map(
-                    (key) => salesByCourse[key].courseName
-                  ),
-                  datasets: [
-                    {
-                      label: 'total sales',
-                      data: Object.values(salesByCourse).map(
-                        (course) => course.totalSales
-                      ),
-                      backgroundColor: '#92BCF5',
-                    },
-                  ],
-                }}
-                options={{
-                  scales: {
-                    y: {
-                      beginAtZero: true,
-                      grid: {
-                        display: false,
-                      },
-                    },
-                    x: {
-                      ticks: {
-                        display: false,
-                      },
-                      grid: {
-                        display: false,
-                      },
-                    },
-                  },
-                  plugins: {
-                    legend: {
+                  x: {
+                    grid: {
                       display: false,
                     },
                   },
-                }}
-              />
-            </BarContainer>
+                },
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                },
+              }}
+            />
+          </BarContainer>
+        </div>
+        <div className="gridItem">
+          <div className="data">
+            <h3>{highestSalesByCourse.courseName}</h3>
+            <p className="dataInfo">Highest sales by course</p>
+            <h2>{formatPrice(highestSalesByCourse.totalSales)}</h2>
           </div>
+          <BarContainer>
+            <Bar
+              data={{
+                labels: Object.keys(salesByCourse).map(
+                  (key) => salesByCourse[key].courseName
+                ),
+                datasets: [
+                  {
+                    label: 'total sales',
+                    data: Object.values(salesByCourse).map(
+                      (course) => course.totalSales
+                    ),
+                    backgroundColor: '#92BCF5',
+                  },
+                ],
+              }}
+              options={{
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    grid: {
+                      display: false,
+                    },
+                  },
+                  x: {
+                    ticks: {
+                      display: false,
+                    },
+                    grid: {
+                      display: false,
+                    },
+                  },
+                },
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                },
+              }}
+            />
+          </BarContainer>
         </div>
       </Container>
     </>

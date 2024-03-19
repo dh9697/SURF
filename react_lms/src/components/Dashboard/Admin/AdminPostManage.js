@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { useContext, useState, useEffect } from 'react';
-import { AuthContext } from '../../../AuthContext';
+import { useState, useEffect } from 'react';
 import { apiGetAllCourseReviews, apiGetAllQnABoards } from '../../RestApi';
 
 const Container = styled.div`
@@ -31,7 +30,6 @@ const Td = styled.td`
 `;
 
 export function AdminPostManage() {
-  const { user } = useContext(AuthContext);
   const [qnaBoards, setQnaBoards] = useState([]);
   const [courseReviews, setCourseReviews] = useState([]);
 
@@ -43,7 +41,6 @@ export function AdminPostManage() {
 
         const reviewsResponse = await apiGetAllCourseReviews();
         setCourseReviews(reviewsResponse.data.data);
-        console.log(reviewsResponse.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -62,10 +59,10 @@ export function AdminPostManage() {
             <PostTable>
               <thead>
                 <tr>
-                  <Th style={{ width: '80px' }}>작성자</Th>
-                  <Th style={{ width: '80px' }}>작성자 아이디</Th>
-                  <Th style={{ width: '180px' }}>게시글 내용</Th>
-                  <Th style={{ width: '120px' }}>기능</Th>
+                  <Th>작성자</Th>
+                  <Th>작성자 아이디</Th>
+                  <Th>게시글 내용</Th>
+                  <Th>기능</Th>
                 </tr>
               </thead>
               <tbody>
@@ -85,10 +82,10 @@ export function AdminPostManage() {
             <PostTable>
               <thead>
                 <tr>
-                  <Th style={{ width: '80px' }}>작성자</Th>
-                  <Th style={{ width: '80px' }}>작성자 아이디</Th>
-                  <Th style={{ width: '180px' }}>게시글 내용</Th>
-                  <Th style={{ width: '120px' }}>기능</Th>
+                  <Th>작성자</Th>
+                  <Th>작성자 아이디</Th>
+                  <Th>게시글 내용</Th>
+                  <Th>기능</Th>
                 </tr>
               </thead>
               <tbody>

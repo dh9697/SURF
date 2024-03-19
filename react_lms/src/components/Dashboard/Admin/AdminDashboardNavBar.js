@@ -14,6 +14,9 @@ const NavBar = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  position: sticky;
+  max-height: 500px;
+  top: 3%;
 `;
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
@@ -59,6 +62,12 @@ export function AdminDashboardNavBar() {
             to={`/dashboard/${user.loginId}/course_manage`}
           >
             강좌 관리
+          </StyledNavLink>
+          <StyledNavLink
+            activeClassName="active"
+            to={`/dashboard/${user.loginId}/content_manage`}
+          >
+            강의 관리
           </StyledNavLink>
           <StyledNavLink
             activeClassName="active"

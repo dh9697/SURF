@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
-import { AuthContext } from "../../../AuthContext";
+import { useContext, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { AuthContext } from '../../../AuthContext';
 import {
   apiCreateExam,
   apiDeleteExam,
@@ -8,9 +8,9 @@ import {
   apiGetContentByCourse,
   apiGetExamByContent,
   apiUpdateExam,
-} from "../../RestApi";
-import { Icon } from "@iconify/react";
-import { NavLink } from "react-router-dom";
+} from '../../RestApi';
+import { Icon } from '@iconify/react';
+import { NavLink } from 'react-router-dom';
 
 const Container = styled.div`
   width: 100%;
@@ -19,7 +19,7 @@ const Container = styled.div`
 
 const Select = styled.select`
   padding: 10px;
-  margin-top: 1rem;
+  margin: 1rem 0;
   border-radius: 5px;
   border: 1px solid #ccc;
   background-color: #fff;
@@ -27,25 +27,60 @@ const Select = styled.select`
 `;
 
 const Exam = styled.div`
-  & .examTitle,
-  .examContent {
-    display: grid;
-    grid-template-columns: 3fr 1fr 1fr;
-    & .contentButton,
-    .contentIcon {
-      display: flex;
-      justify-content: space-between;
+  & table {
+    width: 100%;
+    border-collapse: collapse;
+    & thead {
+      & th {
+        padding: 10px;
+        background-color: #f3f3f3;
+      }
+    }
+    & tbody {
+      & td {
+        padding: 10px;
+        border-bottom: 1px solid #f3f3f3;
+        &.examButton {
+          display: flex;
+          justify-content: space-around;
+          & button {
+            background-color: inherit;
+            border-radius: 5px;
+            padding: 5px 15px;
+            cursor: pointer;
+            &.examManage {
+              border: 1px solid #333a73;
+            }
+            &.examDelete {
+              border: 1px solid #387adf;
+            }
+            &.examActive {
+              border: 1px solid #50c4ed;
+            }
+          }
+        }
+        &.examIcon {
+          & div {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+          }
+        }
+      }
     }
   }
 `;
 
-const StyledNavLink = styled(NavLink)``;
+const StyledNavLink = styled(NavLink)`
+  color: #454545;
+  text-decoration: none;
+`;
 
 export function InstructorExamManage() {
   const { user } = useContext(AuthContext);
   const [courses, setCourses] = useState([]);
   const [teachingCourses, setTeachingCourses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState('');
   const [contents, setContents] = useState([]);
   const [exams, setExams] = useState([]);
 
@@ -56,7 +91,7 @@ export function InstructorExamManage() {
         setCourses(response.data.data);
       })
       .catch((error) => {
-        console.error("코스 불러오기 오류: ", error);
+        console.error('코스 불러오기 오류: ', error);
       });
   }, []);
 
@@ -94,7 +129,7 @@ export function InstructorExamManage() {
           fetchExams();
         })
         .catch((error) => {
-          console.error("코스 컨텐츠 가져오기 오류: ", error);
+          console.error('코스 컨텐츠 가져오기 오류: ', error);
         });
     }
   }, [selectedCourse]);
@@ -117,7 +152,7 @@ export function InstructorExamManage() {
         fetchExams();
       })
       .catch((error) => {
-        console.error("시험 생성 오류: ", error);
+        console.error('시험 생성 오류: ', error);
       });
   };
 
@@ -139,7 +174,7 @@ export function InstructorExamManage() {
         fetchExams();
       })
       .catch((error) => {
-        console.error("시험 수정 오류: ", error);
+        console.error('시험 수정 오류: ', error);
       });
   };
 
@@ -158,14 +193,14 @@ export function InstructorExamManage() {
         fetchExams();
       })
       .catch((error) => {
-        console.error("시험 삭제 오류: ", error);
+        console.error('시험 삭제 오류: ', error);
       });
   };
 
   return (
     <>
       <Container>
-        <h1>시험 관리</h1>
+        <h2>시험 관리</h2>
         <Select onChange={handleCourseChange}>
           <option value="">강의 선택</option>
           {teachingCourses.map((course) => (
@@ -175,61 +210,85 @@ export function InstructorExamManage() {
           ))}
         </Select>
         <Exam>
-          {contents.map((content) => {
-            const examArray = exams.find(
-              (e) => e && e[0] && e[0].contentId === content.contentId
-            );
-            const exam = examArray ? examArray[0] : null;
-            const hasExam = !!exam;
-            const hasQuestions =
-              hasExam && !!exam.examQuestions && exam.examQuestions.length > 0;
+          <table>
+            <thead>
+              <tr>
+                <th>강의 이름</th>
+                <th>시험 관리 버튼</th>
+                <th>시험 관리 현황</th>
+              </tr>
+            </thead>
+            <tbody>
+              {contents.map((content) => {
+                const examArray = exams.find(
+                  (e) => e && e[0] && e[0].contentId === content.contentId
+                );
+                const exam = examArray ? examArray[0] : null;
+                const hasExam = !!exam;
+                const hasQuestions =
+                  hasExam &&
+                  !!exam.examQuestions &&
+                  exam.examQuestions.length > 0;
 
-            return (
-              <div className="examContent" key={content.contentId}>
-                <div className="content">
-                  <p>{content.contentTitle}</p>
-                </div>
-                <div className="contentButton">
-                  {!hasExam && (
-                    <button onClick={() => handleCreateExam(content.contentId)}>
-                      시험 생성
-                    </button>
-                  )}
-                  {hasExam && (
-                    <StyledNavLink
-                      to={`/dashboard/${user.loginId}/exam_manage/${exam.examId}/question`}
-                    >
-                      문제 관리
-                    </StyledNavLink>
-                  )}
-                  {hasExam && (
-                    <button onClick={() => handleDeleteExam(exam.examId)}>
-                      시험 삭제
-                    </button>
-                  )}
-                  {hasQuestions && (
-                    <button onClick={() => handleUpdateExam(exam.examId)}>
-                      시험 활성화
-                    </button>
-                  )}
-                </div>
-                <div className="contentIcon">
-                  <Icon
-                    icon={"codicon:circle-filled"}
-                    color={hasExam ? "#3182f6" : "white"}
-                  ></Icon>
-                  <Icon
-                    icon={"codicon:circle-filled"}
-                    color={hasQuestions ? "#3182f6" : "white"}
-                  ></Icon>
-                  <Icon
-                    icon={"codicon:circle-filled"}
-                    color={exam?.examIsActive ? "#3182f6" : "white"}
-                  ></Icon>
-                </div>
-              </div>
-            );
-          })}
+                return (
+                  <tr key={content.contentId}>
+                    <td>{content.contentTitle}</td>
+                    <td className="examButton">
+                      {!hasExam && (
+                        <button
+                          className="examManage"
+                          onClick={() => handleCreateExam(content.contentId)}
+                        >
+                          시험 생성
+                        </button>
+                      )}
+                      {hasExam && (
+                        <button className="examManage">
+                          <StyledNavLink
+                            to={`/dashboard/${user.loginId}/exam_manage/${exam.examId}/question`}
+                          >
+                            문제 관리
+                          </StyledNavLink>
+                        </button>
+                      )}
+                      {hasExam && (
+                        <button
+                          className="examDelete"
+                          onClick={() => handleDeleteExam(exam.examId)}
+                        >
+                          시험 삭제
+                        </button>
+                      )}
+                      {hasQuestions && (
+                        <button
+                          className="examActive"
+                          onClick={() => handleUpdateExam(exam.examId)}
+                        >
+                          시험 활성화
+                        </button>
+                      )}
+                    </td>
+                    <td className="examIcon">
+                      <div>
+                        <Icon
+                          icon={'codicon:circle-filled'}
+                          color={hasExam ? '#333A73' : 'white'}
+                        ></Icon>
+                        <Icon
+                          icon={'codicon:circle-filled'}
+                          color={hasQuestions ? '#387adf' : 'white'}
+                        ></Icon>
+                        <Icon
+                          icon={'codicon:circle-filled'}
+                          color={exam?.examIsActive ? '#50C4ED' : 'white'}
+                        ></Icon>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </Exam>
       </Container>
     </>

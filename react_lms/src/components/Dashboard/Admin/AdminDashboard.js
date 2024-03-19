@@ -9,17 +9,15 @@ import { CourseReviewStatistics } from './Make/CourseReviewStatistics';
 import { Icon } from '@iconify/react';
 import { formatPrice } from '../../Util/util';
 
-const Container = styled.div`
-  padding: 1rem;
+const Title = styled.h2`
+  padding-bottom: 1rem;
 `;
-
-const Body = styled.div``;
 
 const Total = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 1rem;
-  padding-bottom: 1rem;
+  padding-bottom: 2rem;
 `;
 
 const Overview = styled.div`
@@ -123,9 +121,9 @@ export function AdminDashboard() {
   };
 
   return (
-    <Container>
-      <h2>Dashboard</h2>
-      <Body>
+    <>
+      <Title>Dashboard</Title>
+      <div>
         <Total>
           <Overview>
             <IconBox className="users">
@@ -178,7 +176,7 @@ export function AdminDashboard() {
         <CourseReviewStatistics
           onTotalreviewsUpdate={handleTotalReviewsUpdate}
         />
-      </Body>
-    </Container>
+      </div>
+    </>
   );
 }

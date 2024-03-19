@@ -1,15 +1,15 @@
-import styled from "styled-components";
-import { Outlet, useParams } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import styled from 'styled-components';
+import { Outlet, useParams } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
 import {
   apiGetCourse,
   apiGetContentByCourse,
   apiCreateCart,
   apiAddCourseToCart,
-} from "../RestApi";
-import { NavLink } from "react-router-dom";
-import { formatPrice, formatTime } from "../Util/util";
-import { AuthContext } from "../../AuthContext";
+} from '../RestApi';
+import { NavLink } from 'react-router-dom';
+import { formatPrice, formatTime } from '../Util/util';
+import { AuthContext } from '../../AuthContext';
 
 const Container = styled.div`
   width: 100%;
@@ -67,25 +67,22 @@ export function CourseSidebar() {
   const [content, setContent] = useState([]);
   const { user } = useContext(AuthContext);
 
-  // 해당 코스 조회
+  // 해당 코스, 컨텐츠 조회
   useEffect(() => {
     apiGetCourse(courseId)
       .then((response) => {
         setCourse(response.data.data);
       })
       .catch((error) => {
-        console.error("강의 정보 불러오기 오류: ", error);
+        console.error('강의 정보 불러오기 오류: ', error);
       });
-  }, [courseId]);
 
-  // 해당 코스 컨텐츠 조회
-  useEffect(() => {
     apiGetContentByCourse(courseId)
       .then((response) => {
         setContent(response.data.data);
       })
       .catch((error) => {
-        console.error("컨텐츠 정보 불러오기 오류: ", error);
+        console.error('컨텐츠 정보 불러오기 오류: ', error);
       });
   }, [courseId]);
 
@@ -93,12 +90,12 @@ export function CourseSidebar() {
   const handleCart = async () => {
     try {
       await apiCreateCart(courseId);
-      alert("장바구니에 강좌가 추가되었습니다.");
+      alert('장바구니에 강좌가 추가되었습니다.');
     } catch (err) {
       if (!user) {
-        alert("로그인을 해주세요.");
+        alert('로그인을 해주세요.');
       } else {
-        alert("장바구니에 강좌를 추가하는데 실패하였습니다.");
+        alert('장바구니에 강좌를 추가하는데 실패하였습니다.');
       }
     }
   };
