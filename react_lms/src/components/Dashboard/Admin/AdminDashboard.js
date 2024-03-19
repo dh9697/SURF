@@ -172,20 +172,12 @@ export function AdminDashboard() {
             </div>
           </Overview>
         </Total>
-        <div>
-          <TotalSales onTotalSalesUpdate={handleTotalSalesUpdate} />
-        </div>
-        <div>
-          <LearningStatistics onTotalVolumeUpdate={handleTotalVolumeUpdate} />
-        </div>
-        <div>
-          <QnaStatistics onTotalQnasUpdate={handleTotalQnasUpdate} />
-        </div>
-        <Content>
-          <CourseReviewStatistics
-            onTotalreviewsUpdate={handleTotalReviewsUpdate}
-          />
-        </Content>
+        <TotalSales onTotalSalesUpdate={handleTotalSalesUpdate} />
+        <LearningStatistics onTotalVolumeUpdate={handleTotalVolumeUpdate} />
+        <QnaStatistics onTotalQnasUpdate={handleTotalQnasUpdate} />
+        <CourseReviewStatistics
+          onTotalreviewsUpdate={handleTotalReviewsUpdate}
+        />
       </Body>
     </Container>
   );

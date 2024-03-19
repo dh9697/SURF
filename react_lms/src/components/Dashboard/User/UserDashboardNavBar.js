@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from "react";
-import { NavLink, Outlet, useLocation, useParams } from "react-router-dom";
-import styled from "styled-components";
-import { AuthContext } from "../../../AuthContext";
-import { Icon } from "@iconify/react";
+import { useContext, useEffect, useState } from 'react';
+import { NavLink, Outlet, useLocation, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { AuthContext } from '../../../AuthContext';
+import { Icon } from '@iconify/react';
 
 const Container = styled.div`
   width: 100%;
@@ -83,7 +83,7 @@ export function UserDashboardNavBar() {
           >
             작성한 게시글
           </StyledNavLink>
-          <StyledNavLink activeClassName="active" to={"/cart"}>
+          <StyledNavLink activeClassName="active" to={'/cart'}>
             물결 바구니
           </StyledNavLink>
           <StyledNavLink

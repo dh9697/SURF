@@ -14,8 +14,34 @@ const Container = styled.div`
     border-radius: 0.5rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 1rem;
-    & .doughnutChart {
-      width: 300px;
+    & h3 {
+      padding-bottom: 1rem;
+    }
+  }
+`;
+
+const DoughnutChart = styled.div`
+  width: 180px;
+  margin: 0 auto;
+  position: relative;
+  & .legend {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    & .legendItem {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      & .circle {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        background-color: #92bbf5;
+        &.member {
+          background-color: #9a97eb;
+        }
+      }
     }
   }
 `;
@@ -106,9 +132,7 @@ export function QnaStatistics({ onTotalQnasUpdate }) {
       {
         label: '유저수',
         data: [qnaCountsByAuthority.member, qnaCountsByAuthority.user],
-        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
-        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
-        borderWidth: 1,
+        backgroundColor: ['#9A97EB', '#92BBF5'],
       },
     ],
   };
@@ -151,10 +175,21 @@ export function QnaStatistics({ onTotalQnasUpdate }) {
         </div>
         <div className="gridItem">
           <h3>Q&A 참여도</h3>
-          <div className="doughnutChart">
+          <DoughnutChart>
+            <div className="legend">
+              <div className="legendItem">
+                <span className="circle"></span>
+                <p>user</p>
+              </div>
+              <div className="legendItem">
+                <span className="circle member"></span>
+                <p>member</p>
+              </div>
+            </div>
             <Doughnut
               data={doughnutData}
               options={{
+                cutout: '60%',
                 plugins: {
                   legend: {
                     display: false,
@@ -162,7 +197,7 @@ export function QnaStatistics({ onTotalQnasUpdate }) {
                 },
               }}
             />
-          </div>
+          </DoughnutChart>
         </div>
       </Container>
     </>

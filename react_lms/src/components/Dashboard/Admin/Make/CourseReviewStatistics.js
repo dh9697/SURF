@@ -3,7 +3,24 @@ import styled from 'styled-components';
 import { apiGetAllCourseReviews } from '../../../RestApi';
 import { Bar } from 'react-chartjs-2';
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin-top: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  & h3 {
+    padding-bottom: 1rem;
+  }
+  & .data {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 1rem;
+    & p {
+      font-size: 13px;
+    }
+  }
+`;
 
 export function CourseReviewStatistics({ onTotalreviewsUpdate }) {
   const [courseReviews, setCourseReviews] = useState([]);
@@ -67,20 +84,21 @@ export function CourseReviewStatistics({ onTotalreviewsUpdate }) {
       labels: courseLabels,
       datasets: [
         {
-          label: '리뷰 수',
-          data: reviewCounts,
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1,
-          yAxisID: 'y-axis-1',
-        },
-        {
           label: '평균 평점',
           data: averageRatings,
           type: 'line',
           fill: false,
-          borderColor: 'rgb(54, 162, 235)',
+          borderColor: '#FBE490',
           yAxisID: 'y-axis-2',
+          pointStyle: 'circle',
+          pointRadius: 3,
+          pointBackgroundColor: '#FBE490',
+        },
+        {
+          label: '리뷰 수',
+          data: reviewCounts,
+          backgroundColor: '#BCDCF1',
+          yAxisID: 'y-axis-1',
         },
       ],
     };
@@ -88,11 +106,17 @@ export function CourseReviewStatistics({ onTotalreviewsUpdate }) {
 
   const options = {
     scales: {
+      x: {
+        display: false,
+      },
       'y-axis-1': {
         type: 'linear',
         position: 'left',
         ticks: {
           beginAtZero: true,
+        },
+        grid: {
+          display: false,
         },
       },
       'y-axis-2': {
@@ -101,6 +125,14 @@ export function CourseReviewStatistics({ onTotalreviewsUpdate }) {
         ticks: {
           beginAtZero: true,
         },
+        grid: {
+          display: false,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        display: false,
       },
     },
   };
@@ -108,8 +140,13 @@ export function CourseReviewStatistics({ onTotalreviewsUpdate }) {
   return (
     <>
       <Container>
+        <h3>강좌별 수강평 추이</h3>
         <div>
           <Bar data={chartData()} options={options} />
+        </div>
+        <div className="data">
+          <p>수강평 수</p>
+          <p>평균 레이팅</p>
         </div>
       </Container>
     </>

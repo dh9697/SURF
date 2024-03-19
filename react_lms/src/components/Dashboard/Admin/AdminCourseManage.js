@@ -1,35 +1,140 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   apiGetAllCourses,
   apiPutCourse,
   apiPostCourse,
   apiDeleteCourse,
   apiGetAllSubject,
-} from "../../RestApi";
-import styled from "styled-components";
+} from '../../RestApi';
+import styled from 'styled-components';
+import { formatPrice } from '../../Util/util';
 
 const Container = styled.div`
   width: 100%;
+  color: #454545;
+  & h2 {
+    margin-bottom: 2rem;
+  }
 `;
+const SelectForm = styled.div`
+  margin-bottom: 1rem;
+  & label {
+    font-size: 14px;
+    font-weight: 900;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    align-items: center;
+  }
+`;
+
+const Select = styled.select`
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+`;
+
+const CourseForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  & label {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 900;
+    & input {
+      border: 1px solid #ddd;
+      padding: 0.5rem;
+      border-radius: 5px;
+    }
+  }
+`;
+
+const Button = styled.button`
+  border: none;
+  color: #f3f3f3;
+  background-color: #3182f6;
+  border-radius: 5px;
+  padding: 5px 15px;
+  cursor: pointer;
+  &.submitButton {
+    margin: 2rem auto;
+    padding: 10px 5rem;
+  }
+`;
+
+const Courses = styled.div``;
+
 const CoursesGrid = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
-  list-style: none;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+  align-items: start;
+  justify-content: center;
+  & .gridItem {
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    & .courseText {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding-top: 1rem;
+      & .courseInfo {
+        display: flex;
+        gap: 0.5rem;
+      }
+      & .courseName {
+        font-size: 1.5rem;
+        font-weight: 900;
+      }
+      & .subjectName {
+        padding-top: 10px;
+      }
+      & .instructorNames {
+      }
+      & .price {
+        color: #3182f6;
+        font-size: 1rem;
+        font-weight: 900;
+      }
+    }
+    & .buttonBox {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin: 2rem 0;
+    }
+  }
 `;
+
+const ImgBox = styled.div`
+  width: 300px;
+  height: 200px;
+  background-color: gray;
+  & img {
+    width: 100%;
+  }
+`;
+
 export function AdminCourseManage() {
   const [courses, setCourses] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [formData, setFormData] = useState({
-    courseId: "",
-    courseName: "",
-    description: "",
+    courseId: '',
+    courseName: '',
+    description: '',
     durationMins: 0,
-    contentLevel: "",
+    contentLevel: '',
     price: 0,
-    announcement: "",
-    instructorLoginId: [""],
-    subejct: [],
+    announcement: '',
+    instructorLoginId: [''],
+    subjectId: '',
+    courseThumbnail: '',
   });
 
   useEffect(() => {
@@ -40,29 +145,18 @@ export function AdminCourseManage() {
     apiGetAllCourses()
       .then((response) => {
         setCourses(response.data.data);
-        console.log(response.data.data);
       })
       .catch((error) => {
-        console.error("코스 불러오기 오류: ", error);
+        console.error('코스 불러오기 오류: ', error);
       });
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === "subjectId") {
-      const selectedSubject = subjects.find(
-        (subject) => subject.subjectId === Number(value)
-      );
-      setFormData({
-        ...formData,
-        subject: selectedSubject,
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   const handleSubmit = (e) => {
@@ -76,11 +170,11 @@ export function AdminCourseManage() {
         subject: formData.subject,
       })
         .then((response) => {
-          console.log("코스 수정 성공: ", response);
+          console.log('코스 수정 성공: ', response);
           loadCourses();
         })
         .catch((err) => {
-          console.error("코스 수정 오류: ", err);
+          console.error('코스 수정 오류: ', err);
         });
     } else {
       // 등록
@@ -90,25 +184,26 @@ export function AdminCourseManage() {
         subject: formData.subject,
       })
         .then((response) => {
-          console.log("코스 등록 성공: ", response);
+          console.log('코스 등록 성공: ', response);
           loadCourses();
         })
         .catch((err) => {
-          console.error("코스 등록 오류: ", err);
+          console.error('코스 등록 오류: ', err);
         });
     }
 
     // 폼 초기화
     setFormData({
-      courseId: "",
-      courseName: "",
-      description: "",
+      courseId: '',
+      courseName: '',
+      description: '',
       durationMins: 0,
-      contentLevel: "",
+      contentLevel: '',
       price: 0,
-      announcement: "",
-      instructorLoginId: [""],
-      subject: null,
+      announcement: '',
+      instructorLoginId: [''],
+      subjectId: '',
+      courseThumbnail: '',
     });
   };
 
@@ -119,11 +214,11 @@ export function AdminCourseManage() {
   const handleDelete = (courseId) => {
     apiDeleteCourse(courseId)
       .then((response) => {
-        console.log("코스 삭제 성공: ", response);
+        console.log('코스 삭제 성공: ', response);
         loadCourses();
       })
       .catch((err) => {
-        console.error("코스 삭제 오류: ", err);
+        console.error('코스 삭제 오류: ', err);
       });
   };
 
@@ -134,124 +229,137 @@ export function AdminCourseManage() {
         setSubjects(response.data.data);
       })
       .catch((error) => {
-        console.error("과목 불러오기 오류: ", error);
+        console.error('과목 불러오기 오류: ', error);
       });
   }, []);
 
   return (
     <Container>
-      <div>
-        {/* 코스 관리 부분은 관리자 페이지 코스페이지에서 겟만 해서 보여주기 */}
-        <h1>코스 관리</h1>
+      <h2>강좌 등록</h2>
+      <SelectForm>
         <label>
-          course:
-          <select
+          강좌 분류
+          <Select
             name="subjectId"
             value={formData.subjectId}
             onChange={handleInputChange}
           >
+            <option value="">강좌를 분류해주세요.</option>
             {subjects.map((subject) => (
               <option key={subject.subjectId} value={subject.subjectId}>
                 {subject.subjectName}
               </option>
             ))}
-          </select>
+          </Select>
         </label>
-        <form onSubmit={handleSubmit}>
-          <label>
-            코스 이름:
-            <input
-              type="text"
-              name="courseName"
-              value={formData.courseName}
-              onChange={handleInputChange}
-            />
-          </label>
-          <br />
-          <label>
-            설명:
-            <input
-              type="text"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-            />
-          </label>
-          <br />
-          <label>
-            수업 시간:
-            <input
-              type="number"
-              name="durationMins"
-              value={formData.durationMins}
-              onChange={handleInputChange}
-            />
-          </label>
-          <br />
-          <label>
-            콘텐츠 레벨:
-            <input
-              type="text"
-              name="contentLevel"
-              value={formData.contentLevel}
-              onChange={handleInputChange}
-            />
-          </label>
-          <br />
-          <label>
-            가격:
-            <input
-              type="number"
-              name="price"
-              value={formData.price}
-              onChange={handleInputChange}
-            />
-          </label>
-          <br />
-          <label>
-            공지사항:
-            <input
-              type="text"
-              name="announcement"
-              value={formData.announcement}
-              onChange={handleInputChange}
-            />
-          </label>
-          <br />
-          <label>
-            선생님loginId:
-            <input
-              type="text"
-              name="instructorLoginId"
-              value={formData.instructorLoginId}
-              onChange={handleInputChange}
-            />
-          </label>
-          <br />
-          <button type="submit">
-            {formData.courseId ? "코스 수정" : "코스 등록"}
-          </button>
-        </form>
-        <h2>등록된 코스 목록</h2>
+      </SelectForm>
+      <CourseForm onSubmit={handleSubmit}>
+        <label>
+          강의 이름
+          <input
+            type="text"
+            name="courseName"
+            value={formData.courseName}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label>
+          부가 설명
+          <input
+            type="text"
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label>
+          총 수업 시간 (분 단위)
+          <input
+            type="number"
+            name="durationMins"
+            value={formData.durationMins}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label>
+          콘텐츠 레벨
+          <input
+            type="text"
+            name="contentLevel"
+            value={formData.contentLevel}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label>
+          가격
+          <input
+            type="number"
+            name="price"
+            value={formData.price}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label>
+          공지사항
+          <input
+            type="text"
+            name="announcement"
+            value={formData.announcement}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label>
+          썸네일
+          <input
+            type="text"
+            name="courseThumbnail"
+            value={formData.courseThumbnail}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label>
+          instructor loginId
+          <input
+            type="text"
+            name="instructorLoginId"
+            value={formData.instructorLoginId}
+            onChange={handleInputChange}
+          />
+        </label>
+        <Button className="submitButton" type="submit">
+          {formData.courseId ? '코스 수정' : '코스 등록'}
+        </Button>
+      </CourseForm>
+      <Courses>
+        <h2>등록된 강좌 목록</h2>
         <CoursesGrid>
           {courses.map((course) => (
-            <li key={course.courseId}>
-              <strong>{course.courseName}</strong>
-              <p>course:{course.subject?.subjectName} </p>
-              <p>설명: {course.description}</p>
-              <p>수업 시간: {course.durationMins} 분</p>
-              <p>콘텐츠 레벨: {course.contentLevel}</p>
-              <p>가격: {course.price} 원</p>
-              <p>공지사항: {course.announcement}</p>
-              <p>선생님: {course.instructorNames}</p>
-              <button onClick={() => handleEdit(course)}>수정</button>
-              <button onClick={() => handleDelete(course.courseId)}>
-                삭제
-              </button>
-            </li>
+            <div className="gridItem" key={course.courseId}>
+              <ImgBox>
+                <img src={course.courseThumbnail} alt="코스 썸네일" />
+              </ImgBox>
+              <div className="courseText">
+                <div className="courseInfo">
+                  {course.subject && <p>{course.subject.subjectName}</p>}
+                  <p>{course.contentLevel}</p>
+                  <p>{course.durationMins} 분</p>
+                </div>
+                <p className="courseName">{course.courseName}</p>
+                <p className="instructorNames">{course.instructorNames}</p>
+                <p className="price">{formatPrice(course.price)}</p>
+                <p>부가설명 : {course.description}</p>
+                <p>공지사항 : {course.announcement}</p>
+              </div>
+              <div className="buttonBox">
+                <Button onClick={() => handleEdit(course)}>수정</Button>
+                <Button onClick={() => handleDelete(course.courseId)}>
+                  삭제
+                </Button>
+              </div>
+            </div>
           ))}
         </CoursesGrid>
-      </div>
+      </Courses>
     </Container>
   );
 }

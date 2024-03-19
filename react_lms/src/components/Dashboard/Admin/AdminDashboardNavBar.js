@@ -7,26 +7,28 @@ const Container = styled.div`
   width: 100%;
   padding: 32px;
   display: flex;
+  gap: 2rem;
 `;
 const NavBar = styled.div`
-  width: 200px;
+  min-width: 200px;
   display: flex;
   flex-direction: column;
+  gap: 5px;
 `;
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   font-size: 1rem;
   font-weight: 900;
-  color: #495057;
+  color: #454545;
   padding: 8px 12px;
-
   &.dashboard {
+    margin-bottom: 1rem;
+    font-size: 20px;
+  }
+  &.active {
     color: #00abff;
     background-color: #d9f2ff;
     border-radius: 5px;
-    &:hover {
-      background-color: #d9f2ff;
-    }
   }
   &:hover {
     color: #00abff;
@@ -52,19 +54,34 @@ export function AdminDashboardNavBar() {
           >
             {user.name}님
           </StyledNavLink>
-          <StyledNavLink to={`/dashboard/${user.loginId}/course_manage`}>
-            코스 및 강의 관리
+          <StyledNavLink
+            activeClassName="active"
+            to={`/dashboard/${user.loginId}/course_manage`}
+          >
+            강좌 관리
           </StyledNavLink>
-          <StyledNavLink to={`/dashboard/${user.loginId}/user_manage`}>
+          <StyledNavLink
+            activeClassName="active"
+            to={`/dashboard/${user.loginId}/user_manage`}
+          >
             회원 관리
           </StyledNavLink>
-          <StyledNavLink to={`/dashboard/${user.loginId}/post_manage`}>
+          <StyledNavLink
+            activeClassName="active"
+            to={`/dashboard/${user.loginId}/post_manage`}
+          >
             게시물 관리
           </StyledNavLink>
-          <StyledNavLink to={`/dashboard/${user.loginId}/notice_manage`}>
+          <StyledNavLink
+            activeClassName="active"
+            to={`/dashboard/${user.loginId}/notice_manage`}
+          >
             공지사항 관리
           </StyledNavLink>
-          <StyledNavLink to={`/dashboard/${user.loginId}/leveltest_manage`}>
+          <StyledNavLink
+            activeClassName="active"
+            to={`/dashboard/${user.loginId}/leveltest_manage`}
+          >
             레벨테스트 관리
           </StyledNavLink>
         </NavBar>

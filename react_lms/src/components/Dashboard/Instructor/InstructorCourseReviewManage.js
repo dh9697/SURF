@@ -1,8 +1,8 @@
-import styled from "styled-components";
-import { useState, useEffect, useContext } from "react";
-import { apiGetAllCourses, apiGetCourseReviewByCourse } from "../../RestApi";
-import { formatDateTime, StarRating } from "../../Util/util";
-import { AuthContext } from "../../../AuthContext";
+import styled from 'styled-components';
+import { useState, useEffect, useContext } from 'react';
+import { apiGetAllCourses, apiGetCourseReviewByCourse } from '../../RestApi';
+import { formatDateTime, StarRating } from '../../Util/util';
+import { AuthContext } from '../../../AuthContext';
 
 const Container = styled.div`
   width: 100%;
@@ -20,6 +20,11 @@ const SingleReview = styled.div`
   display: grid;
   grid-template-columns: 1fr 3fr 1fr 1fr;
   border-radius: 10px;
+  & .rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   & .date {
     text-align: end;
   }
@@ -38,7 +43,7 @@ export function InstructorCourseReviewManage() {
   const [courses, setCourses] = useState([]);
   const [teachingCourses, setTeachingCourses] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState('');
 
   // 코스 모두 조회
   useEffect(() => {
@@ -48,7 +53,7 @@ export function InstructorCourseReviewManage() {
         console.log(response.data.data);
       })
       .catch((error) => {
-        console.error("코스 불러오기 오류: ", error);
+        console.error('코스 불러오기 오류: ', error);
       });
   }, []);
 
@@ -72,7 +77,7 @@ export function InstructorCourseReviewManage() {
           console.log(response.data.data);
         })
         .catch((error) => {
-          console.error("리뷰 불러오기 오류: ", error);
+          console.error('리뷰 불러오기 오류: ', error);
         });
     }
   }, [selectedCourse]);
@@ -98,7 +103,9 @@ export function InstructorCourseReviewManage() {
             <SingleReview key={review.reviewId}>
               <p>{review.member.name}</p>
               <p>{review.comment}</p>
-              <StarRating averageRating={review.rating} />
+              <div className="rating">
+                <StarRating averageRating={review.rating} />
+              </div>
               <p className="date">{formatDateTime(review.reviewDate)}</p>
             </SingleReview>
           ))}

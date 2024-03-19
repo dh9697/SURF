@@ -204,9 +204,7 @@ export function LearningStatistics({ onTotalVolumeUpdate }) {
                       {
                         label: '구매량',
                         data: Object.values(monthlyPurchases),
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1,
+                        backgroundColor: '#9A97EA',
                       },
                     ],
                   }}
@@ -255,9 +253,7 @@ export function LearningStatistics({ onTotalVolumeUpdate }) {
                       data: Object.values(courseMembers).map(
                         (courseMember) => courseMember.memberCount
                       ),
-                      backgroundColor: '#3182f6', // 바의 배경색
-                      borderColor: '#3182f6', // 바의 테두리 색
-                      borderWidth: 1, // 바 테두리의 두께
+                      backgroundColor: '#92BCF5',
                     },
                   ],
                 }}

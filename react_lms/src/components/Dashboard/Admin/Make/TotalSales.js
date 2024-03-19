@@ -116,7 +116,7 @@ export function TotalSales({ onTotalSalesUpdate }) {
                       data: Object.values(salesBySubject).map(
                         (subject) => subject.totalSales
                       ),
-                      backgroundColor: 'rgb(75, 192, 192)',
+                      backgroundColor: '#7CC6C4',
                     },
                   ],
                 }}
@@ -161,7 +161,7 @@ export function TotalSales({ onTotalSalesUpdate }) {
                       data: Object.values(salesByCourse).map(
                         (course) => course.totalSales
                       ),
-                      backgroundColor: 'rgb(255, 99, 132)',
+                      backgroundColor: '#92BCF5',
                     },
                   ],
                 }}

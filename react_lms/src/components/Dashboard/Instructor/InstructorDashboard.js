@@ -18,7 +18,8 @@ const Body = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  gap: 16px;
+  gap: 1rem;
+  padding-top: 0.5rem;
 `;
 
 const Content = styled.div`

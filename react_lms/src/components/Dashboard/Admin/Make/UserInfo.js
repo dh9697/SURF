@@ -22,20 +22,13 @@ const Table = styled.table`
 
 const Th = styled.th`
   padding: 10px;
-  border-bottom: 2px solid #ddd;
-  background-color: #ddd;
+  background-color: #f3f3f3;
   text-align: start;
 `;
 
 const Td = styled.td`
   padding: 10px;
-  border-bottom: 1px solid #ddd;
-`;
-
-const Tr = styled.tr`
-  &:nth-child(even) {
-    background-color: #f2f2f2;
-  }
+  border-bottom: 1px solid #f3f3f3;
 `;
 
 const Container = styled.div`
@@ -72,17 +65,12 @@ const Section = styled.div`
   }
 `;
 
-const StickyThead = styled.thead`
-  position: sticky;
-  top: 0;
-  background-color: white;
-  z-index: 1;
-`;
-
 const PieContainer = styled.div`
   width: 500px;
+  margin: 0 auto;
   & h2 {
-    padding: 1.5rem 0;
+    padding: 2rem 0;
+    text-align: center;
   }
 `;
 
@@ -101,7 +89,6 @@ export function UserInfo() {
   useEffect(() => {
     apiGetAllCourses().then((response) => {
       setCourses(response.data.data);
-      console.log(response.data.data);
     });
     fetchSurfers();
   }, []);
@@ -147,7 +134,6 @@ export function UserInfo() {
     apiGetAllInstructors().then((response) => {
       setSurferInstructors(response.data);
       setSurferInstructorsCount(response.data.length);
-      console.log(response.data);
       setSurfers([]);
       setSurferUsers([]);
       setSurferMembers([]);
@@ -158,7 +144,7 @@ export function UserInfo() {
     <Container>
       <Section>
         <div className="getAllSurfers">
-          <h1>모든 유저 보기</h1>
+          <h2>모든 유저 보기</h2>
           <div className="buttonBox">
             <button onClick={fetchSurfers}>Surfers ({surfersCount}명)</button>
             <button onClick={fetchUsers}>Users ({surferUsersCount}명)</button>
@@ -172,8 +158,8 @@ export function UserInfo() {
         </div>
         <TableContainer>
           <Table>
-            <StickyThead>
-              <Tr>
+            <thead>
+              <tr>
                 <Th>이름</Th>
                 <Th>아이디</Th>
                 <Th>생년월일</Th>
@@ -181,12 +167,12 @@ export function UserInfo() {
                 <Th>국적</Th>
                 <Th>이메일</Th>
                 <Th>핸드폰 번호</Th>
-              </Tr>
-            </StickyThead>
+              </tr>
+            </thead>
             <tbody>
               {surfers &&
                 surfers.map((surfer, index) => (
-                  <Tr key={index}>
+                  <tr key={index}>
                     <Td>{surfer.name}</Td>
                     <Td>{surfer.loginId}</Td>
                     <Td>{surfer.birthDate}</Td>
@@ -194,11 +180,11 @@ export function UserInfo() {
                     <Td>{surfer.nationality}</Td>
                     <Td>{surfer.email}</Td>
                     <Td>{surfer.phoneNum}</Td>
-                  </Tr>
+                  </tr>
                 ))}
               {surferUsers &&
                 surferUsers.map((user, index) => (
-                  <Tr key={index}>
+                  <tr key={index}>
                     <Td>{user.name}</Td>
                     <Td>{user.loginId}</Td>
                     <Td>{user.birthDate}</Td>
@@ -206,11 +192,11 @@ export function UserInfo() {
                     <Td>{user.nationality}</Td>
                     <Td>{user.email}</Td>
                     <Td>{user.phoneNum}</Td>
-                  </Tr>
+                  </tr>
                 ))}
               {surferMembers &&
                 surferMembers.map((member, index) => (
-                  <Tr key={index}>
+                  <tr key={index}>
                     <Td>{member.name}</Td>
                     <Td>{member.loginId}</Td>
                     <Td>{member.birthDate}</Td>
@@ -218,11 +204,11 @@ export function UserInfo() {
                     <Td>{member.nationality}</Td>
                     <Td>{member.email}</Td>
                     <Td>{member.phoneNum}</Td>
-                  </Tr>
+                  </tr>
                 ))}
               {surferInstructors &&
                 surferInstructors.map((instructor, index) => (
-                  <Tr key={index}>
+                  <tr key={index}>
                     <Td>{instructor.name}</Td>
                     <Td>{instructor.loginId}</Td>
                     <Td>{instructor.birthDate}</Td>
@@ -230,7 +216,7 @@ export function UserInfo() {
                     <Td>{instructor.nationality}</Td>
                     <Td>{instructor.email}</Td>
                     <Td>{instructor.phoneNum}</Td>
-                  </Tr>
+                  </tr>
                 ))}
             </tbody>
           </Table>
