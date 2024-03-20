@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { NavBar } from './NavBar';
 import { Main } from './Main';
 import { AboutMain } from './About/AboutMain';
@@ -21,7 +21,6 @@ import { AdminLevelTestManage } from './Dashboard/Admin/AdminLevelTestManage';
 import { AdminNoticeManage } from './Dashboard/Admin/AdminNoticeManage';
 import { AdminUserManage } from './Dashboard/Admin/AdminUserManage';
 import { AdminPostManage } from './Dashboard/Admin/AdminPostManage';
-import { TestSubject } from './TestSubject';
 import { InstructorStudentsManage } from './Dashboard/Instructor/InstructorStudentsManage';
 import { InstructorExamManage } from './Dashboard/Instructor/InstructorExamManage';
 import { InstructorQnAManage } from './Dashboard/Instructor/InstructorQnAManage';
@@ -37,7 +36,6 @@ import { AfterInquiries } from './Subject/MemberCourse/AfterInquiries.js';
 import { CourseDescription } from './Subject/MemberCourse/CourseDescription.js';
 import { Contact } from './Contact.js';
 import { ContentComponent } from './Subject/MemberCourse/Contents/ContentComponent.js';
-import { ExamAnswer } from './Subject/MemberCourse/Contents/Exam/ExamAnswer.js';
 import { CourseCurriculem } from './Subject/CourseCurriculum.js';
 import { Announcement } from './Communitiy/Announcement.js';
 import { CourseReview } from './Communitiy/CourseReview.js';
@@ -94,6 +92,10 @@ export function Surf() {
                       element={<CourseDescription />}
                     />
                   </Route>
+                  <Route
+                    path="/course/:courseId/content/:contentId"
+                    element={<ContentComponent />}
+                  />
                   {user && (
                     <Route
                       path={`/dashboard/${user.loginId}`}
@@ -200,15 +202,6 @@ export function Surf() {
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/subject" element={<TestSubject />} />
-                <Route
-                  path="/course/:courseId/content/:contentId"
-                  element={<ContentComponent />}
-                />
-                <Route
-                  path="/course/:courseId/content/:contentId/exam/:examId"
-                  element={<ExamAnswer />}
-                />
               </Routes>
             </MainContent>
             <Footer />

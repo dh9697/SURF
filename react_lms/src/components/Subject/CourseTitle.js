@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import thumbnail from '../image/Toeic.jpg';
+
 import { Outlet, useParams } from 'react-router-dom';
 import { CourseSidebar } from './CourseSidebar';
 import { CourseMenu } from './CourseMenu';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   apiGetCourse,
   apiGetCourseHistroiesByCourse,
@@ -11,12 +11,12 @@ import {
 } from '../RestApi';
 import { Icon } from '@iconify/react';
 import { StarRating } from '../Util/util';
+import { AuthContext } from '../../AuthContext';
 
 const Container = styled.div`
   width: 100%;
   background-color: #f3f3f3;
   padding: 30px;
-
   & .innerWrapper {
     display: grid;
     grid-template-columns: 2fr 3fr;
@@ -85,6 +85,7 @@ const SideBarWrapper = styled.div`
 `;
 
 export function CourseTitle() {
+  const { user } = useContext(AuthContext);
   const { courseId } = useParams();
   const [course, setCourse] = useState([]);
   const [isMemberCourse, setIsMemberCourse] = useState(false);
@@ -101,15 +102,29 @@ export function CourseTitle() {
         console.error('강의 정보 불러오기 오류: ', error);
       });
 
-    apiGetCourseHistroiesByCourse(courseId).then((response) => {
-      setCourseHistories(response.data.data);
-      console.log(response.data.data);
-    });
+    apiGetCourseHistroiesByCourse(courseId)
+      .then((response) => {
+        setCourseHistories(response.data.data);
+        console.log(response.data.data);
+        const student = response.data.data.some(
+          (courseHistory) => courseHistory.member.memberId === user.memberId
+        );
+        if (student) {
+          setIsMemberCourse(true);
+        }
+      })
+      .catch((err) => {
+        console.log('수강생 전체 조회 실패: ', err);
+      });
 
-    apiGetCourseReviewByCourse(courseId).then((response) => {
-      setReviews(response.data.data);
-    });
-  }, [courseId]);
+    apiGetCourseReviewByCourse(courseId)
+      .then((response) => {
+        setReviews(response.data.data);
+      })
+      .catch((err) => {
+        console.log('수강평 전체 조회 실패: ', err);
+      });
+  }, [courseId, user.memberId]);
 
   const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
   const averageRating = totalRating / reviews.length;
@@ -156,7 +171,7 @@ export function CourseTitle() {
       <CourseMenu isMemberCourse={isMemberCourse} />
       <ContentWrapper>
         <div className="innerWrapper">
-          <Outlet isMemberCourse={isMemberCourse} />
+          <Outlet />
           <SideBarWrapper>
             <CourseSidebar />
           </SideBarWrapper>

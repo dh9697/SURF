@@ -1,29 +1,63 @@
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useOutletContext, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   apiGetContentByCourse,
   apiGetExamByContent,
-  apiGetQuestionsForExam,
-  apiGetAllExamQuestions,
   apiGetCompletedContentHistories,
+  apiGetCourseHistroiesByCourse,
 } from '../RestApi';
 import { formatTime } from '../Util/util';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../AuthContext';
 
 const Container = styled.div`
+  color: #454545;
+  padding: 20px;
   .content.completed {
     background-color: #f3f3f3;
     & .text {
-      color: #3182f6;
+      color: #f3f3f3;
+      background-color: #286ed3;
     }
+  }
+`;
+
+const Title = styled.div`
+  color: #adb5bd;
+  & .title {
+    font-size: 18px;
+    font-weight: 900;
+    margin-right: 0.5rem;
+    color: #454545;
+  }
+`;
+
+const ContentsList = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 10px;
+  & .contentTitle {
+    width: 60%;
   }
 `;
 
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
-  color: #454545;
+  color: #f3f3f3;
+  background-color: #3182f6;
   cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+`;
+
+const Button = styled.button`
+  border: 1px solid #454545;
+  color: #454545;
+  padding: 5px;
+  border-radius: 5px;
 `;
 
 export function CourseCurriculem() {
@@ -33,7 +67,7 @@ export function CourseCurriculem() {
   const [content, setContent] = useState([]);
   const [completedContents, setCompletedContents] = useState([]);
   const [exams, setExams] = useState([]);
-  const [examQuestions, setExamQuestions] = useState([]);
+  const [isMemberCourse, setIsMemberCourse] = useState(false);
 
   // 해당 코스 컨텐츠 조회
   useEffect(() => {
@@ -44,6 +78,19 @@ export function CourseCurriculem() {
       .catch((error) => {
         console.error('컨텐츠 정보 불러오기 오류: ', error);
       });
+
+    apiGetCourseHistroiesByCourse(courseId)
+      .then((response) => {
+        const student = response.data.data.some(
+          (courseHistory) => courseHistory.member.memberId === user.memberId
+        );
+        if (student) {
+          setIsMemberCourse(true);
+        }
+      })
+      .catch((err) => {
+        console.log('수강생 전체 조회 실패: ', err);
+      });
   }, [courseId]);
 
   // 유저의 완료된 컨텐츠 히스토리 조회
@@ -52,6 +99,7 @@ export function CourseCurriculem() {
       apiGetCompletedContentHistories(memberId)
         .then((response) => {
           setCompletedContents(response.data.data);
+          console.log(response.data.data);
         })
         .catch((error) => {
           console.error('완료된 학습 이력 조회 오류: ', error);
@@ -79,19 +127,16 @@ export function CourseCurriculem() {
   return (
     <>
       <Container>
-        <h2 className="title">
-          커리큘럼
-          <span className="contentInfo">
+        <Title>
+          <span className="title">커리큘럼</span>
+          <span className="titleInfo">
             총 {content?.length || 0}개,{' '}
-            {formatTime(
-              content?.reduce(
-                (acc, cur) => acc + (cur.course.durationMins || 0),
-                0
-              ) || 0
-            )}
+            {content[0] &&
+              content[0].course &&
+              formatTime(content[0].course.durationMins)}
             의 수업
           </span>
-        </h2>
+        </Title>
         {content?.map((item, index) => {
           const isCompleted = completedContents.find(
             (history) => history.content.contentId === item.contentId
@@ -100,41 +145,42 @@ export function CourseCurriculem() {
             .flat()
             .find((exam) => exam?.contentId === item.contentId);
           return (
-            <div
+            <ContentsList
               className={`content ${isCompleted ? 'completed' : ''}`}
               key={index}
             >
-              <p>
+              <p className="contentTitle">
                 {index + 1}. {item.contentTitle}
               </p>
-              <p>진행률{item.contentDuration}</p>
-              <p>컨텐츠상태{item.contentStatus}</p>
-              <StyledNavLink
-                className="text"
-                to={`/course/${courseId}/content/${item.contentId}`}
-              >
-                {isCompleted ? '서핑 완료' : '서핑하기'}
-              </StyledNavLink>
-              {isCompleted && (
+
+              {isMemberCourse ? (
                 <>
-                  {exam && exam.examIsActive && (
-                    <div>
-                      <StyledNavLink
-                        // to={`/course/${courseId}/content/${item.contentId}/exam/${exam.examId}`}
-                        to={`/dashboard/${user.loginId}/exams/${item.contentId}`}
-                      >
-                        과제 풀기
-                      </StyledNavLink>
-                    </div>
-                  )}
-                  {exam && !exam.examIsActive && (
-                    <div>
-                      <button disabled>과제 생성 중</button>
-                    </div>
+                  <StyledNavLink
+                    className="text"
+                    to={`/course/${courseId}/content/${item.contentId}`}
+                  >
+                    {isCompleted ? '서핑 완료' : '서핑 하기'}
+                  </StyledNavLink>
+                  {isCompleted ? (
+                    <>
+                      {exam && exam.examIsActive && (
+                        <StyledNavLink
+                          to={`/dashboard/${user.loginId}/exams/${item.contentId}`}
+                        >
+                          과제 풀기
+                        </StyledNavLink>
+                      )}
+                      {exam && !exam.examIsActive && (
+                        <Button disabled>시험 생성 중</Button>
+                      )}
+                    </>
+                  ) : (
+                    <Button disabled>수강 후 시험</Button>
                   )}
                 </>
-              )}
-            </div>
+              ) : null}
+              <p>{item.contentDuration}:00</p>
+            </ContentsList>
           );
         })}
       </Container>

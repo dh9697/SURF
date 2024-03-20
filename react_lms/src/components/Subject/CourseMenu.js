@@ -1,11 +1,11 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import {
   useParams,
   NavLink,
   useSearchParams,
   useLocation,
-} from "react-router-dom";
-import { useEffect, useState } from "react";
+} from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 const Menu = styled.div`
   position: sticky;
@@ -39,23 +39,23 @@ export function CourseMenu({ isMemberCourse }) {
     const currentPath = location.pathname;
     const currentHash = location.hash;
 
-    if (currentPath.includes("afterInquiries")) {
-      setIsActive("qna");
-    } else if (currentPath.includes("coursedescription")) {
-      if (currentHash === "#review") {
-        setIsActive("review");
+    if (currentPath.includes('afterInquiries')) {
+      setIsActive('qna');
+    } else if (currentPath.includes('coursedescription')) {
+      if (currentHash === '#review') {
+        setIsActive('review');
       } else {
-        setIsActive("description");
+        setIsActive('description');
       }
     } else if (currentPath.includes(`course/${courseId}`) && isMemberCourse) {
-      setIsActive("dashboard");
+      setIsActive('dashboard');
     } else {
-      if (currentHash === "#content") {
-        setIsActive("content");
-      } else if (currentHash === "#review") {
-        setIsActive("review");
+      if (currentHash === '#content') {
+        setIsActive('content');
+      } else if (currentHash === '#review') {
+        setIsActive('review');
       } else {
-        setIsActive("description");
+        setIsActive('description');
       }
     }
   }, [location, isMemberCourse]);
@@ -67,16 +67,16 @@ export function CourseMenu({ isMemberCourse }) {
           {isMemberCourse ? (
             <>
               <div
-                className={`link ${isActive === "dashboard" ? "active" : ""}`}
-                onClick={() => setIsActive("dashboard")}
+                className={`link ${isActive === 'dashboard' ? 'active' : ''}`}
+                onClick={() => setIsActive('dashboard')}
               >
                 <StyledNavLink to={`/course/${courseId}`}>
                   대시보드
                 </StyledNavLink>
               </div>
               <div
-                className={`link ${isActive === "description" ? "active" : ""}`}
-                onClick={() => setIsActive("description")}
+                className={`link ${isActive === 'description' ? 'active' : ''}`}
+                onClick={() => setIsActive('description')}
               >
                 <StyledNavLink
                   to={`/course/${courseId}/coursedescription#description`}
@@ -85,8 +85,8 @@ export function CourseMenu({ isMemberCourse }) {
                 </StyledNavLink>
               </div>
               <div
-                className={`link ${isActive === "review" ? "active" : ""}`}
-                onClick={() => setIsActive("review")}
+                className={`link ${isActive === 'review' ? 'active' : ''}`}
+                onClick={() => setIsActive('review')}
               >
                 <StyledNavLink
                   to={`/course/${courseId}/coursedescription#review`}
@@ -95,8 +95,8 @@ export function CourseMenu({ isMemberCourse }) {
                 </StyledNavLink>
               </div>
               <div
-                className={`link ${isActive === "qna" ? "active" : ""}`}
-                onClick={() => setIsActive("qna")}
+                className={`link ${isActive === 'qna' ? 'active' : ''}`}
+                onClick={() => setIsActive('qna')}
               >
                 <StyledNavLink to={`/course/${courseId}/afterInquiries`}>
                   질의응답
@@ -106,24 +106,24 @@ export function CourseMenu({ isMemberCourse }) {
           ) : (
             <>
               <div
-                className={`link ${isActive === "description" ? "active" : ""}`}
-                onClick={() => setIsActive("description")}
+                className={`link ${isActive === 'description' ? 'active' : ''}`}
+                onClick={() => setIsActive('description')}
               >
                 <StyledNavLink to={`/course/${courseId}#description`}>
                   강의소개
                 </StyledNavLink>
               </div>
               <div
-                className={`link ${isActive === "content" ? "active" : ""}`}
-                onClick={() => setIsActive("content")}
+                className={`link ${isActive === 'content' ? 'active' : ''}`}
+                onClick={() => setIsActive('content')}
               >
                 <StyledNavLink to={`/course/${courseId}#content`}>
                   커리큘럼
                 </StyledNavLink>
               </div>
               <div
-                className={`link ${isActive === "review" ? "active" : ""}`}
-                onClick={() => setIsActive("review")}
+                className={`link ${isActive === 'review' ? 'active' : ''}`}
+                onClick={() => setIsActive('review')}
               >
                 <StyledNavLink to={`/course/${courseId}#review`}>
                   수강평

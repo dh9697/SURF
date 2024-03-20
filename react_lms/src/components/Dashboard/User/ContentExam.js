@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
+import { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   apiGetContentByContent,
   apiGetContentByCourse,
@@ -8,9 +8,9 @@ import {
   apiGetMyExamHistory,
   apiGetMyExamResult,
   apiPostExamResult,
-} from "../../RestApi";
-import { AuthContext } from "../../../AuthContext";
-import { Icon } from "@iconify/react";
+} from '../../RestApi';
+import { AuthContext } from '../../../AuthContext';
+import { Icon } from '@iconify/react';
 
 const Container = styled.div`
   width: 100%;
@@ -71,7 +71,7 @@ export function ContentExam() {
         console.log(response.data.data);
       })
       .catch((err) => {
-        console.log("컨텐츠 불러 오기 오류: ", err);
+        console.log('컨텐츠 불러 오기 오류: ', err);
       });
   }, [contentId]);
 
@@ -83,7 +83,7 @@ export function ContentExam() {
         console.log(response.data.data);
       })
       .catch((error) => {
-        console.log("시험 불러 오기 오류: ", error);
+        console.log('시험 불러 오기 오류: ', error);
       });
   }, [contentId]);
 
@@ -98,7 +98,7 @@ export function ContentExam() {
         console.log(filteredExamResultByContent);
       })
       .catch((err) => {
-        console.log("시험 결과 조회 실패 ", err);
+        console.log('시험 결과 조회 실패 ', err);
       });
   }, [memberId, contentId]);
 
@@ -113,7 +113,7 @@ export function ContentExam() {
         console.log(filtererdExamHistoryByContent);
       })
       .catch((err) => {
-        console.log("시험 이력 조회 실패 ", err);
+        console.log('시험 이력 조회 실패 ', err);
       });
   }, [memberId]);
 
@@ -139,7 +139,7 @@ export function ContentExam() {
         [questionId]: submittedAnswer,
       });
     } catch (error) {
-      console.log("답안 제출 중 오류 발생: ", error);
+      console.log('답안 제출 중 오류 발생: ', error);
     }
   };
 
@@ -153,7 +153,7 @@ export function ContentExam() {
                 {contents.map((content) => (
                   <div key={content.contentId}>
                     <h2>[ {content.course.courseName} ]</h2>
-                    <h3 style={{ marginTop: "1rem" }}>
+                    <h3 style={{ marginTop: '1rem' }}>
                       {content.contentId}강 {content.contentTitle}
                     </h3>
                   </div>
@@ -190,12 +190,12 @@ export function ContentExam() {
                         );
 
                         if (alreadyAnswered) {
-                          alert("해당 시험 문제를 풀었습니다.");
+                          alert('해당 시험 문제를 풀었습니다.');
                         } else {
                           if (
                             submittedAnswers[question.examQuestionId] == null
                           ) {
-                            alert("정답을 체크해주세요.");
+                            alert('정답을 체크해주세요.');
                           } else {
                             submitAnswer(
                               exam.examId,
@@ -210,7 +210,7 @@ export function ContentExam() {
                       제출
                     </button>
                     {userSubmittedAnswer[question.examQuestionId] && (
-                      <p style={{ margin: "0 2rem" }}>
+                      <p style={{ margin: '0 2rem' }}>
                         {userSubmittedAnswer[question.examQuestionId]}번 답안을
                         제출하였습니다.
                       </p>
@@ -236,8 +236,8 @@ export function ContentExam() {
                     <div className="check">
                       <h3>0{index + 1}. </h3>
                       <Icon
-                        icon={"streamline:check-solid"}
-                        style={{ color: examResult.correct ? "green" : "red" }}
+                        icon={'streamline:check-solid'}
+                        style={{ color: examResult.correct ? 'green' : 'red' }}
                       ></Icon>
                     </div>
                     <p>제출 답안: {examResult.submittedAnswer}</p>

@@ -1,16 +1,16 @@
-import styled from "styled-components";
-import { NavLink, useLocation, useParams } from "react-router-dom";
-import { useState, useEffect, useContext, useRef } from "react";
-import { AuthContext } from "../../../../AuthContext";
+import styled from 'styled-components';
+import { NavLink, useLocation, useParams } from 'react-router-dom';
+import { useState, useEffect, useContext, useRef } from 'react';
+import { AuthContext } from '../../../../AuthContext';
 import {
   apiGetContentByCourse,
   apiPostStartContentHistory,
   apiPutCompleteContentHistory,
-} from "../../../RestApi";
-import { Icon } from "@iconify/react";
-import thumbnail from "../../../image/Thumbnail.jpg";
-import { formatTimeSeconds } from "../../../Util/util";
-import { CourseCurriculem } from "../../CourseCurriculum";
+} from '../../../RestApi';
+import { Icon } from '@iconify/react';
+import thumbnail from '../../../image/Thumbnail.jpg';
+import { formatTimeSeconds } from '../../../Util/util';
+import { CourseCurriculem } from '../../CourseCurriculum';
 
 const Container = styled.div`
   width: 100%;
@@ -133,10 +133,10 @@ export const StyledCourseCurriculem = styled(CourseCurriculem)`
 export function ContentComponent() {
   const { user } = useContext(AuthContext);
   const { courseId, contentId } = useParams();
-  const location = useLocation(); // 현재 페이지의 경로
-  const [prevPath, setPrevPath] = useState(""); //이전 주소 저장
+  const location = useLocation();
+  const [prevPath, setPrevPath] = useState('');
   const [contents, setContents] = useState([]);
-  const [soundStatus, setSoundStatus] = useState("high");
+  const [soundStatus, setSoundStatus] = useState('high');
   const videoRef = useRef(null);
   const [isVisible, setIsVisible] = useState(true);
 
@@ -167,7 +167,7 @@ export function ContentComponent() {
         console.log(response.data.data);
       })
       .catch((error) => {
-        console.error("컨텐츠 정보 불러오기 오류: ", error);
+        console.error('컨텐츠 정보 불러오기 오류: ', error);
       });
   }, [courseId]);
   // 현재 content 정보만 조회
@@ -185,7 +185,7 @@ export function ContentComponent() {
           setIsVisible(false);
         })
         .catch((err) => {
-          console.log("contentHistory 생성 중 오류 발생", err);
+          console.log('contentHistory 생성 중 오류 발생', err);
         });
     }
   };
@@ -199,13 +199,13 @@ export function ContentComponent() {
           handleClick();
         })
         .catch((err) => {
-          console.log("contentHistory 업데이트 중 오류 발생", err);
+          console.log('contentHistory 업데이트 중 오류 발생', err);
         });
     }
   };
 
   const toggleSound = () => {
-    setSoundStatus(soundStatus === "high" ? "off" : "high");
+    setSoundStatus(soundStatus === 'high' ? 'off' : 'high');
   };
 
   return (
@@ -213,7 +213,7 @@ export function ContentComponent() {
       <VideoTitle>
         <Icon
           onClick={handleClick}
-          icon={"eva:arrow-back-fill"}
+          icon={'eva:arrow-back-fill'}
           className="backIcon"
         ></Icon>
         {matchingContent && <h1>{matchingContent.course.courseName}</h1>}
@@ -224,7 +224,7 @@ export function ContentComponent() {
             <Icon
               onClick={handleStartContent}
               className="startButton"
-              icon={"icon-park-solid:play"}
+              icon={'icon-park-solid:play'}
             ></Icon>
           </StartVideo>
         )}
@@ -235,10 +235,10 @@ export function ContentComponent() {
           <div>
             <VideoIcon
               onClick={handleStartContent}
-              icon={"ph:play-fill"}
+              icon={'ph:play-fill'}
             ></VideoIcon>
             <VideoIcon
-              icon={"iconoir:sound-high"}
+              icon={'iconoir:sound-high'}
               onClick={toggleSound}
             ></VideoIcon>
             {/* <VideoIcon icon={"iconoir:sound-off"} onClick={toggleSound}></VideoIcon> */}
@@ -249,7 +249,7 @@ export function ContentComponent() {
           <div>
             <VideoIcon
               onClick={toggleFullscreen}
-              icon={"mingcute:fullscreen-fill"}
+              icon={'mingcute:fullscreen-fill'}
             ></VideoIcon>
           </div>
         </VideoBar>

@@ -34,6 +34,9 @@ const Exam = styled.div`
       & th {
         padding: 10px;
         background-color: #f3f3f3;
+        &.contentTitle {
+          width: 40%;
+        }
       }
     }
     & tbody {
@@ -41,22 +44,17 @@ const Exam = styled.div`
         padding: 10px;
         border-bottom: 1px solid #f3f3f3;
         &.examButton {
-          display: flex;
-          justify-content: space-around;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
           & button {
+            color: #454545;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
             background-color: inherit;
             border-radius: 5px;
-            padding: 5px 15px;
+            padding: 5px;
+            margin: 0 2rem;
             cursor: pointer;
-            &.examManage {
-              border: 1px solid #333a73;
-            }
-            &.examDelete {
-              border: 1px solid #387adf;
-            }
-            &.examActive {
-              border: 1px solid #50c4ed;
-            }
           }
         }
         &.examIcon {
@@ -64,6 +62,9 @@ const Exam = styled.div`
             display: flex;
             align-items: center;
             justify-content: space-around;
+            & .iconSize {
+              font-size: 20px;
+            }
           }
         }
       }
@@ -213,13 +214,13 @@ export function InstructorExamManage() {
           <table>
             <thead>
               <tr>
-                <th>강의 이름</th>
+                <th className="contentTitle">강의 이름</th>
                 <th>시험 관리 버튼</th>
                 <th>시험 관리 현황</th>
               </tr>
             </thead>
             <tbody>
-              {contents.map((content) => {
+              {contents.map((content, index) => {
                 const examArray = exams.find(
                   (e) => e && e[0] && e[0].contentId === content.contentId
                 );
@@ -232,18 +233,19 @@ export function InstructorExamManage() {
 
                 return (
                   <tr key={content.contentId}>
-                    <td>{content.contentTitle}</td>
+                    <td>
+                      {index + 1}강 {content.contentTitle}
+                    </td>
                     <td className="examButton">
                       {!hasExam && (
                         <button
-                          className="examManage"
                           onClick={() => handleCreateExam(content.contentId)}
                         >
                           시험 생성
                         </button>
                       )}
                       {hasExam && (
-                        <button className="examManage">
+                        <button>
                           <StyledNavLink
                             to={`/dashboard/${user.loginId}/exam_manage/${exam.examId}/question`}
                           >
@@ -252,10 +254,7 @@ export function InstructorExamManage() {
                         </button>
                       )}
                       {hasExam && (
-                        <button
-                          className="examDelete"
-                          onClick={() => handleDeleteExam(exam.examId)}
-                        >
+                        <button onClick={() => handleDeleteExam(exam.examId)}>
                           시험 삭제
                         </button>
                       )}
@@ -271,16 +270,19 @@ export function InstructorExamManage() {
                     <td className="examIcon">
                       <div>
                         <Icon
+                          className="iconSize"
                           icon={'codicon:circle-filled'}
-                          color={hasExam ? '#333A73' : 'white'}
+                          color={hasExam ? '#3182f6' : '#f3f3f3'}
                         ></Icon>
                         <Icon
+                          className="iconSize"
                           icon={'codicon:circle-filled'}
-                          color={hasQuestions ? '#387adf' : 'white'}
+                          color={hasQuestions ? '#3182f6' : '#f3f3f3'}
                         ></Icon>
                         <Icon
+                          className="iconSize"
                           icon={'codicon:circle-filled'}
-                          color={exam?.examIsActive ? '#50C4ED' : 'white'}
+                          color={exam?.examIsActive ? '#3182f6' : '#f3f3f3'}
                         ></Icon>
                       </div>
                     </td>

@@ -42,11 +42,11 @@ const Section = styled.div`
   border-radius: 5px;
   padding: 20px;
   &.announcement {
-    div {
+    & div {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      padding-top: 1rem;
+      padding-top: 1.5rem;
     }
   }
   &.mylearning {
@@ -54,23 +54,7 @@ const Section = styled.div`
     flex-direction: column;
   }
   &.contents {
-    & .content {
-      display: flex;
-      padding: 1rem;
-    }
-    & .title {
-      font-size: 18px;
-      position: relative;
-      & .contentInfo {
-        position: absolute;
-        bottom: 5px;
-        left: 5rem;
-        font-size: 12px;
-        font-weight: 400;
-      }
-    }
-    & .announcementText {
-    }
+    padding: 0;
   }
 `;
 
@@ -94,11 +78,36 @@ const ProgressBox = styled.div`
 const QnAs = styled.div`
   max-height: 336px;
   overflow: auto;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  & .myQna {
+    padding-right: 1rem;
+  }
 `;
 const QnA = styled.div`
-  display: flex;
-  padding-top: 1rem;
+  border: 1px solid #f3f3f3;
+  background-color: #f3f3f3;
+  border-radius: 10px;
+  padding: 0.5rem;
+  &.reply {
+    margin-top: 1rem;
+    background-color: #f3f3f3;
+  }
   & .qnaInfo {
+    padding-top: 1rem;
+    font-size: 12px;
+    text-align: end;
+    & button {
+      background-color: inherit;
+      font-size: 12px;
+      color: #3182f6;
+      border: none;
+      padding: 1px 2px;
+      border-radius: 2px;
+      cursor: pointer;
+    }
   }
 `;
 
@@ -117,7 +126,7 @@ export function MemberCourse() {
   const [completedContentCount, setCompletedContentCount] = useState(0);
   const [completedExamCount, setCompletedExamCount] = useState(0);
 
-  // 해당 코스 조회
+  // 해당 코스, 컨텐츠 조회
   useEffect(() => {
     apiGetCourse(courseId)
       .then((response) => {
@@ -126,10 +135,7 @@ export function MemberCourse() {
       .catch((error) => {
         console.error('코스 정보 불러오기 오류: ', error);
       });
-  }, [courseId]);
 
-  // 해당 코스 컨텐츠 조회
-  useEffect(() => {
     apiGetContentByCourse(courseId)
       .then((response) => {
         setContents(response.data.data);
@@ -187,39 +193,27 @@ export function MemberCourse() {
   // 로그인 유저의 질문 댓글 조회
   useEffect(() => {
     apiGetQnABoardsByMember(memberId).then(async (response) => {
-      const fetchedQnas = response.data.data;
+      const filteredQnas = response.data.data.filter(
+        (qna) => qna.course.courseId === Number(courseId)
+      );
+
       await Promise.all(
-        fetchedQnas.map((qna) => {
+        filteredQnas.map((qna) => {
           return apiGetQnARepliesByQnABoardId(qna.qnaId).then((response) => {
             if (response.data.data.length > 0) {
               setReplies((prevReplies) => ({
                 ...prevReplies,
                 [qna.qnaId]: response.data.data,
-              })); // 답변 데이터를 상태에 저장
+              }));
             }
           });
         })
       );
-      setQnas(fetchedQnas);
+      setQnas(filteredQnas);
     });
-  }, []);
-
-  // QnAId에 해당하는 답변 조회
-  function handleLoadReplies(qnaId) {
-    apiGetQnARepliesByQnABoardId(qnaId)
-      .then((response) => {
-        setReplies((prevReplies) => ({
-          ...prevReplies,
-          [qnaId]: response.data.data,
-        })); // 답변 데이터를 상태에 저장
-      })
-      .catch((error) => {
-        console.error('답변 조회 실패: ', error);
-      });
-  }
+  }, [memberId, courseId]);
 
   function handleLoadReplies(qnaId) {
-    // 답변이 이미 불러와져 있고, 답변을 보여주는 상태라면 답변을 숨김
     if (showReplies[qnaId]) {
       setShowReplies((prevShowReplies) => ({
         ...prevShowReplies,
@@ -234,11 +228,11 @@ export function MemberCourse() {
         setReplies((prevReplies) => ({
           ...prevReplies,
           [qnaId]: response.data.data,
-        })); // 답변 데이터를 상태에 저장
+        }));
         setShowReplies((prevShowReplies) => ({
           ...prevShowReplies,
           [qnaId]: true,
-        })); // 답변을 보여주는 상태를 true로 설정
+        }));
       })
       .catch((error) => {
         console.error('답변 조회 실패: ', error);
@@ -261,36 +255,45 @@ export function MemberCourse() {
           <Section className="question">
             <h2 className="title">내가 최근에 한 질문</h2>
             <QnAs>
-              {qnas
-                .slice()
-                .reverse()
-                .map((qna, index) => (
-                  <div key={index} style={{ marginBottom: '20px' }}>
-                    <QnA>
-                      <p className="reviewText">{qna.questionText}</p>
-                      <div className="qnaInfo">
-                        <p className="time">{formatDateTime(qna.createdAt)}</p>
-                        {replies[qna.qnaId] && replies[qna.qnaId].length > 0 ? (
-                          <button onClick={() => handleLoadReplies(qna.qnaId)}>
-                            {showReplies[qna.qnaId] ? '답변 닫기' : '답변 보기'}
-                          </button>
-                        ) : (
-                          <p>답변 기다리는 중</p>
-                        )}
-                      </div>
-                    </QnA>
-                    {showReplies[qna.qnaId] && (
+              {qnas.length > 0 ? (
+                qnas
+                  .slice()
+                  .reverse()
+                  .map((qna, index) => (
+                    <div className="myQna" key={index}>
                       <QnA>
-                        <p>
+                        <p className="reviewText">{qna.questionText}</p>
+                        <div className="qnaInfo">
+                          <p>{formatDateTime(qna.createdAt)}</p>
                           {replies[qna.qnaId] &&
-                            replies[qna.qnaId].map((reply) => (
-                              <p key={reply.replyId}>{reply.replyText}</p>
-                            ))}
-                        </p>
+                          replies[qna.qnaId].length > 0 ? (
+                            <button
+                              onClick={() => handleLoadReplies(qna.qnaId)}
+                            >
+                              {showReplies[qna.qnaId]
+                                ? '답변 닫기'
+                                : '답변 보기'}
+                            </button>
+                          ) : (
+                            <p>답변 기다리는 중</p>
+                          )}
+                        </div>
                       </QnA>
-                    )}
-                  </div>
-                ))}
+                      {showReplies[qna.qnaId] && (
+                        <QnA className="reply">
+                          <p>
+                            {replies[qna.qnaId] &&
+                              replies[qna.qnaId].map((reply) => (
+                                <p key={reply.replyId}>{reply.replyText}</p>
+                              ))}
+                          </p>
+                        </QnA>
+                      )}
+                    </div>
+                  ))
+              ) : (
+                <p>해당 강좌에 질문한 내역이 없습니다.</p>
+              )}
             </QnAs>
           </Section>
           <Section className="mylearning">
