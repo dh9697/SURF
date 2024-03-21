@@ -138,7 +138,6 @@ export function InstructorQnAManage() {
                     <ReplyButton
                       onClick={() => handleReplySubmit(qna.qnaId, qna.courseId)}
                     >
-                      {' '}
                       등록
                     </ReplyButton>
                   </ReplyBox>

@@ -9,6 +9,7 @@ import {
 } from '../../RestApi';
 import { formatDateTime } from '../../Util/util';
 import { CourseOverview } from './CourseOverview';
+import { ExamOverview } from './ExamOverview';
 
 const Container = styled.div`
   color: #454545;
@@ -141,10 +142,10 @@ export function InstructorDashboard() {
             </Columntitle>
             {courses.map((course, index) => {
               if (!latestReviews[course.courseId]) {
-                return <p>수강평이 존재하지 않습니다.</p>;
+                return <p key={course.courseId}>수강평이 존재하지 않습니다.</p>;
               }
-              return latestReviews[course.courseId].map((review, i) => (
-                <Contents className="courseReview" key={i}>
+              return latestReviews[course.courseId].map((review) => (
+                <Contents className="courseReview" key={review.reviewId}>
                   <p>{review.member.name}</p>
                   <p>{review.comment}</p>
                   <p style={{ textAlign: 'end' }}>
@@ -161,6 +162,7 @@ export function InstructorDashboard() {
                 전체보기
               </StyledNavLink>
             </Columntitle>
+            <ExamOverview />
           </Content>
           <Content>
             <Columntitle>
@@ -172,8 +174,8 @@ export function InstructorDashboard() {
             {qnas
               .slice(0)
               .reverse()
-              .map((qna, index) => (
-                <Contents className="courseQna" key={index}>
+              .map((qna) => (
+                <Contents className="courseQna" key={qna.qnaId}>
                   <p>{qna.member.name}</p>
                   <p>{qna.questionText}</p>
                   <div className="qnaTime">

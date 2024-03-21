@@ -59,17 +59,38 @@ const Button = styled.button`
 `;
 
 const Question = styled.div`
-  & .question {
-    padding: 1rem 0;
-    & p {
-      padding: 1rem 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 2rem 0;
+  & .lists {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
+    & .question {
+      padding: 1rem 0;
+      & p {
+        padding: 1rem 2rem;
+      }
+    }
+    & .option {
+      padding: 0 2rem;
+      display: flex;
+      gap: 5px;
+    }
+    & .buttonBox {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      padding: 1rem;
     }
   }
-  & .option {
-    padding: 0 2rem;
-    display: flex;
-    gap: 5px;
-  }
+`;
+
+const Alert = styled.h3`
+  color: #3182f6;
+  text-align: center;
+  margin-bottom: 5rem;
 `;
 
 export function InstructorExamQuestion() {
@@ -165,9 +186,12 @@ export function InstructorExamQuestion() {
     if (typeof options === 'string') {
       const splittedOptions = options.split(',').map((option) => option.trim());
       setEditOptions(splittedOptions);
+    } else if (Array.isArray(options)) {
+      setEditOptions(options);
     }
     setCorrectOptionIndex(correctOptionIndex);
-    setWrongAnsExpl(wrongAnsExpl);
+    setEditExpl(wrongAnsExpl);
+    console.log('wrongAnsExpl:', wrongAnsExpl);
     setEditingIndex(index);
   };
 
@@ -177,7 +201,7 @@ export function InstructorExamQuestion() {
     setExamQuestionId(null);
     setQuestParagraph('');
     setEditQuestionText('');
-    setEditOptions(editOptions);
+    setEditOptions([...editOptions]);
     setCorrectOptionIndex(1);
     setEditExpl('');
   };
@@ -191,7 +215,7 @@ export function InstructorExamQuestion() {
       editQuestionText,
       editOptions,
       correctOptionIndex,
-      wrongAnsExpl
+      editExpl
     )
       .then((response) => {
         console.log('시험 문제 수정 성공: ', response);
@@ -214,6 +238,7 @@ export function InstructorExamQuestion() {
               type="text"
               value={questParagraph}
               onChange={(e) => setQuestParagraph(e.target.value)}
+              placeholder="본문은 필수 입력 사항이 아닙니다."
             />
           </label>
           <label>
@@ -222,6 +247,7 @@ export function InstructorExamQuestion() {
               type="text"
               value={questionText}
               onChange={(e) => setQuestionText(e.target.value)}
+              placeholder="필수 입력 사항입니다. 255자 내외로 입력해주세요."
             />
           </label>
           <label>
@@ -238,6 +264,7 @@ export function InstructorExamQuestion() {
                     newOptions[index] = e.target.value;
                     setOptions(newOptions);
                   }}
+                  placeholder="필수 입력 사항입니다."
                 />
               ))}
             </div>
@@ -261,120 +288,135 @@ export function InstructorExamQuestion() {
               type="text"
               value={wrongAnsExpl}
               onChange={(e) => setWrongAnsExpl(e.target.value)}
+              placeholder=" 필수 입력 사항입니다. 500자 내외로 입력해주세요."
             />
           </label>
           <Button className="submitButton" type="submit" onClick={handleSubmit}>
             문제 추가
           </Button>
         </QuestionForm>
-        {isFormSubmitted && (
-          <p style={{ color: 'green' }}>시험 문제를 저장하였습니다.</p>
-        )}
+        {isFormSubmitted && <Alert>시험 문제를 저장하였습니다.</Alert>}
         <h2>등록된 시험 문제 목록</h2>
-        {examQuestions &&
-          examQuestions.map((examQuestion, index) => (
-            <Question key={examQuestion.examQuestionId}>
-              <div className="question">
-                <h3>0{index + 1}.</h3>
-                <p>{examQuestion.questParagraph}</p>
-                <p>{examQuestion.questionText}</p>
-              </div>
-              {examQuestion.options.map((option, index) => (
-                <div className="option" key={index}>
-                  <input type="radio" />
-                  <label>{option}</label>
+        <div>
+          {examQuestions &&
+            examQuestions.map((examQuestion, index) => (
+              <Question key={examQuestion.examQuestionId}>
+                <div className="lists">
+                  <div className="question">
+                    <h3>0{index + 1}.</h3>
+                    <p>{examQuestion.questParagraph}</p>
+                    <p>{examQuestion.questionText}</p>
+                  </div>
+                  {examQuestion.options.map((option, index) => (
+                    <div className="option" key={index}>
+                      <input type="radio" />
+                      <label>{option}</label>
+                    </div>
+                  ))}
+                  <div className="question">
+                    <h4>답안</h4>
+                    <p>{examQuestion.correctOptionIndex}</p>
+                  </div>
+                  <div className="question">
+                    <h4>문제해설</h4>
+                    <p>{examQuestion.wrongAnsExpl}</p>
+                  </div>
+                  <div className="buttonBox">
+                    <Button
+                      onClick={() =>
+                        enterEditMode(
+                          examQuestion.examQuestionId,
+                          examQuestion.questionParagraph,
+                          examQuestion.questionText,
+                          examQuestion.options,
+                          examQuestion.correctOptionIndex,
+                          examQuestion.wrongAnsExpl,
+                          index
+                        )
+                      }
+                    >
+                      수정
+                    </Button>
+                    <Button
+                      onClick={() => handleDelete(examQuestion.examQuestionId)}
+                    >
+                      삭제
+                    </Button>
+                  </div>
                 </div>
-              ))}
-              <strong>답안:</strong> {examQuestion.correctOptionIndex}
-              <br />
-              <strong>문제 해설</strong> {examQuestion.wrongAnsExpl}
-              <br />
-              <Button
-                onClick={() =>
-                  enterEditMode(
-                    examQuestion.examQuestionId,
-                    examQuestion.questionParagraph,
-                    examQuestion.questionText,
-                    examQuestion.options,
-                    examQuestion.correctOptionIndex,
-                    examQuestion.wrongAnsExpl,
-                    index
-                  )
-                }
-              >
-                수정
-              </Button>
-              <Button onClick={() => handleDelete(examQuestion.examQuestionId)}>
-                삭제
-              </Button>
-              {editMode && editingIndex === index && (
-                <div>
-                  <h2>문제 수정</h2>
-                  <label>
-                    본문:
-                    <input
-                      type="text"
-                      value={editQuestParagraph}
-                      onChange={(e) => setEidtQuestParagraph(e.target.value)}
-                    />
-                  </label>
-                  <label>
-                    문제:
-                    <input
-                      type="text"
-                      value={editQuestionText}
-                      onChange={(e) => setEditQuestionText(e.target.value)}
-                    />
-                  </label>
-                  <br />
-                  {editOptions.map((editOption, index) => (
-                    <div key={index}>
+                {editMode && editingIndex === index && (
+                  <div className="lists">
+                    <h3>문제 수정</h3>
+                    <QuestionForm>
                       <label>
-                        선택지 {index + 1}:
+                        본문
                         <input
-                          value={editOption}
+                          type="text"
+                          value={editQuestParagraph}
+                          onChange={(e) =>
+                            setEidtQuestParagraph(e.target.value)
+                          }
+                        />
+                      </label>
+                      <label>
+                        문제
+                        <input
+                          type="text"
+                          value={editQuestionText}
+                          onChange={(e) => setEditQuestionText(e.target.value)}
+                        />
+                      </label>
+                      {editOptions.map((editOption, index) => (
+                        <div key={index}>
+                          <label>
+                            선택지 {index + 1}
+                            <input
+                              value={editOption}
+                              onChange={(e) => {
+                                const newEditOptions = [...editOptions];
+                                newEditOptions[index] = e.target.value;
+                                setEditOptions(newEditOptions);
+                              }}
+                            />
+                          </label>
+                        </div>
+                      ))}
+                      <label>
+                        정답 선택
+                        <select
+                          value={correctOptionIndex}
+                          onChange={(e) =>
+                            setCorrectOptionIndex(Number(e.target.value))
+                          }
+                        >
+                          {options.map((_, index) => (
+                            <option key={index + 1} value={index + 1}>
+                              {index + 1}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      <label>
+                        문제 해설
+                        <input
+                          type="text"
+                          value={editExpl}
                           onChange={(e) => {
-                            const newEditOptions = [...editOptions];
-                            newEditOptions[index] = e.target.value;
-                            setEditOptions(newEditOptions);
+                            setEditExpl(e.target.value);
+                            console.log('editExpl 변경:', e.target.value);
                           }}
                         />
                       </label>
-                    </div>
-                  ))}
-
-                  <br />
-                  <label>
-                    정답 선택:
-                    <select
-                      value={correctOptionIndex}
-                      onChange={(e) =>
-                        setCorrectOptionIndex(Number(e.target.value))
-                      }
-                    >
-                      {options.map((_, index) => (
-                        <option key={index + 1} value={index + 1}>
-                          {index + 1}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <br />
-                  <label>
-                    문제 해설
-                    <input
-                      type="text"
-                      value={editExpl}
-                      onChange={(e) => setEditExpl(e.target.value)}
-                    />
-                  </label>
-                  <br />
-                  <button onClick={handleEdit}>수정 완료</button>
-                  <button onClick={cancelEditMode}>취소</button>
-                </div>
-              )}
-            </Question>
-          ))}
+                      <div className="buttonBox">
+                        <Button onClick={handleEdit}>수정 완료</Button>
+                        <Button onClick={cancelEditMode}>취소</Button>
+                      </div>
+                    </QuestionForm>
+                  </div>
+                )}
+              </Question>
+            ))}
+        </div>
       </Container>
     </>
   );

@@ -24,6 +24,7 @@ public class ExamQuestion {
 	@JoinColumn(name = "examId", nullable = false)
 	private Exam exam;
 	
+	@Column(length = 500)
 	private String questParagraph;
 	
 	@Column(nullable = false)
@@ -36,6 +37,7 @@ public class ExamQuestion {
 	@Column(nullable = false)
 	private Integer correctOptionIndex;
 	
+	@Column(nullable = false, length = 500)
 	private String wrongAnsExpl;
 
 	public ExamQuestion() {

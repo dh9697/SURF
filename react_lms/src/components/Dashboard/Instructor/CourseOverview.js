@@ -8,16 +8,14 @@ const Container = styled.div``;
 export function CourseOverview() {
   const { user } = useContext(AuthContext);
   const courses = user.teachingCourses;
-
   const [courseHistories, setCourseHistories] = useState([]);
 
   useEffect(() => {
-    console.log(courses);
     courses.forEach((course) => {
       apiGetCourseHistroiesByCourse(course.courseId)
         .then((response) => {
           setCourseHistories(response.data.data);
-          console.log(response.data.data);
+          // console.log(response.data.data);
         })
         .catch((err) => {
           console.log('courseHisotry 조회 실패: ', err);
