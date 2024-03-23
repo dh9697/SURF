@@ -16,30 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `exams`
+-- Table structure for table `teaching_courses`
 --
 
-DROP TABLE IF EXISTS `exams`;
+DROP TABLE IF EXISTS `teaching_courses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `exams` (
-  `exam_id` bigint NOT NULL AUTO_INCREMENT,
-  `exam_is_active` bit(1) DEFAULT NULL,
-  `content_id` bigint NOT NULL,
-  PRIMARY KEY (`exam_id`),
-  KEY `FKaqugi5glqghsa5q91c8utngpp` (`content_id`),
-  CONSTRAINT `FKaqugi5glqghsa5q91c8utngpp` FOREIGN KEY (`content_id`) REFERENCES `contents` (`content_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `teaching_courses` (
+  `member_id` bigint NOT NULL,
+  `course_id` bigint NOT NULL,
+  PRIMARY KEY (`member_id`,`course_id`),
+  KEY `FKt58ddbk9f27mpew5a37x3itf7` (`course_id`),
+  CONSTRAINT `FKbdhp7mvjr3x1qjj1odcye75jy` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`),
+  CONSTRAINT `FKt58ddbk9f27mpew5a37x3itf7` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `exams`
+-- Dumping data for table `teaching_courses`
 --
 
-LOCK TABLES `exams` WRITE;
-/*!40000 ALTER TABLE `exams` DISABLE KEYS */;
-INSERT INTO `exams` VALUES (10,_binary '',1),(11,_binary '',2),(12,_binary '',3),(13,_binary '',4),(14,_binary '',5),(15,_binary '',6),(16,_binary '',8),(17,_binary '',7),(18,_binary '',9),(19,_binary '',10),(22,_binary '\0',11),(24,_binary '\0',12);
-/*!40000 ALTER TABLE `exams` ENABLE KEYS */;
+LOCK TABLES `teaching_courses` WRITE;
+/*!40000 ALTER TABLE `teaching_courses` DISABLE KEYS */;
+INSERT INTO `teaching_courses` VALUES (2,1),(4,2),(5,3),(6,4),(7,5),(8,6),(9,7),(10,8),(11,9),(12,10),(13,11),(14,12);
+/*!40000 ALTER TABLE `teaching_courses` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-21 17:19:16
+-- Dump completed on 2024-03-23 21:38:19

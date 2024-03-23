@@ -16,28 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `members_group`
+-- Table structure for table `withdrawal`
 --
 
-DROP TABLE IF EXISTS `members_group`;
+DROP TABLE IF EXISTS `withdrawal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `members_group` (
-  `group_id` bigint NOT NULL AUTO_INCREMENT,
-  `description` text,
-  `group_name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`group_id`),
-  UNIQUE KEY `UK_gid8hsmgfxjb32ns6hsqybo27` (`group_name`)
+CREATE TABLE `withdrawal` (
+  `withdrawal_id` bigint NOT NULL AUTO_INCREMENT,
+  `is_deleted` bit(1) DEFAULT NULL,
+  `reason` varchar(255) NOT NULL,
+  `withdrawal_time` datetime(6) NOT NULL,
+  `member_id` bigint NOT NULL,
+  PRIMARY KEY (`withdrawal_id`),
+  KEY `FKjy0789uood48lwb0ocetjcvha` (`member_id`),
+  CONSTRAINT `FKjy0789uood48lwb0ocetjcvha` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `members_group`
+-- Dumping data for table `withdrawal`
 --
 
-LOCK TABLES `members_group` WRITE;
-/*!40000 ALTER TABLE `members_group` DISABLE KEYS */;
-/*!40000 ALTER TABLE `members_group` ENABLE KEYS */;
+LOCK TABLES `withdrawal` WRITE;
+/*!40000 ALTER TABLE `withdrawal` DISABLE KEYS */;
+/*!40000 ALTER TABLE `withdrawal` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-21 17:19:17
+-- Dump completed on 2024-03-23 21:38:22

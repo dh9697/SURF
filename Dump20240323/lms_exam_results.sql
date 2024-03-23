@@ -16,31 +16,37 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `announcements`
+-- Table structure for table `exam_results`
 --
 
-DROP TABLE IF EXISTS `announcements`;
+DROP TABLE IF EXISTS `exam_results`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `announcements` (
-  `announcement_id` bigint NOT NULL AUTO_INCREMENT,
-  `announcement_date` datetime(6) DEFAULT NULL,
-  `announcement_text` varchar(255) DEFAULT NULL,
-  `is_important` bit(1) DEFAULT NULL,
-  `member_id` bigint NOT NULL,
-  PRIMARY KEY (`announcement_id`),
-  KEY `FKq21yt2yotgnlw0dv6rh46unpr` (`member_id`),
-  CONSTRAINT `FKq21yt2yotgnlw0dv6rh46unpr` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `exam_results` (
+  `exam_result_id` bigint NOT NULL AUTO_INCREMENT,
+  `is_correct` bit(1) DEFAULT NULL,
+  `submitted_answer` int NOT NULL,
+  `exam_id` bigint DEFAULT NULL,
+  `exam_question_id` bigint DEFAULT NULL,
+  `member_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`exam_result_id`),
+  KEY `FKtf85ht7yquiorwjx2xbdx3fxw` (`exam_id`),
+  KEY `FKac0uhnlql0d2krvffw5q2g2fl` (`exam_question_id`),
+  KEY `FK8doilcruh6jchd3nhodr7kaix` (`member_id`),
+  CONSTRAINT `FK8doilcruh6jchd3nhodr7kaix` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`),
+  CONSTRAINT `FKac0uhnlql0d2krvffw5q2g2fl` FOREIGN KEY (`exam_question_id`) REFERENCES `exam_questions` (`exam_question_id`),
+  CONSTRAINT `FKtf85ht7yquiorwjx2xbdx3fxw` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`exam_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `announcements`
+-- Dumping data for table `exam_results`
 --
 
-LOCK TABLES `announcements` WRITE;
-/*!40000 ALTER TABLE `announcements` DISABLE KEYS */;
-/*!40000 ALTER TABLE `announcements` ENABLE KEYS */;
+LOCK TABLES `exam_results` WRITE;
+/*!40000 ALTER TABLE `exam_results` DISABLE KEYS */;
+INSERT INTO `exam_results` VALUES (1,_binary '',4,10,4,17),(2,_binary '',4,10,5,17),(3,_binary '',2,10,6,17),(4,_binary '',4,11,7,17),(5,_binary '',2,11,8,17),(6,_binary '\0',2,11,9,17);
+/*!40000 ALTER TABLE `exam_results` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-21 17:19:18
+-- Dump completed on 2024-03-23 21:38:19

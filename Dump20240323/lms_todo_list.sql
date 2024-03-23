@@ -34,7 +34,7 @@ CREATE TABLE `todo_list` (
   PRIMARY KEY (`task_id`),
   KEY `FK3x6rbqoxekyny3cnvvcb9tp9y` (`member_id`),
   CONSTRAINT `FK3x6rbqoxekyny3cnvvcb9tp9y` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `todo_list` (
 
 LOCK TABLES `todo_list` WRITE;
 /*!40000 ALTER TABLE `todo_list` DISABLE KEYS */;
-INSERT INTO `todo_list` VALUES (5,NULL,NULL,NULL,_binary '\0',NULL,'유저 - 작성한 게시글 스타일링',17),(6,NULL,NULL,NULL,_binary '\0',NULL,'유저 - 물결 바구니 스타일링',17),(7,NULL,NULL,NULL,_binary '\0',NULL,'유저 - 계정정보, 구매내역 스타일링',17),(8,NULL,NULL,NULL,_binary '\0',NULL,'유저 - 수료증 스타일링 및 기능 구현',17),(9,NULL,NULL,NULL,_binary '',NULL,'유저 - 대시보드 기능 넣기',17),(43,NULL,NULL,NULL,_binary '',NULL,'선생님 - 학생 강의 진도율, 시험 진도율',17),(44,NULL,NULL,NULL,_binary '\0',NULL,'선생님 - 시험 관리 스타일링',17),(45,NULL,NULL,NULL,_binary '\0',NULL,'선생님 - 시험 문제 관리 스타일링',17),(46,NULL,NULL,NULL,_binary '\0',NULL,'선생님 - qna 관리 스타일링',17),(47,NULL,NULL,NULL,_binary '\0',NULL,'선생님 - 메인 대시보드 ',17);
+INSERT INTO `todo_list` VALUES (5,NULL,NULL,NULL,_binary '\0',NULL,'유저 - 작성한 게시글 스타일링',17),(6,NULL,NULL,NULL,_binary '\0',NULL,'유저 - 물결 바구니 스타일링',17),(7,NULL,NULL,NULL,_binary '\0',NULL,'유저 - 계정정보, 구매내역 스타일링',17),(8,NULL,NULL,NULL,_binary '\0',NULL,'유저 - 수료증 스타일링 및 기능 구현',17),(9,NULL,NULL,NULL,_binary '',NULL,'유저 - 대시보드 기능 넣기',17),(43,NULL,NULL,NULL,_binary '',NULL,'선생님 - 학생 강의 진도율, 시험 진도율',17),(44,NULL,NULL,NULL,_binary '',NULL,'선생님 - 시험 관리 스타일링',17),(45,NULL,NULL,NULL,_binary '',NULL,'선생님 - 시험 문제 관리 스타일링',17),(46,NULL,NULL,NULL,_binary '',NULL,'선생님 - qna 관리 스타일링',17),(47,NULL,NULL,NULL,_binary '\0',NULL,'선생님 - 메인 대시보드 ',17),(48,NULL,NULL,NULL,_binary '',NULL,'관리자 - 메인 대시보드',17),(49,NULL,NULL,NULL,_binary '',NULL,'관리자 - 강좌, 강의 crud',17);
 /*!40000 ALTER TABLE `todo_list` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-21 17:19:16
+-- Dump completed on 2024-03-23 21:38:23
