@@ -48,8 +48,8 @@ public class ContentController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping("/save")
-	public ResponseEntity<ResponseDto<Content>> createContent(@RequestParam Long courseId, @RequestBody ContentDto contentDto) {
+	@PostMapping("/save/{courseId}")
+	public ResponseEntity<ResponseDto<Content>> createContent(@PathVariable Long courseId, @RequestBody ContentDto contentDto) {
 	    ResponseDto<Content> response = contentService.createContent(courseId, contentDto);
 	    return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}

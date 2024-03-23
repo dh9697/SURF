@@ -1,72 +1,77 @@
-import styled from 'styled-components';
-import { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../../../AuthContext';
+import styled from "styled-components";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../AuthContext";
 import {
   apiGetQnABoardsByCourse,
   apiGetQnARepliesByQnABoardId,
   apiCreateQnAReply,
-} from '../../RestApi';
+} from "../../RestApi";
+import { formatDateTime } from "../../Util/util";
 
 const Container = styled.div`
-  width: 100%; //inner? 그걸로 해결하면 좋을 듯
-`;
-const NumBox = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 20px;
-`;
-
-const NumWrap = styled.div`
-  display: flex;
-  &.before {
-    background-color: lightgoldenrodyellow;
+  color: #454545;
+  & .qnaCount {
+    font-size: 14px;
+    color: darkgray;
+    padding-left: 0.5rem;
   }
-  &.after {
-    background-color: lightseagreen;
+  & .qnaReplyCount {
+    padding: 1rem;
+    & span {
+      color: #3182f6;
+    }
   }
 `;
 
-const NumTitle = styled.div``;
-const CountNum = styled.div``;
-const QnABox = styled.div`
-  background-color: lightblue;
-`;
 const SingleQnA = styled.div`
-  padding: 20px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid darkgray;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 1rem 0;
 `;
 const QnAwrap = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
 `;
 const Textwrap = styled.div`
-  background-color: lightsteelblue;
-`;
-const QnATitle = styled.div``;
-const QnAText = styled.div`
-  margin-left: 20px; //들여쓰기 느낌
-`;
-const AnswerStatus = styled.div`
-  background-color: blueviolet;
-`;
-const ReplyBox = styled.div`
   display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
 `;
-const ReplyText = styled.input.attrs({ type: 'text' })`
-  font-size: 16px;
+const Text = styled.p`
+  padding: 0 1rem;
+  &.time {
+    text-align: end;
+    font-size: 12px;
+  }
+`;
+
+const ReplyText = styled.input`
   padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 `;
-const ReplyButton = styled.button``;
+const ReplyButton = styled.button`
+  width: 50px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #3182f6;
+  color: #f3f3f3;
+  border-radius: 5px;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+`;
 
 export function InstructorQnAManage() {
   const { user } = useContext(AuthContext);
   const courses = user.teachingCourses;
   const [qnas, setQnas] = useState([]);
   const [replyTexts, setReplyTexts] = useState({});
+  console.log(replyTexts);
 
   useEffect(() => {
     const fetchQnas = async () => {
@@ -74,17 +79,20 @@ export function InstructorQnAManage() {
       for (const course of courses) {
         const response = await apiGetQnABoardsByCourse(course.courseId);
         const fetchedQnas = response.data.data;
+        console.log(fetchedQnas);
         for (const qna of fetchedQnas) {
-          qna.courseName = course.courseName; // 강의명 추가
-          qna.courseId = course.courseId; // 강의 ID 추가
+          qna.courseName = course.courseName;
+          qna.courseId = course.courseId;
           const response = await apiGetQnARepliesByQnABoardId(qna.qnaId);
           if (response.data.data.length > 0) {
             qna.replyId = response.data.data[0].replyId;
+            qna.replyText = response.data.data[0].replyText;
           }
         }
         allQnas.push(...fetchedQnas);
       }
       setQnas(allQnas);
+      console.log(allQnas);
     };
     fetchQnas();
   }, [courses]);
@@ -94,58 +102,65 @@ export function InstructorQnAManage() {
   };
 
   const handleReplySubmit = async (qnaId) => {
-    console.log(`Submitting reply for qnaId ${qnaId}`); // qnaId 출력
-    console.log(`Member ID: ${user.memberId}`); // memberId 출력
-    await apiCreateQnAReply(
-      replyTexts[qnaId], // replyTexts[qnaId]를 그대로 보냅니다.
-      user.memberId,
-      qnaId
-    );
-    // 갱신된 QnA 목록을 다시 불러옵니다.
+    await apiCreateQnAReply(replyTexts[qnaId], user.memberId, qnaId);
     window.location.reload();
   };
+
+  const totalRepliesCount = qnas.reduce((acc, cur) => {
+    if (cur.replyId) {
+      return acc + 1;
+    }
+    return acc;
+  }, 0);
+  console.log(totalRepliesCount);
 
   return (
     <>
       <Container>
-        <p>Q&A 관리</p>
-        <NumBox>
-          <NumWrap className="after">
-            <NumTitle>수강 문의</NumTitle>
-            <CountNum>{qnas.length}</CountNum>
-          </NumWrap>
-        </NumBox>
-        <QnABox>
-          <p>QnA 남겨요</p>
-          {qnas.map((qna) => (
-            <SingleQnA key={qna.qnaId}>
-              <QnAwrap>
+        <h2>
+          Q&A 관리<span className="qnaCount">총 수강 문의 {qnas.length}</span>
+        </h2>
+        <h3 className="qnaReplyCount">
+          <span>{qnas.length - totalRepliesCount}</span>
+          개의 질문에 답변해주세요!
+        </h3>
+        {qnas.map((qna) => (
+          <SingleQnA key={qna.qnaId}>
+            <QnAwrap>
+              <Textwrap>
+                <h4>{qna.member.name}님의 질문</h4>
+                <Text>{qna.questionText}</Text>
+                <Text className="time">{formatDateTime(qna.createdAt)}</Text>
+              </Textwrap>
+              {qna.replyId ? (
+                <>
+                  <Textwrap>
+                    <h4>답변 완료</h4>
+                    <Textwrap>
+                      <Text>{qna.replyText}</Text>
+                    </Textwrap>
+                  </Textwrap>
+                </>
+              ) : (
                 <Textwrap>
-                  <QnATitle>강의명: {qna.courseName}</QnATitle>
-                  <QnAText>{qna.questionText}</QnAText>
+                  <ReplyText
+                    type="text"
+                    value={replyTexts[qna.qnaId] || ""}
+                    onChange={(e) =>
+                      handleReplyChange(qna.qnaId, e.target.value)
+                    }
+                    placeholder="답변을 입력해 주세요"
+                  />
+                  <ReplyButton
+                    onClick={() => handleReplySubmit(qna.qnaId, qna.courseId)}
+                  >
+                    등록
+                  </ReplyButton>
                 </Textwrap>
-                {qna.replyId ? (
-                  <AnswerStatus>답변 완료</AnswerStatus>
-                ) : (
-                  <ReplyBox>
-                    <ReplyText
-                      value={replyTexts[qna.qnaId] || ''}
-                      onChange={(e) =>
-                        handleReplyChange(qna.qnaId, e.target.value)
-                      }
-                      placeholder="답변을 입력해 주세요"
-                    />
-                    <ReplyButton
-                      onClick={() => handleReplySubmit(qna.qnaId, qna.courseId)}
-                    >
-                      등록
-                    </ReplyButton>
-                  </ReplyBox>
-                )}
-              </QnAwrap>
-            </SingleQnA>
-          ))}
-        </QnABox>
+              )}
+            </QnAwrap>
+          </SingleQnA>
+        ))}
       </Container>
     </>
   );

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   apiGetAllCourses,
   apiPutCourse,
   apiPostCourse,
   apiDeleteCourse,
   apiGetAllSubject,
-} from '../../RestApi';
-import styled from 'styled-components';
-import { formatPrice } from '../../Util/util';
+} from "../../RestApi";
+import styled from "styled-components";
+import { formatPrice } from "../../Util/util";
 
 const Container = styled.div`
   width: 100%;
@@ -125,16 +125,16 @@ export function AdminCourseManage() {
   const [courses, setCourses] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [formData, setFormData] = useState({
-    courseId: '',
-    courseName: '',
-    description: '',
+    courseId: "",
+    courseName: "",
+    description: "",
     durationMins: 0,
-    contentLevel: '',
+    contentLevel: "",
     price: 0,
-    announcement: '',
-    instructorLoginId: [''],
-    subjectId: '',
-    courseThumbnail: '',
+    announcement: "",
+    instructorLoginId: [""],
+    subjectId: "",
+    courseThumbnail: "",
   });
 
   useEffect(() => {
@@ -147,7 +147,7 @@ export function AdminCourseManage() {
         setCourses(response.data.data);
       })
       .catch((error) => {
-        console.error('코스 불러오기 오류: ', error);
+        console.error("코스 불러오기 오류: ", error);
       });
   };
 
@@ -170,11 +170,11 @@ export function AdminCourseManage() {
         subject: formData.subject,
       })
         .then((response) => {
-          console.log('코스 수정 성공: ', response);
+          console.log("코스 수정 성공: ", response);
           loadCourses();
         })
         .catch((err) => {
-          console.error('코스 수정 오류: ', err);
+          console.error("코스 수정 오류: ", err);
         });
     } else {
       // 등록
@@ -184,26 +184,26 @@ export function AdminCourseManage() {
         subject: formData.subject,
       })
         .then((response) => {
-          console.log('코스 등록 성공: ', response);
+          console.log("코스 등록 성공: ", response);
           loadCourses();
         })
         .catch((err) => {
-          console.error('코스 등록 오류: ', err);
+          console.error("코스 등록 오류: ", err);
         });
     }
 
     // 폼 초기화
     setFormData({
-      courseId: '',
-      courseName: '',
-      description: '',
+      courseId: "",
+      courseName: "",
+      description: "",
       durationMins: 0,
-      contentLevel: '',
+      contentLevel: "",
       price: 0,
-      announcement: '',
-      instructorLoginId: [''],
-      subjectId: '',
-      courseThumbnail: '',
+      announcement: "",
+      instructorLoginId: [""],
+      subjectId: "",
+      courseThumbnail: "",
     });
   };
 
@@ -214,11 +214,11 @@ export function AdminCourseManage() {
   const handleDelete = (courseId) => {
     apiDeleteCourse(courseId)
       .then((response) => {
-        console.log('코스 삭제 성공: ', response);
+        console.log("코스 삭제 성공: ", response);
         loadCourses();
       })
       .catch((err) => {
-        console.error('코스 삭제 오류: ', err);
+        console.error("코스 삭제 오류: ", err);
       });
   };
 
@@ -229,13 +229,13 @@ export function AdminCourseManage() {
         setSubjects(response.data.data);
       })
       .catch((error) => {
-        console.error('과목 불러오기 오류: ', error);
+        console.error("과목 불러오기 오류: ", error);
       });
   }, []);
 
   return (
     <Container>
-      <h2>강좌 등록</h2>
+      <h2>강좌 관리</h2>
       <SelectForm>
         <label>
           강좌 분류
@@ -327,7 +327,7 @@ export function AdminCourseManage() {
           />
         </label>
         <Button className="submitButton" type="submit">
-          {formData.courseId ? '코스 수정' : '코스 등록'}
+          {formData.courseId ? "코스 수정" : "코스 등록"}
         </Button>
       </CourseForm>
       <Courses>

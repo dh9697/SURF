@@ -36,9 +36,6 @@ public class ContentServiceImpl implements ContentService {
 	public ResponseDto<List<Content>> getContentByCourse(Long courseId){
 		Optional<Course> course = courseRepository.findById(courseId);
 		List<Content> contents = contentRepository.findByCourse(course.get());
-		if(contents.isEmpty()) {
-			throw new InvalidRequestException("content not found", "해당 과목의 컨텐츠를 찾을 수 없습니다.");
-			}
 		return new ResponseDto<>(
 				ResultCode.SUCCESS.name(),
 				contents,
