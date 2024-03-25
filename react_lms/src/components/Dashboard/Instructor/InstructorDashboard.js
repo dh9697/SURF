@@ -1,15 +1,15 @@
-import styled from 'styled-components';
-import { useContext, useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
-import { AuthContext } from '../../../AuthContext';
+import styled from "styled-components";
+import { useContext, useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import { AuthContext } from "../../../AuthContext";
 import {
   apiGetQnABoardsByCourse,
   apiGetQnARepliesByQnABoardId,
   apiGetCourseReviewByCourse,
-} from '../../RestApi';
-import { formatDateTime } from '../../Util/util';
-import { CourseOverview } from './CourseOverview';
-import { ExamOverview } from './ExamOverview';
+} from "../../RestApi";
+import { formatDateTime } from "../../Util/util";
+import { CourseOverview } from "./CourseOverview";
+import { ExamOverview } from "./ExamOverview";
 
 const Container = styled.div`
   color: #454545;
@@ -63,15 +63,13 @@ const Contents = styled.div`
   }
 `;
 
-const UserNum = styled.div``;
-
 const StyledNavLink = styled(NavLink)`
   position: absolute;
   top: 50%;
   right: 0;
   transform: translateY(-50%);
   font-size: 12px;
-  color: inherit;
+  color: #454545;
   text-decoration: none;
 `;
 
@@ -148,7 +146,7 @@ export function InstructorDashboard() {
                 <Contents className="courseReview" key={review.reviewId}>
                   <p>{review.member.name}</p>
                   <p>{review.comment}</p>
-                  <p style={{ textAlign: 'end' }}>
+                  <p style={{ textAlign: "end" }}>
                     {formatDateTime(review.reviewDate)}
                   </p>
                 </Contents>
@@ -183,7 +181,7 @@ export function InstructorDashboard() {
                     {qna.replyId ? (
                       <p>답변 완료</p>
                     ) : (
-                      <p style={{ color: '#3182f6' }}>답변 대기 중</p>
+                      <p style={{ color: "#3182f6" }}>답변 대기 중</p>
                     )}
                   </div>
                 </Contents>
