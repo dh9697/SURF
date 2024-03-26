@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,6 +44,12 @@ public class MemberController {
 	public ResponseEntity<ResponseDto<MemberSignUpDto>> signUp(@RequestBody @Valid MemberSignUpDto memberSignUpDto) {
 		ResponseDto<MemberSignUpDto> responseDto = memberService.signUp(memberSignUpDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+	}
+	
+	@GetMapping("/check-login-duplicate")
+	public ResponseEntity<String> isLoginDuplicate(@RequestParam String loginId) {
+		memberService.isLoginDuplicate(loginId);
+		return ResponseEntity.ok("사용 가능한 로그인 아이디입니다.");
 	}
 	
 	// 모든 사용자 조회

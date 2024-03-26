@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import { apiSignupByAxiosPost } from './RestApi';
+import { apiGetIsLoginDuplicate, apiSignupByAxiosPost } from './RestApi';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 
@@ -85,18 +85,6 @@ const RadioInput = styled.input`
   margin-left: 10px;
 `;
 
-const CheckBox = styled.div`
-  margin: 10px 0;
-  & label {
-    padding-left: 10px;
-
-    & .textHighlight {
-      color: #3182f6;
-      font-weight: 900;
-    }
-  }
-`;
-
 const RegiserBtn = styled.button`
   width: 100%;
   border: none;
@@ -117,49 +105,8 @@ const StyledIcon = styled(Icon)`
   color: #454545;
 `;
 
-const CheckItem = styled.label`
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  font-size: 16px;
-`;
-
-const CheckboxInput = styled.input`
-  margin-right: 10px;
-  appearance: none;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  border: 2px solid #3182f6;
-  outline: none;
-  position: relative;
-  cursor: pointer;
-
-  &:checked {
-    background-color: #3182f6;
-  }
-
-  &:checked::before {
-    content: '';
-    position: absolute;
-    width: 6px;
-    height: 12px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(45deg);
-  }
-`;
-
 export function Register() {
   const navigate = useNavigate();
-
-  const [isChecked, setIsChecked] = useState(false);
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  };
-
   const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -168,6 +115,7 @@ export function Register() {
   const [nationality, setNationality] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNum, setPhoneNum] = useState('');
+  const [duplicateMsg, setDuplicateMsg] = useState('');
 
   // 입력 조건 확인
   const [idValidationMsg, setIdValidationMsg] = useState({
@@ -195,7 +143,7 @@ export function Register() {
     const regex = /^[a-zA-Z0-9]{8,20}$/;
     if (regex.test(loginId)) {
       setIdValidationMsg({
-        message: '사용할 수 있는 ID입니다.',
+        message: '올바른 형식의 ID입니다.',
         type: 'success',
       });
     } else {
@@ -299,6 +247,17 @@ export function Register() {
     }
   };
 
+  const handleDuplicate = async (e) => {
+    try {
+      e.preventDefault();
+      const response = await apiGetIsLoginDuplicate(loginId);
+      setDuplicateMsg('사용 가능한 로그인 아이디입니다.');
+    } catch (err) {
+      setDuplicateMsg('이미 존재하는 로그인 아이디입니다.');
+      console.log('로그인 아이디 중복 조회 실패: ', err);
+    }
+  };
+
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisible = () => {
     setShowPassword(!showPassword);
@@ -322,6 +281,7 @@ export function Register() {
                   validateId(e.target.value);
                 }}
               />
+              <button onClick={handleDuplicate}>중복 확인</button>
               <small
                 style={{
                   color: idValidationMsg.type === 'success' ? '#3182f6' : 'red',
@@ -329,6 +289,7 @@ export function Register() {
               >
                 {idValidationMsg.message}
               </small>
+              <p>{duplicateMsg}</p>
             </div>
             <div className="inputContainer">
               <span className="inputLabel">비밀번호</span>
@@ -456,7 +417,7 @@ export function Register() {
               <span className="inputLabel">Email</span>
               <Input
                 type="text"
-                placeholder="정확히 입력해 주세요"
+                placeholder="이메일 형식을 확인해주세요."
                 name="emailId"
                 value={email}
                 onChange={(e) => {
@@ -474,26 +435,6 @@ export function Register() {
               </small>
             </div>
           </RegisterForm>
-          <CheckBox>
-            <CheckItem>
-              <CheckboxInput
-                type="checkbox"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-              />
-              <label>
-                <span className="textHighlight">이용약관</span> 및{' '}
-                <span className="textHighlight">개인정보 처리방침</span>에
-                동의합니다.
-              </label>
-            </CheckItem>
-            <CheckItem>
-              <CheckboxInput type="checkbox" />
-              <label>
-                (선택) <span className="textHighlight">이메일 마케팅 정책</span>
-              </label>
-            </CheckItem>
-          </CheckBox>
           <RegiserBtn onClick={handleRegister}>회원가입</RegiserBtn>
         </RegisterContainer>
       </Container>

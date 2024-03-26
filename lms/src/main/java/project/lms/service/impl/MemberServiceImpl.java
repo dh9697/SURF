@@ -87,6 +87,15 @@ public class MemberServiceImpl implements MemberService {
 		}
 	}
 	
+	// 아이디 중복 검사
+	public boolean isLoginDuplicate(String loginId) {
+		boolean isDuplicate = memberRepository.findByLoginId(loginId) != null;
+		if(isDuplicate) {
+			throw new InvalidRequestException("duplicate loginId", "이미 사용 중인 로그인 아이디입니다.");
+		}
+		return false;
+	}
+	
 	// 모든 멤버 조회
 	@Override
 	public ResponseDto<List<MemberDto>> getAllSurfers() {

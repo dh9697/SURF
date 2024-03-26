@@ -1,13 +1,9 @@
-import styled from "styled-components";
-import google from "./image/google.png";
-import naver from "./image/naver.png";
-import kakao from "./image/kakao.png";
-import { useContext, useEffect, useState } from "react";
-import { NavLink, Navigate, useNavigate } from "react-router-dom";
-import { TestWave } from "./TestWave";
-import { apiLoginByAxiosPost } from "./RestApi";
-import { AuthContext } from "../AuthContext";
-import { Icon } from "@iconify/react";
+import styled from 'styled-components';
+import { useContext, useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { apiLoginByAxiosPost } from './RestApi';
+import { AuthContext } from '../AuthContext';
+import { Icon } from '@iconify/react';
 
 const Container = styled.div`
   width: 100%;
@@ -93,24 +89,6 @@ const JoinBtn = styled(NavLink)`
   border-radius: 5px;
   font-weight: 900;
 `;
-const SocialContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-`;
-const BtnContainer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-`;
-const SocialBtn = styled.div``;
-const Img = styled.img`
-  width: 70px;
-  height: 70px;
-  cursor: pointer;
-`;
 const StyledIcon = styled(Icon)`
   position: absolute;
   top: 75px;
@@ -125,31 +103,31 @@ const ValidationMessage = styled.p`
 `;
 export function Login() {
   const { user, fetchUser } = useContext(AuthContext);
-  const [loginId, setLoginId] = useState("");
-  const [password, setPassword] = useState("");
+  const [loginId, setLoginId] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const [passwordValidationMessage, setPasswordValidationMessage] =
-    useState("");
+    useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await apiLoginByAxiosPost(loginId, password);
-      if (response.data.resultCode === "SUCCESS") {
-        sessionStorage.setItem("Token", response.data.data.token);
-        sessionStorage.setItem("LoginId", loginId);
+      if (response.data.resultCode === 'SUCCESS') {
+        sessionStorage.setItem('Token', response.data.data.token);
+        sessionStorage.setItem('LoginId', loginId);
         fetchUser();
-        navigate("/");
+        navigate('/');
       }
     } catch (err) {
-      console.log("로그인 오류", err);
-      window.alert("아이디나 비밀번호가 일치하지 않습니다.");
+      console.log('로그인 오류', err);
+      window.alert('아이디나 비밀번호가 일치하지 않습니다.');
     }
   };
 
   // enter 로그인
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       e.preventDefault();
       handleLogin(e);
     }
@@ -164,10 +142,10 @@ export function Login() {
     const regex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
     if (regex.test(password)) {
-      setPasswordValidationMessage("사용가능한 비밀번호입니다.");
+      setPasswordValidationMessage('사용가능한 비밀번호입니다.');
     } else {
       setPasswordValidationMessage(
-        "영문, 숫자, 특수문자를 포함하여 8~20자리로 입력해주세요."
+        '영문, 숫자, 특수문자를 포함하여 8~20자리로 입력해주세요.'
       );
     }
   };
@@ -185,7 +163,7 @@ export function Login() {
               onChange={(e) => setLoginId(e.target.value)}
             />
             <Input
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               placeholder="비밀번호 입력"
               value={password}
               onChange={(e) => {
@@ -199,32 +177,15 @@ export function Login() {
               <ValidationMessage>{passwordValidationMessage}</ValidationMessage>
             )}
             <StyledIcon
-              icon={showPassword ? "mdi:eye-outline" : "mdi:eye-off-outline"}
+              icon={showPassword ? 'mdi:eye-outline' : 'mdi:eye-off-outline'}
               onClick={togglePasswordVisible}
             ></StyledIcon>
             <LoginSolution>로그인 문제 해결</LoginSolution>
             <LoginBtn type="submit" onClick={handleLogin}>
               로그인
             </LoginBtn>
-            <JoinBtn to={"/register"}>회원가입</JoinBtn>
+            <JoinBtn to={'/register'}>회원가입</JoinBtn>
           </LoginForm>
-          <BtnContainer>
-            <div className="divider-container">
-              <div className="divider" />
-              <div className="divider-text">OR</div>
-            </div>
-            <SocialContainer>
-              <SocialBtn>
-                <Img src={google} alt="gogleLogin" />
-              </SocialBtn>
-              <SocialBtn>
-                <Img src={naver} alt="naverLogin" />
-              </SocialBtn>
-              <SocialBtn>
-                <Img src={kakao} alt="kakaoLogin" />
-              </SocialBtn>
-            </SocialContainer>
-          </BtnContainer>
         </LoginContainer>
       </Container>
     </>

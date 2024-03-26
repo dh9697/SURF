@@ -18,8 +18,11 @@ public interface MemberService {
 	public MemberDto getMemberWithAuthorities(String loginId);
 	
 	public MemberDto getCurrentMemberWithAuthorities();
-	
+
 	public List<Member> getAllInstructors();
+	
+	public boolean isLoginDuplicate(String loginId);
+	
 	public ResponseDto<List<MemberDto>> getAllSurfers();
 	public ResponseDto<List<MemberDto>> getAllMembers();
 	public ResponseDto<List<MemberDto>> getAllUsers();

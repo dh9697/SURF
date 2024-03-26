@@ -11,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import project.lms.exception.CustomExceptionHandler;
 import project.lms.jwt.JwtAccessDeniedHandler;
 import project.lms.jwt.JwtAuthenticationEntryPoint;
 import project.lms.jwt.JwtFilter;
@@ -59,6 +58,7 @@ public class SecurityConfig {
                 
                 // RestAPI 보안 여부 설정
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                		.requestMatchers("api/check-login-duplicate").permitAll()
                 		.requestMatchers("/api/signup").permitAll()
                 		.requestMatchers("/api/login").permitAll()
                 		.requestMatchers("/api/subject").permitAll()
