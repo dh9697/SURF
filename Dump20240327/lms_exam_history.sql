@@ -32,7 +32,7 @@ CREATE TABLE `exam_history` (
   KEY `FKp7pbhtcgx7ejm733vydwilsrs` (`member_id`),
   CONSTRAINT `FK1uur8qwrxn80nhe5v63phkwf6` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`exam_id`),
   CONSTRAINT `FKp7pbhtcgx7ejm733vydwilsrs` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `exam_history` (
 
 LOCK TABLES `exam_history` WRITE;
 /*!40000 ALTER TABLE `exam_history` DISABLE KEYS */;
-INSERT INTO `exam_history` VALUES (1,_binary '',10,17),(2,_binary '',11,17);
+INSERT INTO `exam_history` VALUES (1,_binary '',10,17);
 /*!40000 ALTER TABLE `exam_history` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-23 21:38:17
+-- Dump completed on 2024-03-27 17:12:37

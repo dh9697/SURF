@@ -105,6 +105,23 @@ const StyledIcon = styled(Icon)`
   color: #454545;
 `;
 
+const ValidationMsg = styled.p`
+  font-size: 11px;
+  padding: 2px;
+`;
+
+const DuplicateBtn = styled.button`
+  position: absolute;
+  right: 10px;
+  top: 50px;
+  transform: translateY(-50%);
+  padding: 5px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  color: #6b7280;
+`;
+
 export function Register() {
   const navigate = useNavigate();
   const [loginId, setLoginId] = useState('');
@@ -115,7 +132,7 @@ export function Register() {
   const [nationality, setNationality] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNum, setPhoneNum] = useState('');
-  const [duplicateMsg, setDuplicateMsg] = useState('');
+  const [duplicateMsg, setDuplicateMsg] = useState({ message: '', type: '' });
 
   // 입력 조건 확인
   const [idValidationMsg, setIdValidationMsg] = useState({
@@ -251,9 +268,15 @@ export function Register() {
     try {
       e.preventDefault();
       const response = await apiGetIsLoginDuplicate(loginId);
-      setDuplicateMsg('사용 가능한 로그인 아이디입니다.');
+      setDuplicateMsg({
+        message: '사용 가능한 ID입니다.',
+        type: 'success',
+      });
     } catch (err) {
-      setDuplicateMsg('이미 존재하는 로그인 아이디입니다.');
+      setDuplicateMsg({
+        message: '이미 존재하는 ID입니다.',
+        type: 'error',
+      });
       console.log('로그인 아이디 중복 조회 실패: ', err);
     }
   };
@@ -281,15 +304,28 @@ export function Register() {
                   validateId(e.target.value);
                 }}
               />
-              <button onClick={handleDuplicate}>중복 확인</button>
-              <small
+              <ValidationMsg
                 style={{
                   color: idValidationMsg.type === 'success' ? '#3182f6' : 'red',
                 }}
               >
                 {idValidationMsg.message}
-              </small>
-              <p>{duplicateMsg}</p>
+              </ValidationMsg>
+              {idValidationMsg.type === 'success' && (
+                <>
+                  <DuplicateBtn onClick={handleDuplicate}>
+                    중복 확인
+                  </DuplicateBtn>
+                  <ValidationMsg
+                    style={{
+                      color:
+                        duplicateMsg.type === 'success' ? '#3182f6' : 'red',
+                    }}
+                  >
+                    {duplicateMsg.message}
+                  </ValidationMsg>
+                </>
+              )}
             </div>
             <div className="inputContainer">
               <span className="inputLabel">비밀번호</span>
@@ -307,13 +343,13 @@ export function Register() {
                 icon={showPassword ? 'mdi:eye-outline' : 'mdi:eye-off-outline'}
                 onClick={togglePasswordVisible}
               ></StyledIcon>
-              <small
+              <ValidationMsg
                 style={{
                   color: pwValidationMsg.type === 'success' ? '#3182f6' : 'red',
                 }}
               >
                 {pwValidationMsg.message}
-              </small>
+              </ValidationMsg>
             </div>
             <div className="inputContainer">
               <span className="inputLabel">이름</span>
@@ -337,13 +373,13 @@ export function Register() {
                   validateBd(e.target.value);
                 }}
               />
-              <small
+              <ValidationMsg
                 style={{
                   color: bdValidationMsg.type === 'success' ? '#3182f6' : 'red',
                 }}
               >
                 {bdValidationMsg.message}
-              </small>
+              </ValidationMsg>
             </div>
             <div className="radioInputContainerWrapper">
               <div className="radioInputContainer">
@@ -405,13 +441,13 @@ export function Register() {
                   validatePh(e.target.value);
                 }}
               />
-              <small
+              <ValidationMsg
                 style={{
                   color: pnValidationMsg.type === 'success' ? '#3182f6' : 'red',
                 }}
               >
                 {pnValidationMsg.message}
-              </small>
+              </ValidationMsg>
             </div>
             <div className="inputContainer">
               <span className="inputLabel">Email</span>
@@ -425,14 +461,14 @@ export function Register() {
                   validateEmail(e.target.value);
                 }}
               />
-              <small
+              <ValidationMsg
                 style={{
                   color:
                     emailValidationMsg.type === 'success' ? '#3182f6' : 'red',
                 }}
               >
                 {emailValidationMsg.message}
-              </small>
+              </ValidationMsg>
             </div>
           </RegisterForm>
           <RegiserBtn onClick={handleRegister}>회원가입</RegiserBtn>

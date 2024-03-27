@@ -16,35 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `qna_reply`
+-- Table structure for table `teaching_courses`
 --
 
-DROP TABLE IF EXISTS `qna_reply`;
+DROP TABLE IF EXISTS `teaching_courses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `qna_reply` (
-  `reply_id` bigint NOT NULL AUTO_INCREMENT,
-  `created_at` datetime(6) DEFAULT NULL,
-  `reply_text` varchar(255) DEFAULT NULL,
-  `updated_at` datetime(6) DEFAULT NULL,
+CREATE TABLE `teaching_courses` (
   `member_id` bigint NOT NULL,
-  `qna_id` bigint NOT NULL,
-  PRIMARY KEY (`reply_id`),
-  KEY `FKf89wlc5ik3r7wcms0j7aku03b` (`member_id`),
-  KEY `FKc8dygxmdmhmvie5gthdne0h28` (`qna_id`),
-  CONSTRAINT `FKc8dygxmdmhmvie5gthdne0h28` FOREIGN KEY (`qna_id`) REFERENCES `qna_board` (`qna_id`),
-  CONSTRAINT `FKf89wlc5ik3r7wcms0j7aku03b` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `course_id` bigint NOT NULL,
+  PRIMARY KEY (`member_id`,`course_id`),
+  KEY `FKt58ddbk9f27mpew5a37x3itf7` (`course_id`),
+  CONSTRAINT `FKbdhp7mvjr3x1qjj1odcye75jy` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`),
+  CONSTRAINT `FKt58ddbk9f27mpew5a37x3itf7` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `qna_reply`
+-- Dumping data for table `teaching_courses`
 --
 
-LOCK TABLES `qna_reply` WRITE;
-/*!40000 ALTER TABLE `qna_reply` DISABLE KEYS */;
-INSERT INTO `qna_reply` VALUES (1,'2024-02-13 11:12:04.458824','2 번 문제는 본문을 잘 읽으면 충분히 해결할 수 있는 문제입니다. 본문을 다시 한번 잘 읽어 본 뒤에도 이해가 되지 않으면 그때 다시 질문해 주세요.','2024-02-13 11:12:04.458824',2,1),(2,'2024-02-22 15:05:08.245308','답변 테스트','2024-02-22 15:05:08.245308',2,15),(3,'2024-03-23 18:46:28.612583','답변 테스트','2024-03-23 18:46:28.612583',2,2);
-/*!40000 ALTER TABLE `qna_reply` ENABLE KEYS */;
+LOCK TABLES `teaching_courses` WRITE;
+/*!40000 ALTER TABLE `teaching_courses` DISABLE KEYS */;
+INSERT INTO `teaching_courses` VALUES (2,1),(4,2),(5,3),(6,4),(7,5),(8,6),(9,7),(10,8),(11,9),(12,10),(13,11),(14,12);
+/*!40000 ALTER TABLE `teaching_courses` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-23 21:38:14
+-- Dump completed on 2024-03-27 17:12:35

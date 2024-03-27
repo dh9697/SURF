@@ -93,7 +93,7 @@ const QnA = styled.div`
   padding: 0.5rem;
   &.reply {
     margin-top: 1rem;
-    background-color: #f3f3f3;
+    background-color: #ddd;
   }
   & .qnaInfo {
     padding-top: 1rem;

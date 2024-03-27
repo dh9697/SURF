@@ -92,10 +92,6 @@ export function Surf() {
                       element={<CourseDescription />}
                     />
                   </Route>
-                  <Route
-                    path="/course/:courseId/content/:contentId"
-                    element={<ContentComponent />}
-                  />
                   {user && (
                     <Route
                       path={`/dashboard/${user.loginId}`}
@@ -202,6 +198,10 @@ export function Surf() {
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route
+                  path="/course/:courseId/content/:contentId"
+                  element={<ContentComponent />}
+                />
               </Routes>
             </MainContent>
             <Footer />
