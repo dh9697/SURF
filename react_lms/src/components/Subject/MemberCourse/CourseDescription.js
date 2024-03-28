@@ -8,7 +8,7 @@ import {
   apiPostCourseReview,
 } from '../../RestApi';
 import { AuthContext } from '../../../AuthContext';
-import { formatDateTime } from '../../Util/util';
+import { StarRating, formatDateTime } from '../../Util/util';
 
 const Container = styled.div`
   width: 100%;
@@ -19,35 +19,52 @@ const Container = styled.div`
 const Box = styled.div`
   border: 1px solid #ddd;
   border-radius: 5px;
+  padding: 1rem;
+`;
+const Title = styled.div`
+  font-size: 18px;
+  font-weight: 900;
+  color: #454545;
+  padding-bottom: 1rem;
 `;
 
-const List = styled.div`
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: -0.3px;
-  font-size: 16px;
-  align-self: baseline;
-  color: #343a40;
-`;
-
-const Icon = styled.div`
-  margin-right: 8px;
-`;
-
-const ReviewBox = styled.div`
-  border: 1px solid black;
-`;
+const List = styled.div``;
 
 const InputBox = styled.form`
   display: flex;
   gap: 1rem;
-  height: 30px;
+  margin: 0.5rem;
   & input {
     flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  & select {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  & button {
+    border: none;
+    background-color: #3182f6;
+    color: #f3f3f3;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
   }
 `;
-const Reviews = styled.table``;
-const Review = styled.tr``;
+
+const Review = styled.tr`
+  display: grid;
+  grid-template-columns: 1fr 4fr 2fr 1fr;
+  padding: 10px;
+  & .starRating {
+    text-align: center;
+  }
+  & .date {
+    text-align: end;
+  }
+`;
 
 export function CourseDescription() {
   const location = useLocation();
@@ -112,24 +129,18 @@ export function CourseDescription() {
     <>
       <Container>
         <Box id="description">
+          <Title>강의소개</Title>
           {course && course.courseName && <strong>{course.courseName} </strong>}
           부분입니다
           {course && course.description && <p>{course.description} </p>}
-          <div>
-            <List>
-              {content.map((item, index) => (
-                <p key={index}>
-                  <Icon>아이콘</Icon>
-                  {`${item.description}`}
-                </p>
-              ))}
-            </List>
-          </div>
+          <List>
+            {content.map((item, index) => (
+              <p key={index}>{`${item.description}`}</p>
+            ))}
+          </List>
         </Box>
         <Box id="review">
-          <p>
-            <strong>수강평</strong>
-          </p>
+          <Title>수강평</Title>
           <InputBox onSubmit={handleSubmit}>
             <input
               type="text"
@@ -147,22 +158,20 @@ export function CourseDescription() {
             </select>
             <button type="submit">등록</button>
           </InputBox>
-          <Reviews>
-            <colgroup>
-              <col style={{ width: 130 + 'px' }} />
-              <col style={{ width: 300 + 'px' }} />
-              <col style={{ width: 130 + 'px' }} />
-              <col style={{ width: 130 + 'px' }} />
-            </colgroup>
+          <table>
             {reviews.map((review, index) => (
               <Review key={index}>
-                <td className="name">{review.member.name}</td>
-                <td className="reviewText">{review.comment}</td>
-                <td className="starRating">{review.rating}</td>
-                <td className="time">{formatDateTime(review.reviewDate)}</td>
+                <td>
+                  <strong>{review.member.name}</strong>
+                </td>
+                <td>{review.comment}</td>
+                <td className="starRating">
+                  <StarRating averageRating={review.rating} />
+                </td>
+                <td className="date">{formatDateTime(review.reviewDate)}</td>
               </Review>
             ))}
-          </Reviews>
+          </table>
         </Box>
       </Container>
     </>

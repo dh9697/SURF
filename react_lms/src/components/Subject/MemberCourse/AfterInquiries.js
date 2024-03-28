@@ -1,27 +1,61 @@
-import styled from "styled-components";
-import { useLocation } from "react-router-dom";
-import { AuthContext } from "../../../AuthContext";
-import { useState, useEffect, useContext } from "react";
+import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
+import { AuthContext } from '../../../AuthContext';
+import { useState, useEffect, useContext } from 'react';
 import {
   apiGetCourse,
   apiGetQnABoardsByCourse,
   apiCreateQnABoard,
-} from "../../RestApi";
-import { formatDateTime } from "../../Util/util";
+} from '../../RestApi';
+import { formatDateTime } from '../../Util/util';
 
-const Container = styled.div``;
-const InputBox = styled.form``;
-const Input = styled.input``;
+const Container = styled.div`
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 1rem;
+`;
+const Title = styled.div`
+  font-size: 18px;
+  font-weight: 900;
+  color: #454545;
+  padding-bottom: 1rem;
+`;
+const InputBox = styled.form`
+  display: flex;
+  gap: 1rem;
+  margin: 0.5rem;
+  & input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  & button {
+    border: none;
+    background-color: #3182f6;
+    color: #f3f3f3;
+    padding: 5px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+`;
 const QnAs = styled.table``;
-const QnA = styled.tr``;
+const QnA = styled.tr`
+  display: grid;
+  grid-template-columns: 1fr 5fr 1fr;
+  padding: 10px;
+  & .date {
+    text-align: end;
+  }
+`;
 
 export function AfterInquiries() {
   const location = useLocation();
-  const courseId = location.pathname.split("/")[2];
+  const courseId = location.pathname.split('/')[2];
   const { user } = useContext(AuthContext);
   const [course, setCourse] = useState(null);
   const [qnas, setQnas] = useState([]);
-  const [questionText, setQuestionText] = useState("");
+  const [questionText, setQuestionText] = useState('');
 
   // 해당 강의 조회
   useEffect(() => {
@@ -30,7 +64,7 @@ export function AfterInquiries() {
         setCourse(response.data.data);
       })
       .catch((error) => {
-        console.error("코스 정보 불러오기 오류: ", error);
+        console.error('코스 정보 불러오기 오류: ', error);
       });
   }, [courseId]);
 
@@ -50,22 +84,22 @@ export function AfterInquiries() {
       questionText,
     })
       .then(() => {
-        setQuestionText("");
+        setQuestionText('');
         apiGetQnABoardsByCourse(courseId).then((response) => {
           setQnas(response.data.data);
         });
       })
       .catch((error) => {
-        console.error("질문 등록 실패: ", error);
+        console.error('질문 등록 실패: ', error);
       });
   };
 
   return (
     <>
       <Container>
-        <p>수강 문의.</p>
+        <Title>질의응답</Title>
         <InputBox onSubmit={handleSubmit}>
-          <Input
+          <input
             type="text"
             placeholder="강의에 대한 질문을 남겨 주세요."
             value={questionText}
@@ -74,17 +108,13 @@ export function AfterInquiries() {
           <button type="submit">등록</button>
         </InputBox>
         <QnAs>
-          <colgroup>
-            <col style={{ width: 130 + "px" }} />
-            <col style={{ width: 300 + "px" }} />
-            <col style={{ width: 130 + "px" }} />
-            <col style={{ width: 130 + "px" }} />
-          </colgroup>
           {qnas.map((qna, index) => (
             <QnA key={index}>
-              <td className="name">{qna.member.name}</td>
-              <td className="reviewText">{qna.questionText}</td>
-              <td className="time">{formatDateTime(qna.createdAt)}</td>
+              <td>
+                <strong>{qna.member.name}</strong>
+              </td>
+              <td>{qna.questionText}</td>
+              <td className="date">{formatDateTime(qna.createdAt)}</td>
             </QnA>
           ))}
         </QnAs>

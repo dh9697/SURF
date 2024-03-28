@@ -12,7 +12,7 @@ import { AuthContext } from '../../AuthContext';
 
 const Container = styled.div`
   color: #454545;
-  padding: 20px;
+  padding: 1rem;
   .content.completed {
     background-color: #f3f3f3;
     & .text {
@@ -126,7 +126,7 @@ export function CourseCurriculem() {
 
   return (
     <>
-      <Container>
+      <Container id="curriculum">
         <Title>
           <span className="title">커리큘럼</span>
           <span className="titleInfo">

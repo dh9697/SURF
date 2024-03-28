@@ -1,27 +1,19 @@
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
-import {
-  apiGetCourse,
-  apiGetContentByCourse,
-  apiCreateCart,
-  apiAddCourseToCart,
-  apiGetMyCourseHistroies,
-} from '../../RestApi';
+import { apiGetCourse, apiGetContentByCourse } from '../../RestApi';
 import { AuthContext } from '../../../AuthContext';
 import { CourseCurriculem } from '../CourseCurriculum';
+import { CourseDescription } from '../MemberCourse/CourseDescription';
 
 const Container = styled.div`
-  width: 100%;
-`;
-
-const ContentBox = styled.div`
   width: 100%;
 `;
 
 const Section = styled.div`
   border-radius: 10px;
   border: 1px solid #ddd;
+  margin-top: 1rem;
 `;
 
 export function UserCourse() {
@@ -61,19 +53,10 @@ export function UserCourse() {
       {course && content && (
         <>
           <Container>
-            <ContentBox>
-              <Section id="description">
-                <h1>강의 소개</h1>
-                <p>{course.description}</p>
-              </Section>
-              <Section id="content">
-                <CourseCurriculem />
-              </Section>
-              <Section id="review">
-                <h1>수강평</h1>
-                <p>{course.description}</p>
-              </Section>
-            </ContentBox>
+            <CourseDescription />
+            <Section>
+              <CourseCurriculem />
+            </Section>
           </Container>
         </>
       )}

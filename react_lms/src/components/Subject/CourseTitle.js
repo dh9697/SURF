@@ -124,7 +124,7 @@ export function CourseTitle() {
       .catch((err) => {
         console.log('수강평 전체 조회 실패: ', err);
       });
-  }, [courseId, user.memberId]);
+  }, [courseId, user]);
 
   const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
   const averageRating = totalRating / reviews.length;
