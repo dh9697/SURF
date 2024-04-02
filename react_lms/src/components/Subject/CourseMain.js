@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { apiGetAllCourses, apiGetCourseBySubject } from "../RestApi";
-import styled from "styled-components";
-import { NavLink, useLocation } from "react-router-dom";
-import thumbnailSample from "../image/surf_logo.png";
-import { formatPrice } from "../Util/util";
-import { Icon } from "@iconify/react";
+import React, { useEffect, useState } from 'react';
+import { apiGetAllCourses, apiGetCourseBySubject } from '../RestApi';
+import styled from 'styled-components';
+import { NavLink, useLocation } from 'react-router-dom';
+import thumbnailSample from '../image/surf_logo.png';
+import { formatPrice } from '../Util/util';
+import { Icon } from '@iconify/react';
 
 const Container = styled.div`
   width: 100%;
@@ -93,30 +93,27 @@ const ImgBox = styled.div`
 export function CourseMain() {
   const [courses, setCourses] = useState([]);
   const location = useLocation();
-  const subjectId = location.pathname.split("/")[3];
+  const subjectId = location.pathname.split('/')[3];
 
   useEffect(() => {
-    if (location.pathname.includes("subject")) {
-      // '/course/subject/:subjectId' 경로에서 렌더링되는 경우
+    if (location.pathname.includes('subject')) {
       apiGetCourseBySubject(subjectId)
         .then((response) => {
           setCourses(response.data.data);
         })
         .catch((error) => {
-          console.log("서브젝트 코스 불러오기 오류: ", error);
+          console.log('서브젝트 코스 불러오기 오류: ', error);
         });
     } else {
-      // '/course' 경로에서 렌더링되는 경우
       apiGetAllCourses()
         .then((response) => {
           setCourses(response.data.data);
-          console.log(response.data.data);
         })
         .catch((error) => {
-          console.error("코스 불러오기 오류: ", error);
+          console.error('코스 불러오기 오류: ', error);
         });
     }
-  }, [location, subjectId]);
+  }, [location]);
 
   return (
     <Container>

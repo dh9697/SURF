@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../AuthContext";
+import styled from 'styled-components';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../../AuthContext';
 import {
   apiGetQnABoardsByCourse,
   apiGetQnARepliesByQnABoardId,
   apiCreateQnAReply,
-} from "../../RestApi";
-import { formatDateTime } from "../../Util/util";
+} from '../../RestApi';
+import { formatDateTime } from '../../Util/util';
 
 const Container = styled.div`
   color: #454545;
@@ -112,7 +112,6 @@ export function InstructorQnAManage() {
     }
     return acc;
   }, 0);
-  console.log(totalRepliesCount);
 
   return (
     <>
@@ -145,7 +144,7 @@ export function InstructorQnAManage() {
                 <Textwrap>
                   <ReplyText
                     type="text"
-                    value={replyTexts[qna.qnaId] || ""}
+                    value={replyTexts[qna.qnaId] || ''}
                     onChange={(e) =>
                       handleReplyChange(qna.qnaId, e.target.value)
                     }
