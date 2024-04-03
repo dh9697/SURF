@@ -163,14 +163,19 @@ export function CourseCurriculem() {
                   </StyledNavLink>
                   {isCompleted ? (
                     <>
-                      {exam && exam.examIsActive && (
-                        <StyledNavLink
-                          to={`/dashboard/${user.loginId}/exams/${item.contentId}`}
-                        >
-                          과제 풀기
-                        </StyledNavLink>
-                      )}
-                      {exam && !exam.examIsActive && (
+                      {exam ? (
+                        <>
+                          {exam.examIsActive ? (
+                            <StyledNavLink
+                              to={`/dashboard/${user.loginId}/exams/${item.contentId}`}
+                            >
+                              과제 풀기
+                            </StyledNavLink>
+                          ) : (
+                            <Button disabled>시험 생성 중</Button>
+                          )}
+                        </>
+                      ) : (
                         <Button disabled>시험 생성 중</Button>
                       )}
                     </>

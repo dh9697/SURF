@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { apiGetAllCourses, apiGetCourseBySubject } from '../RestApi';
 import styled from 'styled-components';
 import { NavLink, useLocation } from 'react-router-dom';
-import thumbnailSample from '../image/surf_logo.png';
 import { formatPrice } from '../Util/util';
 import { Icon } from '@iconify/react';
 
