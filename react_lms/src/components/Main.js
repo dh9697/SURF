@@ -1,18 +1,17 @@
-import styled from "styled-components";
-import { NavLink } from "react-router-dom";
-import React, { useRef, useState, useEffect } from "react";
-import { TestSwiper } from "./TestSwiper";
-import surfboard2_black from "./image/surfboard2_black.png";
-import surfboard2_color from "./image/surfboard2_color.png";
-import surfboard_black from "./image/surfboard_black.png";
-import surfboard_color from "./image/surfboard_color.png";
-import wave_black from "./image/wave_black.png";
-import wave_color from "./image/wave_color.png";
-// import { Wave } from "./Wave";
-import ad from "./image/ad.jpg";
-import image from "./image/image.png";
-import { useContext } from "react";
-import { AuthContext } from "../AuthContext";
+import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
+import React, { useRef, useState, useEffect } from 'react';
+import { TestSwiper } from './TestSwiper';
+import surfboard2_black from './image/surfboard2_black.png';
+import surfboard2_color from './image/surfboard2_color.png';
+import surfboard_black from './image/surfboard_black.png';
+import surfboard_color from './image/surfboard_color.png';
+import wave_black from './image/wave_black.png';
+import wave_color from './image/wave_color.png';
+import ad from './image/ad.jpg';
+import image from './image/image.png';
+import { useContext } from 'react';
+import { AuthContext } from '../AuthContext';
 
 const Container = styled.div`
   width: 100%;
@@ -314,7 +313,7 @@ const CheckboxInput = styled.input`
 
   /* 체크박스가 체크될 때 가상 요소 사용 */
   &:checked::before {
-    content: "";
+    content: '';
     position: absolute;
     width: 6px; /* 체크 표시의 너비 */
     height: 12px; /* 체크 표시의 높이 */
@@ -368,20 +367,15 @@ const ReviewText = styled.div`
   text-align: center;
 `;
 
-// 아바타 링크
-// "https://source.boringavatars.com/beam/60/zzZ?colors=E0EFF1,D4ECFD,ABDBFF,BBD6F9,8BC0E5",
-// 60/zzZ? 이 링크의 zzZ 부분의 사용자의 닉네임 혹은 아이디가 들어가야 함
-
 export function Main() {
   const { user } = useContext(AuthContext);
-  const [name, setName] = useState("");
-  const [phoneNum, setPhoneNum] = useState("");
+  const [name, setName] = useState('');
+  const [phoneNum, setPhoneNum] = useState('');
   const [isConsentChecked, setIsConsentChecked] = useState(false);
   const [isBtnEnabled, setIsBtnEnabled] = useState(false);
-  // const [postCheckMap, setPostCheckMap] = useState({}); /* 아바타 - 1 차 archive.js 참고하기*/
 
   useEffect(() => {
-    if (name.trim() !== "" && phoneNum.trim() !== "" && isConsentChecked) {
+    if (name.trim() !== '' && phoneNum.trim() !== '' && isConsentChecked) {
       setIsBtnEnabled(true);
     } else {
       setIsBtnEnabled(false);
@@ -401,24 +395,24 @@ export function Main() {
   };
 
   const handleRequest = () => {
-    alert("상담 신청이 완료되었습니다");
+    alert('상담 신청이 완료되었습니다');
   };
 
   // 상담 가능 시간 옵션
   const consultationTimes = [
-    "아무때나",
-    "10:00 ~ 10:30",
-    "11:00 ~ 11:30",
-    "11:30 ~ 12:00",
-    "12:00 ~ 12:30",
-    "13:30 ~ 14:00",
-    "14:00 ~ 14:30",
-    "14:30 ~ 15:00",
-    "15:00 ~ 15:30",
-    "15:30 ~ 16:00",
-    "16:30 ~ 17:00",
-    "17:30 ~ 17:30",
-    "17:30 ~ 18:00",
+    '아무때나',
+    '10:00 ~ 10:30',
+    '11:00 ~ 11:30',
+    '11:30 ~ 12:00',
+    '12:00 ~ 12:30',
+    '13:30 ~ 14:00',
+    '14:00 ~ 14:30',
+    '14:30 ~ 15:00',
+    '15:00 ~ 15:30',
+    '15:30 ~ 16:00',
+    '16:30 ~ 17:00',
+    '17:30 ~ 17:30',
+    '17:30 ~ 18:00',
   ];
 
   return (
@@ -438,7 +432,7 @@ export function Main() {
           {user ? (
             <Starthiddn></Starthiddn>
           ) : (
-            <StartBtn to={"/login"}>START</StartBtn>
+            <StartBtn to={'/login'}>START</StartBtn>
           )}
         </Slogan>
         {/* <AdBox> */}
